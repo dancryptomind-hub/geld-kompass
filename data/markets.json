@@ -1,0 +1,1201 @@
+{
+ "updated": "2026-10-24T00:00:00+00:00",
+ "status": "start",
+ "note": "Startwerte (grobe Näherung). Werden beim ersten Lauf der GitHub Action durch echte Kurse ersetzt.",
+ "currency": "EUR",
+ "inflation": {
+  "DE": {
+   "rate": 3.3,
+   "period": "2026-09",
+   "source": "Eurostat · HVPI",
+   "series": "prc_hicp_minr",
+   "unit": "Veränderung zum Vorjahresmonat in %",
+   "checked": "2026-10-27T04:41:53.230Z",
+   "sourceUpdated": "2026-10-16T23:00:00+0200",
+   "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_minr?lang=DE&freq=M&unit=RCH_A&coicop18=TOTAL&geo=DE&lastTimePeriod=12",
+   "status": null
+  },
+  "EA": {
+   "rate": 3.8,
+   "period": "2026-09",
+   "source": "Eurostat · HVPI",
+   "series": "prc_hicp_minr",
+   "unit": "Veränderung zum Vorjahresmonat in %",
+   "checked": "2026-10-27T04:41:53.238Z",
+   "sourceUpdated": "2026-10-16T23:00:00+0200",
+   "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_minr?lang=DE&freq=M&unit=RCH_A&coicop18=TOTAL&geo=EA&lastTimePeriod=12",
+   "status": null
+  }
+ },
+ "instruments": [
+  {
+   "s": "VWCE.DE",
+   "n": "Vanguard FTSE All-World (thesaurierend)",
+   "t": "ETF",
+   "i": "IE00BK5BQT80",
+   "a": "all world allworld ftse welt weltweit acwi",
+   "r": 10,
+   "rs": 1,
+   "p": 140
+  },
+  {
+   "s": "VGWL.DE",
+   "n": "Vanguard FTSE All-World (ausschüttend)",
+   "t": "ETF",
+   "i": "IE00B3RBWM25",
+   "a": "all world allworld ftse welt weltweit dividende",
+   "p": 135
+  },
+  {
+   "s": "EUNL.DE",
+   "n": "iShares Core MSCI World",
+   "t": "ETF",
+   "i": "IE00B4L5Y983",
+   "a": "msci world welt",
+   "r": 10,
+   "rs": 1,
+   "p": 105
+  },
+  {
+   "s": "XDWD.DE",
+   "n": "Xtrackers MSCI World 1C",
+   "t": "ETF",
+   "i": "IE00BJ0KDQ92",
+   "a": "msci world welt",
+   "p": 120
+  },
+  {
+   "s": "SPPW.DE",
+   "n": "SPDR MSCI World",
+   "t": "ETF",
+   "i": "IE00BFY0GT14",
+   "a": "msci world welt",
+   "p": 38
+  },
+  {
+   "s": "IUSQ.DE",
+   "n": "iShares MSCI ACWI",
+   "t": "ETF",
+   "i": "IE00B6R52259",
+   "a": "acwi all country world welt msci",
+   "p": 85
+  },
+  {
+   "s": "SPYI.DE",
+   "n": "SPDR MSCI All Country World IMI",
+   "t": "ETF",
+   "i": "IE00B3YLTY66",
+   "a": "acwi imi all country world welt msci",
+   "p": 250
+  },
+  {
+   "s": "IS3N.DE",
+   "n": "iShares Core MSCI Emerging Markets IMI",
+   "t": "ETF",
+   "i": "IE00BKM4GZ66",
+   "a": "em emerging markets schwellenländer msci",
+   "p": 35
+  },
+  {
+   "s": "EUNM.DE",
+   "n": "iShares MSCI Emerging Markets",
+   "t": "ETF",
+   "i": "IE00B4L5YC18",
+   "a": "em emerging markets schwellenländer msci",
+   "p": 45
+  },
+  {
+   "s": "XMME.DE",
+   "n": "Xtrackers MSCI Emerging Markets 1C",
+   "t": "ETF",
+   "i": "IE00BTJRMP35",
+   "a": "em emerging markets schwellenländer msci",
+   "p": 62
+  },
+  {
+   "s": "VFEM.DE",
+   "n": "Vanguard FTSE Emerging Markets",
+   "t": "ETF",
+   "i": "IE00B3VVMM84",
+   "a": "em emerging markets schwellenländer ftse",
+   "p": 62
+  },
+  {
+   "s": "SXR8.DE",
+   "n": "iShares Core S&P 500",
+   "t": "ETF",
+   "i": "IE00B5BMR087",
+   "a": "s&p 500 sp500 usa amerika",
+   "r": 13,
+   "rs": 1,
+   "p": 600
+  },
+  {
+   "s": "VUAA.DE",
+   "n": "Vanguard S&P 500 (thesaurierend)",
+   "t": "ETF",
+   "i": "IE00BFMXXD54",
+   "a": "s&p 500 sp500 usa amerika",
+   "p": 110
+  },
+  {
+   "s": "SXRV.DE",
+   "n": "iShares Nasdaq 100",
+   "t": "ETF",
+   "i": "IE00B53SL201",
+   "a": "nasdaq 100 tech usa",
+   "p": 1150
+  },
+  {
+   "s": "EQQQ.DE",
+   "n": "Invesco EQQQ Nasdaq-100",
+   "t": "ETF",
+   "i": "IE0032077012",
+   "a": "nasdaq 100 tech usa",
+   "p": 520
+  },
+  {
+   "s": "EXXT.DE",
+   "n": "iShares NASDAQ-100 (DE)",
+   "t": "ETF",
+   "i": "DE000A0F5UF5",
+   "a": "nasdaq 100 tech usa",
+   "p": 220
+  },
+  {
+   "s": "QDVE.DE",
+   "n": "iShares S&P 500 Information Technology",
+   "t": "ETF",
+   "i": "IE00B3WJKG14",
+   "a": "tech it technologie s&p",
+   "p": 32
+  },
+  {
+   "s": "XAIX.DE",
+   "n": "Xtrackers Artificial Intelligence & Big Data",
+   "t": "ETF",
+   "i": "IE00BGV5VN51",
+   "a": "ki ai künstliche intelligenz big data tech",
+   "p": 140
+  },
+  {
+   "s": "2B76.DE",
+   "n": "iShares Automation & Robotics",
+   "t": "ETF",
+   "i": "IE00BYZK4552",
+   "a": "robotik automation tech",
+   "p": 12
+  },
+  {
+   "s": "IQQH.DE",
+   "n": "iShares Global Clean Energy",
+   "t": "ETF",
+   "i": "IE00B1XNHC34",
+   "a": "clean energy erneuerbare energie grün solar",
+   "p": 8
+  },
+  {
+   "s": "EXS1.DE",
+   "n": "iShares Core DAX",
+   "t": "ETF",
+   "i": "DE0005933931",
+   "a": "dax deutschland",
+   "p": 200
+  },
+  {
+   "s": "DBXD.DE",
+   "n": "Xtrackers DAX 1C",
+   "t": "ETF",
+   "i": "LU0274211480",
+   "a": "dax deutschland",
+   "p": 220
+  },
+  {
+   "s": "EXSA.DE",
+   "n": "iShares STOXX Europe 600",
+   "t": "ETF",
+   "i": "DE0002635307",
+   "a": "europa europe stoxx 600",
+   "p": 55
+  },
+  {
+   "s": "EUNK.DE",
+   "n": "iShares Core MSCI Europe",
+   "t": "ETF",
+   "i": "IE00B4K48X80",
+   "a": "europa europe msci",
+   "p": 88
+  },
+  {
+   "s": "MEUD.PA",
+   "n": "Amundi STOXX Europe 600",
+   "t": "ETF",
+   "i": "LU0908500753",
+   "a": "europa europe stoxx 600",
+   "p": 280
+  },
+  {
+   "s": "IUSN.DE",
+   "n": "iShares MSCI World Small Cap",
+   "t": "ETF",
+   "i": "IE00BF4RFH31",
+   "a": "small cap nebenwerte welt msci world",
+   "p": 7.5
+  },
+  {
+   "s": "ZPRV.DE",
+   "n": "SPDR MSCI USA Small Cap Value Weighted",
+   "t": "ETF",
+   "i": "IE00BSPLC413",
+   "a": "small cap value usa",
+   "p": 65
+  },
+  {
+   "s": "ZPRX.DE",
+   "n": "SPDR MSCI Europe Small Cap Value Weighted",
+   "t": "ETF",
+   "i": "IE00BSPLC298",
+   "a": "small cap value europa",
+   "p": 75
+  },
+  {
+   "s": "IS3Q.DE",
+   "n": "iShares Edge MSCI World Quality Factor",
+   "t": "ETF",
+   "i": "IE00BP3QZ601",
+   "a": "quality qualität faktor msci world",
+   "p": 65
+  },
+  {
+   "s": "IS3R.DE",
+   "n": "iShares Edge MSCI World Momentum Factor",
+   "t": "ETF",
+   "i": "IE00BP3QZ825",
+   "a": "momentum faktor msci world",
+   "p": 75
+  },
+  {
+   "s": "VHYL.DE",
+   "n": "Vanguard FTSE All-World High Dividend Yield",
+   "t": "ETF",
+   "i": "IE00B8GKDB10",
+   "a": "dividende high dividend ausschüttung",
+   "p": 70
+  },
+  {
+   "s": "TDIV.AS",
+   "n": "VanEck Morningstar Developed Markets Dividend Leaders",
+   "t": "ETF",
+   "i": "NL0011683594",
+   "a": "dividende dividend leaders ausschüttung",
+   "p": 45
+  },
+  {
+   "s": "EUNH.DE",
+   "n": "iShares Core Euro Government Bond",
+   "t": "ETF",
+   "i": "IE00B4WXJJ64",
+   "a": "anleihen staatsanleihen bonds renten euro",
+   "p": 115
+  },
+  {
+   "s": "4GLD.DE",
+   "n": "Xetra-Gold",
+   "t": "Rohstoff",
+   "i": "DE000A0S9GB0",
+   "a": "gold edelmetall",
+   "p": 95
+  },
+  {
+   "s": "AAPL",
+   "n": "Apple",
+   "t": "Aktie",
+   "i": "US0378331005",
+   "a": "iphone",
+   "r": 24,
+   "rs": 1,
+   "p": 215
+  },
+  {
+   "s": "MSFT",
+   "n": "Microsoft",
+   "t": "Aktie",
+   "i": "US5949181045",
+   "a": "",
+   "r": 25,
+   "rs": 1,
+   "p": 420
+  },
+  {
+   "s": "NVDA",
+   "n": "Nvidia",
+   "t": "Aktie",
+   "i": "US67066G1040",
+   "a": "chips ki",
+   "p": 160
+  },
+  {
+   "s": "AMZN",
+   "n": "Amazon",
+   "t": "Aktie",
+   "i": "US0231351067",
+   "a": "",
+   "r": 20,
+   "rs": 1,
+   "p": 195
+  },
+  {
+   "s": "GOOGL",
+   "n": "Alphabet (Google)",
+   "t": "Aktie",
+   "i": "US02079K3059",
+   "a": "google youtube",
+   "r": 20,
+   "rs": 1,
+   "p": 170
+  },
+  {
+   "s": "META",
+   "n": "Meta Platforms",
+   "t": "Aktie",
+   "i": "US30303M1027",
+   "a": "facebook instagram whatsapp",
+   "p": 620
+  },
+  {
+   "s": "TSLA",
+   "n": "Tesla",
+   "t": "Aktie",
+   "i": "US88160R1014",
+   "a": "elon musk",
+   "r": 35,
+   "rs": 1,
+   "p": 280
+  },
+  {
+   "s": "BRK-B",
+   "n": "Berkshire Hathaway B",
+   "t": "Aktie",
+   "i": "US0846707026",
+   "a": "warren buffett",
+   "p": 420
+  },
+  {
+   "s": "TSM",
+   "n": "Taiwan Semiconductor (TSMC)",
+   "t": "Aktie",
+   "i": "US8740391003",
+   "a": "tsmc chips",
+   "p": 220
+  },
+  {
+   "s": "AVGO",
+   "n": "Broadcom",
+   "t": "Aktie",
+   "i": "US11135F1012",
+   "a": "chips",
+   "p": 290
+  },
+  {
+   "s": "AMD",
+   "n": "AMD",
+   "t": "Aktie",
+   "i": "US0079031078",
+   "a": "chips advanced micro devices",
+   "p": 150
+  },
+  {
+   "s": "PLTR",
+   "n": "Palantir",
+   "t": "Aktie",
+   "i": "US69608A1088",
+   "a": "ki",
+   "p": 140
+  },
+  {
+   "s": "NFLX",
+   "n": "Netflix",
+   "t": "Aktie",
+   "i": "US64110L1061",
+   "a": "streaming",
+   "r": 25,
+   "rs": 1,
+   "p": 1000
+  },
+  {
+   "s": "V",
+   "n": "Visa",
+   "t": "Aktie",
+   "i": "US92826C8394",
+   "a": "",
+   "p": 310
+  },
+  {
+   "s": "MA",
+   "n": "Mastercard",
+   "t": "Aktie",
+   "i": "US57636Q1040",
+   "a": "",
+   "p": 520
+  },
+  {
+   "s": "JPM",
+   "n": "JPMorgan Chase",
+   "t": "Aktie",
+   "i": "US46625H1005",
+   "a": "bank",
+   "p": 260
+  },
+  {
+   "s": "KO",
+   "n": "Coca-Cola",
+   "t": "Aktie",
+   "i": "US1912161007",
+   "a": "coca cola cola dividende",
+   "r": 8,
+   "rs": 1,
+   "p": 60
+  },
+  {
+   "s": "PEP",
+   "n": "PepsiCo",
+   "t": "Aktie",
+   "i": "US7134481081",
+   "a": "pepsi dividende",
+   "r": 6,
+   "rs": 1,
+   "p": 130
+  },
+  {
+   "s": "MCD",
+   "n": "McDonald's",
+   "t": "Aktie",
+   "i": "US5801351017",
+   "a": "mcdonalds dividende",
+   "r": 12,
+   "rs": 1,
+   "p": 260
+  },
+  {
+   "s": "PG",
+   "n": "Procter & Gamble",
+   "t": "Aktie",
+   "i": "US7427181091",
+   "a": "dividende",
+   "p": 145
+  },
+  {
+   "s": "JNJ",
+   "n": "Johnson & Johnson",
+   "t": "Aktie",
+   "i": "US4781601046",
+   "a": "dividende",
+   "p": 145
+  },
+  {
+   "s": "O",
+   "n": "Realty Income",
+   "t": "Aktie",
+   "i": "US7561091049",
+   "a": "reit immobilien monatsdividende",
+   "p": 52
+  },
+  {
+   "s": "COST",
+   "n": "Costco",
+   "t": "Aktie",
+   "i": "US22160K1051",
+   "a": "",
+   "p": 850
+  },
+  {
+   "s": "WMT",
+   "n": "Walmart",
+   "t": "Aktie",
+   "i": "US9311421039",
+   "a": "",
+   "p": 90
+  },
+  {
+   "s": "LLY",
+   "n": "Eli Lilly",
+   "t": "Aktie",
+   "i": "US5324571083",
+   "a": "pharma",
+   "p": 700
+  },
+  {
+   "s": "DIS",
+   "n": "Walt Disney",
+   "t": "Aktie",
+   "i": "US2546871060",
+   "a": "disney",
+   "r": 0,
+   "rs": 1,
+   "p": 100
+  },
+  {
+   "s": "NKE",
+   "n": "Nike",
+   "t": "Aktie",
+   "i": "US6541061031",
+   "a": "",
+   "r": 1,
+   "rs": 1,
+   "p": 65
+  },
+  {
+   "s": "SAP.DE",
+   "n": "SAP",
+   "t": "Aktie",
+   "i": "DE0007164600",
+   "a": "dax",
+   "p": 250
+  },
+  {
+   "s": "SIE.DE",
+   "n": "Siemens",
+   "t": "Aktie",
+   "i": "DE0007236101",
+   "a": "dax",
+   "p": 230
+  },
+  {
+   "s": "ALV.DE",
+   "n": "Allianz",
+   "t": "Aktie",
+   "i": "DE0008404005",
+   "a": "dax versicherung dividende",
+   "r": 12,
+   "rs": 1,
+   "p": 360
+  },
+  {
+   "s": "MUV2.DE",
+   "n": "Munich Re",
+   "t": "Aktie",
+   "i": "DE0008430026",
+   "a": "münchener rück dax versicherung",
+   "p": 550
+  },
+  {
+   "s": "DTE.DE",
+   "n": "Deutsche Telekom",
+   "t": "Aktie",
+   "i": "DE0005557508",
+   "a": "telekom dax",
+   "r": 10,
+   "rs": 1,
+   "p": 30
+  },
+  {
+   "s": "MBG.DE",
+   "n": "Mercedes-Benz Group",
+   "t": "Aktie",
+   "i": "DE0007100000",
+   "a": "mercedes daimler auto dax",
+   "p": 55
+  },
+  {
+   "s": "BMW.DE",
+   "n": "BMW",
+   "t": "Aktie",
+   "i": "DE0005190003",
+   "a": "auto dax",
+   "p": 80
+  },
+  {
+   "s": "VOW3.DE",
+   "n": "Volkswagen Vz.",
+   "t": "Aktie",
+   "i": "DE0007664039",
+   "a": "vw auto dax",
+   "p": 95
+  },
+  {
+   "s": "ADS.DE",
+   "n": "Adidas",
+   "t": "Aktie",
+   "i": "DE000A1EWWW0",
+   "a": "dax",
+   "r": 5,
+   "rs": 1,
+   "p": 190
+  },
+  {
+   "s": "RHM.DE",
+   "n": "Rheinmetall",
+   "t": "Aktie",
+   "i": "DE0007030009",
+   "a": "rüstung dax",
+   "p": 1700
+  },
+  {
+   "s": "BAS.DE",
+   "n": "BASF",
+   "t": "Aktie",
+   "i": "DE000BASF111",
+   "a": "chemie dax",
+   "p": 45
+  },
+  {
+   "s": "BAYN.DE",
+   "n": "Bayer",
+   "t": "Aktie",
+   "i": "DE000BAY0017",
+   "a": "pharma dax",
+   "p": 28
+  },
+  {
+   "s": "DBK.DE",
+   "n": "Deutsche Bank",
+   "t": "Aktie",
+   "i": "DE0005140008",
+   "a": "bank dax",
+   "p": 28
+  },
+  {
+   "s": "IFX.DE",
+   "n": "Infineon",
+   "t": "Aktie",
+   "i": "DE0006231004",
+   "a": "chips dax",
+   "p": 35
+  },
+  {
+   "s": "AIR.DE",
+   "n": "Airbus",
+   "t": "Aktie",
+   "i": "NL0000235190",
+   "a": "flugzeug dax",
+   "p": 190
+  },
+  {
+   "s": "DHL.DE",
+   "n": "DHL Group",
+   "t": "Aktie",
+   "i": "DE0005552004",
+   "a": "post dax",
+   "p": 40
+  },
+  {
+   "s": "EOAN.DE",
+   "n": "E.ON",
+   "t": "Aktie",
+   "i": "DE000ENAG999",
+   "a": "eon energie dax",
+   "p": 15
+  },
+  {
+   "s": "RWE.DE",
+   "n": "RWE",
+   "t": "Aktie",
+   "i": "DE0007037129",
+   "a": "energie dax",
+   "p": 38
+  },
+  {
+   "s": "ASML.AS",
+   "n": "ASML",
+   "t": "Aktie",
+   "i": "NL0010273215",
+   "a": "chips",
+   "p": 650
+  },
+  {
+   "s": "MC.PA",
+   "n": "LVMH",
+   "t": "Aktie",
+   "i": "FR0000121014",
+   "a": "luxus louis vuitton",
+   "r": 11,
+   "rs": 1,
+   "p": 520
+  },
+  {
+   "s": "OR.PA",
+   "n": "L'Oréal",
+   "t": "Aktie",
+   "i": "FR0000120321",
+   "a": "loreal kosmetik",
+   "r": 10,
+   "rs": 1,
+   "p": 380
+  },
+  {
+   "s": "NOVO-B.CO",
+   "n": "Novo Nordisk",
+   "t": "Aktie",
+   "i": "DK0062498333",
+   "a": "pharma",
+   "p": 330
+  },
+  {
+   "s": "NESN.SW",
+   "n": "Nestlé",
+   "t": "Aktie",
+   "i": "CH0038863350",
+   "a": "nestle dividende",
+   "r": 1,
+   "rs": 1,
+   "p": 85
+  },
+  {
+   "s": "BTC-EUR",
+   "n": "Bitcoin",
+   "t": "Krypto",
+   "cg": "bitcoin",
+   "a": "btc",
+   "p": 95000
+  },
+  {
+   "s": "ETH-EUR",
+   "n": "Ethereum",
+   "t": "Krypto",
+   "cg": "ethereum",
+   "a": "eth ether",
+   "p": 3200
+  },
+  {
+   "s": "SOL-EUR",
+   "n": "Solana",
+   "t": "Krypto",
+   "cg": "solana",
+   "a": "sol",
+   "p": 150
+  },
+  {
+   "s": "XRP-EUR",
+   "n": "XRP",
+   "t": "Krypto",
+   "cg": "ripple",
+   "a": "ripple",
+   "p": 2.4
+  },
+  {
+   "s": "BNB-EUR",
+   "n": "BNB",
+   "t": "Krypto",
+   "cg": "binancecoin",
+   "a": "binance",
+   "p": 800
+  },
+  {
+   "s": "ADA-EUR",
+   "n": "Cardano",
+   "t": "Krypto",
+   "cg": "cardano",
+   "a": "ada",
+   "p": 0.7
+  },
+  {
+   "s": "DOGE-EUR",
+   "n": "Dogecoin",
+   "t": "Krypto",
+   "cg": "dogecoin",
+   "a": "doge",
+   "p": 0.2
+  },
+  {
+   "s": "LINK-EUR",
+   "n": "Chainlink",
+   "t": "Krypto",
+   "cg": "chainlink",
+   "a": "link",
+   "p": 18
+  },
+  {
+   "s": "DOT-EUR",
+   "n": "Polkadot",
+   "t": "Krypto",
+   "cg": "polkadot",
+   "a": "dot",
+   "p": 4
+  },
+  {
+   "s": "AVAX-EUR",
+   "n": "Avalanche",
+   "t": "Krypto",
+   "cg": "avalanche-2",
+   "a": "avax",
+   "p": 22
+  },
+  {
+   "s": "LTC-EUR",
+   "n": "Litecoin",
+   "t": "Krypto",
+   "cg": "litecoin",
+   "a": "ltc",
+   "p": 90
+  },
+  {
+   "s": "PM",
+   "n": "Philip Morris International",
+   "t": "Aktie",
+   "a": "marlboro tabak zigaretten iqos",
+   "p": 160,
+   "r": 9,
+   "rs": 1
+  },
+  {
+   "s": "MO",
+   "n": "Altria",
+   "t": "Aktie",
+   "a": "marlboro usa tabak dividende",
+   "p": 58,
+   "r": 6,
+   "rs": 1
+  },
+  {
+   "s": "BTI",
+   "n": "British American Tobacco",
+   "t": "Aktie",
+   "a": "lucky strike pall mall vuse tabak",
+   "p": 40,
+   "r": 2,
+   "rs": 1
+  },
+  {
+   "s": "IMB.L",
+   "n": "Imperial Brands",
+   "t": "Aktie",
+   "a": "gauloises west davidoff tabak",
+   "p": 33,
+   "r": 5,
+   "rs": 1
+  },
+  {
+   "s": "2914.T",
+   "n": "Japan Tobacco",
+   "t": "Aktie",
+   "a": "camel winston tabak",
+   "p": 27,
+   "r": 6,
+   "rs": 1
+  },
+  {
+   "s": "HEIA.AS",
+   "n": "Heineken",
+   "t": "Aktie",
+   "a": "bier amstel desperados",
+   "p": 80,
+   "r": 1,
+   "rs": 1
+  },
+  {
+   "s": "ABI.BR",
+   "n": "Anheuser-Busch InBev",
+   "t": "Aktie",
+   "a": "bier becks corona budweiser",
+   "p": 55,
+   "r": -3,
+   "rs": 1
+  },
+  {
+   "s": "CARL-B.CO",
+   "n": "Carlsberg",
+   "t": "Aktie",
+   "a": "bier tuborg holsten",
+   "p": 120,
+   "r": 4,
+   "rs": 1
+  },
+  {
+   "s": "DGE.L",
+   "n": "Diageo",
+   "t": "Aktie",
+   "a": "johnnie walker smirnoff guinness baileys whisky",
+   "p": 20,
+   "r": 0,
+   "rs": 1
+  },
+  {
+   "s": "RI.PA",
+   "n": "Pernod Ricard",
+   "t": "Aktie",
+   "a": "jameson absolut chivas",
+   "p": 90,
+   "r": -1,
+   "rs": 1
+  },
+  {
+   "s": "SBUX",
+   "n": "Starbucks",
+   "t": "Aktie",
+   "a": "kaffee coffee",
+   "p": 85,
+   "r": 5,
+   "rs": 1
+  },
+  {
+   "s": "MNST",
+   "n": "Monster Beverage",
+   "t": "Aktie",
+   "a": "energy drink",
+   "p": 60,
+   "r": 11,
+   "rs": 1
+  },
+  {
+   "s": "QSR",
+   "n": "Restaurant Brands (Burger King)",
+   "t": "Aktie",
+   "a": "burger king",
+   "p": 65,
+   "r": 5,
+   "rs": 1
+  },
+  {
+   "s": "YUM",
+   "n": "Yum! Brands (KFC, Pizza Hut)",
+   "t": "Aktie",
+   "a": "kfc pizza hut",
+   "p": 140,
+   "r": 9,
+   "rs": 1
+  },
+  {
+   "s": "DPZ",
+   "n": "Domino's Pizza",
+   "t": "Aktie",
+   "a": "pizza",
+   "p": 420,
+   "r": 18,
+   "rs": 1
+  },
+  {
+   "s": "DHER.DE",
+   "n": "Delivery Hero",
+   "t": "Aktie",
+   "a": "foodpanda foodora lieferdienst",
+   "p": 25,
+   "r": -8,
+   "rs": 1
+  },
+  {
+   "s": "UBER",
+   "n": "Uber",
+   "t": "Aktie",
+   "a": "uber eats taxi",
+   "p": 80,
+   "r": 10,
+   "rs": 1
+  },
+  {
+   "s": "DASH",
+   "n": "DoorDash",
+   "t": "Aktie",
+   "a": "wolt lieferdienst",
+   "p": 220,
+   "r": 15,
+   "rs": 1
+  },
+  {
+   "s": "GRAB",
+   "n": "Grab Holdings",
+   "t": "Aktie",
+   "a": "grab südostasien",
+   "p": 5,
+   "r": -5,
+   "rs": 1
+  },
+  {
+   "s": "SPOT",
+   "n": "Spotify",
+   "t": "Aktie",
+   "a": "musik streaming",
+   "p": 600,
+   "r": 18,
+   "rs": 1
+  },
+  {
+   "s": "CMCSA",
+   "n": "Comcast (Sky)",
+   "t": "Aktie",
+   "a": "sky",
+   "p": 32,
+   "r": 2,
+   "rs": 1
+  },
+  {
+   "s": "SONY",
+   "n": "Sony",
+   "t": "Aktie",
+   "a": "playstation",
+   "p": 22,
+   "r": 15,
+   "rs": 1
+  },
+  {
+   "s": "7974.T",
+   "n": "Nintendo",
+   "t": "Aktie",
+   "a": "switch",
+   "p": 60,
+   "r": 12,
+   "rs": 1
+  },
+  {
+   "s": "EA",
+   "n": "Electronic Arts",
+   "t": "Aktie",
+   "a": "fifa ea fc gaming",
+   "p": 150,
+   "r": 8,
+   "rs": 1
+  },
+  {
+   "s": "RBLX",
+   "n": "Roblox",
+   "t": "Aktie",
+   "a": "gaming robux",
+   "p": 90,
+   "r": 0,
+   "rs": 1
+  },
+  {
+   "s": "MTCH",
+   "n": "Match Group (Tinder)",
+   "t": "Aktie",
+   "a": "tinder dating",
+   "p": 32,
+   "r": -5,
+   "rs": 1
+  },
+  {
+   "s": "ZAL.DE",
+   "n": "Zalando",
+   "t": "Aktie",
+   "a": "mode",
+   "p": 28,
+   "r": -2,
+   "rs": 1
+  },
+  {
+   "s": "HM-B.ST",
+   "n": "H&M",
+   "t": "Aktie",
+   "a": "mode kleidung",
+   "p": 14,
+   "r": -3,
+   "rs": 1
+  },
+  {
+   "s": "ITX.MC",
+   "n": "Inditex (Zara)",
+   "t": "Aktie",
+   "a": "zara mode",
+   "p": 48,
+   "r": 8,
+   "rs": 1
+  },
+  {
+   "s": "PDD",
+   "n": "PDD Holdings (Temu)",
+   "t": "Aktie",
+   "a": "temu",
+   "p": 110,
+   "r": 20,
+   "rs": 1
+  },
+  {
+   "s": "FLUT",
+   "n": "Flutter Entertainment",
+   "t": "Aktie",
+   "a": "sportwetten poker paddy power fanduel",
+   "p": 230,
+   "r": 6,
+   "rs": 1
+  },
+  {
+   "s": "PLNT",
+   "n": "Planet Fitness",
+   "t": "Aktie",
+   "a": "fitness gym",
+   "p": 95,
+   "r": 15,
+   "rs": 1
+  },
+  {
+   "s": "SHEL",
+   "n": "Shell",
+   "t": "Aktie",
+   "a": "tanken öl",
+   "p": 31,
+   "r": 7,
+   "rs": 1
+  },
+  {
+   "s": "BP",
+   "n": "BP (Aral)",
+   "t": "Aktie",
+   "a": "aral tanken öl",
+   "p": 30,
+   "r": 4,
+   "rs": 1
+  },
+  {
+   "s": "TTE.PA",
+   "n": "TotalEnergies",
+   "t": "Aktie",
+   "a": "total tanken öl",
+   "p": 55,
+   "r": 9,
+   "rs": 1
+  },
+  {
+   "s": "XOM",
+   "n": "ExxonMobil (Esso)",
+   "t": "Aktie",
+   "a": "esso öl",
+   "p": 105,
+   "r": 8,
+   "rs": 1
+  },
+  {
+   "s": "VOD",
+   "n": "Vodafone",
+   "t": "Aktie",
+   "a": "mobilfunk",
+   "p": 9,
+   "r": -4,
+   "rs": 1
+  },
+  {
+   "s": "BEI.DE",
+   "n": "Beiersdorf (Nivea)",
+   "t": "Aktie",
+   "a": "nivea kosmetik",
+   "p": 110,
+   "r": 5,
+   "rs": 1
+  },
+  {
+   "s": "BKNG",
+   "n": "Booking Holdings",
+   "t": "Aktie",
+   "a": "booking.com hotel reisen",
+   "p": 4800,
+   "r": 15,
+   "rs": 1
+  },
+  {
+   "s": "ABNB",
+   "n": "Airbnb",
+   "t": "Aktie",
+   "a": "reisen unterkunft",
+   "p": 120,
+   "r": 5,
+   "rs": 1
+  },
+  {
+   "s": "LHA.DE",
+   "n": "Lufthansa",
+   "t": "Aktie",
+   "a": "flug eurowings",
+   "p": 7.5,
+   "r": -5,
+   "rs": 1
+  }
+ ]
+}
