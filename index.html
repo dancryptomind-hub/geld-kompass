@@ -47,6 +47,7 @@ a{color:var(--gold)}
 .nav svg{width:18px;height:18px;flex:none}
 .sidefoot{margin-top:auto;border:1px solid rgba(227,181,90,.25);border-radius:13px;padding:12px;font-size:.78rem;color:var(--side-mute);display:flex;flex-direction:column;gap:8px}
 .sidefoot b{color:var(--side-ink)}
+.footbtns{display:flex;gap:8px;align-items:center}.langbtn{padding:5px 8px;line-height:0}.langbtn svg{width:24px;height:16px;border-radius:2px;display:block}
 .themebtn{appearance:none;border:1px solid rgba(227,181,90,.35);background:none;color:var(--side-ink);border-radius:9px;padding:6px 10px;font-size:.78rem;font-weight:600;align-self:flex-start}
 
 .main{min-width:0;padding:24px 28px 60px}
@@ -310,7 +311,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
     <div><b>Geld-<span>Kompass</span></b><small>Dein Finanzleben im Blick.</small></div>
   </div>
   <div id="navGroups" style="display:flex;flex-direction:column;gap:18px"></div>
-  <div class="sidefoot"><b>Deine Daten bleiben bei dir</b>Alles wird nur in diesem Browser gespeichert. Kein Konto, kein Upload.<button class="themebtn" id="themeBtn" type="button">Helles Design</button><button class="themebtn" id="langBtn" type="button" style="margin-left:6px">English</button></div>
+  <div class="sidefoot"><b>Deine Daten bleiben bei dir</b>Alles wird nur in diesem Browser gespeichert. Kein Konto, kein Upload.<div class="footbtns"><button class="themebtn" id="themeBtn" type="button">Helles Design</button><button class="themebtn langbtn" id="langBtn" type="button"></button></div></div>
 </aside>
 
 <main class="main">
@@ -1988,7 +1989,7 @@ function bind(){
   });
   $("modeBtn").addEventListener("click",function(){if(S.mode==="demo"){S.mode="own";save();renderAll();show("bookings");toast("Leg los: zuerst dein Gehalt als monatliche Buchung.");setTimeout(function(){$("bTitle").focus();},300);}else{S.mode="demo";save();renderAll();show("overview");}});
   $("themeBtn").addEventListener("click",function(){S.theme=S.theme==="dark"?"light":"dark";applyTheme();save();});
-  $("langBtn").textContent=window.GK_LANG==="en"?"Deutsch":"English";$("langBtn").addEventListener("click",function(){window.GK_setLang(window.GK_LANG==="en"?"de":"en");});
+  $("langBtn").innerHTML=window.GK_LANG==="en"?'<svg viewBox="0 0 5 3" aria-hidden="true"><path d="M0 0h5v3H0z"/><path d="M0 1h5v2H0z" fill="#D00"/><path d="M0 2h5v1H0z" fill="#FFCE00"/></svg>':'<svg viewBox="0 0 60 30" aria-hidden="true"><clipPath id="gbc"><path d="M0 0v30h60V0z"/></clipPath><clipPath id="gbt"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><g clip-path="url(#gbc)"><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#gbt)" stroke="#C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></g></svg>';$("langBtn").setAttribute("aria-label",window.GK_LANG==="en"?"Auf Deutsch umstellen":"Switch to English");$("langBtn").setAttribute("title",window.GK_LANG==="en"?"Deutsch":"English");$("langBtn").addEventListener("click",function(){window.GK_setLang(window.GK_LANG==="en"?"de":"en");});
   $("quickHost").innerHTML=formHTML("q");$("bookHost").innerHTML=formHTML("b");
   $("recHost").innerHTML='<form class="form" id="rcForm" autocomplete="off" style="margin-top:12px"><label class="f span2">Name<input id="rcTitle" placeholder="z. B. Krankenversicherung" required></label><label class="f">Betrag (€)<input id="rcAmt" type="number" step="0.01" min="0.01" inputmode="decimal" required></label><label class="f">Wie oft?<select id="rcFreq">'+["monthly","yearly","quarterly","weekly","daily"].map(function(k){return '<option value="'+k+'">'+FREQ[k]+'</option>';}).join("")+'</select></label><button class="btn pri" type="submit">Speichern</button></form><div class="detect" id="rcDet"></div>';
   bindForm("q");bindForm("b");
