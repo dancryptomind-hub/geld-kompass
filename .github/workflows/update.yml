@@ -2,7 +2,7 @@ name: Kurse und Inflation aktualisieren
 
 on:
   schedule:
-    - cron: "17 5 * * *"   # täglich 05:17 UTC, in Deutschland 06:17 bzw. 07:17
+    - cron: "17 */2 * * *"   # alle 2 Stunden (Kurse für ETFs, Aktien, Gold; Krypto zusätzlich live im Browser)
   workflow_dispatch:
 
 permissions:

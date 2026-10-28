@@ -1,6 +1,7 @@
 <!doctype html>
 <html lang="de" data-theme="dark">
 <head>
+<script src="i18n.js"></script>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Geld-Kompass</title>
@@ -309,7 +310,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
     <div><b>Geld-<span>Kompass</span></b><small>Dein Finanzleben im Blick.</small></div>
   </div>
   <div id="navGroups" style="display:flex;flex-direction:column;gap:18px"></div>
-  <div class="sidefoot"><b>Deine Daten bleiben bei dir</b>Alles wird nur in diesem Browser gespeichert. Kein Konto, kein Upload.<button class="themebtn" id="themeBtn" type="button">Helles Design</button></div>
+  <div class="sidefoot"><b>Deine Daten bleiben bei dir</b>Alles wird nur in diesem Browser gespeichert. Kein Konto, kein Upload.<button class="themebtn" id="themeBtn" type="button">Helles Design</button><button class="themebtn" id="langBtn" type="button" style="margin-left:6px">English</button></div>
 </aside>
 
 <main class="main">
@@ -1809,6 +1810,10 @@ var SUG=[],SUGI=-1,PICK=null,ONLINE=null;
 function searchLocal(q){q=q.toLowerCase().trim();if(!q)return [];var toks=q.split(/\s+/);
   return INSTR.map(function(x){var sc=0;if(x.s.toLowerCase()===q||(x.i||"").toLowerCase()===q)sc+=100;if(x.n.toLowerCase().indexOf(q)===0)sc+=20;for(var i=0;i<toks.length;i++){if(x._q.indexOf(toks[i])<0)return null;sc+=5;}if(x.t==="ETF")sc+=2;return {x:x,sc:sc};})
     .filter(Boolean).sort(function(a,b){return b.sc-a.sc;}).slice(0,9).map(function(r){return r.x;});}
+function showCryptoPicks(){var box=$("vSugg");SUG=["BTC-EUR","ETH-EUR","XRP-EUR","USDT-EUR"].map(function(s){return IMAP[s];}).filter(Boolean);SUGI=-1;
+  box.innerHTML=SUG.map(function(x,i){var p=priceOf(x.s);return '<button type="button" data-sug="'+i+'"><b>'+esc(x.n)+'</b><small>'+esc(x.t)+' · '+esc(x.s)+'</small><em>'+(p?E2(p):'')+'</em></button>';}).join("")+'<button type="button" class="online" data-morecrypto="1">Andere Kryptowährung suchen</button>';box.classList.remove("hide");}
+document.addEventListener("click",function(ev){var b=ev.target.closest('[data-addasset="Krypto"]');if(b){var inp=$("vSym");inp.value="";PICK=null;var f=$("invForm");if(f)f.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(function(){inp.focus();showCryptoPicks();},300);return;}
+  if(ev.target.closest("[data-morecrypto]")){var i2=$("vSym");i2.value="Krypto";i2.dispatchEvent(new Event("input",{bubbles:true}));i2.focus();}});
 function renderSugg(){var box=$("vSugg");var q=$("vSym").value.trim();if(!q||(PICK&&PICK._label===q)){box.classList.add("hide");return;}
   SUG=searchLocal(q);var html=SUG.map(function(x,i){var p=priceOf(x.s);return '<button type="button" data-sug="'+i+'" class="'+(i===SUGI?"act":"")+'"><b>'+esc(x.n)+'</b><small>'+esc(x.t)+' · '+esc(x.s)+(x.i?' · '+esc(x.i):'')+'</small><em>'+(p?E2(p):'')+'</em></button>';}).join("");
   if(ONLINE&&ONLINE.q===q)html+=ONLINE.list.length?ONLINE.list.map(function(x,i){return '<button type="button" data-osug="'+i+'"><b>'+esc(x.n)+'</b><small>'+esc(x.t)+' · '+esc(x.s)+' · '+esc(x.ex)+' · online gefunden</small><em></em></button>';}).join(""):'<button type="button" class="online" disabled>'+esc(ONLINE.err||"Online nichts gefunden. Du kannst den Kurs selbst eingeben.")+'</button>';
@@ -1951,7 +1956,10 @@ function renderData(){var de=M.inflation.DE,ea=M.inflation.EA,st=M.updated?new D
    '<div class="note"><b>Krypto:</b> CoinGecko, beim Öffnen live'+(M.liveAt?', zuletzt um '+M.liveAt.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"}):', sofern erreichbar')+'. Wallet-Bestände: mempool.space (nur öffentliche Adresse). Wechselkurse: Frankfurter API (EZB).</div>'].join("");}
 function renderReset(c){$("resetArea").innerHTML=c?'<div class="confirm">Wirklich alle eigenen Daten löschen? <button class="btn sm" id="resYes" type="button">Ja, löschen</button><button class="btn sm" id="resNo" type="button">Abbrechen</button></div>':'<button class="btn danger" id="resetBtn" type="button">Alle eigenen Daten löschen</button>';}
 
-function renderAll(){renderMode();renderOverview();renderBookings();renderDebts();renderAssets();renderRecurring();renderCalc();renderExamples();renderBook();renderData();if(Journey)Journey.render();}
+var LIVEQ={};
+function ensureLive(){var now=Date.now();D().hold.forEach(function(h){var s=h.s,x=IMAP[s];if(!x||x.cg||s==="GOLD-G"||s==="SILVER-G")return;if(LIVEQ[s]&&now-LIVEQ[s]<15*60*1000)return;LIVEQ[s]=now;
+  yahooQuoteEUR(s).then(function(p){if(p>0){M.live[s]=p;M.liveQ=new Date();renderAll();}}).catch(function(){});});}
+function renderAll(){ensureLive();renderMode();renderOverview();renderBookings();renderDebts();renderAssets();renderRecurring();renderCalc();renderExamples();renderBook();renderData();if(Journey)Journey.render();}
 
 /* ================= EVENTS ================= */
 function bind(){
@@ -1980,6 +1988,7 @@ function bind(){
   });
   $("modeBtn").addEventListener("click",function(){if(S.mode==="demo"){S.mode="own";save();renderAll();show("bookings");toast("Leg los: zuerst dein Gehalt als monatliche Buchung.");setTimeout(function(){$("bTitle").focus();},300);}else{S.mode="demo";save();renderAll();show("overview");}});
   $("themeBtn").addEventListener("click",function(){S.theme=S.theme==="dark"?"light":"dark";applyTheme();save();});
+  $("langBtn").textContent=window.GK_LANG==="en"?"Deutsch":"English";$("langBtn").addEventListener("click",function(){window.GK_setLang(window.GK_LANG==="en"?"de":"en");});
   $("quickHost").innerHTML=formHTML("q");$("bookHost").innerHTML=formHTML("b");
   $("recHost").innerHTML='<form class="form" id="rcForm" autocomplete="off" style="margin-top:12px"><label class="f span2">Name<input id="rcTitle" placeholder="z. B. Krankenversicherung" required></label><label class="f">Betrag (€)<input id="rcAmt" type="number" step="0.01" min="0.01" inputmode="decimal" required></label><label class="f">Wie oft?<select id="rcFreq">'+["monthly","yearly","quarterly","weekly","daily"].map(function(k){return '<option value="'+k+'">'+FREQ[k]+'</option>';}).join("")+'</select></label><button class="btn pri" type="submit">Speichern</button></form><div class="detect" id="rcDet"></div>';
   bindForm("q");bindForm("b");
