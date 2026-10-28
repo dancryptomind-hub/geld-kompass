@@ -122,11 +122,11 @@ svg.chart text{fill:var(--muted);font-size:12px;font-family:var(--font-ui)}
 .insight.bad .ic{background:var(--bad-soft);color:var(--bad)}
 .insight.good .ic{background:var(--good-soft);color:var(--good)}
 
-.infl{display:grid;grid-template-columns:1fr auto;gap:18px;align-items:center}
-.infl .stats{display:flex;gap:20px}
+.infl{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px;align-items:center}
+.infl .stats{display:grid;grid-template-columns:1fr 1fr;gap:20px}.infl .stats span,.infl .stats small{display:block}
 .infl .stats b{display:block;font-size:1.5rem;color:var(--warn);font-variant-numeric:tabular-nums}
 .infl .stats span{font-size:.74rem;color:var(--muted)}
-@media (max-width:640px){.infl{grid-template-columns:1fr}}
+@media (max-width:640px){.infl{grid-template-columns:1fr}.chead:has(#monthTag)>div{flex-basis:100%}}
 
 .form{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;align-items:end}
 .f{display:flex;flex-direction:column;gap:5px;font-size:.76rem;font-weight:700;color:var(--muted);min-width:0;position:relative}

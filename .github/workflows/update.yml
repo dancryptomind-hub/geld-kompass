@@ -26,3 +26,4 @@ jobs:
           git add data/markets.json
           git diff --cached --quiet || git commit -m "Kurse und Inflation aktualisiert"
           git push
+          git push --force origin HEAD:gh-pages
