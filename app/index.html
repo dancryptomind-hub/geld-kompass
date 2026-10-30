@@ -273,6 +273,14 @@ dl.gloss dd{margin:0;color:var(--muted)}
 .newtag{font-size:.66rem;font-weight:800;background:var(--gold-bright);color:#1b1407;border-radius:99px;padding:2px 8px;margin-left:8px;vertical-align:3px}
 .check{display:flex;gap:10px;align-items:flex-start}
 .check input{width:auto;margin-top:4px;accent-color:var(--gold-bright)}
+.editdlg{border:1px solid var(--line);border-radius:18px;background:var(--surface);color:var(--ink);padding:20px;width:min(560px,calc(100% - 24px));max-height:calc(100dvh - 32px);overflow:auto;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.editdlg::backdrop{background:rgba(8,12,26,.55)}
+.edhead{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}.edhead h2{margin:0;font-size:1.15rem}
+.edform{grid-template-columns:repeat(2,minmax(0,1fr))!important}.edform .span2{grid-column:1/-1}.edform>.f{display:flex!important;grid-row:auto!important}.edform p.desc{margin:0}
+.edfoot{margin-top:16px;gap:10px}.edform .hide{display:none!important}
+@media(max-width:480px){.edform{grid-template-columns:1fr!important}}
+.toastbtn{margin-left:12px;background:#1b1407;color:#fff;border:0;border-radius:8px;padding:5px 10px;font:inherit;font-weight:800;cursor:pointer}
+.donehead{font-size:.9rem;margin:14px 0 6px;color:var(--muted)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--gold-bright);color:#1b1407;font-weight:700;padding:11px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:60;max-width:calc(100% - 32px);font-size:.86rem}
 .confirm{display:flex;gap:10px;align-items:center;flex-wrap:wrap;background:var(--bad-soft);color:var(--bad);border-radius:10px;padding:10px 12px;font-weight:700}
 .foot{font-size:.76rem;color:var(--muted);text-align:center;margin-top:26px}
@@ -401,7 +409,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
       </form>
       <div class="chips" id="debtChips"></div>
     </div>
-    <div class="card"><div class="chead"><div><h2>Deine Schulden im Überblick</h2><p class="desc">Rot = teuer (ab 10 %), Gelb = mittel (5 bis 10 %), Grün = günstig. Der Balken zeigt, wie viel deiner Rate an die Bank geht und wie viel die Schuld wirklich senkt.</p></div></div><div class="tbl" id="debtTable"></div></div>
+    <div class="card"><div class="chead"><div><h2>Deine Schulden im Überblick</h2><p class="desc">Rot = teuer (ab 10 %), Gelb = mittel (5 bis 10 %), Grün = günstig. Der Balken zeigt, wie viel deiner Rate an die Bank geht und wie viel die Schuld wirklich senkt.</p></div></div><div class="tbl" id="debtTable"></div><div id="debtDone"></div></div>
     <div class="card" id="planCard"><div class="chead"><div><h2>Dein Weg aus den Schulden</h2><p class="desc">Wie viel kannst du jeden Monat zusätzlich zur Mindestrate zahlen? Schon kleine Beträge verkürzen den Weg enorm.</p></div><span class="chap">Kapitel 5</span></div>
       <div class="form">
         <label class="f">Zusätzlich pro Monat (€)<input id="dpExtra" type="number" step="10" min="0" inputmode="decimal"></label>
@@ -578,6 +586,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
 </main>
 </div>
 <nav class="mnav" id="mnav" aria-label="Schnellnavigation"></nav>
+<dialog id="editDlg" class="editdlg" aria-labelledby="edTitleH"><form method="dialog" id="editForm" autocomplete="off"><div class="edhead"><h2 id="edTitleH">Bearbeiten</h2><button class="btn ghost sm" type="button" id="edX" aria-label="Schließen">✕</button></div><div class="form edform" id="edBody"></div><div class="row edfoot"><button class="btn pri" type="submit">Speichern</button><button class="btn" type="button" id="edCancel">Abbrechen</button></div></form></dialog>
 <div class="toast hide" id="toast" role="status" aria-live="polite"></div>
 
 <script src="/inflation.js"></script>
@@ -1410,7 +1419,6 @@ var CURS={EUR:"€",USD:"$",GBP:"£",CHF:"CHF"},CUR_KEY="geld-kompass-currency",
 try{CUR=localStorage.getItem(CUR_KEY)||"EUR";}catch(e){}if(!CURS[CUR])CUR="EUR";
 var FX={base:"EUR",rates:{EUR:1}};try{var fxc=JSON.parse(localStorage.getItem("geld-kompass-fx")||"null");if(fxc&&fxc.rates)FX=fxc;}catch(e){}
 function fxr(){return (CUR==="EUR")?1:(FX.rates[CUR]||1);}
-window.GK_setCurrency=function(c){try{localStorage.setItem(CUR_KEY,c);}catch(e){}location.reload();};
 var euro=new Intl.NumberFormat((window.GK_LOCALE||"de-DE"),{style:"currency",currency:CUR,maximumFractionDigits:0});
 var euro2=new Intl.NumberFormat((window.GK_LOCALE||"de-DE"),{style:"currency",currency:CUR,minimumFractionDigits:2,maximumFractionDigits:2});
 var euro4=new Intl.NumberFormat((window.GK_LOCALE||"de-DE"),{style:"currency",currency:CUR,maximumFractionDigits:4});
@@ -1423,6 +1431,8 @@ function pct(v){return isFinite(v)?nf1.format(v*100)+" %":"–";}
 function P(r){return nf2.format(num(r))+" %";}
 function esc(s){return String(s==null?"":s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
 function num(v){if(typeof v==="number")return isFinite(v)?v:0;var s=String(v==null?"":v).trim();if(/,/.test(s)&&/\./.test(s))s=s.replace(/\./g,"").replace(",",".");else s=s.replace(",",".");var n=parseFloat(s.replace(/[^\d.\-]/g,""));return isFinite(n)?n:0;}
+/* CSV: „1.500“ (deutsche Tausender) richtig lesen */
+function numCSV(v){var s=String(v==null?"":v).trim().replace(/[^\d.,\-]/g,"");if(/^-?\d{1,3}(\.\d{3})+$/.test(s))s=s.replace(/\./g,"");return num(s);}
 function uid(){return Math.random().toString(36).slice(2,10);}
 function $(id){return document.getElementById(id);}
 /* ================= DATUM & UHR =================
@@ -1451,7 +1461,7 @@ function inMonths(m){return isFinite(m)?monthName(ymAdd(ymNow(),m)):"nie";}
 function fdate(s){if(!s)return "";var d=new Date(s+"T12:00:00");return isNaN(d)?s:d.toLocaleDateString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric"});}
 function yrs(m){if(!isFinite(m))return "nie";if(m<=0)return "sofort";if(m<12)return m+" Monat"+(m===1?"":"en");var y=Math.floor(m/12),r=m%12;return y+" Jahr"+(y===1?"":"en")+(r?" und "+r+" Monat"+(r===1?"":"en"):"");}
 function DAYS(n){return Math.round(n).toLocaleString("de-DE");}
-var toastT;function toast(m){var t=$("toast");t.textContent=m;t.classList.remove("hide");clearTimeout(toastT);toastT=setTimeout(function(){t.classList.add("hide");},2800);}
+var toastT;function toast(m,lab,fn){var t=$("toast");t.textContent=m;if(lab&&fn){var b=document.createElement("button");b.type="button";b.className="toastbtn";b.textContent=lab;b.onclick=function(){t.classList.add("hide");fn();};t.appendChild(b);}t.classList.remove("hide");clearTimeout(toastT);toastT=setTimeout(function(){t.classList.add("hide");},lab?6500:2800);}
 var CATCOL={};function catColor(c){if(!CATCOL[c]){CATCOL[c]="var(--c"+(Object.keys(CATCOL).length%8+1)+")";}return CATCOL[c];}
 ["Wohnen & Nebenkosten","Lebensmittel","Mobilität","Versicherungen","Alkohol","Abos & Streaming","Freizeit & Hobby","Zigaretten & Tabak"].forEach(catColor);
 
@@ -1525,7 +1535,7 @@ function fxChart(f,to){var box=$("fxChart");if(!box||f===to)return;var sy=fxSymb
     var sc=document.createElement("script");sc.src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js";sc.async=true;
     sc.innerHTML=JSON.stringify({symbols:[[sy.l,sy.s+"|12M"]],chartOnly:false,width:"100%",height:"100%",locale:en?"en":"de_DE",colorTheme:light?"light":"dark",autosize:true,showVolume:false,hideDateRanges:false,hideMarketStatus:true,hideSymbolLogo:false,scalePosition:"right",scaleMode:"Normal",fontFamily:"inherit",fontSize:"10",noTimeScale:false,valuesTracking:"1",changeMode:"price-and-percent",chartType:"area",lineWidth:2,lineType:0,dateRanges:["1d|1","1m|30","3m|60","12m|1D","60m|1W","all|1M"],isTransparent:true,lineColor:"#e3b55a",topColor:"rgba(227,181,90,0.30)",bottomColor:"rgba(227,181,90,0)"});
     box.firstChild.appendChild(sc);},350);}
-setInterval(function(){if(document.visibilityState==="visible")getJSON("/data/markets.json").then(function(d){if(d.metals)Object.keys(d.metals).forEach(function(k){if(!M.live[k]&&d.metals[k].p)M.live[k]=d.metals[k].p;});if(d.fx&&d.fx.rates){FX=d.fx;try{localStorage.setItem("geld-kompass-fx",JSON.stringify(d.fx));}catch(e){}fxRender();}}).catch(function(){});},5*60*1000);
+setInterval(function(){if(document.visibilityState==="visible")getJSON("/data/markets.json").then(function(d){if(d.metals)Object.keys(d.metals).forEach(function(k){if(!M.live[k]&&d.metals[k].p)M.live[k]=d.metals[k].p;});if(d.fx&&d.fx.rates){FX=d.fx;if(typeof gkReconcileCur==="function")gkReconcileCur();try{localStorage.setItem("geld-kompass-fx",JSON.stringify(d.fx));}catch(e){}fxRender();}}).catch(function(){});},5*60*1000);
 /* Währungszeichen in festen Beschriftungen anpassen (z. B. „Restschuld (€)“) */
 (function(){if(CUR==="EUR")return;var SYM=CURS[CUR];
   function fix(n){if(n.nodeType===3){var p=n.parentNode;if(!p||p.nodeName==="SCRIPT"||p.nodeName==="STYLE"||(p.closest&&p.closest("[data-keepcur]")))return;if(n.nodeValue.indexOf("€")>-1)n.nodeValue=n.nodeValue.replace(/€/g,SYM);return;}
@@ -1535,7 +1545,7 @@ setInterval(function(){if(document.visibilityState==="visible")getJSON("/data/ma
   if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",go);else go();})();
 if(document.readyState!=="loading")fxInit();else document.addEventListener("DOMContentLoaded",fxInit);
 function loadMarkets(){
-  getJSON("/data/markets.json").then(function(d){if(d.metals)Object.keys(d.metals).forEach(function(k){if(!M.live[k]&&d.metals[k].p)M.live[k]=d.metals[k].p;});if(d.fx&&d.fx.rates){FX=d.fx;try{localStorage.setItem("geld-kompass-fx",JSON.stringify(d.fx));}catch(e){}}M.updated=d.updated;M.status=d.status||"start";if(d.inflation)Object.keys(d.inflation).forEach(function(k){M.inflation[k]=GeldInflation.choose(M.inflation[k],d.inflation[k]);});setInstr(d.instruments);renderAll();}).catch(function(){})
+  getJSON("/data/markets.json").then(function(d){if(d.metals)Object.keys(d.metals).forEach(function(k){if(!M.live[k]&&d.metals[k].p)M.live[k]=d.metals[k].p;});if(d.fx&&d.fx.rates){FX=d.fx;if(typeof gkReconcileCur==="function")gkReconcileCur();try{localStorage.setItem("geld-kompass-fx",JSON.stringify(d.fx));}catch(e){}}M.updated=d.updated;M.status=d.status||"start";if(d.inflation)Object.keys(d.inflation).forEach(function(k){M.inflation[k]=GeldInflation.choose(M.inflation[k],d.inflation[k]);});setInstr(d.instruments);renderAll();}).catch(function(){})
   .then(function(){fxInit();fxRender();liveCrypto();liveMetals();liveInflation("DE");liveInflation("EA");refreshOnline(false);});
 }
 /* Edelmetalle live: Weltmarktpreis (Yahoo Finance über den Vermittler, Ersatz: CoinGecko PAX Gold / Kinesis Silver), umgerechnet in Euro je Gramm */
@@ -1597,10 +1607,10 @@ function buildProfile(key){var ck=key+ymNow();if(PCACHE[ck])return PCACHE[ck];va
   for(var k=0;k<6;k++){var ym=ymAdd(start,k);p.vari.forEach(function(v,i){entries.push({id:"v"+k+"_"+i,title:v[0],amount:Math.round(v[1]*VARY[(k+i)%6]),type:v[2],cat:v[3],freq:"once",date:ym+"-"+String(4+i*6).padStart(2,"0")});});}
   var d={entries:entries,items:p.items.map(function(it,i){return {id:"i"+i,name:it[0],value:it[1],cls:detectAsset(it[0])};}),
     debts:p.debts.map(function(x,i){return {id:"d"+i,name:x[0],kind:x[1],bal:x[2],rate:x[3],pay:x[4]};}),
-    hold:p.hold.map(function(h,i){return {id:"h"+i,s:h[0],qty:h[1],buy:h[2],price:h[3]};}),cache:{}};PCACHE[ck]=d;return d;}
+    hold:p.hold.map(function(h,i){return {id:"h"+i,s:h[0],qty:h[1],buy:h[2]?h[2]*fxr():h[2],price:h[3]!=null?h[3]*fxr():h[3]};}),cache:{}};PCACHE[ck]=d;return d;}
 function D(){return S.mode==="demo"?buildProfile(S.profile):S.own;}
 function isHabit(e){return e.type==="expense"&&HABIT.indexOf(e.cat)>-1;}
-function monthAmt(e,ym){if(e.freq==="once")return (e.date||"").slice(0,7)===ym?num(e.amount):0;if((e.date||"0000-00").slice(0,7)>ym)return 0;return num(e.amount)*(FREQF[e.freq]||1);}
+function monthAmt(e,ym){if(e.freq==="once")return (e.date||"").slice(0,7)===ym?num(e.amount):0;if((e.date||"0000-00").slice(0,7)>ym)return 0;if(e.end&&ym>e.end)return 0;return num(e.amount)*(FREQF[e.freq]||1);}
 function perMonth(e){return e.freq==="once"?num(e.amount):num(e.amount)*(FREQF[e.freq]||1);}
 function holdInfo(h){var x=IMAP[h.s];var metal=/^(GOLD|SILVER|PLATIN|PALLAD)-G$/.test(h.s),lv=metal&&M.live[h.s]?M.live[h.s]*fxr():null,manual=h.price!=null&&h.price!=="";var p=metal&&lv&&(S.mode==="demo"||!manual)?lv:manual?num(h.price):priceOf(h.s);var t=x?x.t:(h.t||"Aktie");
   var cls=t==="ETF"?"ETF / Fonds":t==="Krypto"?"Krypto":t==="Edelmetall"?"Edelmetalle":t==="Rohstoff"?"Gold / Rohstoffe":"Aktien";var val=p==null?0:p*num(h.qty);var cost=h.buy?num(h.buy)*num(h.qty):null;
@@ -1832,17 +1842,18 @@ function renderBookings(){var d=D(),t=totals(d),own=S.mode==="own";$("bookKpis")
   var ms={};d.entries.forEach(function(e){if(e.freq==="once"&&e.date)ms[e.date.slice(0,7)]=1;});ms[ymNow()]=1;var mk=Object.keys(ms).sort().reverse();var cur=$("bMonth").value||"all";
   $("bMonth").innerHTML='<option value="all">Alle</option><option value="rec"'+(cur==="rec"?" selected":"")+'>Nur laufende</option>'+mk.map(function(m){return '<option value="'+m+'"'+(m===cur?" selected":"")+'>'+monthName(m)+'</option>';}).join("");
   var f=($("bFilter").value||"").toLowerCase();
-  var rows=d.entries.filter(function(e){if(cur==="rec"&&e.freq==="once")return false;if(cur!=="all"&&cur!=="rec"&&!monthAmt(e,cur))return false;return !f||(e.title+" "+e.cat+" "+TYPES[e.type]).toLowerCase().indexOf(f)>-1;})
+  var rows=d.entries.filter(function(e){if(cur==="rec"&&(e.freq==="once"||(e.end&&e.end<ymNow())))return false;if(cur!=="all"&&cur!=="rec"&&!monthAmt(e,cur))return false;return !f||(e.title+" "+e.cat+" "+TYPES[e.type]).toLowerCase().indexOf(f)>-1;})
     .sort(function(a,b){if((a.freq==="once")!==(b.freq==="once"))return a.freq==="once"?1:-1;return (b.date||"").localeCompare(a.date||"");});
   $("bookTable").innerHTML=rows.length?'<table><thead><tr><th>Buchung</th><th>Art</th><th>Wann</th><th class="n">Betrag</th><th class="n">Pro Monat</th><th class="n">Pro Jahr</th><th></th></tr></thead><tbody>'+rows.map(function(e){
-    return '<tr><td><div class="ent">'+entIcon(e)+'<div><b>'+esc(e.title)+'</b><small>'+esc(e.cat)+'</small></div></div></td><td>'+entTag(e)+'</td><td>'+(e.freq==="once"?fdate(e.date):'<span class="tag rec">'+FREQ[e.freq]+'</span><small class="desc" style="display:block">seit '+monthName((e.date||"").slice(0,7))+'</small>')+'</td>'+
+    return '<tr><td><div class="ent">'+entIcon(e)+'<div><b>'+esc(e.title)+'</b><small>'+esc(e.cat)+'</small></div></div></td><td>'+entTag(e)+'</td><td>'+(e.freq==="once"?fdate(e.date):'<span class="tag rec">'+FREQ[e.freq]+'</span><small class="desc" style="display:block">seit '+monthName((e.date||"").slice(0,7))+'</small>'+(e.end?'<small class="desc" style="display:block">'+(e.end<ymNow()?"beendet ":"bis ")+monthName(e.end)+'</small>':''))+'</td>'+
     '<td class="n">'+(own?'<input type="number" step="0.01" min="0" inputmode="decimal" value="'+num(e.amount)+'" data-amt="'+e.id+'" style="width:110px;text-align:right" aria-label="Betrag">':E2(e.amount))+'</td><td class="n">'+(e.freq==="once"?"–":E2(perMonth(e)))+'</td><td class="n">'+(e.freq==="once"?"–":E(perMonth(e)*12))+'</td>'+
-    '<td><div class="row" style="flex-wrap:nowrap">'+(e.type==="expense"?'<button class="btn link sm" type="button" data-wi="'+e.id+'">Was wäre wenn?</button>':'')+(own?'<button class="btn ghost sm" type="button" data-del="'+e.id+'">Löschen</button>':'')+'</div></td></tr>';}).join("")+'</tbody></table>':emptyHTML("Keine Buchungen gefunden","Ändere den Filter oder buche oben etwas.");}
+    '<td><div class="row" style="flex-wrap:nowrap">'+(e.type==="expense"?'<button class="btn link sm" type="button" data-wi="'+e.id+'">Was wäre wenn?</button>':'')+(own?'<button class="btn ghost sm" type="button" data-edit="entry" data-id="'+e.id+'">Bearbeiten</button><button class="btn ghost sm" type="button" data-del="'+e.id+'">Löschen</button>':'')+'</div></td></tr>';}).join("")+'</tbody></table>':emptyHTML("Keine Buchungen gefunden","Ändere den Filter oder buche oben etwas.");}
 
 /* ================= RENDER: SCHULDEN ================= */
 function fillDebtForm(k,keepName){var x=DT[k];$("dKind").value=k;$("dRate").value=x.r;$("dRateHint").textContent="typisch: "+x.h;$("dTilgWrap").classList.toggle("hide",k!=="home");if(!keepName)$("dName").placeholder=x.s;suggestPay();}
 function suggestPay(){var k=$("dKind").value,b=num($("dBal").value),x=DT[k];if(b>0)$("dPay").placeholder=Math.round(x.min(b,num($("dRate").value),num($("dTilg").value)))+" (Vorschlag)";else $("dPay").placeholder="";$("dPayHint").textContent=x.mh;}
 function renderDebts(){var d=D(),t=totals(d),ds=t.debts,own=S.mode==="own",c=S.calc.debt,extra=debtExtraDefault(t);
+  var paid=(d.debts||[]).filter(function(x){return !(num(x.bal)>0);});$("debtDone").innerHTML=paid.length?'<h3 class="donehead">Erledigt</h3><div class="tbl"><table><tbody>'+paid.map(function(x){return '<tr><td><div class="ent"><i style="background:var(--good)">✓</i><div><b>'+esc(x.name)+'</b><small>abbezahlt</small></div></div></td><td>'+(own?'<div class="row" style="flex-wrap:nowrap;justify-content:flex-end"><button class="btn ghost sm" type="button" data-edit="debt" data-id="'+x.id+'">Bearbeiten</button><button class="btn ghost sm" type="button" data-ddel="'+x.id+'">Löschen</button></div>':'')+'</td></tr>';}).join("")+'</tbody></table></div>':"";
   if(document.activeElement!==$("dpExtra"))$("dpExtra").value=extra;$("dpMethod").value=c.method;if(document.activeElement!==$("dpYears"))$("dpYears").value=c.years;if(document.activeElement!==$("dpRet"))$("dpRet").value=c.ret;
   $("debtChips").innerHTML=DEBT_CHIPS.map(function(x){return '<button class="chip" type="button" data-dchip="'+x[1]+'" data-n="'+esc(x[0])+'">+ '+esc(x[0])+'</button>';}).join("");
   if(!ds.length){$("debtHero").innerHTML='<div><div class="big">0 €</div><small>Schulden</small></div><div><p><b>Schuldenfrei!</b> Jeder freie Euro kann direkt für dich arbeiten. Falls du doch Kreditkarte, Dispo, Klarna oder einen Kredit hast: trag sie unten ein. Ehrlich hinschauen ist der erste Schritt.</p></div><div></div>';
@@ -1855,7 +1866,7 @@ function renderDebts(){var d=D(),t=totals(d),ds=t.debts,own=S.mode==="own",c=S.c
   var heroBig,heroLab,heroTxt,savedTxt=(faster>0?'Das ist <b>'+yrs(faster)+' früher</b> als nur mit Mindestraten, und du sparst <b>'+E(saved)+'</b> Zinsen. ':!isFinite(base.free)?'Nur mit den Mindestraten würdest du nie fertig. Dein Plan dreht das um. ':'');
   if(cheapLeft&&exp.length){heroBig=isFinite(expDone)?DAYS(expDone*30):"–";heroLab="Tage, bis deine teuren Schulden weg sind";
     heroTxt=isFinite(expDone)?'<b>Du schaffst das!</b> Im <b>'+inMonths(expDone)+'</b> sind alle Schulden über '+P(CHEAP)+' Geschichte. '+savedTxt+'Günstigere Kredite laufen im Modell mit der vereinbarten Rate weiter. Prüfe vor zusätzlichem Investieren weiterhin Reserve, Vertragskosten und Risiko.':'Mit den aktuellen Raten werden die teuren Schulden nicht weniger. Prüfe Rate und Zinsen. Plane zusätzliche Tilgung nur aus tatsächlich verfügbarem Spielraum.';}
-  else if(cheapLeft){heroBig="✓";heroLab="Keine teuren Schulden";heroTxt='<b>Gute Nachricht:</b> Alle deine Schulden sind günstig (unter '+P(CHEAP)+'). Zahl die Raten planmäßig und investiere parallel. Planmäßig schuldenfrei im <b>'+inMonths(plan.free)+'</b>.';}
+  else if(cheapLeft){heroBig="✓";heroLab="Keine teuren Schulden";heroTxt='<b>Gute Nachricht:</b> Alle deine Schulden sind günstig (unter '+P(CHEAP)+'). Zahl die Raten planmäßig und investiere parallel. '+(isFinite(plan.free)?'Planmäßig schuldenfrei im <b>'+inMonths(plan.free)+'</b>.':'Mit den aktuellen Raten wird eine Schuld nicht kleiner. Prüfe Rate und Zins.')+'';}
   else{heroBig=isFinite(plan.free)?DAYS(plan.free*30):"–";heroLab="Tage bis schuldenfrei";
     heroTxt=isFinite(plan.free)?'<b>Du schaffst das!</b> Mit deinem Plan bist du im <b>'+inMonths(plan.free)+'</b> komplett schuldenfrei. '+savedTxt+'Danach fließen <b>'+E(t.debtPay+extra)+'</b> jeden Monat in deinen Vermögensaufbau.':'Mit den aktuellen Raten wirst du nicht fertig, weil die Zinsen schneller wachsen. Prüfe Rate und Zinsen. Plane zusätzliche Tilgung nur aus tatsächlich verfügbarem Spielraum.';}
   $("debtHero").innerHTML='<div><div class="big">'+heroBig+'</div><small>'+heroLab+'</small></div><div><p>'+heroTxt+'</p>'+(S.mode==="own"&&isFinite(plan.free)&&plan.free>0?gkShare(window.GK_LANG==="en"?"I have a plan now: I will be debt-free in "+inMonths(plan.free)+". Work out your own path:":"Ich habe jetzt einen Plan: Im "+inMonths(plan.free)+" bin ich schuldenfrei. Rechne deinen eigenen Weg aus:","rechner/schuldenfrei-rechner/"):'')+'</div>'+
@@ -1869,8 +1880,8 @@ function renderDebts(){var d=D(),t=totals(d),ds=t.debts,own=S.mode==="own",c=S.c
     '<td class="n">'+(own?'<input type="number" step="0.01" min="0" value="'+p+'" data-dpay="'+x.id+'" style="width:96px;text-align:right" aria-label="Rate">':E(p))+'</td>'+
     '<td><div class="ratebar" title="Zinsen '+E(i)+', Tilgung '+E(Math.max(0,p-i))+'"><i style="width:'+(ip*100).toFixed(1)+'%;background:var(--bad)"></i><i style="width:'+((1-ip)*100).toFixed(1)+'%;background:var(--good)"></i></div><small class="desc">'+(p>0?E(i)+' Zinsen · '+E(Math.max(0,p-i))+' Tilgung':'keine feste Rate')+'</small></td>'+
     '<td class="n">'+(isFinite(m)?yrs(m)+'<small class="desc" style="display:block">'+E(cost)+' Zinsen</small>':'<span class="neg">nie</span><small class="desc" style="display:block">Rate zu klein</small>')+'</td>'+
-    '<td>'+(own?'<button class="btn ghost sm" type="button" data-ddel="'+x.id+'">Löschen</button>':'')+'</td></tr>';}).join("")+'</tbody></table>';
-  $("dpRes").innerHTML='<div><span>Schuldenfrei im</span><b class="pos">'+inMonths(plan.free)+'</b></div><div><span>Zinsen bis dahin</span><b>'+E(plan.interest)+'</b></div><div><span>Gespart gegenüber Mindestraten</span><b class="pos">'+(saved!=null?E(saved):"alles")+'</b></div><div><span>Früher frei um</span><b>'+(faster!=null?yrs(faster):isFinite(plan.free)?"vorher: nie":"–")+'</b></div>';
+    '<td>'+(own?'<div class="row" style="flex-wrap:nowrap"><button class="btn ghost sm" type="button" data-edit="debt" data-id="'+x.id+'">Bearbeiten</button><button class="btn ghost sm" type="button" data-ddel="'+x.id+'">Löschen</button></div>':'')+'</td></tr>';}).join("")+'</tbody></table>';
+  $("dpRes").innerHTML='<div><span>Schuldenfrei im</span><b class="'+(isFinite(plan.free)?'pos':'neg')+'">'+(isFinite(plan.free)?inMonths(plan.free):'nicht absehbar')+'</b></div><div><span>Zinsen bis dahin</span><b>'+E(plan.interest)+'</b></div><div><span>Gespart gegenüber Mindestraten</span><b class="pos">'+(saved!=null?E(saved):"alles")+'</b></div><div><span>Früher frei um</span><b>'+(faster!=null?(faster>0?yrs(faster):"–"):isFinite(plan.free)?"vorher: nie":"–")+'</b></div>';
   var N=isFinite(plan.free)?Math.max(12,Math.min(360,plan.free+Math.max(6,Math.round(plan.free*0.3)))):120;
   $("dpChart").innerHTML=lineChart([{l:"Nur Mindestraten",d:base.ser,c:"var(--bad)",w:1.8,dash:true},{l:"Dein Plan: Restschuld",d:plan.ser,c:"var(--warn)",fill:"var(--warn-soft)"}],N,"Restschuld im Zeitverlauf","m");
   $("dpSteps").innerHTML=roadmap(t,plan,extra);
@@ -1888,7 +1899,7 @@ function roadmap(t,plan,extra){var L=[],emerg=Math.max(1000,0);var costly=t.debt
   if(costly.length)L.push([false,"Neue Schulden stoppen","Kreditkarte nur noch für Beträge nutzen, die du am Monatsende komplett zahlst. Kein neuer Ratenkauf, bis dein Plan durch ist."]);
   var order=plan.debts.slice().sort(function(a,b){return (a.done||9999)-(b.done||9999);});
   order.forEach(function(x,i){var g=danger(x.r);L.push([false,(i===0?"Zuerst: ":"Dann: ")+x.n+" ("+P(x.r)+")",x.done?"Weg im <b>"+inMonths(x.done)+"</b>."+(i<order.length-1?" Die frei werdende Rate wandert sofort in die nächste Schuld.":"")+(x.r<CHEAP&&S.calc.debt.method==="compass"?" Günstige Schuld: Hier zahlst du nur die normale Rate und legst parallel an.":""):"Mit den aktuellen Beträgen noch nicht absehbar."]);});
-  L.push([false,"Ab "+inMonths(plan.free)+": Dein Geld arbeitet für dich",E(t.debtPay+extra)+" pro Monat fließen dann in einen Sparplan. Nach 10 Jahren bei "+P(S.calc.debt.ret)+" wären das rund <b>"+E(fv(0,t.debtPay+extra,num(S.calc.debt.ret),120))+"</b>."]);
+  if(isFinite(plan.free))L.push([false,"Ab "+inMonths(plan.free)+": Dein Geld arbeitet für dich",E(t.debtPay+extra)+" pro Monat fließen dann in einen Sparplan. Nach 10 Jahren bei "+P(S.calc.debt.ret)+" wären das rund <b>"+E(fv(0,t.debtPay+extra,num(S.calc.debt.ret),120))+"</b>."]);
   return L.map(function(x){return '<div class="'+(x[0]?"done":"")+'"><div><b class="rt">'+x[1]+'</b><p>'+x[2]+'</p></div></div>';}).join("");}
 function renderCompare(ds,t,extra,H,ret){var Y=H/12;var ways=[["compass","Kompass-Weg","Teure Schulden zuerst, günstige nur Mindestrate, Rest anlegen"],["avalanche","Lawine","Alles in die Schulden, höchster Zins zuerst"],["snowball","Schneeball","Alles in die Schulden, kleinste zuerst"],["invest","Nur Mindestraten, alles Extra anlegen","Schulden laufen nach Vertrag, Extra-Geld in den Sparplan"]];
   var res=ways.map(function(w){var s=simulate(ds,{extra:extra,method:w[0],roll:true,ret:ret,horizon:H});return {w:w,s:s,wealth:s.wealth(H)};});
@@ -1916,8 +1927,8 @@ function renderAssets(){var d=D(),t=totals(d),own=S.mode==="own";
   var st=M.updated?new Date(M.updated):null;$("priceStamp").innerHTML=M.status==="live"&&st?'<span class="dot live"></span>Kurse vom '+st.toLocaleDateString("de-DE"):M.status==="start"?'<span class="dot old"></span>Startwerte, noch nicht tagesaktuell':'<span class="dot"></span>Kurse werden geladen';
   $("depotTable").innerHTML=hs.length?'<table><thead><tr><th>Wertpapier</th><th class="n">Stück</th><th class="n">Kaufkurs</th><th class="n">Kurs</th><th class="n">Wert</th><th class="n">Gewinn / Verlust</th><th></th></tr></thead><tbody>'+hs.map(function(x){var h=x.h;
     return '<tr><td><div class="ent"><i style="background:'+(x.t==="Krypto"?"var(--c1)":x.t==="ETF"?"var(--c3)":"var(--c2)")+'">'+(x.t==="Krypto"?"₿":x.t==="ETF"?"E":"A")+'</i><div><b>'+esc(x.name)+'</b><small>'+esc(h.s)+(h.addr?' · Wallet verbunden':'')+' · '+esc(x.t)+(x.t==="Edelmetall"?' · Preise in €/g · '+(M.metal&&M.metal[h.s]?'Live-Kurs '+M.metal[h.s].at.toLocaleTimeString("de-DE",{hour:"2-digit",minute:"2-digit"})+' Uhr'+(own&&h.price!=null&&h.price!==""?' · dein Rückkaufpreis zählt':''):h.priceDate?'Stand '+esc(h.priceDate):M.live[h.s]?'Weltmarktpreis, automatisch aktualisiert':'Beispielpreis'):'')+'</small></div></div></td>'+
-    '<td class="n">'+nf.format(num(h.qty))+(x.t==="Edelmetall"?' g':'')+'</td><td class="n">'+(h.buy?E2(h.buy):(own?'<input type="number" step="any" min="0" placeholder="eintragen" data-buy="'+h.id+'" style="width:100px;text-align:right" aria-label="Kaufkurs">':'–'))+'</td><td class="n">'+(x.t==="Edelmetall"&&own?'<input type="number" min="0.01" step="any" value="'+(h.price!=null&&h.price!==""?h.price:"")+'" placeholder="'+(M.live[h.s]?M.live[h.s].toFixed(2):"Preis")+'" data-metalprice="'+h.id+'" aria-label="Rückkaufpreis in Euro je Gramm" style="width:110px">'+(M.live[h.s]?'<small class="desc" style="display:block">Live: '+E2(M.live[h.s])+'</small>':''):x.missing?'–':E2(x.price))+'</td><td class="n" style="font-weight:800">'+(x.missing?'–':E(x.value))+'</td>'+
-    '<td class="n '+(x.pl==null?"":x.pl<0?"neg":"pos")+'">'+(x.pl==null?'–':(x.pl>=0?"+":"")+E(x.pl)+'<small class="desc" style="display:block">'+(x.pl>=0?"+":"")+pct(x.pl/x.cost)+'</small>')+'</td><td>'+(own?'<button class="btn ghost sm" type="button" data-hdel="'+h.id+'">Löschen</button>':'')+'</td></tr>';}).join("")+'</tbody></table>':emptyHTML("Noch kein Depot eingetragen","Such oben ein ETF, eine Aktie oder Bitcoin, oder lies deinen Depot-Export ein.");
+    '<td class="n">'+nf.format(num(h.qty))+(x.t==="Edelmetall"?' g':'')+'</td><td class="n">'+(h.buy?E2(h.buy):(own?'<input type="number" step="any" min="0" placeholder="eintragen" data-buy="'+h.id+'" style="width:100px;text-align:right" aria-label="Kaufkurs">':'–'))+'</td><td class="n">'+(x.t==="Edelmetall"&&own?'<input type="number" min="0.01" step="any" value="'+(h.price!=null&&h.price!==""?h.price:"")+'" placeholder="'+(M.live[h.s]?(M.live[h.s]*fxr()).toFixed(2):"Preis")+'" data-metalprice="'+h.id+'" aria-label="Rückkaufpreis in Euro je Gramm" style="width:110px">'+(M.live[h.s]?'<small class="desc" style="display:block">Live: '+E2(M.live[h.s]*fxr())+'</small>':''):x.missing?'–':E2(x.price))+'</td><td class="n" style="font-weight:800">'+(x.missing?'–':E(x.value))+'</td>'+
+    '<td class="n '+(x.pl==null?"":x.pl<0?"neg":"pos")+'">'+(x.pl==null?'–':(x.pl>=0?"+":"")+E(x.pl)+'<small class="desc" style="display:block">'+(x.pl>=0?"+":"")+pct(x.pl/x.cost)+'</small>')+'</td><td>'+(own?'<div class="row" style="flex-wrap:nowrap"><button class="btn ghost sm" type="button" data-edit="hold" data-id="'+h.id+'">Bearbeiten</button><button class="btn ghost sm" type="button" data-hdel="'+h.id+'">Löschen</button></div>':'')+'</td></tr>';}).join("")+'</tbody></table>':emptyHTML("Noch kein Depot eingetragen","Such oben ein ETF, eine Aktie oder Bitcoin, oder lies deinen Depot-Export ein.");
   var by={};hs.forEach(function(x){if(x.value>0)by[x.cls]=(by[x.cls]||0)+x.value;});var di=topItems(by,6);
   $("depotDonut").innerHTML=di.length?donut(di.map(function(x){x.lab=E(x.v)+" · "+pct(x.v/t.depot);return x;}),E(t.depot),"Depot"):emptyHTML("Noch leer","Erscheint mit deiner ersten Position.");
   var pls=hs.filter(function(x){return x.pl!=null;});$("plBars").innerHTML=pls.length?barsHTML(pls.map(function(x){return {l:x.name,v:x.pl,c:x.pl<0?"var(--bad)":"var(--good)",lab:(x.pl>=0?"+":"")+E(x.pl)+" · "+(x.pl>=0?"+":"")+pct(x.pl/x.cost)};})):emptyHTML("Kein Kaufkurs hinterlegt","Trag den Kaufkurs ein, dann siehst du hier Gewinn und Verlust je Position.");
@@ -1925,7 +1936,7 @@ function renderAssets(){var d=D(),t=totals(d),own=S.mode==="own";
   var rows=t.rows.slice().sort(function(a,b){return a.side===b.side?b.value-a.value:(a.side==="Aktiva"?-1:1);});
   $("balTable").innerHTML=rows.length?'<table><thead><tr><th>Position</th><th>Seite</th><th>Art</th><th class="n">Wert</th><th></th></tr></thead><tbody>'+rows.map(function(r){
     return '<tr><td><b>'+esc(r.name)+'</b>'+(r.kind==="debt"?'<small class="desc" style="display:block">'+P(r.rate)+' Zins · '+E(r.pay)+' Rate · <button class="btn link sm" type="button" data-go="debts">im Schulden-Plan</button></small>':'')+'</td><td><span class="tag '+r.side+'">'+r.side+'</span></td><td>'+esc(r.cls)+'</td>'+
-    '<td class="n">'+(r.kind==="item"&&own?'<input type="number" step="0.01" min="0" inputmode="decimal" value="'+r.value+'" data-iv="'+r.id+'" style="width:120px;text-align:right" aria-label="Wert">':(r.missing?'–':E(r.value)))+'</td><td>'+(own&&r.kind==="item"?'<button class="btn ghost sm" type="button" data-idel="'+r.id+'">Löschen</button>':'')+'</td></tr>';}).join("")+'</tbody></table>':emptyHTML("Bilanz noch leer","Starte mit Girokonto und Tagesgeld.");
+    '<td class="n">'+(r.kind==="item"&&own?'<input type="number" step="0.01" min="0" inputmode="decimal" value="'+r.value+'" data-iv="'+r.id+'" style="width:120px;text-align:right" aria-label="Wert">':(r.missing?'–':E(r.value)))+'</td><td>'+(own&&r.kind==="item"?'<div class="row" style="flex-wrap:nowrap"><button class="btn ghost sm" type="button" data-edit="item" data-id="'+r.id+'">Bearbeiten</button><button class="btn ghost sm" type="button" data-idel="'+r.id+'">Löschen</button></div>':(own&&r.kind==="hold"?'<button class="btn ghost sm" type="button" data-edit="hold" data-id="'+r.id+'">Bearbeiten</button>':''))+'</td></tr>';}).join("")+'</tbody></table>':emptyHTML("Bilanz noch leer","Starte mit Girokonto und Tagesgeld.");
   $("itemChips").innerHTML=ITEM_CHIPS.map(function(c){return '<button class="chip" type="button" data-item="'+esc(c)+'">'+esc(c)+'</button>';}).join("");}
 
 /* Investment-Suche mit Vorschlägen */
@@ -1948,21 +1959,21 @@ function pickInstr(x){if(!x)return;PICK=x;x._label=x.n+" ("+x.s+")";$("vSym").va
   if(x.online&&!p)yahooQuoteEUR(x.s).then(function(pp){S.own.cache[x.s]={p:pp,t:Date.now()};save();if(PICK===x)$("vDetect").innerHTML='Ausgewählt: <b>'+esc(x.n)+'</b><span>Kurs '+E2(pp)+'</span>';}).catch(function(){if(PICK===x){$("vPriceWrap").classList.remove("hide");$("vDetect").innerHTML='<span>Kurs gerade nicht abrufbar. Bitte aktuellen Kurs selbst eintragen.</span>';}});
   $("vQty").focus();}
 
-document.addEventListener("change",function(ev){var id=ev.target.getAttribute("data-metalprice");if(!id)return;var h=S.own.hold.find(function(x){return x.id===id;});if(h&&num(ev.target.value)>0){h.price=num(ev.target.value);h.priceDate=today();save();renderAll();}});
+document.addEventListener("change",function(ev){var id=ev.target.getAttribute("data-metalprice");if(!id)return;var h=S.own.hold.find(function(x){return x.id===id;});if(!h)return;if(num(ev.target.value)>0){h.price=num(ev.target.value);h.priceDate=today();}else{delete h.price;delete h.priceDate;}save();renderAll();});
 
 /* CSV-Import aus Broker-Export */
 function parseCSV(text){text=text.replace(/^\ufeff/,"");var lines=text.split(/\r?\n/).filter(function(l){return l.trim();});if(lines.length<2)return null;var h=lines[0];
   var del=[";",",","\t"].sort(function(a,b){return h.split(b).length-h.split(a).length;})[0];
   function split(l){var out=[],cur="",q=false;for(var i=0;i<l.length;i++){var c=l[i];if(c==='"'){if(q&&l[i+1]==='"'){cur+='"';i++;}else q=!q;}else if(c===del&&!q){out.push(cur);cur="";}else cur+=c;}out.push(cur);return out.map(function(s){return s.trim();});}
   var head=split(h).map(function(s){return s.toLowerCase();});function col(re){for(var i=0;i<head.length;i++)if(re.test(head[i]))return i;return -1;}
-  var ci={isin:col(/isin/),name:col(/name|bezeichnung|wertpapier|titel|instrument|produkt|asset|security/),qty:col(/stück|stk|anzahl|menge|bestand|quantity|shares|units|nominal/),buy:col(/einstand|kaufkurs|durchschnitt|avg|kaufpreis|ø|einkauf|buy.?in|average/),sym:col(/symbol|ticker|kürzel/)};
+  var ci={isin:col(/isin/),name:col(/name|bezeichnung|wertpapier|titel|instrument|produkt|asset|security/),qty:col(/stück|stk|anzahl|menge|bestand|quantity|shares|units|nominal/),buy:col(/einstand|kaufkurs|durchschnitt|avg|kaufpreis|ø|einkauf|buy.?in|average/),sym:col(/symbol|ticker|kürzel/)};ci.buyTotal=ci.buy>-1&&/wert|gesamt|summe|total|value/.test(head[ci.buy])&&!/kurs|preis|price|stück|unit|je/.test(head[ci.buy]);
   if(ci.qty<0||(ci.isin<0&&ci.name<0&&ci.sym<0))return {err:"Spalten nicht erkannt. Benötigt werden ISIN oder Name und die Stückzahl."};
   var rows=lines.slice(1).map(split).map(function(r){var isin=ci.isin>-1?(r[ci.isin]||"").toUpperCase():"";var sym=ci.sym>-1?r[ci.sym]:"";var name=ci.name>-1?r[ci.name]:"";var x=ISIN[isin]||IMAP[sym]||(name?searchLocal(name)[0]:null);
-    return {isin:isin,name:name||sym||isin,qty:num(r[ci.qty]),buy:ci.buy>-1?num(r[ci.buy]):0,x:x};}).filter(function(r){return r.qty>0;});
+    var qy=numCSV(r[ci.qty]),by=ci.buy>-1?numCSV(r[ci.buy]):0;if(by&&ci.buyTotal&&qy>0)by=by/qy;return {isin:isin,name:name||sym||isin,qty:qy,buy:by,x:x};}).filter(function(r){return r.qty>0;});
   return {rows:rows};}
 
 /* ================= RENDER: ABOS, GEWOHNHEITEN & „WAS WÄRE WENN“ ================= */
-function recGroup(d){var g={};d.entries.forEach(function(e){var isRec=e.freq!=="once"&&e.type==="expense";if(!isRec&&!isHabit(e))return;
+function recGroup(d){var g={};d.entries.forEach(function(e){if(e.end&&e.end<ymNow())return;var isRec=e.freq!=="once"&&e.type==="expense";if(!isRec&&!isHabit(e))return;
   var key=isRec?e.id:"habit:"+e.cat+":"+e.title;if(!g[key])g[key]={id:key,title:isRec?e.title:e.title+" (Ø 3 Monate)",name:e.title,cat:e.cat,habit:isHabit(e),m:0};
   if(isRec)g[key].m+=perMonth(e);else{for(var k=0;k<3;k++)g[key].m+=monthAmt(e,ymAdd(ymNow(),-k))/3;}});
   return Object.keys(g).map(function(k){return g[k];}).filter(function(x){return x.m>0;}).sort(function(a,b){return b.m-a.m;});}
@@ -2085,6 +2096,66 @@ function ensureLive(){var now=Date.now();D().hold.forEach(function(h){var s=h.s,
   yahooQuoteEUR(s).then(function(p){if(p>0){M.live[s]=p;M.liveQ=new Date();renderAll();}}).catch(function(){});});}
 function renderAll(){ensureLive();renderMode();renderOverview();renderBookings();renderDebts();renderAssets();renderRecurring();renderCalc();renderExamples();renderBook();renderData();if(Journey)Journey.render();}
 
+/* ================= BEARBEITEN, RÜCKGÄNGIG, WÄHRUNGSWECHSEL ================= */
+/* Jede eigene Position lässt sich vollständig ändern, ohne sie zu löschen. Löschen ist 6 s rückgängig zu machen. */
+var EDIT=null;
+function posNum(v){var n=num(v);return n>0?n:0;}
+function edField(lab,html,cls){return '<label class="f'+(cls?" "+cls:"")+'"><span>'+lab+'</span>'+html+'</label>';}
+function edInp(id,val,attrs){return '<input id="'+id+'" value="'+esc(val==null?"":val)+'" '+(attrs||'')+'>';}
+function edSel(id,opts,val){return '<select id="'+id+'">'+opts.map(function(o){return '<option value="'+esc(o[0])+'"'+(String(o[0])===String(val)?" selected":"")+'>'+esc(o[1])+'</option>';}).join("")+'</select>';}
+function openEdit(kind,id){var list={entry:S.own.entries,debt:S.own.debts,hold:S.own.hold,item:S.own.items}[kind];var x=list&&list.find(function(y){return y.id===id;});if(!x)return;EDIT={kind:kind,id:id};var h="",ttl="";
+  var NUMA='type="number" step="any" min="0" inputmode="decimal"';
+  if(kind==="entry"){ttl="Buchung bearbeiten";
+    h=edField("Bezeichnung",edInp("edTitle",x.title,'required'),"span2")+edField("Art",edSel("edType",Object.keys(TYPES).map(function(k){return [k,TYPES[k]];}),x.type))+edField("Kategorie",edSel("edCat",((CATS[x.type]||[]).indexOf(x.cat)<0?[x.cat]:[]).concat(CATS[x.type]||[]).map(function(c){return [c,c];}),x.cat))+
+      edField("Betrag (€)",edInp("edAmt",num(x.amount),NUMA+' required'))+edField("Wie oft?",edSel("edFreq",Object.keys(FREQ).map(function(k){return [k,FREQ[k]];}),x.freq))+
+      edField('<span id="edDateL">'+(x.freq==="once"?"Datum":"Läuft seit")+'</span>',edInp("edDate",x.date||today(),'type="date" required'))+
+      edField("Endet nach (Monat, optional)",edInp("edEnd",x.end||"",'type="month"'),"edEndW"+(x.freq==="once"?" hide":""))+
+      '<p class="desc span2 edEndW'+(x.freq==="once"?" hide":"")+'">Gekündigt? Trag den letzten Monat ein. Frühere Monate bleiben in deiner Auswertung erhalten. Neuer Betrag ab jetzt? Beende diese Buchung und leg eine neue an.</p>';}
+  else if(kind==="debt"){ttl="Schuld bearbeiten";
+    h=edField("Name",edInp("edName",x.name,'required'),"span2")+edField("Art",edSel("edKind",Object.keys(DT).map(function(k){return [k,DT[k].l];}),x.kind),"span2")+
+      edField("Restschuld (€)",edInp("edBal",num(x.bal),NUMA))+edField("Zins (% p. a.)",edInp("edRate",num(x.rate),NUMA+' max="100"'))+edField("Monatliche Rate (€)",edInp("edPay",num(x.pay),NUMA))+
+      '<p class="desc span2">Restschuld 0 = abbezahlt. Die Schuld bleibt dann als erledigt sichtbar.</p>';}
+  else if(kind==="hold"){var i=holdInfo(x),metal=/^(GOLD|SILVER|PLATIN|PALLAD)-G$/.test(x.s),live=metal?(M.live[x.s]?M.live[x.s]*fxr():null):(IMAP[x.s]||(S.own.cache[x.s])||M.live[x.s])?priceOf(x.s):null,unit=metal?" je Gramm":" je Stück";ttl="Position bearbeiten";
+    h='<p class="desc span2"><b>'+esc(i.name)+'</b> <small>'+esc(x.s)+'</small>'+(live?'<br><span>Aktueller Kurs:</span> <b>'+E2(live)+'</b>':'')+'</p>'+
+      ((x.name&&!IMAP[x.s])?edField("Name",edInp("edName",x.name),"span2"):"")+
+      edField(metal?"Menge (Gramm)":"Anzahl",edInp("edQty",num(x.qty),NUMA+(x.addr?' disabled':'')))+
+      edField("Kaufkurs"+unit+" (€, optional)",edInp("edBuy",x.buy?num(x.buy):"",NUMA+' placeholder="leer = ohne Kaufkurs"'))+
+      edField((live?"Eigener Kurs":"Aktueller Kurs")+unit+" (€"+(live?", optional":"")+")",edInp("edPrice",x.price!=null&&x.price!==""?num(x.price):"",NUMA+(live?' placeholder="leer = Live-Kurs"':' placeholder="Kurs eintragen"')),"span2")+
+      (x.addr?'<p class="desc span2">Die Menge kommt direkt aus deiner Wallet und wird beim Öffnen aktualisiert.</p>':'')+
+      (live?'<p class="desc span2">Lass „Eigener Kurs“ leer, dann rechnet der Geld-Kompass mit dem Live-Kurs.'+(metal?' Einen Rückkaufpreis deines Händlers kannst du hier eintragen.':'')+'</p>':'<p class="desc span2">Für diesen Wert gibt es keinen Live-Kurs. Trag den aktuellen Kurs ein, sonst bleibt der Wert stehen.</p>');}
+  else if(kind==="item"){ttl="Konto oder Besitz bearbeiten";var cl=BAL_RULES.map(function(r){return r[0];});if(cl.indexOf("Sonstiges")<0)cl.push("Sonstiges");
+    h=edField("Name",edInp("edName",x.name,'required'),"span2")+edField("Wert (€)",edInp("edVal",num(x.value),NUMA))+edField("Art",edSel("edCls",cl.map(function(c){return [c,c];}),x.cls||detectAsset(x.name)));}
+  $("edTitleH").textContent=ttl;$("edBody").innerHTML=h;var dlg=$("editDlg");
+  if(kind==="entry"){$("edType").onchange=function(){$("edCat").innerHTML=(CATS[this.value]||[]).map(function(c){return '<option>'+esc(c)+'</option>';}).join("");};
+    $("edFreq").onchange=function(){var once=this.value==="once";document.querySelectorAll(".edEndW").forEach(function(n){n.classList.toggle("hide",once);});$("edDateL").textContent=once?"Datum":"Läuft seit";};}
+  if(dlg.showModal)dlg.showModal();else dlg.setAttribute("open","");setTimeout(function(){var f=dlg.querySelector("input:not([disabled])");if(f)f.focus();},30);}
+function closeEdit(){var d=$("editDlg");if(d.close)d.close();else d.removeAttribute("open");EDIT=null;}
+function saveEdit(){if(!EDIT)return;var k=EDIT.kind,list={entry:S.own.entries,debt:S.own.debts,hold:S.own.hold,item:S.own.items}[k],x=list.find(function(y){return y.id===EDIT.id;});if(!x){closeEdit();return;}
+  function v(id){return $(id)?$(id).value.trim():"";}
+  if(k==="entry"){var a=num(v("edAmt"));if(!v("edTitle")){toast("Bitte eine Bezeichnung eintragen.");return;}if(!(a>0)){toast("Der Betrag muss größer als 0 sein.");return;}
+    var dt=v("edDate")||x.date,en=v("edEnd");if(v("edFreq")!=="once"&&en&&en<dt.slice(0,7)){toast("Das Ende liegt vor dem Start.");return;}
+    x.title=v("edTitle");x.type=v("edType");x.cat=v("edCat")||x.cat;x.amount=a;x.freq=v("edFreq");x.date=dt;if(x.freq!=="once"&&en)x.end=en;else delete x.end;}
+  else if(k==="debt"){if(!v("edName")){toast("Bitte einen Namen eintragen.");return;}x.name=v("edName");x.kind=v("edKind");x.bal=posNum(v("edBal"));x.rate=Math.min(100,posNum(v("edRate")));x.pay=posNum(v("edPay"));}
+  else if(k==="hold"){if(!x.addr){var q=num(v("edQty"));if(!(q>0)){toast("Die Anzahl muss größer als 0 sein.");return;}x.qty=q;}
+    var b=v("edBuy");if(b===""||!(num(b)>0))delete x.buy;else x.buy=num(b);
+    var p=v("edPrice");if(p===""||!(num(p)>0)){delete x.price;delete x.priceDate;}else{x.price=num(p);x.priceDate=today();}
+    if($("edName")&&v("edName"))x.name=v("edName");}
+  else if(k==="item"){if(!v("edName")){toast("Bitte einen Namen eintragen.");return;}x.name=v("edName");x.value=posNum(v("edVal"));x.cls=v("edCls");}
+  save();closeEdit();renderAll();toast("Gespeichert");}
+/* Löschen mit Rückgängig */
+var UNDO=null;
+function removeWithUndo(listKey,id,msg){var list=S.own[listKey],i=list.findIndex(function(y){return y.id===id;});if(i<0)return;var obj=list.splice(i,1)[0];UNDO={k:listKey,i:i,o:obj};save();renderAll();toast(msg,"Rückgängig",function(){if(!UNDO)return;S.own[UNDO.k].splice(Math.min(UNDO.i,S.own[UNDO.k].length),0,UNDO.o);UNDO=null;save();renderAll();toast("Wiederhergestellt");});}
+/* Gleiches Wertpapier zweimal gekauft: zusammenführen (Durchschnittskurs) statt doppelter Zeile */
+function addHolding(h){var ex=!h.addr&&S.own.hold.find(function(y){return y.s===h.s&&!y.addr&&(!!y.buy)===(!!h.buy);});
+  if(!ex){S.own.hold.push(h);return false;}var q1=num(ex.qty),q2=num(h.qty);if(ex.buy&&h.buy)ex.buy=Math.round((q1*num(ex.buy)+q2*num(h.buy))/(q1+q2)*1e6)/1e6;ex.qty=q1+q2;if(h.price!=null&&h.price!==""){ex.price=h.price;ex.priceDate=h.priceDate||today();}return true;}
+/* Währungswechsel: eigene Beträge werden einmal in die neue Währung umgerechnet, damit Kaufkurse, Konten und Kurse zusammenpassen */
+function curRate(c){return c==="EUR"?1:(FX.rates&&FX.rates[c])||null;}
+function convertOwn(from,to){var a=curRate(from),b=curRate(to);if(!a||!b||from===to)return;var f=b/a;function r(v){return Math.round(num(v)*f*1e4)/1e4;}
+  S.own.entries.forEach(function(e){e.amount=r(e.amount);});S.own.debts.forEach(function(x){x.bal=r(x.bal);x.pay=r(x.pay);});S.own.items.forEach(function(x){x.value=r(x.value);});
+  S.own.hold.forEach(function(h){if(h.buy)h.buy=r(h.buy);if(h.price!=null&&h.price!=="")h.price=r(h.price);});
+  var c=S.calc;if(c){if(c.ci){c.ci.start=r(c.ci.start);c.ci.mon=r(c.ci.mon);}if(c.wi)c.wi.amt=r(c.wi.amt);if(c.pfInc!=null)c.pfInc=r(c.pfInc);if(c.debt&&c.debt.extra!=null)c.debt.extra=r(c.debt.extra);if(c.ffExternal)c.ffExternal=r(c.ffExternal);if(c.ffDividends)c.ffDividends=r(c.ffDividends);if(c.ffCost!=null)c.ffCost=r(c.ffCost);}}
+window.GK_setCurrency=function(c){try{if(S&&S.own){var from=S.own.cur||CUR;if(from!==c&&curRate(from)&&curRate(c)){convertOwn(from,c);}S.own.cur=c;save();}localStorage.setItem(CUR_KEY,c);}catch(e){}location.reload();};
+
 /* ================= EVENTS ================= */
 function bind(){
   document.addEventListener("click",function(ev){var t=ev.target,el;
@@ -2100,16 +2171,18 @@ function bind(){
     if((el=t.closest("[data-dchip]"))){fillDebtForm(el.getAttribute("data-dchip"));$("dName").value=el.getAttribute("data-n");$("dBal").focus();return;}
     if((el=t.closest("[data-wih]"))){S.calc.wiH=+el.getAttribute("data-wih");save();renderWIList(D());return;}
     if((el=t.closest("[data-wi]"))){var e=D().entries.filter(function(x){return x.id===el.getAttribute("data-wi");})[0];if(e){var m=perMonth(e);S.calc.wi={title:e.title,amt:Math.round(m*100)/100,per:"month",years:S.calc.wi.years||20};save();renderWI();goTo("wiCard");}return;}
-    if((el=t.closest("[data-del]"))){var id=el.getAttribute("data-del");S.own.entries=S.own.entries.filter(function(e){return e.id!==id;});save();renderAll();toast("Buchung gelöscht");return;}
-    if((el=t.closest("[data-ddel]"))){var did=el.getAttribute("data-ddel");S.own.debts=S.own.debts.filter(function(e){return e.id!==did;});save();renderAll();toast("Schuld entfernt");return;}
-    if((el=t.closest("[data-hdel]"))){var hid=el.getAttribute("data-hdel");S.own.hold=S.own.hold.filter(function(e){return e.id!==hid;});save();renderAll();return;}
-    if((el=t.closest("[data-idel]"))){var iid=el.getAttribute("data-idel");S.own.items=S.own.items.filter(function(e){return e.id!==iid;});save();renderAll();return;}
+    if((el=t.closest("[data-del]"))){var id=el.getAttribute("data-del");removeWithUndo("entries",id,"Buchung gelöscht");return;}
+    if((el=t.closest("[data-ddel]"))){var did=el.getAttribute("data-ddel");removeWithUndo("debts",did,"Schuld entfernt");return;}
+    if((el=t.closest("[data-hdel]"))){var hid=el.getAttribute("data-hdel");removeWithUndo("hold",hid,"Position gelöscht");return;}
+    if((el=t.closest("[data-idel]"))){var iid=el.getAttribute("data-idel");removeWithUndo("items",iid,"Eintrag gelöscht");return;}
+    if((el=t.closest("[data-edit]"))){openEdit(el.getAttribute("data-edit"),el.getAttribute("data-id"));return;}
     if((el=t.closest("[data-sug]"))){pickInstr(SUG[+el.getAttribute("data-sug")]);return;}
     if((el=t.closest("[data-osug]"))){pickInstr(ONLINE.list[+el.getAttribute("data-osug")]);return;}
     if(t.closest("[data-online]")){var q=$("vSym").value.trim();ONLINE={q:q,list:[],err:"Suche läuft …"};renderSugg();yahooSearch(q).then(function(l){ONLINE={q:q,list:l};renderSugg();}).catch(function(){ONLINE={q:q,list:[],err:"Online-Suche gerade nicht erreichbar. Gib den Kurs selbst ein."};renderSugg();$("vPriceWrap").classList.remove("hide");});return;}
     if(t.id==="resetBtn")return renderReset(true);if(t.id==="resNo")return renderReset(false);
     if(t.id==="resYes"){S.own=emptyOwn();S.mode="demo";S.notes={};S.ritual={};if(S.companion)S.companion.own=GeldJourney.empty();save();renderReset(false);renderAll();toast("Eigene Daten gelöscht");}
   });
+  $("editForm").addEventListener("submit",function(ev){ev.preventDefault();saveEdit();});$("edCancel").addEventListener("click",closeEdit);$("edX").addEventListener("click",closeEdit);$("editDlg").addEventListener("close",function(){EDIT=null;});
   $("modeBtn").addEventListener("click",function(){if(S.mode==="demo"){S.mode="own";save();renderAll();show("bookings");toast("Leg los: zuerst dein Gehalt als monatliche Buchung.");setTimeout(function(){$("bTitle").focus();},300);}else{S.mode="demo";save();renderAll();show("overview");}});
   $("themeBtn").addEventListener("click",function(){S.theme=S.theme==="dark"?"light":"dark";applyTheme();save();});
   $("langBtn").innerHTML=window.GK_LANG==="en"?'<svg viewBox="0 0 5 3" aria-hidden="true"><path d="M0 0h5v3H0z"/><path d="M0 1h5v2H0z" fill="#D00"/><path d="M0 2h5v1H0z" fill="#FFCE00"/></svg>':'<svg viewBox="0 0 60 30" aria-hidden="true"><clipPath id="gbc"><path d="M0 0v30h60V0z"/></clipPath><clipPath id="gbt"><path d="M30 15h30v15zv15H0zH0V0zV0h30z"/></clipPath><g clip-path="url(#gbc)"><path d="M0 0v30h60V0z" fill="#012169"/><path d="M0 0l60 30m0-30L0 30" stroke="#fff" stroke-width="6"/><path d="M0 0l60 30m0-30L0 30" clip-path="url(#gbt)" stroke="#C8102E" stroke-width="4"/><path d="M30 0v30M0 15h60" stroke="#fff" stroke-width="10"/><path d="M30 0v30M0 15h60" stroke="#C8102E" stroke-width="6"/></g></svg>';$("langBtn").setAttribute("aria-label",window.GK_LANG==="en"?"Auf Deutsch umstellen":"Switch to English");$("langBtn").setAttribute("title",window.GK_LANG==="en"?"Deutsch":"English");$("langBtn").addEventListener("click",function(){window.GK_setLang(window.GK_LANG==="en"?"de":"en");});
@@ -2120,7 +2193,7 @@ function bind(){
   $("rcForm").addEventListener("submit",function(ev){ev.preventDefault();var title=$("rcTitle").value.trim(),amt=num($("rcAmt").value);if(!title||!(amt>0))return;var d=detect(title);ensureOwn();
     S.own.entries.push({id:uid(),title:title,amount:amt,type:"expense",cat:d.type==="expense"?d.cat:"Sonstiges",freq:$("rcFreq").value,date:ymNow()+"-01"});$("rcTitle").value="";$("rcAmt").value="";$("rcDet").innerHTML="";save();renderAll();toast("Gespeichert: "+title);});
   $("bFilter").addEventListener("input",renderBookings);$("bMonth").addEventListener("change",renderBookings);
-  $("bookTable").addEventListener("change",function(ev){var id=ev.target.getAttribute("data-amt");if(!id)return;var e=S.own.entries.find(function(x){return x.id===id;});if(e){e.amount=num(ev.target.value);save();renderAll();}});
+  $("bookTable").addEventListener("change",function(ev){var id=ev.target.getAttribute("data-amt");if(!id)return;var e=S.own.entries.find(function(x){return x.id===id;});if(e){var na=num(ev.target.value);if(!(na>0)){ev.target.value=num(e.amount);toast("Der Betrag muss größer als 0 sein.");return;}e.amount=na;save();renderAll();}});
   /* Schulden */
   $("dKind").innerHTML=Object.keys(DT).map(function(k){return '<option value="'+k+'">'+esc(DT[k].l)+'</option>';}).join("");fillDebtForm("card");
   $("dKind").addEventListener("change",function(){fillDebtForm(this.value,true);});
@@ -2130,7 +2203,7 @@ function bind(){
     var r=$("dRate").value===""?DT[k].r:num($("dRate").value),p=$("dPay").value===""?Math.round(DT[k].min(b,r,num($("dTilg").value))):num($("dPay").value);
     ensureOwn();S.own.debts.push({id:uid(),name:$("dName").value.trim()||DT[k].s,kind:k,bal:b,rate:r,pay:p});["dName","dBal","dPay"].forEach(function(i){$(i).value="";});fillDebtForm(k);save();renderAll();toast("Eingetragen. Dein Plan ist aktualisiert.");});
   $("debtTable").addEventListener("change",function(ev){var a=ev.target,id=a.getAttribute("data-dbal")||a.getAttribute("data-drate")||a.getAttribute("data-dpay");if(!id)return;var x=S.own.debts.find(function(y){return y.id===id;});if(!x)return;
-    if(a.hasAttribute("data-dbal"))x.bal=num(a.value);if(a.hasAttribute("data-drate"))x.rate=num(a.value);if(a.hasAttribute("data-dpay"))x.pay=num(a.value);save();renderAll();});
+    if(a.hasAttribute("data-dbal"))x.bal=posNum(a.value);if(a.hasAttribute("data-drate"))x.rate=Math.min(100,posNum(a.value));if(a.hasAttribute("data-dpay"))x.pay=posNum(a.value);if(x.bal===0)toast("Abbezahlt. Die Schuld steht jetzt unter „Erledigt“.");save();renderAll();});
   $("dpExtra").addEventListener("input",function(){S.calc.debt.extra=this.value===""?null:num(this.value);save();renderDebts();renderOverview();});
   $("dpMethod").addEventListener("change",function(){S.calc.debt.method=this.value;save();renderDebts();renderOverview();});
   $("dpYears").addEventListener("input",function(){S.calc.debt.years=Math.max(1,Math.min(40,num(this.value)||10));save();renderDebts();});
@@ -2149,26 +2222,27 @@ function bind(){
       /* Nicht in der Liste: zuerst automatisch online suchen und den echten Kurs übernehmen */
       toast("Suche „"+raw+"“ online …");
       yahooSearch(raw).then(function(l){if(!l||!l.length)throw 0;var y=l[0];return yahooQuoteEUR(y.s).then(function(pp){S.own.cache[y.s]={p:pp,t:Date.now()};
-        ensureOwn();S.own.hold.push({id:h.id,qty:h.qty,buy:h.buy,s:y.s,online:true,name:y.n,t:y.t});["vSym","vQty","vBuy","vPrice"].forEach(function(i){$(i).value="";});PICK=null;$("vDetect").innerHTML="";save();renderAll();toast("Im Depot: "+y.n+" · Kurs "+E2(pp*fxr()));});})
+        ensureOwn();var nh={id:h.id,qty:h.qty,s:y.s,online:true,name:y.n,t:y.t};if(h.buy)nh.buy=h.buy;var mg=addHolding(nh);if(mg)setTimeout(function(){toast("Zur bestehenden Position addiert (Durchschnittskurs).");},2900);["vSym","vQty","vBuy","vPrice"].forEach(function(i){$(i).value="";});PICK=null;$("vDetect").innerHTML="";save();renderAll();toast("Im Depot: "+y.n+" · Kurs "+E2(pp*fxr()));});})
       .catch(function(){$("vPriceWrap").classList.remove("hide");$("vPrice").focus();$("vDetect").innerHTML='<span>„'+esc(raw)+'“ wurde weder in der Liste noch online gefunden. Bitte den aktuellen Kurs selbst eintragen.</span>';});
       return;}
     else{h.s=raw.toUpperCase();h.name=raw;h.price=num($("vPrice").value);}
-    ensureOwn();S.own.hold.push(h);["vSym","vQty","vBuy","vPrice"].forEach(function(i){$(i).value="";});PICK=null;$("vDetect").innerHTML="";$("vPriceWrap").classList.add("hide");save();renderAll();refreshOnline(false);toast("Im Depot: "+(h.name||(x&&x.n)||h.s));});
-  $("depotTable").addEventListener("change",function(ev){var id=ev.target.getAttribute("data-buy");if(!id)return;var h=S.own.hold.find(function(x){return x.id===id;});if(h){h.buy=num(ev.target.value);save();renderAll();}});
+    ensureOwn();var merged=addHolding(h);["vSym","vQty","vBuy","vPrice"].forEach(function(i){$(i).value="";});PICK=null;$("vDetect").innerHTML="";$("vPriceWrap").classList.add("hide");save();renderAll();refreshOnline(false);toast(merged?"Zur bestehenden Position addiert (Durchschnittskurs).":"Im Depot: "+(h.name||(x&&x.n)||h.s));});
+  $("depotTable").addEventListener("change",function(ev){var id=ev.target.getAttribute("data-buy");if(!id)return;var h=S.own.hold.find(function(x){return x.id===id;});if(h){var nb=num(ev.target.value);if(nb>0)h.buy=nb;else delete h.buy;save();renderAll();}});
   $("refreshBtn").addEventListener("click",function(){loadMarkets();liveMetals();refreshOnline(true);syncWallets();toast("Kurse werden aktualisiert …");});
   $("csvFile").addEventListener("change",function(ev){var f=ev.target.files&&ev.target.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){var r=parseCSV(String(rd.result)),out=$("csvOut");
     if(!r||r.err){out.innerHTML='<p class="neg" style="margin-top:8px">'+esc(r?r.err:"Datei leer.")+'</p>';return;}
     var ok=r.rows.filter(function(x){return x.x;}).length;out.innerHTML='<p style="margin-top:8px">'+r.rows.length+' Positionen gefunden, '+ok+' davon mit automatischem Kurs.'+(r.rows.length-ok?' Die übrigen werden mit dem Kaufkurs bewertet, bis du einen Kurs einträgst.':'')+'</p><button class="btn sm pri" type="button" id="csvGo">Ins Depot übernehmen</button>';
-    $("csvGo").onclick=function(){ensureOwn();r.rows.forEach(function(x){var h={id:uid(),qty:x.qty};if(x.buy)h.buy=x.buy;if(x.x)h.s=x.x.s;else{h.s=x.isin||x.name;h.name=x.name;h.price=x.buy||null;}S.own.hold.push(h);});save();renderAll();out.innerHTML='<p class="pos" style="margin-top:8px">'+r.rows.length+' Positionen übernommen.</p>';};};rd.readAsText(f);ev.target.value="";});
-  $("btcForm").addEventListener("submit",function(ev){ev.preventDefault();var a=$("btcAddr").value.trim();if(!/^(bc1|[13])[a-zA-HJ-NP-Z0-9]{20,90}$/.test(a)){$("btcOut").textContent="Das sieht nicht nach einer Bitcoin-Adresse aus.";return;}
+    $("csvGo").onclick=function(){ensureOwn();r.rows.forEach(function(x){var h={id:uid(),qty:x.qty};if(x.buy)h.buy=x.buy;if(x.x)h.s=x.x.s;else{h.s=x.isin||x.name;h.name=x.name;h.price=x.buy||null;}addHolding(h);});save();renderAll();out.innerHTML='<p class="pos" style="margin-top:8px">'+r.rows.length+' Positionen übernommen.</p>';};};rd.readAsText(f);ev.target.value="";});
+  $("btcForm").addEventListener("submit",function(ev){ev.preventDefault();var a=$("btcAddr").value.trim();if(/^BC1/.test(a))a=a.toLowerCase();if(!/^(bc1|[13])[a-zA-HJ-NP-Z0-9]{20,90}$/.test(a)){$("btcOut").textContent="Das sieht nicht nach einer Bitcoin-Adresse aus.";return;}
     $("btcOut").textContent="Bestand wird gelesen …";btcBalance(a).then(function(b){ensureOwn();var ex=S.own.hold.find(function(h){return h.addr===a;});if(ex)ex.qty=b;else S.own.hold.push({id:uid(),s:"BTC-EUR",qty:b,addr:a,name:"Bitcoin-Wallet …"+a.slice(-6)});save();renderAll();$("btcAddr").value="";$("btcOut").textContent="Verbunden: "+nf.format(b)+" BTC. Wird bei jedem Öffnen aktualisiert.";}).catch(function(){$("btcOut").textContent="mempool.space gerade nicht erreichbar. Bitte später noch einmal versuchen.";});});
   /* Konten & Besitz (Schulden werden in den Schulden-Plan umgeleitet) */
   $("iName").addEventListener("input",itemDetect);
   $("itemForm").addEventListener("submit",function(ev){ev.preventDefault();var n=$("iName").value.trim(),v=num($("iVal").value);if(!n)return;var k=detectDebt(n);ensureOwn();
+    if(k&&!/^(auto|fahrzeug|haus|wohnung|immobilie)$/i.test(n)&&!(v>0)){toast("Bitte die Restschuld als Betrag eintragen.");$("iVal").focus();return;}
     if(k&&!/^(auto|fahrzeug|haus|wohnung|immobilie)$/i.test(n)){S.own.debts.push({id:uid(),name:n,kind:k,bal:v,rate:DT[k].r,pay:Math.round(DT[k].min(v))});toast("Im Schulden-Plan eingetragen. Prüfe dort Zins und Rate.");}
     else{S.own.items.push({id:uid(),name:n,value:v,cls:detectAsset(n)});toast("Als Vermögen eingetragen");}
     $("iName").value="";$("iVal").value="";itemDetect();save();renderAll();});
-  $("balTable").addEventListener("change",function(ev){var id=ev.target.getAttribute("data-iv");if(!id)return;var it=S.own.items.find(function(x){return x.id===id;});if(it){it.value=num(ev.target.value);save();renderAll();}});
+  $("balTable").addEventListener("change",function(ev){var id=ev.target.getAttribute("data-iv");if(!id)return;var it=S.own.items.find(function(x){return x.id===id;});if(it){it.value=posNum(ev.target.value);save();renderAll();}});
   $("habOut").addEventListener("input",function(ev){var id=ev.target.getAttribute("data-red");if(!id)return;var v=Math.max(0,Math.min(100,Math.round(num(ev.target.value)))),m=+ev.target.getAttribute("data-m");S.calc.reduce[id]=v;document.querySelectorAll("[data-red]").forEach(function(n){if(n.getAttribute("data-red")===id&&n!==ev.target)n.value=v;});save();
     document.querySelectorAll("[data-redv]").forEach(function(n){if(n.getAttribute("data-redv")===id)n.textContent=v+" %";});document.querySelectorAll("[data-reds]").forEach(function(n){if(n.getAttribute("data-reds")===id)n.textContent=E(m*12*v/100);});renderHabRes();});
   function ci(id,fn){$(id).addEventListener("input",function(){fn(this.value);save();renderFF();renderPF();renderCI();if(id.indexOf("ff")===0)renderOverview();});}
@@ -2185,7 +2259,7 @@ function bind(){
   function restore(txt){pendingRestore=null;if(txt.length>20000000)throw Error("Die Sicherung ist zu groß.");var d=GeldJourney.validateBackup(JSON.parse(txt));pendingRestore=d;
     $("bkMsg").innerHTML='<div class="note"><b>Sicherung geprüft.</b><p>'+d.own.entries.length+' Buchungen, '+d.own.debts.length+' Schulden, '+(d.own.items.length+d.own.hold.length)+' Vermögenspositionen'+(d.companion?', '+d.companion.goals.length+' Rücklagenziel'+(d.companion.goals.length===1?'':'e')+' und '+d.companion.snapshots.length+' '+(d.companion.snapshots.length===1?'Monatsstand':'Monatsstände'):' · ältere Sicherung ohne Zielplan')+'. Deine bisherigen eigenen Einträge werden ersetzt.</p><div class="row"><button class="btn pri" id="applyRestore" type="button">Diese Sicherung übernehmen</button><button class="btn" id="cancelRestore" type="button">Abbrechen</button></div></div>';}
   document.addEventListener('click',function(ev){if(ev.target.id==='cancelRestore'){pendingRestore=null;$("bkMsg").textContent='Deine bisherigen Daten bleiben erhalten.';}
-    if(ev.target.id==='applyRestore'&&pendingRestore){var d=pendingRestore;pendingRestore=null;S.own=migrate(merge(emptyOwn(),d.own));S.calc=merge(defaults().calc,d.calc||{});S.notes=d.notes?((d.v||0)<5?remapNotes(d.notes):d.notes):{};GeldJourney.scope(S);S.companion.own=d.companion||GeldJourney.empty();S.ritual=d.ritual||{};S.ritualMonth=d.ritualMonth||ymNow();S.mode='own';var ok=save();renderAll();$("bkMsg").innerHTML='<div class="note '+(ok?'good':'warn')+'">'+(ok?'Sicherung übernommen. Deine eigenen Daten sind wiederhergestellt.':'Sicherung geöffnet, aber der Browser konnte sie nicht dauerhaft speichern. Sichere deine Daten vor dem Schließen.')+'</div>';}});
+    if(ev.target.id==='applyRestore'&&pendingRestore){var d=pendingRestore;pendingRestore=null;try{localStorage.setItem('geld-kompass-vor-wiederherstellung',backup());}catch(e){}S.own=migrate(merge(emptyOwn(),d.own));S.calc=merge(defaults().calc,d.calc||{});S.notes=d.notes?((d.v||0)<5?remapNotes(d.notes):d.notes):{};GeldJourney.scope(S);S.companion.own=d.companion||GeldJourney.empty();S.ritual=d.ritual||{};S.ritualMonth=d.ritualMonth||ymNow();S.mode='own';var ok=save();renderAll();$("bkMsg").innerHTML='<div class="note '+(ok?'good':'warn')+'">'+(ok?'Sicherung übernommen. Deine eigenen Daten sind wiederhergestellt.':'Sicherung geöffnet, aber der Browser konnte sie nicht dauerhaft speichern. Sichere deine Daten vor dem Schließen.')+'</div>';}});
   $("bkCopy").addEventListener("click",function(){var t=backup();$("bkText").value=t;try{navigator.clipboard.writeText(t).then(function(){toast("Sicherung kopiert");},function(){$("bkText").select();toast("Text markiert, jetzt kopieren");});}catch(e){$("bkText").select();}});
   $("bkFile").addEventListener("click",function(){download(backup(),"geld-kompass-sicherung.json","application/json");});
   $("csvExport").addEventListener("click",function(){var c=["Datum","Bezeichnung","Art","Kategorie","Rhythmus","Betrag"];var lines=[c.join(";")].concat(S.own.entries.map(function(e){return [e.date,e.title,TYPES[e.type],e.cat,FREQ[e.freq],String(e.amount).replace(".",",")].map(function(v){return '"'+String(v==null?"":v).replace(/"/g,'""')+'"';}).join(";");}));download("\ufeff"+lines.join("\r\n"),"geld-kompass-buchungen.csv","text/csv;charset=utf-8");});
@@ -2201,6 +2275,9 @@ function applyTheme(){document.documentElement.setAttribute("data-theme",S.theme
 
 /* ================= START ================= */
 load();
+/* Eigene Beträge gehören zu einer Währung. Wurde sie woanders gewechselt (z. B. in einem Rechner), hier einmal umrechnen. */
+function gkReconcileCur(){if(!S.own)return;if(!S.own.cur){S.own.cur=CUR;save();return;}if(S.own.cur!==CUR&&curRate(S.own.cur)&&curRate(CUR)){convertOwn(S.own.cur,CUR);S.own.cur=CUR;save();if(typeof renderAll==="function"&&$("overview"))try{renderAll();}catch(e){}}}
+gkReconcileCur();
 var Journey=GeldJourneyUI({state:function(){return S;},data:D,totals:totals,holdInfo:holdInfo,esc:esc,E:E,E2:E2,month:ymNow,monthName:monthName,today:today,uid:uid,save:save,toast:toast,profileName:function(){return PROFILES[S.profile].short;},storageFailed:function(){return storageFailed;},metal:function(){return M.metal||{};}});
 applyTheme();buildNav();bind();renderReset(false);renderAll();
 var h0=(location.hash||"").slice(1);if(h0)goTo(h0);else show("overview");

@@ -33,6 +33,7 @@ h1{font-family:P;font-weight:700;font-size:94px;line-height:1.07;margin-top:28px
 .foot b{font-size:44px;font-weight:800;display:block;line-height:1.1}
 .foot span{font-size:30px;font-weight:700;display:block;opacity:.8}
 .treeimg{position:absolute;right:-70px;bottom:150px;width:560px;opacity:.95}
+.vs.three{grid-template-columns:1fr 1fr 1fr;gap:20px}.vs.three div{padding:36px 26px}.vs.three b{font-size:56px}.vs.three span{font-size:28px}
 </style></head><body>
 <template id="logo"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="23" fill="none" stroke="#14203A" stroke-width="2.5"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#14203A"/><circle cx="26" cy="26" r="2.5" fill="#E3B55A"/></svg></template>
 
@@ -112,6 +113,23 @@ h1{font-family:P;font-weight:700;font-size:94px;line-height:1.07;margin-top:28px
 <div class="sub">Miners move with leverage on the gold price, up and down. They are companies with costs, debt and mining risk.</div>
 <div class="fn">Average per year incl. distributions, approx. 9.9 years to Oct 2026, in euros (Yahoo Finance). Past performance is no guarantee. Not investment advice.</div>
 <div class="foot" data-f="Track gold &amp; miners live|Free Money Compass"></div></section>
+
+<section class="pin" id="e13"><div class="eye">Silver or silver miners?</div>
+<h1>€1,000 invested about 10 years ago:</h1><div class="rule"></div>
+<div class="vs"><div><span>Silver<br>(iShares Silver Trust)</span><b class="pos">€2,692</b><span>≈ 10.5 % a year</span></div>
+<div><span>Silver miners<br>(silver miners ETF)</span><b class="pos">€2,233</b><span>≈ 8.5 % a year</span></div></div>
+<div class="sub">This time the metal won. Miners lever the silver price, but costs, debt and mining problems can eat up the edge.</div>
+<div class="fn">Average per year incl. distributions, approx. 9.9 years to Oct 2026, converted from US dollars to euros (Yahoo Finance). Past performance is no guarantee. Not investment advice.</div>
+<div class="foot" data-f="Track silver &amp; miners live|Free Money Compass"></div></section>
+
+<section class="pin cream" id="e14"><div class="eye">Copper and uranium</div>
+<h1>Energy transition metals: €1,000 about 10 years ago</h1><div class="rule"></div>
+<div class="vs three"><div><span>Copper<br>price</span><b class="pos">€2,350</b><span>≈ 9.0 % a year</span></div>
+<div><span>Copper<br>miners ETF</span><b class="pos">€3,898</b><span>≈ 14.7 % a year</span></div>
+<div><span>Uranium<br>miners ETF</span><b class="pos">€3,545</b><span>≈ 13.6 % a year</span></div></div>
+<div class="sub">Power grids, EVs and nuclear power need both. Miners swing much harder than the commodity itself.</div>
+<div class="fn">Copper: futures price without income. ETFs (Global X Copper Miners, Global X Uranium) incl. distributions. Approx. 9.9 years to Oct 2026, in euros (Yahoo Finance). Not investment advice.</div>
+<div class="foot" data-f="Track commodity ETFs live|Free Money Compass"></div></section>
 
 <script>
 document.querySelectorAll('.foot').forEach(function(f){var t=f.dataset.f.split('|');f.innerHTML=document.getElementById('logo').innerHTML+'<div><b>'+t[0]+'</b><span>'+t[1]+'</span></div>';});
