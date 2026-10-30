@@ -18,8 +18,8 @@ jobs:
           python3 - <<'PY'
           import json, re, urllib.request
           urls = re.findall(r"<loc>(.*?)</loc>", open("sitemap.xml").read())
-          body = {"host": "dancryptomind-hub.github.io", "key": "fe9f544f2a40ba1a4240c07bbde1ab53",
-                  "keyLocation": "https://dancryptomind-hub.github.io/geld-kompass/fe9f544f2a40ba1a4240c07bbde1ab53.txt", "urlList": urls}
+          body = {"host": "geld-kompass.com", "key": "fe9f544f2a40ba1a4240c07bbde1ab53",
+                  "keyLocation": "https://geld-kompass.com/fe9f544f2a40ba1a4240c07bbde1ab53.txt", "urlList": urls}
           req = urllib.request.Request("https://api.indexnow.org/indexnow", data=json.dumps(body).encode(),
                                        headers={"Content-Type": "application/json; charset=utf-8"})
           try:

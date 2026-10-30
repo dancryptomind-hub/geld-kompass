@@ -50,9 +50,9 @@ Schriftarten: Figtree und Playfair Display, SIL Open Font License. Die Lizenztex
 
 Einzelne Rechner zum direkten Ausprobieren, ohne Anmeldung:
 
-- [Sparplan-Rechner](https://dancryptomind-hub.github.io/geld-kompass/rechner/sparplan-rechner/): was aus einer monatlichen Rate werden kann
-- [Inflationsrechner](https://dancryptomind-hub.github.io/geld-kompass/rechner/inflationsrechner/): Kaufkraft mit amtlichen Eurostat-Daten
-- [Konsument oder Eigentümer?](https://dancryptomind-hub.github.io/geld-kompass/rechner/abo-als-aktie/): was ein Abo angelegt wäre
-- [Schuldenfrei-Rechner](https://dancryptomind-hub.github.io/geld-kompass/rechner/schuldenfrei-rechner/): wann der Kredit abbezahlt ist
-- [Notgroschen-Rechner](https://dancryptomind-hub.github.io/geld-kompass/rechner/notgroschen-rechner/): wie groß die Rücklage sein sollte
-- [Freiheitstage-Rechner](https://dancryptomind-hub.github.io/geld-kompass/rechner/freiheitstage-rechner/): wie viele Tage das Vermögen trägt
+- [Sparplan-Rechner](https://geld-kompass.com/rechner/sparplan-rechner/): was aus einer monatlichen Rate werden kann
+- [Inflationsrechner](https://geld-kompass.com/rechner/inflationsrechner/): Kaufkraft mit amtlichen Eurostat-Daten
+- [Konsument oder Eigentümer?](https://geld-kompass.com/rechner/abo-als-aktie/): was ein Abo angelegt wäre
+- [Schuldenfrei-Rechner](https://geld-kompass.com/rechner/schuldenfrei-rechner/): wann der Kredit abbezahlt ist
+- [Notgroschen-Rechner](https://geld-kompass.com/rechner/notgroschen-rechner/): wie groß die Rücklage sein sollte
+- [Freiheitstage-Rechner](https://geld-kompass.com/rechner/freiheitstage-rechner/): wie viele Tage das Vermögen trägt
