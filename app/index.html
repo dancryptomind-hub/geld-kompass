@@ -1474,7 +1474,7 @@ var M={updated:null,status:"none",inflation:{},live:{},liveAt:null};
 var inflationCheck={},inflationLastAttempt=0;
 try{M.inflation=JSON.parse(localStorage.getItem('geld-kompass-inflation-v2')||'{}');}catch(e){}
 
-INSTR_BASE.push({s:"GOLD-G",n:"Gold (physisch, Feingewicht in Gramm)",t:"Edelmetall",a:"gold goldbarren goldmünze physisch",unit:"g"},{s:"SILVER-G",n:"Silber (physisch, Feingewicht in Gramm)",t:"Edelmetall",a:"silber silberbarren silbermünze physisch",unit:"g"});
+INSTR_BASE.push({s:"GOLD-G",n:"Gold (physisch, Feingewicht in Gramm)",t:"Edelmetall",a:"gold goldbarren goldmünze physisch",unit:"g"},{s:"SILVER-G",n:"Silber (physisch, Feingewicht in Gramm)",t:"Edelmetall",a:"silber silberbarren silbermünze physisch",unit:"g"},{s:"PLATIN-G",n:"Platin (physisch, Feingewicht in Gramm)",t:"Edelmetall",a:"platin platinum platinbarren physisch",unit:"g"},{s:"PALLAD-G",n:"Palladium (physisch, Feingewicht in Gramm)",t:"Edelmetall",a:"palladium physisch",unit:"g"});
 var INSTR=[],IMAP={},ISIN={};
 function setInstr(list){var byS={};INSTR_BASE.concat(list||[]).forEach(function(x){byS[x.s]=Object.assign({},byS[x.s]||{},x);});INSTR=Object.keys(byS).map(function(k){return byS[k];});IMAP={};ISIN={};
   INSTR.forEach(function(x){IMAP[x.s]=x;if(x.i)ISIN[x.i]=x;x._q=(x.n+" "+x.s+" "+(x.i||"")+" "+(x.a||"")+" "+x.t).toLowerCase();});}
@@ -1525,7 +1525,7 @@ function fxChart(f,to){var box=$("fxChart");if(!box||f===to)return;var sy=fxSymb
     var sc=document.createElement("script");sc.src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js";sc.async=true;
     sc.innerHTML=JSON.stringify({symbols:[[sy.l,sy.s+"|12M"]],chartOnly:false,width:"100%",height:"100%",locale:en?"en":"de_DE",colorTheme:light?"light":"dark",autosize:true,showVolume:false,hideDateRanges:false,hideMarketStatus:true,hideSymbolLogo:false,scalePosition:"right",scaleMode:"Normal",fontFamily:"inherit",fontSize:"10",noTimeScale:false,valuesTracking:"1",changeMode:"price-and-percent",chartType:"area",lineWidth:2,lineType:0,dateRanges:["1d|1","1m|30","3m|60","12m|1D","60m|1W","all|1M"],isTransparent:true,lineColor:"#e3b55a",topColor:"rgba(227,181,90,0.30)",bottomColor:"rgba(227,181,90,0)"});
     box.firstChild.appendChild(sc);},350);}
-setInterval(function(){if(document.visibilityState==="visible")getJSON("/data/markets.json").then(function(d){if(d.fx&&d.fx.rates){FX=d.fx;try{localStorage.setItem("geld-kompass-fx",JSON.stringify(d.fx));}catch(e){}fxRender();}}).catch(function(){});},5*60*1000);
+setInterval(function(){if(document.visibilityState==="visible")getJSON("/data/markets.json").then(function(d){if(d.metals)Object.keys(d.metals).forEach(function(k){if(!M.live[k]&&d.metals[k].p)M.live[k]=d.metals[k].p;});if(d.fx&&d.fx.rates){FX=d.fx;try{localStorage.setItem("geld-kompass-fx",JSON.stringify(d.fx));}catch(e){}fxRender();}}).catch(function(){});},5*60*1000);
 /* Währungszeichen in festen Beschriftungen anpassen (z. B. „Restschuld (€)“) */
 (function(){if(CUR==="EUR")return;var SYM=CURS[CUR];
   function fix(n){if(n.nodeType===3){var p=n.parentNode;if(!p||p.nodeName==="SCRIPT"||p.nodeName==="STYLE"||(p.closest&&p.closest("[data-keepcur]")))return;if(n.nodeValue.indexOf("€")>-1)n.nodeValue=n.nodeValue.replace(/€/g,SYM);return;}
@@ -1546,6 +1546,8 @@ function liveMetals(){
     getJSON("https://api.coingecko.com/api/v3/simple/price?ids=pax-gold&vs_currencies=eur",7000).then(function(d){set("GOLD-G",d["pax-gold"].eur,"CoinGecko (PAX Gold, 1 Unze)");}).catch(function(){});});
   yahooQuoteEUR("SI=F").then(function(p){set("SILVER-G",p,"Yahoo Finance (Silber-Future)");}).catch(function(){
     getJSON("https://api.coingecko.com/api/v3/simple/price?ids=kinesis-silver&vs_currencies=eur",7000).then(function(d){set("SILVER-G",d["kinesis-silver"].eur,"CoinGecko (Kinesis Silver, 1 Unze)");}).catch(function(){});});
+  yahooQuoteEUR("PL=F").then(function(p){set("PLATIN-G",p,"Yahoo Finance (Platin-Future)");}).catch(function(){});
+  yahooQuoteEUR("PA=F").then(function(p){set("PALLAD-G",p,"Yahoo Finance (Palladium-Future)");}).catch(function(){});
 }
 setInterval(function(){if(document.visibilityState==="visible")liveMetals();},15*60*1000);
 function liveCrypto(){var ids={};INSTR.forEach(function(x){if(x.cg)ids[x.cg]=x.s;});var q=Object.keys(ids).join(",");if(!q)return;
@@ -1600,7 +1602,7 @@ function D(){return S.mode==="demo"?buildProfile(S.profile):S.own;}
 function isHabit(e){return e.type==="expense"&&HABIT.indexOf(e.cat)>-1;}
 function monthAmt(e,ym){if(e.freq==="once")return (e.date||"").slice(0,7)===ym?num(e.amount):0;if((e.date||"0000-00").slice(0,7)>ym)return 0;return num(e.amount)*(FREQF[e.freq]||1);}
 function perMonth(e){return e.freq==="once"?num(e.amount):num(e.amount)*(FREQF[e.freq]||1);}
-function holdInfo(h){var x=IMAP[h.s];var metal=h.s==="GOLD-G"||h.s==="SILVER-G",lv=metal?M.live[h.s]:null,manual=h.price!=null&&h.price!=="";var p=metal&&lv&&(S.mode==="demo"||!manual)?lv:manual?num(h.price):priceOf(h.s);var t=x?x.t:(h.t||"Aktie");
+function holdInfo(h){var x=IMAP[h.s];var metal=/^(GOLD|SILVER|PLATIN|PALLAD)-G$/.test(h.s),lv=metal&&M.live[h.s]?M.live[h.s]*fxr():null,manual=h.price!=null&&h.price!=="";var p=metal&&lv&&(S.mode==="demo"||!manual)?lv:manual?num(h.price):priceOf(h.s);var t=x?x.t:(h.t||"Aktie");
   var cls=t==="ETF"?"ETF / Fonds":t==="Krypto"?"Krypto":t==="Edelmetall"?"Edelmetalle":t==="Rohstoff"?"Gold / Rohstoffe":"Aktien";var val=p==null?0:p*num(h.qty);var cost=h.buy?num(h.buy)*num(h.qty):null;
   return {name:h.name||(x?x.n:h.s),t:t,cls:cls,price:p,value:val,cost:cost,pl:cost!=null&&p!=null?val-cost:null,missing:p==null};}
 function debtList(d){return (d.debts||[]).filter(function(x){return num(x.bal)>0;});}
@@ -1941,8 +1943,8 @@ function renderSugg(){var box=$("vSugg");var q=$("vSym").value.trim();if(!q||(PI
   else html+='<button type="button" class="online" data-online="1">Nicht dabei? Online bei Yahoo Finance weitersuchen</button>';
   box.innerHTML=html;box.classList.remove("hide");}
 function pickInstr(x){if(!x)return;PICK=x;x._label=x.n+" ("+x.s+")";$("vSym").value=x._label;$("vSugg").classList.add("hide");var p=priceOf(x.s);
-  $("vPriceWrap").classList.toggle("hide",x.t!=="Edelmetall");$("vQtyLabel").textContent=x.unit?"Feingewicht (g)":"Anzahl / Stück";$("vBuyLabel").textContent=x.unit?"Kaufpreis je Gramm inkl. Kosten (€)":"Kaufkurs je Stück (€)";$("vPriceLabel").textContent=x.unit?"Aktueller Rückkaufpreis je Gramm (€)":"Aktueller Kurs (€)";$("vPrice").value="";
-  $("vDetect").innerHTML='Ausgewählt: <b>'+esc(x.n)+'</b><span class="tag invest">'+esc(x.t)+'</span>'+(x.unit?'<span>Feingewicht in Gramm, beide Preise in €/g. Nutze den Händler-Rückkaufpreis; Aufschläge und Steuern sind darin zu berücksichtigen. Kein automatischer Metallkurs.</span>':p?'<span>Kurs '+E2(p)+'</span>':x.online?'<span>Kurs wird geladen …</span>':'');
+  $("vPriceWrap").classList.toggle("hide",!(x.t==="Edelmetall"&&!p));$("vQtyLabel").textContent=x.unit?"Feingewicht (g)":"Anzahl / Stück";$("vBuyLabel").textContent=x.unit?"Kaufpreis je Gramm inkl. Kosten (€)":"Kaufkurs je Stück (€)";$("vPriceLabel").textContent=x.unit?(p?"Eigener Rückkaufpreis je Gramm (€, optional)":"Aktueller Rückkaufpreis je Gramm (€)"):"Aktueller Kurs (€)";$("vPrice").value="";
+  $("vDetect").innerHTML='Ausgewählt: <b>'+esc(x.n)+'</b><span class="tag invest">'+esc(x.t)+'</span>'+(x.unit?(p?'<span>Live-Kurs '+E2(p)+' je Gramm (Weltmarktpreis). Wird automatisch aktualisiert. Händler zahlen beim Rückkauf meist etwas weniger; wer das genauer möchte, kann unten optional einen eigenen Rückkaufpreis eintragen. <button type="button" class="lnk" data-ownprice="1">Eigenen Preis eintragen</button></span>':'<span>Live-Kurs wird geladen … Falls er nicht verfügbar ist, trag den Rückkaufpreis je Gramm ein.</span>'):p?'<span>Kurs '+E2(p)+'</span>':x.online?'<span>Kurs wird geladen …</span>':'');
   if(x.online&&!p)yahooQuoteEUR(x.s).then(function(pp){S.own.cache[x.s]={p:pp,t:Date.now()};save();if(PICK===x)$("vDetect").innerHTML='Ausgewählt: <b>'+esc(x.n)+'</b><span>Kurs '+E2(pp)+'</span>';}).catch(function(){if(PICK===x){$("vPriceWrap").classList.remove("hide");$("vDetect").innerHTML='<span>Kurs gerade nicht abrufbar. Bitte aktuellen Kurs selbst eintragen.</span>';}});
   $("vQty").focus();}
 
@@ -2138,11 +2140,19 @@ function bind(){
   /* Investments */
   $("vSym").addEventListener("input",function(){PICK=null;SUGI=-1;$("vDetect").innerHTML="";$("vPriceWrap").classList.add("hide");renderSugg();});
   $("vSym").addEventListener("focus",renderSugg);
+  $("vDetect").addEventListener("click",function(ev){if(ev.target.closest("[data-ownprice]")){$("vPriceWrap").classList.remove("hide");$("vPrice").focus();}});
   $("vSym").addEventListener("keydown",function(ev){var n=SUG.length;if(ev.key==="Escape"){$("vSugg").classList.add("hide");return;}if(!n)return;if(ev.key==="ArrowDown"){SUGI=(SUGI+1)%n;renderSugg();ev.preventDefault();}else if(ev.key==="ArrowUp"){SUGI=(SUGI-1+n)%n;renderSugg();ev.preventDefault();}else if(ev.key==="Enter"&&!PICK){ev.preventDefault();pickInstr(SUG[Math.max(0,SUGI)]);}});
   $("invForm").addEventListener("submit",function(ev){ev.preventDefault();var raw=$("vSym").value.trim();if(!raw){toast("Bitte erst ein Investment suchen.");return;}var x=PICK||searchLocal(raw)[0];var qty=num($("vQty").value);if(!(qty>0)){toast("Bitte die Anzahl eintragen.");$("vQty").focus();return;}
     var h={id:uid(),qty:qty};if($("vBuy").value!=="")h.buy=num($("vBuy").value);
-    if(x){h.s=x.s;if(x.t==="Edelmetall"){if(!(num($("vPrice").value)>0)){toast("Bitte den aktuellen Rückkaufpreis je Gramm eintragen.");$("vPriceWrap").classList.remove("hide");$("vPrice").focus();return;}h.price=num($("vPrice").value);h.priceDate=new Date().toISOString().slice(0,10);}if(x.online){h.online=true;h.name=x.n;h.t=x.t;if(!priceOf(x.s)&&$("vPrice").value!=="")h.price=num($("vPrice").value);}}
-    else{if($("vPrice").value===""){$("vPriceWrap").classList.remove("hide");$("vPrice").focus();toast("Nicht in der Liste. Bitte den aktuellen Kurs eintragen.");return;}h.s=raw.toUpperCase();h.name=raw;h.price=num($("vPrice").value);}
+    if(x){h.s=x.s;if(x.t==="Edelmetall"){var own_=num($("vPrice").value)>0;if(!own_&&!priceOf(x.s)){toast("Live-Kurs gerade nicht verfügbar. Bitte den Rückkaufpreis je Gramm eintragen.");$("vPriceWrap").classList.remove("hide");$("vPrice").focus();return;}if(own_){h.price=num($("vPrice").value);h.priceDate=today();}}if(x.online){h.online=true;h.name=x.n;h.t=x.t;if(!priceOf(x.s)&&$("vPrice").value!=="")h.price=num($("vPrice").value);}}
+    else if($("vPrice").value===""){
+      /* Nicht in der Liste: zuerst automatisch online suchen und den echten Kurs übernehmen */
+      toast("Suche „"+raw+"“ online …");
+      yahooSearch(raw).then(function(l){if(!l||!l.length)throw 0;var y=l[0];return yahooQuoteEUR(y.s).then(function(pp){S.own.cache[y.s]={p:pp,t:Date.now()};
+        ensureOwn();S.own.hold.push({id:h.id,qty:h.qty,buy:h.buy,s:y.s,online:true,name:y.n,t:y.t});["vSym","vQty","vBuy","vPrice"].forEach(function(i){$(i).value="";});PICK=null;$("vDetect").innerHTML="";save();renderAll();toast("Im Depot: "+y.n+" · Kurs "+E2(pp*fxr()));});})
+      .catch(function(){$("vPriceWrap").classList.remove("hide");$("vPrice").focus();$("vDetect").innerHTML='<span>„'+esc(raw)+'“ wurde weder in der Liste noch online gefunden. Bitte den aktuellen Kurs selbst eintragen.</span>';});
+      return;}
+    else{h.s=raw.toUpperCase();h.name=raw;h.price=num($("vPrice").value);}
     ensureOwn();S.own.hold.push(h);["vSym","vQty","vBuy","vPrice"].forEach(function(i){$(i).value="";});PICK=null;$("vDetect").innerHTML="";$("vPriceWrap").classList.add("hide");save();renderAll();refreshOnline(false);toast("Im Depot: "+(h.name||(x&&x.n)||h.s));});
   $("depotTable").addEventListener("change",function(ev){var id=ev.target.getAttribute("data-buy");if(!id)return;var h=S.own.hold.find(function(x){return x.id===id;});if(h){h.buy=num(ev.target.value);save();renderAll();}});
   $("refreshBtn").addEventListener("click",function(){loadMarkets();liveMetals();refreshOnline(true);syncWallets();toast("Kurse werden aktualisiert …");});

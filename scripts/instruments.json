@@ -1039,5 +1039,831 @@
 "a": "flug eurowings",
 "r": -5,
 "rs": 1
+},
+{
+"s": "EXUS.DE",
+"n": "Xtrackers MSCI World ex USA",
+"t": "ETF",
+"a": "world ex usa ohne usa international developed",
+"i": "IE0006WW1TQ4"
+},
+{
+"s": "SPYM.DE",
+"n": "SPDR MSCI Emerging Markets",
+"t": "ETF",
+"a": "emerging markets schwellenländer em",
+"i": "IE00B469F816"
+},
+{
+"s": "AEEM.PA",
+"n": "Amundi MSCI Emerging Markets",
+"t": "ETF",
+"a": "emerging markets schwellenländer em",
+"i": "LU1681045370"
+},
+{
+"s": "XMAS.DE",
+"n": "Xtrackers MSCI EM Asia",
+"t": "ETF",
+"a": "asien asia emerging schwellenländer",
+"i": "LU0292107991"
+},
+{
+"s": "XCS6.DE",
+"n": "Xtrackers MSCI China",
+"t": "ETF",
+"a": "china chinesische aktien",
+"i": "LU0514695690"
+},
+{
+"s": "QDV5.DE",
+"n": "iShares MSCI India",
+"t": "ETF",
+"a": "indien india",
+"i": "IE00BZCQB185"
+},
+{
+"s": "EUNN.DE",
+"n": "iShares Core MSCI Japan IMI",
+"t": "ETF",
+"a": "japan japanische aktien",
+"i": "IE00B4L5YX21"
+},
+{
+"s": "G2X.DE",
+"n": "VanEck Gold Miners UCITS",
+"t": "ETF",
+"a": "gold miners goldminen bergbau mining",
+"i": "IE00BQQP9F84"
+},
+{
+"s": "IS0E.DE",
+"n": "iShares Gold Producers",
+"t": "ETF",
+"a": "gold producers goldminen bergbau mining",
+"i": "IE00B6R52036"
+},
+{
+"s": "ISF.L",
+"n": "iShares Core FTSE 100",
+"t": "ETF",
+"a": "ftse 100 uk großbritannien britische aktien",
+"i": "IE0005042456"
+},
+{
+"s": "XIU.TO",
+"n": "iShares S&P/TSX 60",
+"t": "ETF",
+"a": "kanada canada tsx kanadische aktien"
+},
+{
+"s": "VXUS",
+"n": "Vanguard Total International Stock (ex USA)",
+"t": "ETF",
+"a": "ex us international ohne usa world"
+},
+{
+"s": "VEU",
+"n": "Vanguard FTSE All-World ex-US",
+"t": "ETF",
+"a": "ex us all world ohne usa international"
+},
+{
+"s": "VWO",
+"n": "Vanguard FTSE Emerging Markets",
+"t": "ETF",
+"a": "emerging markets schwellenländer em"
+},
+{
+"s": "IEMG",
+"n": "iShares Core MSCI Emerging Markets",
+"t": "ETF",
+"a": "emerging markets schwellenländer em"
+},
+{
+"s": "EEM",
+"n": "iShares MSCI Emerging Markets",
+"t": "ETF",
+"a": "emerging markets schwellenländer em"
+},
+{
+"s": "FXI",
+"n": "iShares China Large-Cap",
+"t": "ETF",
+"a": "china large cap"
+},
+{
+"s": "MCHI",
+"n": "iShares MSCI China",
+"t": "ETF",
+"a": "china"
+},
+{
+"s": "KWEB",
+"n": "KraneShares CSI China Internet",
+"t": "ETF",
+"a": "china internet tech alibaba tencent"
+},
+{
+"s": "EWJ",
+"n": "iShares MSCI Japan",
+"t": "ETF",
+"a": "japan"
+},
+{
+"s": "EWY",
+"n": "iShares MSCI South Korea",
+"t": "ETF",
+"a": "südkorea south korea korea samsung"
+},
+{
+"s": "EWT",
+"n": "iShares MSCI Taiwan",
+"t": "ETF",
+"a": "taiwan tsmc"
+},
+{
+"s": "INDA",
+"n": "iShares MSCI India",
+"t": "ETF",
+"a": "indien india"
+},
+{
+"s": "VPL",
+"n": "Vanguard FTSE Pacific",
+"t": "ETF",
+"a": "pazifik pacific asien asia japan australien"
+},
+{
+"s": "GDX",
+"n": "VanEck Gold Miners",
+"t": "ETF",
+"a": "gold miners goldminen bergbau mining"
+},
+{
+"s": "GDXJ",
+"n": "VanEck Junior Gold Miners",
+"t": "ETF",
+"a": "junior gold miners goldminen bergbau"
+},
+{
+"s": "SIL",
+"n": "Global X Silver Miners",
+"t": "ETF",
+"a": "silver miners silberminen bergbau"
+},
+{
+"s": "COPX",
+"n": "Global X Copper Miners",
+"t": "ETF",
+"a": "copper kupfer miners bergbau"
+},
+{
+"s": "URA",
+"n": "Global X Uranium",
+"t": "ETF",
+"a": "uran uranium nuclear kernkraft"
+},
+{
+"s": "PICK",
+"n": "iShares MSCI Global Metals & Mining Producers",
+"t": "ETF",
+"a": "metals mining bergbau rohstoffe"
+},
+{
+"s": "ABX.TO",
+"n": "Barrick Mining (Barrick Gold)",
+"t": "Aktie",
+"a": "barrick gold bergbau mining kanada goldmine"
+},
+{
+"s": "NEM",
+"n": "Newmont",
+"t": "Aktie",
+"a": "newmont gold bergbau mining goldmine"
+},
+{
+"s": "AEM",
+"n": "Agnico Eagle Mines",
+"t": "Aktie",
+"a": "agnico eagle gold bergbau mining kanada"
+},
+{
+"s": "WPM",
+"n": "Wheaton Precious Metals",
+"t": "Aktie",
+"a": "wheaton precious metals streaming silber gold kanada"
+},
+{
+"s": "FNV",
+"n": "Franco-Nevada",
+"t": "Aktie",
+"a": "franco nevada royalty gold kanada"
+},
+{
+"s": "KGC",
+"n": "Kinross Gold",
+"t": "Aktie",
+"a": "kinross gold bergbau kanada"
+},
+{
+"s": "PAAS",
+"n": "Pan American Silver",
+"t": "Aktie",
+"a": "pan american silver silber bergbau kanada"
+},
+{
+"s": "AG",
+"n": "First Majestic Silver",
+"t": "Aktie",
+"a": "first majestic silver silber bergbau"
+},
+{
+"s": "HL",
+"n": "Hecla Mining",
+"t": "Aktie",
+"a": "hecla silber bergbau mining"
+},
+{
+"s": "RGLD",
+"n": "Royal Gold",
+"t": "Aktie",
+"a": "royal gold royalty"
+},
+{
+"s": "CCJ",
+"n": "Cameco",
+"t": "Aktie",
+"a": "cameco uran uranium kanada"
+},
+{
+"s": "TECK",
+"n": "Teck Resources",
+"t": "Aktie",
+"a": "teck kupfer copper bergbau kanada"
+},
+{
+"s": "FM.TO",
+"n": "First Quantum Minerals",
+"t": "Aktie",
+"a": "first quantum kupfer copper bergbau kanada"
+},
+{
+"s": "IVN.TO",
+"n": "Ivanhoe Mines",
+"t": "Aktie",
+"a": "ivanhoe kupfer copper bergbau kanada"
+},
+{
+"s": "LUN.TO",
+"n": "Lundin Mining",
+"t": "Aktie",
+"a": "lundin kupfer bergbau kanada"
+},
+{
+"s": "FCX",
+"n": "Freeport-McMoRan",
+"t": "Aktie",
+"a": "freeport kupfer copper gold bergbau"
+},
+{
+"s": "SCCO",
+"n": "Southern Copper",
+"t": "Aktie",
+"a": "southern copper kupfer bergbau"
+},
+{
+"s": "GFI",
+"n": "Gold Fields",
+"t": "Aktie",
+"a": "gold fields südafrika gold bergbau"
+},
+{
+"s": "AU",
+"n": "AngloGold Ashanti",
+"t": "Aktie",
+"a": "anglogold ashanti gold bergbau"
+},
+{
+"s": "VALE",
+"n": "Vale",
+"t": "Aktie",
+"a": "vale eisenerz brasilien bergbau mining"
+},
+{
+"s": "BHP.AX",
+"n": "BHP Group",
+"t": "Aktie",
+"a": "bhp bergbau mining australien eisenerz kupfer"
+},
+{
+"s": "NTR",
+"n": "Nutrien",
+"t": "Aktie",
+"a": "nutrien dünger kali kanada"
+},
+{
+"s": "RY.TO",
+"n": "Royal Bank of Canada",
+"t": "Aktie",
+"a": "royal bank canada rbc bank kanada"
+},
+{
+"s": "TD.TO",
+"n": "Toronto-Dominion Bank",
+"t": "Aktie",
+"a": "td bank toronto dominion kanada"
+},
+{
+"s": "BMO.TO",
+"n": "Bank of Montreal",
+"t": "Aktie",
+"a": "bmo bank montreal kanada"
+},
+{
+"s": "ENB.TO",
+"n": "Enbridge",
+"t": "Aktie",
+"a": "enbridge pipeline dividende kanada"
+},
+{
+"s": "CNQ.TO",
+"n": "Canadian Natural Resources",
+"t": "Aktie",
+"a": "canadian natural resources öl oil kanada"
+},
+{
+"s": "SU.TO",
+"n": "Suncor Energy",
+"t": "Aktie",
+"a": "suncor öl oil kanada"
+},
+{
+"s": "CNR.TO",
+"n": "Canadian National Railway",
+"t": "Aktie",
+"a": "canadian national railway eisenbahn kanada"
+},
+{
+"s": "CSU.TO",
+"n": "Constellation Software",
+"t": "Aktie",
+"a": "constellation software kanada"
+},
+{
+"s": "ATD.TO",
+"n": "Alimentation Couche-Tard",
+"t": "Aktie",
+"a": "couche tard circle k tankstelle kanada"
+},
+{
+"s": "SHOP",
+"n": "Shopify",
+"t": "Aktie",
+"a": "shopify e-commerce kanada"
+},
+{
+"s": "AZN.L",
+"n": "AstraZeneca",
+"t": "Aktie",
+"a": "astrazeneca pharma uk großbritannien"
+},
+{
+"s": "HSBA.L",
+"n": "HSBC",
+"t": "Aktie",
+"a": "hsbc bank uk großbritannien"
+},
+{
+"s": "ULVR.L",
+"n": "Unilever",
+"t": "Aktie",
+"a": "unilever dove ben jerrys knorr uk"
+},
+{
+"s": "GSK.L",
+"n": "GSK",
+"t": "Aktie",
+"a": "gsk glaxosmithkline pharma uk"
+},
+{
+"s": "RIO.L",
+"n": "Rio Tinto",
+"t": "Aktie",
+"a": "rio tinto bergbau mining eisenerz uk"
+},
+{
+"s": "GLEN.L",
+"n": "Glencore",
+"t": "Aktie",
+"a": "glencore bergbau rohstoffhandel kohle kupfer uk"
+},
+{
+"s": "AAL.L",
+"n": "Anglo American",
+"t": "Aktie",
+"a": "anglo american bergbau mining uk"
+},
+{
+"s": "ANTO.L",
+"n": "Antofagasta",
+"t": "Aktie",
+"a": "antofagasta kupfer bergbau chile uk"
+},
+{
+"s": "FRES.L",
+"n": "Fresnillo",
+"t": "Aktie",
+"a": "fresnillo silber bergbau mexiko uk"
+},
+{
+"s": "EDV.L",
+"n": "Endeavour Mining",
+"t": "Aktie",
+"a": "endeavour mining gold westafrika uk"
+},
+{
+"s": "BARC.L",
+"n": "Barclays",
+"t": "Aktie",
+"a": "barclays bank uk"
+},
+{
+"s": "LLOY.L",
+"n": "Lloyds Banking Group",
+"t": "Aktie",
+"a": "lloyds bank uk"
+},
+{
+"s": "NWG.L",
+"n": "NatWest Group",
+"t": "Aktie",
+"a": "natwest bank uk"
+},
+{
+"s": "RR.L",
+"n": "Rolls-Royce Holdings",
+"t": "Aktie",
+"a": "rolls royce triebwerke uk"
+},
+{
+"s": "BA.L",
+"n": "BAE Systems",
+"t": "Aktie",
+"a": "bae systems rüstung defence uk"
+},
+{
+"s": "TSCO.L",
+"n": "Tesco",
+"t": "Aktie",
+"a": "tesco supermarkt uk"
+},
+{
+"s": "LSEG.L",
+"n": "London Stock Exchange Group",
+"t": "Aktie",
+"a": "london stock exchange börse uk"
+},
+{
+"s": "REL.L",
+"n": "RELX",
+"t": "Aktie",
+"a": "relx elsevier daten uk"
+},
+{
+"s": "NG.L",
+"n": "National Grid",
+"t": "Aktie",
+"a": "national grid strom netz dividende uk"
+},
+{
+"s": "LGEN.L",
+"n": "Legal & General",
+"t": "Aktie",
+"a": "legal general versicherung dividende uk"
+},
+{
+"s": "PRU.L",
+"n": "Prudential",
+"t": "Aktie",
+"a": "prudential versicherung asien uk"
+},
+{
+"s": "CPG.L",
+"n": "Compass Group",
+"t": "Aktie",
+"a": "compass group catering uk"
+},
+{
+"s": "UNH",
+"n": "UnitedHealth",
+"t": "Aktie",
+"a": "unitedhealth krankenversicherung"
+},
+{
+"s": "HD",
+"n": "Home Depot",
+"t": "Aktie",
+"a": "home depot baumarkt"
+},
+{
+"s": "BAC",
+"n": "Bank of America",
+"t": "Aktie",
+"a": "bank of america"
+},
+{
+"s": "CVX",
+"n": "Chevron",
+"t": "Aktie",
+"a": "chevron öl"
+},
+{
+"s": "ABBV",
+"n": "AbbVie",
+"t": "Aktie",
+"a": "abbvie pharma"
+},
+{
+"s": "MRK",
+"n": "Merck & Co.",
+"t": "Aktie",
+"a": "merck msd pharma"
+},
+{
+"s": "PFE",
+"n": "Pfizer",
+"t": "Aktie",
+"a": "pfizer pharma"
+},
+{
+"s": "ORCL",
+"n": "Oracle",
+"t": "Aktie",
+"a": "oracle software cloud"
+},
+{
+"s": "CRM",
+"n": "Salesforce",
+"t": "Aktie",
+"a": "salesforce software"
+},
+{
+"s": "ADBE",
+"n": "Adobe",
+"t": "Aktie",
+"a": "adobe photoshop software"
+},
+{
+"s": "INTC",
+"n": "Intel",
+"t": "Aktie",
+"a": "intel chips"
+},
+{
+"s": "QCOM",
+"n": "Qualcomm",
+"t": "Aktie",
+"a": "qualcomm chips"
+},
+{
+"s": "CSCO",
+"n": "Cisco",
+"t": "Aktie",
+"a": "cisco netzwerk"
+},
+{
+"s": "IBM",
+"n": "IBM",
+"t": "Aktie",
+"a": "ibm"
+},
+{
+"s": "BA",
+"n": "Boeing",
+"t": "Aktie",
+"a": "boeing flugzeuge"
+},
+{
+"s": "CAT",
+"n": "Caterpillar",
+"t": "Aktie",
+"a": "caterpillar bagger"
+},
+{
+"s": "GE",
+"n": "GE Aerospace",
+"t": "Aktie",
+"a": "general electric aerospace"
+},
+{
+"s": "GS",
+"n": "Goldman Sachs",
+"t": "Aktie",
+"a": "goldman sachs bank"
+},
+{
+"s": "NEE",
+"n": "NextEra Energy",
+"t": "Aktie",
+"a": "nextera erneuerbare energie"
+},
+{
+"s": "PYPL",
+"n": "PayPal",
+"t": "Aktie",
+"a": "paypal zahlung"
+},
+{
+"s": "COIN",
+"n": "Coinbase",
+"t": "Aktie",
+"a": "coinbase krypto börse"
+},
+{
+"s": "MSTR",
+"n": "Strategy (MicroStrategy)",
+"t": "Aktie",
+"a": "microstrategy bitcoin"
+},
+{
+"s": "MELI",
+"n": "MercadoLibre",
+"t": "Aktie",
+"a": "mercadolibre lateinamerika"
+},
+{
+"s": "BABA",
+"n": "Alibaba",
+"t": "Aktie",
+"a": "alibaba aliexpress taobao china"
+},
+{
+"s": "9988.HK",
+"n": "Alibaba (Hongkong)",
+"t": "Aktie",
+"a": "alibaba hongkong china"
+},
+{
+"s": "JD",
+"n": "JD.com",
+"t": "Aktie",
+"a": "jd jingdong china e-commerce"
+},
+{
+"s": "0700.HK",
+"n": "Tencent",
+"t": "Aktie",
+"a": "tencent wechat china"
+},
+{
+"s": "1810.HK",
+"n": "Xiaomi",
+"t": "Aktie",
+"a": "xiaomi mi smartphone china"
+},
+{
+"s": "3690.HK",
+"n": "Meituan",
+"t": "Aktie",
+"a": "meituan lieferdienst china"
+},
+{
+"s": "1211.HK",
+"n": "BYD",
+"t": "Aktie",
+"a": "byd elektroauto china"
+},
+{
+"s": "BIDU",
+"n": "Baidu",
+"t": "Aktie",
+"a": "baidu suchmaschine china ki"
+},
+{
+"s": "NIO",
+"n": "NIO",
+"t": "Aktie",
+"a": "nio elektroauto china"
+},
+{
+"s": "LI",
+"n": "Li Auto",
+"t": "Aktie",
+"a": "li auto elektroauto china"
+},
+{
+"s": "XPEV",
+"n": "XPeng",
+"t": "Aktie",
+"a": "xpeng elektroauto china"
+},
+{
+"s": "BILI",
+"n": "Bilibili",
+"t": "Aktie",
+"a": "bilibili video china"
+},
+{
+"s": "1299.HK",
+"n": "AIA Group",
+"t": "Aktie",
+"a": "aia versicherung asien"
+},
+{
+"s": "2318.HK",
+"n": "Ping An Insurance",
+"t": "Aktie",
+"a": "ping an versicherung china"
+},
+{
+"s": "005930.KS",
+"n": "Samsung Electronics",
+"t": "Aktie",
+"a": "samsung südkorea chips smartphone"
+},
+{
+"s": "000660.KS",
+"n": "SK Hynix",
+"t": "Aktie",
+"a": "sk hynix speicherchips südkorea"
+},
+{
+"s": "005380.KS",
+"n": "Hyundai Motor",
+"t": "Aktie",
+"a": "hyundai auto südkorea"
+},
+{
+"s": "7203.T",
+"n": "Toyota",
+"t": "Aktie",
+"a": "toyota auto japan"
+},
+{
+"s": "9984.T",
+"n": "SoftBank Group",
+"t": "Aktie",
+"a": "softbank japan"
+},
+{
+"s": "6861.T",
+"n": "Keyence",
+"t": "Aktie",
+"a": "keyence japan sensoren"
+},
+{
+"s": "8306.T",
+"n": "Mitsubishi UFJ Financial",
+"t": "Aktie",
+"a": "mitsubishi ufj bank japan"
+},
+{
+"s": "INFY",
+"n": "Infosys",
+"t": "Aktie",
+"a": "infosys indien it"
+},
+{
+"s": "HDB",
+"n": "HDFC Bank",
+"t": "Aktie",
+"a": "hdfc bank indien"
+},
+{
+"s": "IBN",
+"n": "ICICI Bank",
+"t": "Aktie",
+"a": "icici bank indien"
+},
+{
+"s": "RELIANCE.NS",
+"n": "Reliance Industries",
+"t": "Aktie",
+"a": "reliance indien"
+},
+{
+"s": "D05.SI",
+"n": "DBS Group",
+"t": "Aktie",
+"a": "dbs bank singapur"
+},
+{
+"s": "SE",
+"n": "Sea Limited",
+"t": "Aktie",
+"a": "sea shopee garena singapur"
+},
+{
+"s": "BBCA.JK",
+"n": "Bank Central Asia",
+"t": "Aktie",
+"a": "bank central asia indonesien"
+},
+{
+"s": "PBR",
+"n": "Petrobras",
+"t": "Aktie",
+"a": "petrobras brasilien öl"
 }
 ]

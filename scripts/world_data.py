@@ -162,6 +162,25 @@ def uk_series():
     return out, "Office for National Statistics · CPI (D7BT, 2015 = 100)", "https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/d7bt/mm23"
 
 
+OZ = 31.1034768
+METALS = {"GOLD-G": "GC=F", "SILVER-G": "SI=F", "PLATIN-G": "PL=F", "PALLAD-G": "PA=F"}
+
+
+def metal_prices(old, rates):
+    """Weltmarktpreis je Gramm in EUR aus den Futures (USD je Feinunze)."""
+    import yfinance as yf
+    usd = rates.get("USD")
+    out = dict(old or {})
+    for sym, fut in METALS.items():
+        try:
+            closes = yf.Ticker(fut).history(period="5d", interval="1d")["Close"].dropna()
+            if usd and not closes.empty:
+                out[sym] = {"p": round(float(closes.iloc[-1]) / usd / OZ, 4), "updated": NOW, "source": f"Yahoo Finance ({fut}), USD je Unze in EUR je Gramm"}
+        except Exception as e:
+            print("metal fail", sym, e, file=sys.stderr)
+    return out
+
+
 def main():
     markets, ann = load(MARKETS), load(ANNUAL)
     if not markets:
@@ -171,6 +190,10 @@ def main():
         markets["fx"] = fx_rates(markets.get("fx"))
     except Exception as e:
         errors.append(f"fx: {e}")
+    try:
+        markets["metals"] = metal_prices(markets.get("metals", {}), markets.get("fx", {}).get("rates", {}))
+    except Exception as e:
+        errors.append(f"metals: {e}")
     infl = markets.setdefault("inflation", {})
     for geo, fn in (("US", us_series), ("UK", uk_series)):
         try:
