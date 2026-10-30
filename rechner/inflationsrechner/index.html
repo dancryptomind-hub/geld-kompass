@@ -4,15 +4,16 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Inflationsrechner: Was sind 1.000 € von früher heute wert? | Geld-Kompass</title>
-<meta name="description" content="Inflationsrechner mit amtlichen Eurostat-Daten (HVPI) für Deutschland, Österreich und den Euroraum: Kaufkraftverlust zwischen zwei Jahren kostenlos berechnen.">
+<meta name="description" content="Inflationsrechner mit amtlichen Daten für Deutschland, Österreich, den Euroraum, die USA und Großbritannien: Kaufkraftverlust zwischen zwei Jahren kostenlos berechnen.">
 <link rel="canonical" href="https://geld-kompass.com/rechner/inflationsrechner/">
 <meta name="theme-color" content="#0E1730">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Inflationsrechner: Was sind 1.000 € von früher heute wert? | Geld-Kompass">
-<meta property="og:description" content="Inflationsrechner mit amtlichen Eurostat-Daten (HVPI) für Deutschland, Österreich und den Euroraum: Kaufkraftverlust zwischen zwei Jahren kostenlos berechnen.">
+<meta property="og:description" content="Inflationsrechner mit amtlichen Daten für Deutschland, Österreich, den Euroraum, die USA und Großbritannien: Kaufkraftverlust zwischen zwei Jahren kostenlos berechnen.">
 <meta property="og:url" content="https://geld-kompass.com/rechner/inflationsrechner/">
 <meta property="og:locale" content="de_DE">
 <link rel="stylesheet" href="../rechner.css">
+<link rel="stylesheet" href="/arbeitsbuch/hinweise.css">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
@@ -21,7 +22,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Geld-Kompass">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Inflationsrechner · Geld-Kompass", "url": "https://geld-kompass.com/rechner/inflationsrechner/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "inLanguage": "de", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "description": "Inflationsrechner mit amtlichen Eurostat-Daten (HVPI) für Deutschland, Österreich und den Euroraum: Kaufkraftverlust zwischen zwei Jahren kostenlos berechnen."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Inflationsrechner · Geld-Kompass", "url": "https://geld-kompass.com/rechner/inflationsrechner/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "inLanguage": "de", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "description": "Inflationsrechner mit amtlichen Daten für Deutschland, Österreich, den Euroraum, die USA und Großbritannien: Kaufkraftverlust zwischen zwei Jahren kostenlos berechnen."}</script>
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist das die offizielle Inflationsrate?", "acceptedAnswer": {"@type": "Answer", "text": "Ja, die Werte stammen direkt aus der amtlichen Statistik von Eurostat (HVPI, Jahresdurchschnitt). Sie werden automatisch aktualisiert."}}, {"@type": "Question", "name": "Warum weicht meine gefühlte Inflation ab?", "acceptedAnswer": {"@type": "Answer", "text": "Der Index misst einen durchschnittlichen Warenkorb. Wer viel für Lebensmittel, Energie oder Miete ausgibt, spürt Preissteigerungen oft stärker."}}, {"@type": "Question", "name": "Warum fehlt das laufende Jahr?", "acceptedAnswer": {"@type": "Answer", "text": "Ein Jahresdurchschnitt steht erst fest, wenn das Jahr vorbei ist. Die aktuelle Monatsrate zeigt der Geld-Kompass im Kaufkraft-Check."}}]}</script>
 </head>
 <body>
@@ -32,8 +33,8 @@
 <p class="lead">Wähle Betrag und Jahre. Der Rechner nutzt die amtlichen Jahresdurchschnitte des Harmonisierten Verbraucherpreisindex (HVPI) von Eurostat.</p>
 <section class="card calc" aria-label="Rechner">
 <div class="grid">
-<label>Betrag (€)<input id="amt" inputmode="decimal" value="1000"></label>
-<label>Land<select id="geo"><option value="DE">Deutschland</option><option value="AT">Österreich</option><option value="EA20">Euroraum</option></select></label>
+<label><span id="amtL">Betrag (€)</span><input id="amt" inputmode="decimal" value="1000"></label>
+<label>Land<select id="geo"><option value="DE">Deutschland</option><option value="AT">Österreich</option><option value="EA20">Euroraum</option><option value="US">USA</option><option value="UK">Großbritannien</option></select></label>
 <label>Von Jahr<select id="y0"></select></label>
 <label>Bis Jahr<select id="y1"></select></label>
 </div>
@@ -41,6 +42,7 @@
 <div class="res" id="res"></div>
 <p class="note" id="src">Amtliche Daten werden geladen.</p>
 <div class="share" id="share"></div></section>
+
 <div class="cta"><a href="/app/#overview"><i><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><circle cx="26" cy="26" r="17" fill="none" stroke="#e3b55a" stroke-width="1" opacity=".45"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg></i><div><b>Mit deinen echten Zahlen weiterrechnen</b><span>Der kostenlose Geld-Kompass: Buchungen, Schulden-Plan, Depot und Freiheitstage. Ohne Anmeldung, deine Daten bleiben in deinem Browser.</span></div></a><a href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#25d366"/><path d="M12 5.2a6.8 6.8 0 0 0-5.9 10.2l-.9 3.3 3.4-.9A6.8 6.8 0 1 0 12 5.2z" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/><path d="M9.6 9.1c.2 2 1.8 3.7 3.9 4.2l.8-.9 1.4.7c-.2.8-.9 1.2-1.6 1.1-2.8-.3-5-2.5-5.3-5.3-.1-.8.4-1.4 1.1-1.6l.7 1.4z" fill="#fff"/></svg></i><div><b>Geld-Kompass auf WhatsApp</b><span>Jeden Sonntag ein kurzer Geld-Check und ein kleiner nächster Schritt. Kostenlos, deine Nummer bleibt privat.</span></div></a><a href="https://amzn.eu/d/01dK026o" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5c2.5-1 5.2-1 8 .8 2.8-1.8 5.5-1.8 8-.8v13c-2.5-1-5.2-1-8 .8-2.8-1.8-5.5-1.8-8-.8z" fill="none" stroke="#e3b55a" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 6.3v13" stroke="#e3b55a" stroke-width="1.6"/></svg></i><div><b>Das Buch dazu</b><span>„Der einfache Weg zur Finanziellen Freiheit“: Das Geldbaum-Prinzip in sieben Stufen.</span></div></a></div>
 
 <h2>Was der Inflationsrechner zeigt</h2>
@@ -57,21 +59,22 @@
 <footer><div class="wrap">Geld-Kompass · Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung. Alle Berechnungen laufen in deinem Browser; es werden keine Eingaben gespeichert oder übertragen.</div></footer>
 <script src="../rechner.js"></script>
 <script>
-var G=GKR,DATA=null;
+var G=GKR,DATA=null,CURG={US:'USD',UK:'GBP'},SYMG={US:'$',UK:'£'};
+function F(v){var c=CURG[G.$('geo').value]||'EUR';return new Intl.NumberFormat('de-DE',{style:'currency',currency:c,maximumFractionDigits:(Math.abs(v)>=1000||Math.abs(v-Math.round(v))<0.005)?0:2}).format(v);}
 fetch('../../data/hicp_annual.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(d){DATA=d;fill();}).catch(function(){G.$('big').textContent='–';G.$('src').textContent='Die amtlichen Daten sind gerade nicht erreichbar. Bitte später erneut versuchen.';});
 function years(){var g=DATA[G.$('geo').value]||DATA.DE;return Object.keys(g.index).sort();}
 function fill(){var ys=years(),a=G.$('y0'),b=G.$('y1'),pa=a.value,pb=b.value;
  a.innerHTML=b.innerHTML=ys.map(function(y){return '<option>'+y+'</option>';}).join('');
  a.value=ys.indexOf(pa)>-1?pa:(ys.indexOf('2010')>-1?'2010':ys[0]);b.value=ys.indexOf(pb)>-1?pb:ys[ys.length-1];run();}
-G.$('geo').addEventListener('change',fill);
+G.$('geo').addEventListener('change',function(){G.$('amtL').textContent='Betrag ('+(SYMG[G.$('geo').value]||'€')+')';fill();});
 function run(){if(!DATA)return;var g=DATA[G.$('geo').value]||DATA.DE,ix=g.index,y0=G.$('y0').value,y1=G.$('y1').value,a=G.val('amt');
  if(!(y0 in ix)||!(y1 in ix))return;var f=ix[y1]/ix[y0],same=a*f,kauf=a/f,pct=(f-1)*100,n=Math.abs(+y1-+y0),pa=n?(Math.pow(f,1/n)-1)*100:0;
  var land=G.$('geo').selectedOptions[0].textContent;
- G.$('big').textContent=G.E(kauf);
- G.$('bigsub').textContent=+y1>=+y0?'Kaufkraft von '+G.E(a)+' aus '+y0+', gemessen in Preisen von '+y1:'Wert in Preisen von '+y1;
- G.$('res').innerHTML='<div><span>Für dasselbe brauchst du '+y1+'</span><b class="neg">'+G.E(same)+'</b></div><div><span>Preise insgesamt</span><b class="gold">'+(pct>=0?'+':'')+G.nf1.format(pct)+' %</b></div><div><span>Im Schnitt pro Jahr</span><b>'+G.nf1.format(pa)+' %</b></div>';
- G.$('src').innerHTML='Quelle: Eurostat, HVPI Jahresdurchschnitt ('+G.esc(land)+', 2015 = 100). Stand der Abfrage: '+G.esc((DATA.checked||'').slice(0,10))+'. Das letzte Jahr ist der zuletzt vollständig veröffentlichte Jahresdurchschnitt.';
- G.share(G.$('share'),G.E(a)+' aus dem Jahr '+y0+' haben '+y1+' nur noch die Kaufkraft von '+G.E(kauf)+' ('+land+', amtliche Eurostat-Daten).','rechner/inflationsrechner/');}
+ G.$('big').textContent=F(kauf);
+ G.$('bigsub').textContent=+y1>=+y0?'Kaufkraft von '+F(a)+' aus '+y0+', gemessen in Preisen von '+y1:'Wert in Preisen von '+y1;
+ G.$('res').innerHTML='<div><span>Für dasselbe brauchst du '+y1+'</span><b class="neg">'+F(same)+'</b></div><div><span>Preise insgesamt</span><b class="gold">'+(pct>=0?'+':'')+G.nf1.format(pct)+' %</b></div><div><span>Im Schnitt pro Jahr</span><b>'+G.nf1.format(pa)+' %</b></div>';
+ G.$('src').innerHTML='Quelle: '+G.esc(g.source||'Eurostat, HVPI Jahresdurchschnitt')+' ('+G.esc(land)+', Jahresdurchschnitt, 2015 = 100). Stand der Abfrage: '+G.esc((DATA.checked||'').slice(0,10))+'. Das letzte Jahr ist der zuletzt vollständig veröffentlichte Jahresdurchschnitt.';
+ G.share(G.$('share'),F(a)+' aus dem Jahr '+y0+' haben '+y1+' nur noch die Kaufkraft von '+F(kauf)+' ('+land+', amtliche Daten).','rechner/inflationsrechner/');}
 G.bind(['amt','y0','y1'],run);</script>
 </body>
 </html>
