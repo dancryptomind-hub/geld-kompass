@@ -11,7 +11,7 @@
    „community“ meint aus historischen Gründen den WhatsApp-Kanal. */
 var ZIELE = {
   kompass: "/app/#overview",
-  community: "https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E"
+  community: "https://geld-kompass.com/go/whatsapp/"
 };
 var to = new URLSearchParams(location.search).get("to");
 if (to && ZIELE[to]) location.replace(ZIELE[to]);
@@ -32,7 +32,7 @@ if (to && ZIELE[to]) location.replace(ZIELE[to]);
 <h1>Schön, dass du hier bist.</h1>
 <p class="lead">Du hast <i>„Der einfache Weg zur Finanziellen Freiheit“</i> in der Hand. Ein Baum wächst nicht an einem Tag, sondern mit jedem kleinen Schritt. Hier findest du die zwei Begleiter, die dich dabei unterstützen.</p>
 
-<a class="card" href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E" target="_blank" rel="noopener">
+<a class="card" href="https://geld-kompass.com/go/whatsapp/" target="_blank" rel="noopener">
   <div class="head"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#25d366"/><path d="M12 5.2a6.8 6.8 0 0 0-5.9 10.2l-.9 3.3 3.4-.9A6.8 6.8 0 1 0 12 5.2z" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/><path d="M9.6 9.1c.2 2 1.8 3.7 3.9 4.2l.8-.9 1.4.7c-.2.8-.9 1.2-1.6 1.1-2.8-.3-5-2.5-5.3-5.3-.1-.8.4-1.4 1.1-1.6l.7 1.4z" fill="#fff"/></svg><b class="t">Geld-Kompass auf WhatsApp</b></div>
   <p>Der Kanal zum Buch. Kurz, verständlich und ohne Fachchinesisch, direkt in deinem WhatsApp.</p>
   <ul>
@@ -52,4 +52,5 @@ if (to && ZIELE[to]) location.replace(ZIELE[to]);
 <small>Allgemeine Finanzbildung, keine Anlageberatung. © FreedomByDan</small>
 </main>
 <script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}</script>
+<!-- Cloudflare Web Analytics (ohne Cookies, keine personenbezogenen Daten) --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d5b51a031e8c4e26b08ad199a6bfd2da"}'></script>
 </body></html>

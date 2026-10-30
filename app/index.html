@@ -279,6 +279,8 @@ dl.gloss dd{margin:0;color:var(--muted)}
 .edform{grid-template-columns:repeat(2,minmax(0,1fr))!important}.edform .span2{grid-column:1/-1}.edform>.f{display:flex!important;grid-row:auto!important}.edform p.desc{margin:0}
 .edfoot{margin-top:16px;gap:10px}.edform .hide{display:none!important}
 @media(max-width:480px){.edform{grid-template-columns:1fr!important}}
+.bookbuy{flex-direction:row;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap}.bookbuy>div{flex:1 1 280px}
+.safebar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}.safebar .sbtxt{flex:1 1 320px;display:flex;flex-direction:column;gap:4px}.safebar .sbtxt span,.safebar .sbtxt small{color:var(--muted);font-size:.86rem}
 .toastbtn{margin-left:12px;background:#1b1407;color:#fff;border:0;border-radius:8px;padding:5px 10px;font:inherit;font-weight:800;cursor:pointer}
 .donehead{font-size:.9rem;margin:14px 0 6px;color:var(--muted)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--gold-bright);color:#1b1407;font-weight:700;padding:11px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:60;max-width:calc(100% - 32px);font-size:.86rem}
@@ -355,7 +357,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
   </div>
   <div class="todaychip" id="todayChip" aria-live="polite"></div>
   <div id="navGroups" style="display:flex;flex-direction:column;gap:18px"></div>
-  <a class="chint side-hint" href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.6 9.2c.3 2.6 2.4 4.9 5.2 5.6l1.1-1.2 1.8.9c-.2 1-1.1 1.6-2.1 1.5-3.7-.4-6.6-3.3-7-7-.1-1 .5-1.9 1.5-2.1l.9 1.8z" fill="currentColor"/></svg><span><b>Geld-Kompass auf WhatsApp</b><small>Jeden Sonntag dein Geld‑Check</small></span><i aria-hidden="true">→</i></a>
+  <a class="chint side-hint" href="https://geld-kompass.com/go/whatsapp/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.6 9.2c.3 2.6 2.4 4.9 5.2 5.6l1.1-1.2 1.8.9c-.2 1-1.1 1.6-2.1 1.5-3.7-.4-6.6-3.3-7-7-.1-1 .5-1.9 1.5-2.1l.9 1.8z" fill="currentColor"/></svg><span><b>Geld-Kompass auf WhatsApp</b><small>Jeden Sonntag dein Geld‑Check</small></span><i aria-hidden="true">→</i></a>
   <div class="sidefoot"><b>Deine Daten bleiben bei dir</b>Alles wird nur in diesem Browser gespeichert. Kein Konto, kein Upload.<div class="footbtns"><button class="themebtn" id="themeBtn" type="button">Helles Design</button><button class="themebtn langbtn" id="langBtn" type="button"></button></div><label class="curpick">Währung<select id="curSel" aria-label="Währung"><option value="EUR">€ Euro</option><option value="USD">$ US-Dollar</option><option value="GBP">£ Pfund</option><option value="CHF">CHF Franken</option></select></label><a class="themebtn introbtn" href="/start/" style="display:block;text-align:center;text-decoration:none;margin-top:8px">Intro ansehen</a></div>
 </aside>
 
@@ -366,6 +368,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
     <div class="topact"><span class="pill" id="modePill"></span><button class="btn" id="modeBtn" type="button"></button></div>
   </header>
 
+  <div class="note safebar hide" id="safeBar" role="status"></div>
   <div class="note warn hide" id="storageWarning" role="alert">Deine letzten Änderungen konnten nicht dauerhaft in diesem Browser gespeichert werden. Erstelle unter „Daten &amp; Quellen“ eine Sicherung, bevor du den Tab schließt.</div>
   <!-- ÜBERSICHT -->
   <section class="page" id="p-overview">
@@ -569,6 +572,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
   <!-- BUCH -->
   <section class="page" id="p-book">
     <section class="card journey" id="journeyCard" aria-labelledby="journeyTitle"><div class="chead"><div><h2 id="journeyTitle">Dein Geldbaum. Dein nächster Schritt.</h2><p class="desc">Sieben Stufen aus „Der einfache Weg zur Finanziellen Freiheit“.</p></div><span class="chap" id="journeyCount"></span></div><div id="stageTabs" role="tablist" aria-label="Die sieben Stufen des Geldbaums"></div><div class="way-layout"><div id="journeyVisual" aria-hidden="true"></div><div id="stagePanel" role="tabpanel" tabindex="0"></div></div><p class="desc">Die Häkchen halten deine eigene Einschätzung fest. Sie sind kein Finanzrating und keine Zusage für künftigen Anlageerfolg. Auch ein kleiner Schritt zählt.</p></section>
+    <div class="card bookbuy"><div><h2>Das Buch zum Geld-Kompass</h2><p class="desc">„Der einfache Weg zur Finanziellen Freiheit“: das Geldbaum-Prinzip in sieben Stufen, mit allen Erklärungen zu den Werkzeugen hier.</p></div><a class="btn pri" href="/go/buch/" target="_blank" rel="noopener">Buch auf Amazon ansehen</a></div>
     <details class="card"><summary><b>Starte hier: Was beschäftigt dich gerade?</b></summary><p class="desc">Wähle deine Situation und öffne das passende Kapitel. Entscheide danach, welche eine Veränderung du angehst.</p><div id="startRoutes" class="start-routes"></div></details>
     <div class="card"><h2>Vom Kapitel zu deinen eigenen Zahlen</h2><p class="desc">Das Hauptbuch erklärt die Zusammenhänge. Das Arbeitsbuch vertieft sie mit Aufgaben und Auswertungen. Hier findest du die passenden Werkzeuge und deine Kapitelnotizen. Dein Familienheft beginnt mit den Regeln, die zu deinem Leben passen.</p></div>
     <div id="chapters" style="display:flex;flex-direction:column;gap:12px"></div>
@@ -589,7 +593,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
     </div>
   </section>
 
-  <a class="chint main-hint" href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.6 9.2c.3 2.6 2.4 4.9 5.2 5.6l1.1-1.2 1.8.9c-.2 1-1.1 1.6-2.1 1.5-3.7-.4-6.6-3.3-7-7-.1-1 .5-1.9 1.5-2.1l.9 1.8z" fill="currentColor"/></svg><span><b>Geld-Kompass auf WhatsApp</b><small>Jeden Sonntag dein Geld‑Check</small></span><i aria-hidden="true">→</i></a>
+  <a class="chint main-hint" href="https://geld-kompass.com/go/whatsapp/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.6 9.2c.3 2.6 2.4 4.9 5.2 5.6l1.1-1.2 1.8.9c-.2 1-1.1 1.6-2.1 1.5-3.7-.4-6.6-3.3-7-7-.1-1 .5-1.9 1.5-2.1l.9 1.8z" fill="currentColor"/></svg><span><b>Geld-Kompass auf WhatsApp</b><small>Jeden Sonntag dein Geld‑Check</small></span><i aria-hidden="true">→</i></a>
   <p class="foot"><a href="/rechner/">Kostenlose Rechner</a> · Geld-Kompass · Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ · © FreedomByDan · keine Anlage-, Steuer- oder Rechtsberatung</p>
 </main>
 </div>
@@ -2128,7 +2132,7 @@ function renderReset(c){$("resetArea").innerHTML=c?'<div class="confirm">Wirklic
 var LIVEQ={};
 function ensureLive(){var now=Date.now();D().hold.forEach(function(h){var s=h.s,x=IMAP[s];if(!x||x.cg||s==="GOLD-G"||s==="SILVER-G")return;if(LIVEQ[s]&&now-LIVEQ[s]<15*60*1000)return;LIVEQ[s]=now;
   yahooQuoteEUR(s).then(function(p){if(p>0){M.live[s]=p;M.liveQ=new Date();renderAll();}}).catch(function(){});});}
-function renderAll(){ensureLive();renderMode();renderOverview();renderBookings();renderDebts();renderAssets();renderRecurring();renderCalc();renderExamples();renderBook();renderData();if(Journey)Journey.render();}
+function renderAll(){ensureLive();try{renderSafe();}catch(e){}renderMode();renderOverview();renderBookings();renderDebts();renderAssets();renderRecurring();renderCalc();renderExamples();renderBook();renderData();if(Journey)Journey.render();}
 
 /* ================= BEARBEITEN, RÜCKGÄNGIG, WÄHRUNGSWECHSEL ================= */
 /* Jede eigene Position lässt sich vollständig ändern, ohne sie zu löschen. Löschen ist 6 s rückgängig zu machen. */
@@ -2189,6 +2193,31 @@ function convertOwn(from,to){var a=curRate(from),b=curRate(to);if(!a||!b||from==
   S.own.hold.forEach(function(h){if(h.buy)h.buy=r(h.buy);if(h.price!=null&&h.price!=="")h.price=r(h.price);});
   var c=S.calc;if(c){if(c.ci){c.ci.start=r(c.ci.start);c.ci.mon=r(c.ci.mon);}if(c.wi)c.wi.amt=r(c.wi.amt);if(c.pfInc!=null)c.pfInc=r(c.pfInc);if(c.debt&&c.debt.extra!=null)c.debt.extra=r(c.debt.extra);if(c.ffExternal)c.ffExternal=r(c.ffExternal);if(c.ffDividends)c.ffDividends=r(c.ffDividends);if(c.ffCost!=null)c.ffCost=r(c.ffCost);}}
 window.GK_setCurrency=function(c){try{if(S&&S.own){var from=S.own.cur||CUR;if(from!==c&&curRate(from)&&curRate(c)){convertOwn(from,c);}S.own.cur=c;save();}localStorage.setItem(CUR_KEY,c);}catch(e){}location.reload();};
+
+
+/* ================= DATENSICHERHEIT ================= */
+/* Alle Daten liegen nur in diesem Browser. Safari löscht sie, wenn die Seite 7 Tage nicht genutzt wird und nicht auf dem Home-Bildschirm liegt.
+   Darum: dauerhaften Speicher anfragen, auf iPhone/Mac-Safari zur Installation raten und regelmäßig an eine Sicherung erinnern. */
+var INSTALL_EVT=null;window.addEventListener("beforeinstallprompt",function(e){e.preventDefault();INSTALL_EVT=e;try{renderSafe();}catch(x){}});
+function isStandalone(){try{return window.matchMedia("(display-mode: standalone)").matches||navigator.standalone===true;}catch(e){return false;}}
+function isSafari(){var u=navigator.userAgent||"";return /iPad|iPhone|iPod/.test(u)||(/Macintosh/.test(u)&&navigator.maxTouchPoints>1)||(/Safari/.test(u)&&!/Chrome|Chromium|CriOS|FxiOS|Edg|OPR|Firefox|Android/.test(u));}
+var persistAsked=false;function askPersist(){if(persistAsked)return;persistAsked=true;try{if(navigator.storage&&navigator.storage.persist)navigator.storage.persisted().then(function(p){if(!p)navigator.storage.persist();});}catch(e){}}
+function ownCount(){var o=S.own||{};return (o.entries||[]).length+(o.debts||[]).length+(o.hold||[]).length+(o.items||[]).length;}
+function renderSafe(){var bar=$("safeBar");if(!bar)return;if(S.mode!=="own"||ownCount()<3){bar.classList.add("hide");return;}askPersist();
+  var now=Date.now(),sd=S.safe||(S.safe={}),DAY=864e5,html="";
+  if(!isStandalone()&&(isSafari()||INSTALL_EVT)&&!(sd.noInstall>now)){
+    html='<div class="sbtxt"><b>Schütze deine Daten: Installiere den Geld-Kompass.</b><span>'+(isSafari()?'Safari löscht gespeicherte Daten von Websites, die 7 Tage nicht genutzt werden. Auf dem Home-Bildschirm passiert das nicht.':'Als App startet der Geld-Kompass schneller und deine Daten bleiben sicherer gespeichert.')+'</span>'+
+      (isSafari()?'<small>'+(/iPad|iPhone|iPod/.test(navigator.userAgent)||navigator.maxTouchPoints>1?'iPhone: Teilen-Symbol, dann „Zum Home-Bildschirm“.':'Mac: Menü „Ablage“, dann „Zum Dock hinzufügen“.')+'</small>':'')+'</div><div class="row">'+(INSTALL_EVT?'<button class="btn pri sm" type="button" data-safe="install">Als App installieren</button>':'')+'<button class="btn ghost sm" type="button" data-safe="later-install">Später</button></div>';}
+  else{var last=sd.lastBackup||0,age=last?Math.floor((now-last)/DAY):null;
+    if((!last||age>=30)&&!(sd.noBackup>now)){
+      html='<div class="sbtxt"><b>'+(last?'Deine letzte Sicherung ist '+age+' Tage alt.':'Du hast noch keine Sicherung deiner Daten.')+'</b><span>Deine Zahlen liegen nur in diesem Browser. Eine Sicherungsdatei schützt sie, falls der Browser Daten löscht oder du das Gerät wechselst.</span></div><div class="row"><button class="btn pri sm" type="button" data-safe="backup">Jetzt als Datei sichern</button><button class="btn ghost sm" type="button" data-safe="later-backup">Später</button></div>';}}
+  bar.innerHTML=html;bar.classList.toggle("hide",!html);}
+document.addEventListener("click",function(ev){var b=ev.target.closest("[data-safe]");if(!b)return;var a=b.getAttribute("data-safe"),sd=S.safe||(S.safe={}),DAY=864e5;
+  if(a==="install"&&INSTALL_EVT){INSTALL_EVT.prompt();INSTALL_EVT.userChoice.then(function(){INSTALL_EVT=null;renderSafe();});}
+  if(a==="later-install")sd.noInstall=Date.now()+30*DAY;
+  if(a==="later-backup")sd.noBackup=Date.now()+7*DAY;
+  if(a==="backup"){$("bkFile").click();}
+  save();renderSafe();});
 
 /* ================= EVENTS ================= */
 function bind(){
@@ -2294,8 +2323,8 @@ function bind(){
     $("bkMsg").innerHTML='<div class="note"><b>Sicherung geprüft.</b><p>'+d.own.entries.length+' Buchungen, '+d.own.debts.length+' Schulden, '+(d.own.items.length+d.own.hold.length)+' Vermögenspositionen'+(d.companion?', '+d.companion.goals.length+' Rücklagenziel'+(d.companion.goals.length===1?'':'e')+' und '+d.companion.snapshots.length+' '+(d.companion.snapshots.length===1?'Monatsstand':'Monatsstände'):' · ältere Sicherung ohne Zielplan')+'. Deine bisherigen eigenen Einträge werden ersetzt.</p><div class="row"><button class="btn pri" id="applyRestore" type="button">Diese Sicherung übernehmen</button><button class="btn" id="cancelRestore" type="button">Abbrechen</button></div></div>';}
   document.addEventListener('click',function(ev){if(ev.target.id==='cancelRestore'){pendingRestore=null;$("bkMsg").textContent='Deine bisherigen Daten bleiben erhalten.';}
     if(ev.target.id==='applyRestore'&&pendingRestore){var d=pendingRestore;pendingRestore=null;try{localStorage.setItem('geld-kompass-vor-wiederherstellung',backup());}catch(e){}S.own=migrate(merge(emptyOwn(),d.own));S.calc=merge(defaults().calc,d.calc||{});S.notes=d.notes?((d.v||0)<5?remapNotes(d.notes):d.notes):{};GeldJourney.scope(S);S.companion.own=d.companion||GeldJourney.empty();S.ritual=d.ritual||{};S.ritualMonth=d.ritualMonth||ymNow();S.mode='own';var ok=save();renderAll();$("bkMsg").innerHTML='<div class="note '+(ok?'good':'warn')+'">'+(ok?'Sicherung übernommen. Deine eigenen Daten sind wiederhergestellt.':'Sicherung geöffnet, aber der Browser konnte sie nicht dauerhaft speichern. Sichere deine Daten vor dem Schließen.')+'</div>';}});
-  $("bkCopy").addEventListener("click",function(){var t=backup();$("bkText").value=t;try{navigator.clipboard.writeText(t).then(function(){toast("Sicherung kopiert");},function(){$("bkText").select();toast("Text markiert, jetzt kopieren");});}catch(e){$("bkText").select();}});
-  $("bkFile").addEventListener("click",function(){download(backup(),"geld-kompass-sicherung.json","application/json");});
+  $("bkCopy").addEventListener("click",function(){var t=backup();(S.safe||(S.safe={})).lastBackup=Date.now();save();renderSafe();$("bkText").value=t;try{navigator.clipboard.writeText(t).then(function(){toast("Sicherung kopiert");},function(){$("bkText").select();toast("Text markiert, jetzt kopieren");});}catch(e){$("bkText").select();}});
+  $("bkFile").addEventListener("click",function(){download(backup(),"geld-kompass-sicherung-"+today()+".json","application/json");(S.safe||(S.safe={})).lastBackup=Date.now();save();renderSafe();});
   $("csvExport").addEventListener("click",function(){var c=["Datum","Bezeichnung","Art","Kategorie","Rhythmus","Betrag"];var lines=[c.join(";")].concat(S.own.entries.map(function(e){return [e.date,e.title,TYPES[e.type],e.cat,FREQ[e.freq],String(e.amount).replace(".",",")].map(function(v){return '"'+String(v==null?"":v).replace(/"/g,'""')+'"';}).join(";");}));download("\ufeff"+lines.join("\r\n"),"geld-kompass-buchungen.csv","text/csv;charset=utf-8");});
   $("bkRestore").addEventListener("click",function(){try{restore($("bkText").value);}catch(e){pendingRestore=null;$("bkMsg").innerHTML='<div class="note warn">'+esc(e instanceof SyntaxError?'Der Text ist keine lesbare Sicherung. Wähle eine Geld-Kompass-Sicherung oder füge ihren vollständigen Inhalt ein.':e.message||'Das ist keine gültige Sicherung.')+'</div>';}});
   $("bkImport").addEventListener("change",function(ev){var f=ev.target.files&&ev.target.files[0];if(!f)return;var rd=new FileReader();rd.onload=function(){try{restore(String(rd.result));}catch(e){pendingRestore=null;$("bkMsg").innerHTML='<div class="note warn">'+esc(e instanceof SyntaxError?'Die Datei enthält keine lesbare Sicherung. Bitte wähle eine Geld-Kompass-Sicherung.':e.message||'Datei nicht erkannt.')+'</div>';}};rd.onerror=function(){pendingRestore=null;$("bkMsg").textContent="Die Sicherung konnte nicht gelesen werden. Wähle die Datei erneut.";};rd.readAsText(f);ev.target.value="";});
@@ -2322,5 +2351,6 @@ document.addEventListener('visibilitychange',function(){if(!document.hidden&&Dat
 })();
 </script>
 <script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){});});}</script>
+<!-- Cloudflare Web Analytics (ohne Cookies, keine personenbezogenen Daten) --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d5b51a031e8c4e26b08ad199a6bfd2da"}'></script>
 </body>
 </html>

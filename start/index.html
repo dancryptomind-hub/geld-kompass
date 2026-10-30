@@ -12,7 +12,7 @@
    NICHT entfernen. Ziele hier ändern, gedruckte Codes bleiben gültig. */
 var ZIELE = {
   kompass: "/app/#overview",
-  community: "https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E"
+  community: "https://geld-kompass.com/go/whatsapp/"
 };
 var to = new URLSearchParams(location.search).get("to");
 if (to && ZIELE[to]) location.replace(ZIELE[to]);
@@ -324,7 +324,7 @@ footer a{color:var(--gold);text-decoration:none}
 
 <div id="flash" aria-hidden="true"></div>
 <footer>
-  <nav><a href="/" data-t="n1">Startseite</a><a href="/rechner/" data-t="n2">Kostenlose Rechner</a><a href="/buchbegruessung/" data-t="n3">Buchbegrüßung</a><a href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E" target="_blank" rel="noopener" data-t="n4">WhatsApp-Kanal</a></nav>
+  <nav><a href="/" data-t="n1">Startseite</a><a href="/rechner/" data-t="n2">Kostenlose Rechner</a><a href="/buchbegruessung/" data-t="n3">Buchbegrüßung</a><a href="https://geld-kompass.com/go/whatsapp/" target="_blank" rel="noopener" data-t="n4">WhatsApp-Kanal</a></nav>
   <span data-t="disc">Allgemeine Finanzbildung, keine Anlageberatung.</span> © FreedomByDan
 </footer>
 
@@ -477,5 +477,6 @@ if(matchMedia('(pointer:fine)').matches&&!reduce){
 if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}
 })();
 </script>
+<!-- Cloudflare Web Analytics (ohne Cookies, keine personenbezogenen Daten) --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d5b51a031e8c4e26b08ad199a6bfd2da"}'></script>
 </body>
 </html>

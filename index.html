@@ -48,7 +48,7 @@
   <div class="ok" id="done">Der Geld-Kompass ist auf diesem Gerät bereits als App installiert.</div>
 </section>
 
-<nav class="links"><a href="/rechner/">Kostenlose Rechner</a><a href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E" target="_blank" rel="noopener">WhatsApp-Kanal</a><a href="https://amzn.eu/d/01dK026o" target="_blank" rel="noopener">Das Buch</a><a href="/arbeitsbuch/">Arbeitsbuch</a></nav>
+<nav class="links"><a href="/rechner/">Kostenlose Rechner</a><a href="https://geld-kompass.com/go/whatsapp/" target="_blank" rel="noopener">WhatsApp-Kanal</a><a href="/go/buch/" target="_blank" rel="noopener">Das Buch</a><a href="/arbeitsbuch/">Arbeitsbuch</a></nav>
 <small>Allgemeine Finanzbildung, keine Anlageberatung. © FreedomByDan</small>
 </main>
 <script>(function(){
@@ -61,4 +61,5 @@
   btn.addEventListener('click',function(){if(deferred){deferred.prompt();deferred.userChoice.finally(function(){deferred=null;});return;}(isIOS?ios:other).style.display='block';});
 })();
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}</script>
+<!-- Cloudflare Web Analytics (ohne Cookies, keine personenbezogenen Daten) --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d5b51a031e8c4e26b08ad199a6bfd2da"}'></script>
 </body></html>

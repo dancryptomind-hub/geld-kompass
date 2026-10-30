@@ -3,8 +3,8 @@ Aufruf im Repo-Hauptordner: python3 scripts/build_rechner.py"""
 import json, os, html, datetime
 
 BASE = 'https://geld-kompass.com/'
-KANAL = 'https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E'
-BUCH = 'https://amzn.eu/d/01dK026o'
+KANAL = 'https://geld-kompass.com/go/whatsapp/'
+BUCH = '/go/buch/'
 TODAY = datetime.date.today().isoformat()
 
 LOGO = '<img class="gk-logo" src="/icons/logo-badge.webp" alt="" aria-hidden="true" width="34" height="34">'
@@ -527,6 +527,7 @@ def render(p):
 <footer><div class="wrap">{T['foot']}</div></footer>
 <script src="/rechner/rechner.js"></script>
 <script>{p['js']}</script>
+<!-- Cloudflare Web Analytics (ohne Cookies, keine personenbezogenen Daten) --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{{"token": "d5b51a031e8c4e26b08ad199a6bfd2da"}}'></script>
 </body>
 </html>
 """
@@ -570,6 +571,7 @@ def hub(lang='de'):
 {txt['cta']}
 </main>
 <footer><div class="wrap">{txt['foot']}</div></footer>
+<!-- Cloudflare Web Analytics (ohne Cookies, keine personenbezogenen Daten) --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{{"token": "d5b51a031e8c4e26b08ad199a6bfd2da"}}'></script>
 </body></html>
 """
 
