@@ -45,6 +45,7 @@ a{color:var(--gold)}
 .nav:hover{background:var(--side-hover);opacity:1}
 .nav[aria-current="page"]{background:var(--gold-bright);color:#1b1407;opacity:1}
 .nav svg{width:18px;height:18px;flex:none}
+.gkshare{display:inline-flex;align-items:center;gap:7px;margin-top:10px;font-size:.82rem;font-weight:600;text-decoration:none;color:#e3b55a;border:1px solid rgba(227,181,90,.45);border-radius:999px;padding:6px 12px}.card .gkshare{color:inherit}.gkshare:hover{border-color:#e3b55a;background:rgba(227,181,90,.1)}.gkshare svg{width:15px;height:15px;flex:none}.gkrow{display:flex;flex-wrap:wrap;gap:8px;align-items:center}.gkrow a.lnk{font-size:.82rem;margin-top:10px}
 .chint{display:flex;align-items:center;gap:10px;text-decoration:none;border:1px solid rgba(227,181,90,.25);border-radius:13px;padding:10px 12px;color:var(--side-mute);transition:border-color .15s}.chint:hover{border-color:rgba(227,181,90,.6)}.chint svg{width:20px;height:20px;flex:none;color:#e3b55a}.chint span{display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}.chint b{color:var(--side-ink);font-size:.82rem}.chint small{font-size:.74rem;line-height:1.35}.chint i{font-style:normal;color:#e3b55a}.chint.main-hint{max-width:440px;margin:26px auto 0;color:var(--muted)}.chint.main-hint b{color:var(--ink)}
 .sidefoot{margin-top:auto;border:1px solid rgba(227,181,90,.25);border-radius:13px;padding:12px;font-size:.78rem;color:var(--side-mute);display:flex;flex-direction:column;gap:8px}
 .sidefoot b{color:var(--side-ink)}
@@ -439,7 +440,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
         <label class="f">Jahre<input id="wiYears" type="number" min="1" max="40" step="1" inputmode="numeric"></label>
       </div>
       <div class="detect" id="wiDet"></div>
-      <div class="res" id="wiRes"></div>
+      <div class="res" id="wiRes"></div><div id="wiShare"></div>
       <div id="wiChart"></div>
       <div id="wiText"></div>
     </div>
@@ -540,7 +541,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
   </section>
 
   <a class="chint main-hint" href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.6 9.2c.3 2.6 2.4 4.9 5.2 5.6l1.1-1.2 1.8.9c-.2 1-1.1 1.6-2.1 1.5-3.7-.4-6.6-3.3-7-7-.1-1 .5-1.9 1.5-2.1l.9 1.8z" fill="currentColor"/></svg><span><b>Sonntagsrunde</b><small>Jeden Sonntag neue Zahlen im WhatsApp-Kanal</small></span><i aria-hidden="true">→</i></a>
-  <p class="foot">Geld-Kompass · Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ · © FreedomByDan · keine Anlage-, Steuer- oder Rechtsberatung</p>
+  <p class="foot"><a href="rechner/">Kostenlose Rechner</a> · Geld-Kompass · Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ · © FreedomByDan · keine Anlage-, Steuer- oder Rechtsberatung</p>
 </main>
 </div>
 <nav class="mnav" id="mnav" aria-label="Schnellnavigation"></nav>
@@ -1626,6 +1627,9 @@ function renderMode(){var demo=S.mode==="demo";$("modePill").innerHTML='<span cl
 function mainKpis(t){return kpiHTML([["Einnahmen",E(t.income),monthName(ymNow())],["Ausgaben",E(t.spend),t.income?pct(t.spend/t.income)+" der Einnahmen, inkl. Raten":"inkl. Gewohnheiten und Raten"],["Investiert",E(t.invest),isFinite(t.invRate)?pct(t.invRate)+" der Einnahmen":"noch nichts angelegt"],["Übrig nach allem",E(t.surplus),t.surplus<0?"Plan geht noch nicht auf":"frei verfügbar",t.surplus<0?"neg":"pos"]]);}
 function netSplit(t){if(!t.aktiva&&!t.passiva)return "";var m=Math.max(t.aktiva,t.passiva,1);
   return barsHTML([{l:"Aktiva · gehört dir",v:t.aktiva,c:"var(--good)"},{l:"Passiva · Schulden",v:t.passiva,c:"var(--bad)"},{l:"Nettovermögen",v:Math.abs(t.net),c:t.net<0?"var(--warn)":"var(--c1)",lab:E(t.net)}],m);}
+/* Teilen per WhatsApp: Ergebnis + Link zur passenden öffentlichen Rechnerseite */
+var GK_BASE="https://dancryptomind-hub.github.io/geld-kompass/";
+function gkShare(text,path){var url=GK_BASE+path+"?ref=wa";return '<a class="gkshare" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(text+"\n\nRechne es selbst nach (kostenlos): "+url)+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Per WhatsApp teilen</a>';}
 /* Motivierender Kopf: positive Freiheitstage, Countdown zum Nullpunkt oder erster Schritt */
 function heroHTML(t,plan){
   if(t.surplus<0)return '<div><div class="big">'+E(-t.surplus)+'</div><small>Monatslücke</small></div><div><p><b>Zuerst den nächsten Monat sichern.</b> Deine geplanten Ausgaben liegen über deinen Einnahmen. Das ist eine lösbare Aufgabe, kein Urteil über dich. Prüfe notwendige Kosten, Ansprüche und tragbare Raten. Ein neuer Sparplan würde die Lücke zunächst vergrößern.</p><button class="btn pri sm" type="button" data-go="debts">Schulden und Raten ansehen</button></div><div class="side-num"><small>Monatlicher Geldfluss</small><b>'+E(t.surplus)+'</b><small>vor einem neuen Sparziel</small></div>';
@@ -1645,6 +1649,7 @@ function heroHTML(t,plan){
     '<div class="side-num"><small>Noch zu schaffen</small><b>'+E(gap)+'</b><small>bis zum Nullpunkt</small></div>';}
 function renderOverview(){var d=D(),t=totals(d),ds=t.debts,plan=ds.length?simulate(ds,{extra:debtExtraDefault(t),method:S.calc.debt.method,roll:true,ret:S.calc.debt.ret}):null;
   $("hero").innerHTML=heroHTML(t,plan);
+  if(S.mode==="own"&&t.net>0&&t.spend>0){var fd=freedomDays(t),hp=$("hero").querySelector("p");if(hp&&fd>=1)hp.insertAdjacentHTML("afterend",gkShare("Ich habe gerade "+DAYS(fd)+" Freiheitstage: So viele Tage könnte ich rechnerisch von meinem Nettovermögen leben. Wie viele hast du?","rechner/freiheitstage-rechner/"));}
   $("kpis").innerHTML=mainKpis(t);
   $("monthTag").textContent=monthName(ymNow());$("spendDesc").textContent="Ausgaben im "+monthName(ymNow())+" nach Kategorie";$("spendTotal").textContent=E(t.spend);
   var items=topItems(t.cats,6);
@@ -1688,7 +1693,8 @@ function renderInflation(t){
  (failed?'<div class="note warn">Aktualisierung derzeit nicht erreichbar oder älter als der gespeicherte Stand. Der letzte bekannte Wert bleibt sichtbar.</div>':'')+
  (old?'<div class="note warn">Der angezeigte Datenmonat liegt länger zurück. Bitte prüfe den Datenstand, bevor du damit planst.</div>':'')+
  lineChart([{l:'Kaufkraft bei konstant angenommener Inflation',d:arr,c:'var(--warn)',fill:'var(--warn-soft)'}],10,'Kaufkraftmodell')+
- '<p class="desc">Rechenbeispiel: Bliebe die Rate zehn Jahre konstant bei '+nf1.format(r)+' %, entsprächen 1.000 € dann etwa '+E(arr[10])+' heutiger Kaufkraft. Guthabenzinsen und Steuern sind hier nicht eingerechnet.</p>';
+ '<p class="desc">Rechenbeispiel: Bliebe die Rate zehn Jahre konstant bei '+nf1.format(r)+' %, entsprächen 1.000 € dann etwa '+E(arr[10])+' heutiger Kaufkraft. Guthabenzinsen und Steuern sind hier nicht eingerechnet.</p>'+
+ '<div class="gkrow">'+gkShare("Inflation in Deutschland aktuell: "+nf1.format(r)+" %. Bliebe sie so, wären 1.000 € in zehn Jahren nur noch rund "+E(arr[10])+" wert.","rechner/inflationsrechner/")+'<a class="lnk" href="rechner/inflationsrechner/">Was sind 1.000 € von früher heute wert? Zum Inflationsrechner</a></div>';
 }
 
 function entTag(e){var h=isHabit(e);return '<span class="tag '+(h?"habit":e.type)+'">'+(h?"Gewohnheit":TYPES[e.type])+'</span>';}
@@ -1739,7 +1745,7 @@ function renderDebts(){var d=D(),t=totals(d),ds=t.debts,own=S.mode==="own",c=S.c
   else if(cheapLeft){heroBig="✓";heroLab="Keine teuren Schulden";heroTxt='<b>Gute Nachricht:</b> Alle deine Schulden sind günstig (unter '+P(CHEAP)+'). Zahl die Raten planmäßig und investiere parallel. Planmäßig schuldenfrei im <b>'+inMonths(plan.free)+'</b>.';}
   else{heroBig=isFinite(plan.free)?DAYS(plan.free*30):"–";heroLab="Tage bis schuldenfrei";
     heroTxt=isFinite(plan.free)?'<b>Du schaffst das!</b> Mit deinem Plan bist du im <b>'+inMonths(plan.free)+'</b> komplett schuldenfrei. '+savedTxt+'Danach fließen <b>'+E(t.debtPay+extra)+'</b> jeden Monat in deinen Vermögensaufbau.':'Mit den aktuellen Raten wirst du nicht fertig, weil die Zinsen schneller wachsen. Prüfe Rate und Zinsen. Plane zusätzliche Tilgung nur aus tatsächlich verfügbarem Spielraum.';}
-  $("debtHero").innerHTML='<div><div class="big">'+heroBig+'</div><small>'+heroLab+'</small></div><div><p>'+heroTxt+'</p></div>'+
+  $("debtHero").innerHTML='<div><div class="big">'+heroBig+'</div><small>'+heroLab+'</small></div><div><p>'+heroTxt+'</p>'+(S.mode==="own"&&isFinite(plan.free)&&plan.free>0?gkShare("Ich habe jetzt einen Plan: Im "+inMonths(plan.free)+" bin ich schuldenfrei. Rechne deinen eigenen Weg aus:","rechner/schuldenfrei-rechner/"):'')+'</div>'+
     '<div class="side-num"><small>Restschuld</small><b>'+E(t.passiva)+'</b><small>'+E(t.interest)+' Zinsen im Monat</small></div>';
   $("debtKpis").innerHTML=kpiHTML([["Schulden gesamt",E(t.passiva),ds.length+" Position"+(ds.length===1?"":"en"),"neg"],["Zinsen pro Monat",E(t.interest),E(t.interest*12)+" im Jahr an die Bank"],["Raten pro Monat",E(t.debtPay),t.income?pct(t.debtPay/t.income)+" deiner Einnahmen":""],["Teuerste Schuld",P(top.rate),esc(top.name),num(top.rate)>=10?"neg":""]]);
   var sorted=ds.slice().sort(function(a,b){return num(b.rate)-num(a.rate);});
@@ -1853,6 +1859,7 @@ function renderWI(){var w=S.calc.wi;if(document.activeElement!==$("wiTitle"))$("
   var d=detect(w.title||""),br=brandFor(w.title,d.cat),x=IMAP[br.s]||{n:br.b},m=num(w.amt)*(w.per==="day"?365/12:w.per==="week"?52/12:1),Y=Math.max(1,Math.min(40,Math.round(num(w.years)||20))),c=wiCalc(m,br.s,Y);
   $("wiDet").innerHTML=(br.example?'Mögliches Branchenbeispiel: <b>':'Marke gehört zu: <b>')+esc(x.n)+'</b><span class="tag invest">'+esc(br.s)+'</span><span>'+P(c.r)+' pro Jahr'+estNote(br.s)+'</span>'+ (br.source?'<a href="'+br.source+'" target="_blank" rel="noopener">Markenquelle</a>':'')+examplesHTML(w.title);
   $("wiRes").innerHTML='<div><span>Ausgegeben in '+Y+' Jahren</span><b class="neg">'+E(c.spent)+'</b></div><div><span>In '+esc(x.n)+' angelegt</span><b class="pos">'+E(c.brand)+'</b></div><div><span>In einen Welt-ETF angelegt</span><b class="pos">'+E(c.world)+'</b></div><div><span>Das sind pro Monat</span><b>'+E(m)+'</b></div>';
+  $("wiShare").innerHTML=m>0?gkShare((w.title||"Meine Ausgabe")+" für "+E(m)+" im Monat: In "+Y+" Jahren sind das "+E(c.spent)+" ausgegeben. In "+x.n+" angelegt wären es rechnerisch "+E(c.brand)+".","rechner/abo-als-aktie/"):"";
   $("wiChart").innerHTML=lineChart([{l:"In "+x.n+" angelegt ("+P(c.ru)+")",d:c.a,c:"var(--c1)",fill:"var(--gold-soft)"},{l:"Welt-ETF ("+P(c.rw)+")",d:c.w,c:"var(--good)",w:2},{l:"Ausgegeben und weg",d:c.s,c:"var(--bad)",w:1.5,dash:true}],Y,"Konsument oder Eigentümer");
   $("wiText").innerHTML=insight("↻","Ausgaben und Eigentum im Vergleich","Die Rechnung zeigt zwei mögliche Anlagen mit angenommenen Renditen. Bei allgemeinen Ausgaben ist das Unternehmen nur ein Branchenbeispiel; daraus folgt keine Beteiligung an deinem tatsächlichen Anbieter. Kinokarten können etwa Kinobetreiber, Verleiher und Filmstudios finanzieren. Einzelaktien können stark schwanken und ihren Wert vollständig verlieren. Die Welt-ETF-Rechnung ist ebenfalls ein Modell, keine Kaufempfehlung. Vergangene Renditen sind keine Garantie.","good");}
 

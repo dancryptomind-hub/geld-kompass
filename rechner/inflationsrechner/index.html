@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Inflationsrechner: Was sind 1.000 € von früher heute wert? | Geld-Kompass</title>
+<meta name="description" content="Inflationsrechner mit amtlichen Eurostat-Daten (HVPI) für Deutschland, Österreich und den Euroraum: Kaufkraftverlust zwischen zwei Jahren kostenlos berechnen.">
+<link rel="canonical" href="https://dancryptomind-hub.github.io/geld-kompass/rechner/inflationsrechner/">
+<meta name="theme-color" content="#0E1730">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Inflationsrechner: Was sind 1.000 € von früher heute wert? | Geld-Kompass">
+<meta property="og:description" content="Inflationsrechner mit amtlichen Eurostat-Daten (HVPI) für Deutschland, Österreich und den Euroraum: Kaufkraftverlust zwischen zwei Jahren kostenlos berechnen.">
+<meta property="og:url" content="https://dancryptomind-hub.github.io/geld-kompass/rechner/inflationsrechner/">
+<meta property="og:locale" content="de_DE">
+<link rel="stylesheet" href="../rechner.css">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Inflationsrechner · Geld-Kompass", "url": "https://dancryptomind-hub.github.io/geld-kompass/rechner/inflationsrechner/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "inLanguage": "de", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "description": "Inflationsrechner mit amtlichen Eurostat-Daten (HVPI) für Deutschland, Österreich und den Euroraum: Kaufkraftverlust zwischen zwei Jahren kostenlos berechnen."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Ist das die offizielle Inflationsrate?", "acceptedAnswer": {"@type": "Answer", "text": "Ja, die Werte stammen direkt aus der amtlichen Statistik von Eurostat (HVPI, Jahresdurchschnitt). Sie werden automatisch aktualisiert."}}, {"@type": "Question", "name": "Warum weicht meine gefühlte Inflation ab?", "acceptedAnswer": {"@type": "Answer", "text": "Der Index misst einen durchschnittlichen Warenkorb. Wer viel für Lebensmittel, Energie oder Miete ausgibt, spürt Preissteigerungen oft stärker."}}, {"@type": "Question", "name": "Warum fehlt das laufende Jahr?", "acceptedAnswer": {"@type": "Answer", "text": "Ein Jahresdurchschnitt steht erst fest, wenn das Jahr vorbei ist. Die aktuelle Monatsrate zeigt der Geld-Kompass im Kaufkraft-Check."}}]}</script>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="logo" href="../../"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><circle cx="26" cy="26" r="17" fill="none" stroke="#e3b55a" stroke-width="1" opacity=".45"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg><b>Geld-<span>Kompass</span></b></a><nav><a href="../">Alle Rechner</a><a class="hide-s" href="../../"> · Zum Geld-Kompass</a></nav></div></header>
+<main class="wrap">
+<div class="eyebrow">Kaufkraft &amp; Inflation</div>
+<h1>Inflationsrechner: Was ist dein Geld von damals heute noch wert?</h1>
+<p class="lead">Wähle Betrag und Jahre. Der Rechner nutzt die amtlichen Jahresdurchschnitte des Harmonisierten Verbraucherpreisindex (HVPI) von Eurostat.</p>
+<section class="card calc" aria-label="Rechner">
+<div class="grid">
+<label>Betrag (€)<input id="amt" inputmode="decimal" value="1000"></label>
+<label>Land<select id="geo"><option value="DE">Deutschland</option><option value="AT">Österreich</option><option value="EA20">Euroraum</option></select></label>
+<label>Von Jahr<select id="y0"></select></label>
+<label>Bis Jahr<select id="y1"></select></label>
+</div>
+<div class="big" id="big">…</div><div id="bigsub" class="note" style="margin-top:0"></div>
+<div class="res" id="res"></div>
+<p class="note" id="src">Amtliche Daten werden geladen.</p>
+<div class="share" id="share"></div></section>
+<div class="cta"><a href="../../#overview"><i>🧭</i><div><b>Mit deinen echten Zahlen weiterrechnen</b><span>Der kostenlose Geld-Kompass: Buchungen, Schulden-Plan, Depot und Freiheitstage. Ohne Anmeldung, deine Daten bleiben in deinem Browser.</span></div></a><a href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E" target="_blank" rel="noopener"><i>🌱</i><div><b>Geld-Kompass auf WhatsApp</b><span>Jeden Sonntag ein kurzer Geld-Check und ein kleiner nächster Schritt. Kostenlos, deine Nummer bleibt privat.</span></div></a><a href="https://amzn.eu/d/01dK026o" target="_blank" rel="noopener"><i>📖</i><div><b>Das Buch dazu</b><span>„Der einfache Weg zur Finanziellen Freiheit“: Das Geldbaum-Prinzip in sieben Stufen.</span></div></a></div>
+
+<h2>Was der Inflationsrechner zeigt</h2>
+<p>Inflation heißt: Mit demselben Geldbetrag kannst du später weniger kaufen. Der Rechner vergleicht den Preisindex zweier Jahre. Ist das allgemeine Preisniveau zum Beispiel um 40 Prozent gestiegen, brauchst du für denselben Einkauf 1.400 € statt 1.000 €. Umgekehrt haben 1.000 € von damals heute nur noch die Kaufkraft von rund 714 €.</p>
+<h2>Woher die Zahlen kommen</h2>
+<p>Verwendet wird der Harmonisierte Verbraucherpreisindex (HVPI) von Eurostat, also die amtliche, europaweit vergleichbare Messung der Verbraucherpreise. Für jedes Jahr gilt der Jahresdurchschnitt. Der deutsche Verbraucherpreisindex des Statistischen Bundesamts (VPI) weicht leicht davon ab, weil er anders gewichtet ist; die Größenordnung ist dieselbe.</p>
+<h2>Was das für dein Geld bedeutet</h2>
+<p>Geld, das jahrelang ohne Zinsen auf dem Girokonto liegt, verliert an Kaufkraft, auch wenn der Kontostand gleich bleibt. Einen Notgroschen brauchst du trotzdem sofort verfügbar. Für Geld, das du viele Jahre nicht brauchst, lohnt sich deshalb die Frage, wie es mindestens die Inflation ausgleichen kann. Im Geld-Kompass siehst du, wie viel davon bei dir betroffen ist.</p>
+<h2>Häufige Fragen</h2>
+<details><summary>Ist das die offizielle Inflationsrate?</summary><p>Ja, die Werte stammen direkt aus der amtlichen Statistik von Eurostat (HVPI, Jahresdurchschnitt). Sie werden automatisch aktualisiert.</p></details><details><summary>Warum weicht meine gefühlte Inflation ab?</summary><p>Der Index misst einen durchschnittlichen Warenkorb. Wer viel für Lebensmittel, Energie oder Miete ausgibt, spürt Preissteigerungen oft stärker.</p></details><details><summary>Warum fehlt das laufende Jahr?</summary><p>Ein Jahresdurchschnitt steht erst fest, wenn das Jahr vorbei ist. Die aktuelle Monatsrate zeigt der Geld-Kompass im Kaufkraft-Check.</p></details>
+<h2>Weitere kostenlose Rechner</h2>
+<div class="more"><a href="../sparplan-rechner/">Sparplan-Rechner<small>Was aus einer monatlichen Sparrate werden kann</small></a><a href="../abo-als-aktie/">Konsument oder Eigentümer?<small>Was dein Abo oder deine Gewohnheit angelegt wäre</small></a><a href="../schuldenfrei-rechner/">Schuldenfrei-Rechner<small>Wann du schuldenfrei bist und was Extra-Raten bringen</small></a><a href="../notgroschen-rechner/">Notgroschen-Rechner<small>Wie groß deine Rücklage sein sollte</small></a><a href="../freiheitstage-rechner/">Freiheitstage-Rechner<small>Wie viele Tage dein Vermögen dich trägt</small></a></div>
+</main>
+<footer><div class="wrap">Geld-Kompass · Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung. Alle Berechnungen laufen in deinem Browser; es werden keine Eingaben gespeichert oder übertragen.</div></footer>
+<script src="../rechner.js"></script>
+<script>
+var G=GKR,DATA=null;
+fetch('../../data/hicp_annual.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(d){DATA=d;fill();}).catch(function(){G.$('big').textContent='–';G.$('src').textContent='Die amtlichen Daten sind gerade nicht erreichbar. Bitte später erneut versuchen.';});
+function years(){var g=DATA[G.$('geo').value]||DATA.DE;return Object.keys(g.index).sort();}
+function fill(){var ys=years(),a=G.$('y0'),b=G.$('y1'),pa=a.value,pb=b.value;
+ a.innerHTML=b.innerHTML=ys.map(function(y){return '<option>'+y+'</option>';}).join('');
+ a.value=ys.indexOf(pa)>-1?pa:(ys.indexOf('2010')>-1?'2010':ys[0]);b.value=ys.indexOf(pb)>-1?pb:ys[ys.length-1];run();}
+G.$('geo').addEventListener('change',fill);
+function run(){if(!DATA)return;var g=DATA[G.$('geo').value]||DATA.DE,ix=g.index,y0=G.$('y0').value,y1=G.$('y1').value,a=G.val('amt');
+ if(!(y0 in ix)||!(y1 in ix))return;var f=ix[y1]/ix[y0],same=a*f,kauf=a/f,pct=(f-1)*100,n=Math.abs(+y1-+y0),pa=n?(Math.pow(f,1/n)-1)*100:0;
+ var land=G.$('geo').selectedOptions[0].textContent;
+ G.$('big').textContent=G.E(kauf);
+ G.$('bigsub').textContent=+y1>=+y0?'Kaufkraft von '+G.E(a)+' aus '+y0+', gemessen in Preisen von '+y1:'Wert in Preisen von '+y1;
+ G.$('res').innerHTML='<div><span>Für dasselbe brauchst du '+y1+'</span><b class="neg">'+G.E(same)+'</b></div><div><span>Preise insgesamt</span><b class="gold">'+(pct>=0?'+':'')+G.nf1.format(pct)+' %</b></div><div><span>Im Schnitt pro Jahr</span><b>'+G.nf1.format(pa)+' %</b></div>';
+ G.$('src').innerHTML='Quelle: Eurostat, HVPI Jahresdurchschnitt ('+G.esc(land)+', 2015 = 100). Stand der Abfrage: '+G.esc((DATA.checked||'').slice(0,10))+'. Das letzte Jahr ist der zuletzt vollständig veröffentlichte Jahresdurchschnitt.';
+ G.share(G.$('share'),G.E(a)+' aus dem Jahr '+y0+' haben '+y1+' nur noch die Kaufkraft von '+G.E(kauf)+' ('+land+', amtliche Eurostat-Daten).','rechner/inflationsrechner/');}
+G.bind(['amt','y0','y1'],run);</script>
+</body>
+</html>
