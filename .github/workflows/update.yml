@@ -18,12 +18,13 @@ jobs:
           python-version: "3.12"
       - run: pip install yfinance requests
       - run: python scripts/update_data.py
+      - run: python scripts/hicp_annual.py || true
       - name: Änderungen speichern
         if: always()
         run: |
           git config user.name "geld-kompass-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data/markets.json
+          git add data/markets.json data/hicp_annual.json 2>/dev/null || git add data/markets.json
           git diff --cached --quiet || git commit -m "Kurse und Inflation aktualisiert"
           git push
           git push --force origin HEAD:gh-pages
