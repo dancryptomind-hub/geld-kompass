@@ -157,6 +157,7 @@ input:not([type=range]):not([type=checkbox]),select{height:44px;box-sizing:borde
 input[type=date],input[type=month]{appearance:none;min-height:44px}
 .form>.f{width:100%}.form>.btn{height:44px}
 .fxform{grid-template-columns:1fr 1fr auto 1fr}.fxswap{font-size:1.1rem;padding:0 14px}@media (max-width:640px){.fxform{grid-template-columns:1fr auto 1fr}.fxform>.f:first-child{grid-column:1/-1}}
+.fxchart{margin-top:16px;border:1px solid var(--line);border-radius:14px;padding:10px;background:var(--surface-2)}.fxct{font-size:.74rem;color:var(--muted);margin:0 2px 6px}#fxChart{height:340px}
 .fxbig{font:700 clamp(1.6rem,4vw,2.3rem)/1.15 var(--font-display,inherit);color:var(--gold);margin:14px 0 4px;font-variant-numeric:tabular-nums}.fxmeta{font-size:.78rem;color:var(--muted)}
 /* Gleichmäßige Felder: Beschriftung, Eingabe und Hinweis liegen in gemeinsamen Zeilen, damit alle Eingabefelder auf einer Linie stehen */
 .form{align-items:start}
@@ -481,7 +482,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
     <details class="tool" id="r-fx" open><summary><h3>Währungsrechner</h3><span class="chap">Live-Kurse</span></summary><div class="in">
       <p class="desc">Rechne Beträge zwischen Währungen um, mit aktuellen Devisenkursen.</p>
       <div class="form fxform"><label class="f">Betrag<input id="fxAmt" type="number" step="0.01" min="0" inputmode="decimal" value="100"></label><label class="f">Von<select id="fxFrom"></select></label><button class="btn fxswap" id="fxSwap" type="button" aria-label="Währungen tauschen">⇄</button><label class="f">Nach<select id="fxTo"></select></label></div>
-      <div id="fxOut" data-keepcur></div></div></details>
+      <div id="fxOut" data-keepcur></div><div class="gkrow" id="fxShare"></div><div class="fxchart"><div class="fxct" id="fxChartT"></div><div id="fxChart"></div></div></div></details>
     <details class="tool" id="r-freiheit" open><summary><h3>Double-FF-Rechner</h3><span class="chap">Einleitung</span></summary><div class="in">
       <p class="desc">Finanziell frei bist du, wenn dein Vermögen deine Lebenskosten trägt.</p>
       <div class="form"><label class="f">Lebenskosten pro Monat (€)<input id="ffCost" type="number" step="1" min="0" inputmode="decimal"></label><label class="f">Anfängliche Entnahmerate (%)<input id="ffSwr" type="number" step="0.1" min="0.5" max="10" inputmode="decimal"></label><label class="f">Rendite pro Jahr (%)<input id="ffRet" type="number" step="0.1" min="0" max="15" inputmode="decimal"></label></div>
@@ -1464,9 +1465,12 @@ function withTimeout(p,ms){return Promise.race([p,new Promise(function(_,r){setT
 function getJSON(url,ms){return withTimeout(fetch(url,{cache:"no-store"}),ms||8000).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();});}
 
 /* ================= WÄHRUNGSRECHNER ================= */
-var FXNAMES={EUR:"Euro",USD:"US-Dollar",GBP:"Britisches Pfund",CHF:"Schweizer Franken",JPY:"Japanischer Yen",CAD:"Kanadischer Dollar",AUD:"Australischer Dollar",SEK:"Schwedische Krone",NOK:"Norwegische Krone",DKK:"Dänische Krone",PLN:"Polnischer Złoty",CZK:"Tschechische Krone",HUF:"Ungarischer Forint",TRY:"Türkische Lira",THB:"Thailändischer Baht",CNY:"Chinesischer Yuan"};
-function fxInit(){var a=$("fxFrom"),b=$("fxTo");if(!a||a.options.length)return;
-  var opts=Object.keys(FXNAMES).map(function(c){return '<option value="'+c+'">'+c+' · '+FXNAMES[c]+'</option>';}).join("");a.innerHTML=b.innerHTML=opts;
+var FXNAMES={EUR:"Euro",USD:"US-Dollar",GBP:"Britisches Pfund",CHF:"Schweizer Franken",JPY:"Japanischer Yen",THB:"Thailändischer Baht"},FXLIST=null,FXCRYPTO={BTC:1,ETH:1},FXTOP=["EUR","USD","GBP","CHF","TRY","THB","GEL","PLN","JPY","BTC"];
+function fxLoadList(){return getJSON("/data/currencies.json").then(function(d){FXLIST=d.currencies;FXNAMES={};d.currencies.forEach(function(x){FXNAMES[x.c]=window.GK_LANG==="en"?x.en:x.de;if(x.crypto)FXCRYPTO[x.c]=1;});}).catch(function(){});}
+var fxStarted=false;function fxInit(){var a=$("fxFrom"),b=$("fxTo");if(!a||fxStarted)return;fxStarted=true;fxLoadList().then(function(){fxSetup(a,b);});}
+function fxSetup(a,b){var en=window.GK_LANG==="en",o=function(c){return '<option value="'+c+'">'+c+' · '+esc(FXNAMES[c]||c)+'</option>';},all=Object.keys(FXNAMES);
+  var opts='<optgroup label="'+(en?"Popular":"Häufig")+'">'+FXTOP.filter(function(c){return FXNAMES[c];}).map(o).join("")+'</optgroup><optgroup label="'+(en?"All currencies":"Alle Währungen")+'">'+all.filter(function(c){return !FXCRYPTO[c];}).sort(function(x,y){return String(FXNAMES[x]).localeCompare(String(FXNAMES[y]),en?"en":"de");}).map(o).join("")+'</optgroup><optgroup label="Krypto">'+all.filter(function(c){return FXCRYPTO[c];}).map(o).join("")+'</optgroup>';
+  a.innerHTML=b.innerHTML=opts;
   var prev={};try{prev=JSON.parse(localStorage.getItem("geld-kompass-fxcalc")||"{}");}catch(e){}
   a.value=prev.f||CUR;b.value=prev.t||(CUR==="USD"?"EUR":"USD");if(prev.a)$("fxAmt").value=prev.a;
   ["fxAmt","fxFrom","fxTo"].forEach(function(id){$(id).addEventListener("input",fxRender);$(id).addEventListener("change",fxRender);});
@@ -1476,11 +1480,31 @@ function fxInit(){var a=$("fxFrom"),b=$("fxTo");if(!a||a.options.length)return;
 function fxRender(){var out=$("fxOut");if(!out)return;var f=$("fxFrom").value,to=$("fxTo").value,amt=num($("fxAmt").value),R=FX.rates||{};
   try{localStorage.setItem("geld-kompass-fxcalc",JSON.stringify({f:f,t:to,a:$("fxAmt").value}));}catch(e){}
   if(!R[f]||!R[to]){out.innerHTML='<p class="desc">Wechselkurse werden geladen …</p>';return;}
-  var rate=R[to]/R[f],fmt=function(v,c){return new Intl.NumberFormat("de-DE",{style:"currency",currency:c,maximumFractionDigits:v!==0&&Math.abs(v)<1?4:2}).format(v);};
+  var rate=R[to]/R[f],fmt=fxFmt;
   var ch=FX.change||{},chg=(1+(ch[to]||0)/100)/(1+(ch[f]||0)/100)-1,when=FX.updated?new Date(FX.updated).toLocaleString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}):"";
+  var EN=window.GK_LANG==="en",sig=new Intl.NumberFormat(EN?"en-US":"de-DE",{maximumSignificantDigits:6});if(EN&&FX.updated)when=new Date(FX.updated).toLocaleString("en-GB",{day:"2-digit",month:"short",year:"numeric",hour:"2-digit",minute:"2-digit"});
   out.innerHTML='<div class="fxbig">'+fmt(amt*rate,to)+'</div>'+
-   '<p class="fxmeta">'+fmt(amt,f)+' = '+fmt(amt*rate,to)+' · 1 '+f+' = '+nf.format(+rate.toPrecision(6))+' '+to+(ch[to]!=null||ch[f]!=null?' · <span style="color:'+(chg>=0?'var(--good)':'var(--bad)')+'">'+(chg>=0?'+':'')+nf2.format(chg*100)+' % zum Vortag</span>':'')+'</p>'+
-   '<p class="fxmeta">Stand: '+esc(when)+' · Quelle: Yahoo Finance (Devisenkurse), wird laufend aktualisiert. Banken und Wechselstuben rechnen mit Auf- und Abschlägen.</p>';}
+   '<p class="fxmeta">'+fmt(amt,f)+' = '+fmt(amt*rate,to)+' · 1 '+f+' = '+sig.format(rate)+' '+to+' · 1 '+to+' = '+sig.format(1/rate)+' '+f+(ch[to]!=null||ch[f]!=null?' · <span style="color:'+(chg>=0?'var(--good)':'var(--bad)')+'">'+(chg>=0?'+':'')+nf2.format(chg*100)+(EN?' % vs. previous day':' % zum Vortag')+'</span>':'')+'</p>'+
+   '<p class="fxmeta">'+(EN?'As of ':'Stand: ')+esc(when)+(EN?' · Source: Yahoo Finance (exchange rates), updated automatically. Banks and exchange offices add a margin.':' · Quelle: Yahoo Finance (Devisenkurse), wird laufend aktualisiert. Banken und Wechselstuben rechnen mit Auf- und Abschlägen.')+'</p>';
+  var en=window.GK_LANG==="en",st=en?fmt(amt,f)+" is currently "+fmt(amt*rate,to)+". Live exchange rate and chart:":fmt(amt,f)+" sind gerade "+fmt(amt*rate,to)+". Live-Kurs und Chart:";
+  $("fxShare").innerHTML=gkShare(st,"rechner/waehrungsrechner/");
+  fxChart(f,to);}
+function fxFmt(v,c){var LO=window.GK_LANG==="en"?"en-US":"de-DE";if(FXCRYPTO[c]){var d=Math.abs(v)>=100?2:Math.abs(v)>=1?4:8;return new Intl.NumberFormat(LO,{maximumFractionDigits:d}).format(v)+" "+c;}
+  var dd=Math.abs(v)>=1000?0:(v!==0&&Math.abs(v)<1?4:2);try{return new Intl.NumberFormat(LO,{style:"currency",currency:c,minimumFractionDigits:dd,maximumFractionDigits:dd}).format(v);}catch(e){return nf2.format(v)+" "+c;}}
+/* Live-Chart von TradingView (Kursverlauf) */
+var fxChartKey="",fxChartT=null;
+function fxSymbol(f,to){var MAJ={EUR:1,USD:1},BS={EUR:1,USD:1,GBP:1};
+  if(FXCRYPTO[f]||FXCRYPTO[to]){var cr=FXCRYPTO[f]?f:to,fi=FXCRYPTO[f]?to:f;if(FXCRYPTO[fi])fi="USD";
+    var BN={TRY:1,BRL:1,PLN:1,JPY:1};if(!BS[fi]&&!BN[fi])fi="USD";return {s:(BS[fi]?"BITSTAMP:":"BINANCE:")+cr+fi,l:cr+" in "+fi};}
+  if(MAJ[f]||MAJ[to])return {s:"FX_IDC:"+f+to,l:f+" in "+to};
+  return {s:"FX_IDC:EUR"+to,l:"EUR in "+to};}
+function fxChart(f,to){var box=$("fxChart");if(!box||f===to)return;var sy=fxSymbol(f,to);if(sy.s===fxChartKey)return;fxChartKey=sy.s;
+  clearTimeout(fxChartT);fxChartT=setTimeout(function(){var en=window.GK_LANG==="en",light=S.theme==="light";
+    $("fxChartT").textContent=(en?"Price chart: ":"Kursverlauf: ")+sy.l+(en?" · TradingView":" · TradingView");
+    box.innerHTML='<div class="tradingview-widget-container" style="height:100%"><div class="tradingview-widget-container__widget" style="height:100%"></div></div>';
+    var sc=document.createElement("script");sc.src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js";sc.async=true;
+    sc.innerHTML=JSON.stringify({symbols:[[sy.l,sy.s+"|1D"]],chartOnly:false,width:"100%",height:"100%",locale:en?"en":"de_DE",colorTheme:light?"light":"dark",autosize:true,showVolume:false,hideDateRanges:false,hideMarketStatus:true,hideSymbolLogo:false,scalePosition:"right",scaleMode:"Normal",fontFamily:"inherit",fontSize:"10",noTimeScale:false,valuesTracking:"1",changeMode:"price-and-percent",chartType:"area",lineWidth:2,lineType:0,dateRanges:["1d|1","1m|30","3m|60","12m|1D","60m|1W","all|1M"],isTransparent:true,lineColor:"#e3b55a",topColor:"rgba(227,181,90,0.30)",bottomColor:"rgba(227,181,90,0)"});
+    box.firstChild.appendChild(sc);},350);}
 setInterval(function(){if(document.visibilityState==="visible")getJSON("/data/markets.json").then(function(d){if(d.fx&&d.fx.rates){FX=d.fx;try{localStorage.setItem("geld-kompass-fx",JSON.stringify(d.fx));}catch(e){}fxRender();}}).catch(function(){});},5*60*1000);
 /* Währungszeichen in festen Beschriftungen anpassen (z. B. „Restschuld (€)“) */
 (function(){if(CUR==="EUR")return;var SYM=CURS[CUR];
@@ -1694,7 +1718,7 @@ function netSplit(t){if(!t.aktiva&&!t.passiva)return "";var m=Math.max(t.aktiva,
   return barsHTML([{l:"Aktiva · gehört dir",v:t.aktiva,c:"var(--good)"},{l:"Passiva · Schulden",v:t.passiva,c:"var(--bad)"},{l:"Nettovermögen",v:Math.abs(t.net),c:t.net<0?"var(--warn)":"var(--c1)",lab:E(t.net)}],m);}
 /* Teilen per WhatsApp: Ergebnis + Link zur passenden öffentlichen Rechnerseite */
 var GK_BASE="https://geld-kompass.com/";
-function gkShare(text,path){var url=GK_BASE+path+"?ref=wa";return '<a class="gkshare" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(text+"\n\nRechne es selbst nach (kostenlos): "+url)+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Per WhatsApp teilen</a>';}
+function gkShare(text,path){var url=GK_BASE+path+"?ref=wa";return '<a class="gkshare" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(text+(window.GK_LANG==="en"?"\n\nCheck it yourself (free): ":"\n\nRechne es selbst nach (kostenlos): ")+url)+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Per WhatsApp teilen</a>';}
 /* Motivierender Kopf: positive Freiheitstage, Countdown zum Nullpunkt oder erster Schritt */
 function heroHTML(t,plan){
   if(t.surplus<0)return '<div><div class="big">'+E(-t.surplus)+'</div><small>Monatslücke</small></div><div><p><b>Zuerst den nächsten Monat sichern.</b> Deine geplanten Ausgaben liegen über deinen Einnahmen. Das ist eine lösbare Aufgabe, kein Urteil über dich. Prüfe notwendige Kosten, Ansprüche und tragbare Raten. Ein neuer Sparplan würde die Lücke zunächst vergrößern.</p><button class="btn pri sm" type="button" data-go="debts">Schulden und Raten ansehen</button></div><div class="side-num"><small>Monatlicher Geldfluss</small><b>'+E(t.surplus)+'</b><small>vor einem neuen Sparziel</small></div>';

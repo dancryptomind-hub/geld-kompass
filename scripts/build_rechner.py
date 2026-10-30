@@ -252,11 +252,13 @@ G.bind(['assets','debts','spend','save'],run);''',
 # ================================================================= Ausgabe
 
 # ---------------------------------------------------------------- Währungsrechner (Hauptseite + gefragte Währungspaare)
-FXN = {'EUR':('Euro','€'),'USD':('US-Dollar','$'),'GBP':('Britisches Pfund','£'),'CHF':('Schweizer Franken','CHF'),'JPY':('Japanischer Yen','¥'),
-       'CAD':('Kanadischer Dollar','CA$'),'AUD':('Australischer Dollar','AU$'),'SEK':('Schwedische Krone','SEK'),'NOK':('Norwegische Krone','NOK'),
-       'DKK':('Dänische Krone','DKK'),'PLN':('Polnischer Złoty','zł'),'CZK':('Tschechische Krone','Kč'),'HUF':('Ungarischer Forint','Ft'),
-       'TRY':('Türkische Lira','₺'),'THB':('Thailändischer Baht','฿'),'CNY':('Chinesischer Yuan','CN¥')}
-FX_OPTS = ''.join('<option value="%s">%s · %s</option>' % (c, c, n[0]) for c, n in FXN.items())
+_CL = json.load(open('data/currencies.json', encoding='utf-8'))['currencies']
+FXN = {x['c']: (x['de'], x.get('crypto', False)) for x in _CL}
+FX_TOP = ['EUR','USD','GBP','CHF','TRY','THB','GEL','PLN','JPY','BTC']
+_o = lambda c: '<option value="%s">%s · %s</option>' % (c, c, FXN[c][0])
+FX_OPTS = ('<optgroup label="Häufig">' + ''.join(_o(c) for c in FX_TOP) + '</optgroup><optgroup label="Alle Währungen">'
+           + ''.join(_o(c) for c in sorted([c for c in FXN if not FXN[c][1]], key=lambda c: FXN[c][0])) + '</optgroup><optgroup label="Krypto">'
+           + ''.join(_o(c) for c in FXN if FXN[c][1]) + '</optgroup>')
 
 def fx_calc():
     return ('\n<div class="grid fxg">\n<label>Betrag<input id="amt" inputmode="decimal" value="100"></label>\n'
@@ -265,13 +267,14 @@ def fx_calc():
             '<label>Nach<select id="to">' + FX_OPTS + '</select></label>\n</div>\n'
             '<div class="big" id="big">…</div><div id="bigsub" class="note" style="margin-top:0"></div>\n'
             '<div class="res" id="res"></div>\n<table id="tab"></table>\n'
-            '<p class="note" id="src">Aktuelle Devisenkurse werden geladen.</p>\n<div class="share" id="share"></div>')
+            '<p class="note" id="src">Aktuelle Devisenkurse werden geladen.</p>\n<div class="share" id="share"></div>'
+            '<div class="fxchart"><p class="note" id="fxct" style="margin:0 0 6px"></p><div id="fxChart"></div></div>')
 
 FX_JS = r'''
 var G=GKR,FX=null,F0="__F__",T0="__T__",SLUG="__S__";
-var N=__N__;
-G.$('from').value=F0;G.$('to').value=T0;
-function fmt(v,c){var d=Math.abs(v)>=1000?0:(Math.abs(v)<1&&v!==0?4:2);try{return new Intl.NumberFormat('de-DE',{style:'currency',currency:c,minimumFractionDigits:d,maximumFractionDigits:d}).format(v);}catch(e){return G.nf1.format(v)+' '+c;}}
+var N=__N__,CR=__CR__;
+G.$('from').value=F0;G.$('to').value=T0;if(CR[F0])G.$('amt').value='1';
+function fmt(v,c){if(CR[c]){var k=Math.abs(v)>=100?2:Math.abs(v)>=1?4:8;return new Intl.NumberFormat('de-DE',{maximumFractionDigits:k}).format(v)+' '+c;}var d=Math.abs(v)>=1000?0:(Math.abs(v)<1&&v!==0?4:2);try{return new Intl.NumberFormat('de-DE',{style:'currency',currency:c,minimumFractionDigits:d,maximumFractionDigits:d}).format(v);}catch(e){return G.nf1.format(v)+' '+c;}}
 function nfx(v){return new Intl.NumberFormat('de-DE',{maximumSignificantDigits:6}).format(v);}
 fetch('/data/markets.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(d){FX=d.fx;run();}).catch(function(){G.$('big').textContent='–';G.$('src').textContent='Die Devisenkurse sind gerade nicht erreichbar. Bitte später erneut versuchen.';});
 G.$('swap').onclick=function(){var a=G.$('from').value;G.$('from').value=G.$('to').value;G.$('to').value=a;run();};
@@ -280,16 +283,31 @@ function run(){if(!FX||!FX.rates)return;var R=FX.rates,f=G.$('from').value,to=G.
  G.$('big').textContent=fmt(a*rate,to);
  G.$('bigsub').textContent=fmt(a,f)+' entsprechen aktuell '+fmt(a*rate,to)+' ('+N[f]+' in '+N[to]+')';
  G.$('res').innerHTML='<div><span>1 '+f+' =</span><b class="gold">'+nfx(rate)+' '+to+'</b></div><div><span>1 '+to+' =</span><b>'+nfx(1/rate)+' '+f+'</b></div><div><span>Zum Vortag</span><b class="'+(chg>=0?'pos':'neg')+'">'+(chg>=0?'+':'')+new Intl.NumberFormat('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2}).format(chg)+' %</b></div>';
- var am=[1,5,10,20,50,100,200,500,1000,5000];
+ var am=CR[f]?[0.001,0.005,0.01,0.05,0.1,0.25,0.5,1,2,5]:[1,5,10,20,50,100,200,500,1000,5000];
  G.$('tab').innerHTML='<tr><th>'+N[f]+'</th><th>'+N[to]+'</th></tr>'+am.map(function(x){return '<tr><td>'+fmt(x,f)+'</td><td>'+fmt(x*rate,to)+'</td></tr>';}).join('');
  var when=FX.updated?new Date(FX.updated).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):'';
  G.$('src').textContent='Mittelkurs von Yahoo Finance (Devisenmarkt), Stand '+when+' Uhr, wird automatisch alle zwei Stunden aktualisiert. Banken, Kartenanbieter und Wechselstuben rechnen mit Auf- und Abschlägen.';
- G.share(G.$('share'),fmt(a,f)+' sind gerade '+fmt(a*rate,to)+'. Live-Kurs und Umrechnungstabelle:','rechner/'+SLUG+'/');}
+ G.share(G.$('share'),fmt(a,f)+' sind gerade '+fmt(a*rate,to)+'. Live-Kurs, Chart und Umrechnungstabelle:','rechner/'+SLUG+'/');chart(f,to);}
+var CK='',CT=null;
+function sym(f,to){var BS={EUR:1,USD:1,GBP:1};if(CR[f]||CR[to]){var c=CR[f]?f:to,x=CR[f]?to:f;if(CR[x]||!(BS[x]||{TRY:1,BRL:1,PLN:1,JPY:1}[x]))x='USD';return [(BS[x]?'BITSTAMP:':'BINANCE:')+c+x,c+' in '+x];}
+ if(f==='EUR'||f==='USD'||to==='EUR'||to==='USD')return ['FX_IDC:'+f+to,f+' in '+to];return ['FX_IDC:EUR'+to,'EUR in '+to];}
+function chart(f,to){if(f===to)return;var s=sym(f,to);if(s[0]===CK)return;CK=s[0];clearTimeout(CT);CT=setTimeout(function(){
+ G.$('fxct').textContent='Kursverlauf live: '+s[1]+' (TradingView)';var box=G.$('fxChart');
+ box.innerHTML='<div class="tradingview-widget-container" style="height:100%"><div class="tradingview-widget-container__widget" style="height:100%"></div></div>';
+ var sc=document.createElement('script');sc.src='https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js';sc.async=true;
+ sc.innerHTML=JSON.stringify({symbols:[[s[1],s[0]+'|1D']],chartOnly:false,width:'100%',height:'100%',locale:'de_DE',colorTheme:'light',autosize:true,showVolume:false,hideDateRanges:false,hideMarketStatus:true,scalePosition:'right',scaleMode:'Normal',fontSize:'10',valuesTracking:'1',changeMode:'price-and-percent',chartType:'area',lineWidth:2,dateRanges:['1d|1','1m|30','3m|60','12m|1D','60m|1W','all|1M'],isTransparent:true,lineColor:'#b8862f',topColor:'rgba(227,181,90,0.35)',bottomColor:'rgba(227,181,90,0)'});
+ box.firstChild.appendChild(sc);},300);}
 G.bind(['amt','from','to'],run);'''
 
 def fx_js(f, to, slug):
     return (FX_JS.replace('__F__', f).replace('__T__', to).replace('__S__', slug)
-            .replace('__N__', json.dumps({c: n[0] for c, n in FXN.items()}, ensure_ascii=False)))
+            .replace('__N__', json.dumps({c: n[0] for c, n in FXN.items()}, ensure_ascii=False))
+            .replace('__CR__', json.dumps({c: 1 for c, n in FXN.items() if n[1]})))
+
+BTC_TEXT = '''
+<h2>Was du über den Bitcoin-Kurs wissen solltest</h2>
+<p>Bitcoin hat keinen festen Wechselkurs wie eine Landeswährung. Der Preis entsteht an Kryptobörsen rund um die Uhr, auch am Wochenende, und kann innerhalb eines Tages um mehrere Prozent schwanken. Der Rechner nutzt den aktuellen Preis von Yahoo Finance; der Chart darunter zeigt den Verlauf an der Börse Bitstamp.</p>
+<p>Beim Kauf über eine App oder Börse kommen Gebühren und ein Kursaufschlag dazu. Vergleiche deshalb den angebotenen Preis mit dem Kurs oben. Und die wichtigste Regel aus dem Buch gilt auch hier: Erst Notgroschen und teure Schulden, dann schwankende Anlagen, und nur mit Geld, das du lange nicht brauchst.</p>'''
 
 FX_TIPS = '''
 <h2>So zahlst du im Ausland nicht zu viel</h2>
@@ -307,9 +325,9 @@ def fx_faqs(f, to):
             ('Wie aktuell ist der Kurs?', 'Die Kurse werden automatisch alle zwei Stunden von Yahoo Finance aktualisiert. Datum und Uhrzeit des Stands stehen direkt unter dem Rechner.'),
             ('Kostet der Rechner etwas?', 'Nein. Der Währungsrechner ist kostenlos, ohne Anmeldung und ohne Werbung. Die Rechnung läuft in deinem Browser.')]
 
-page(slug='waehrungsrechner', short='Währungsrechner', teaser='Live-Kurse für 16 Währungen umrechnen',
- title='Währungsrechner mit Live-Kursen: Euro, Dollar, Pfund, Franken | Geld-Kompass',
- desc='Kostenloser Währungsrechner mit aktuellen Devisenkursen: Euro, US-Dollar, Pfund, Franken, Lira, Baht und mehr umrechnen. Mit Umrechnungstabelle und Veränderung zum Vortag.',
+page(slug='waehrungsrechner', short='Währungsrechner', teaser='Live-Kurse für über 50 Währungen und Bitcoin',
+ title='Währungsrechner mit Live-Kursen und Chart: über 50 Währungen und Bitcoin | Geld-Kompass',
+ desc='Kostenloser Währungsrechner mit aktuellen Kursen für über 50 Währungen und Bitcoin: Euro, Dollar, Pfund, Franken, Lira, Lari, Baht, Dong und mehr. Mit Live-Chart und Umrechnungstabelle.',
  eyebrow='Währungen & Wechselkurse', h1='Währungsrechner: Beträge mit aktuellen Kursen umrechnen',
  lead='Betrag eingeben, Währungen wählen, fertig. Der Rechner nutzt aktuelle Mittelkurse vom Devisenmarkt und zeigt dir gleich eine Tabelle mit den gängigsten Beträgen.',
  calc=fx_calc(), js=fx_js('EUR', 'USD', 'waehrungsrechner'),
@@ -324,6 +342,12 @@ FX_PAIRS = [
  ('euro-in-franken','EUR','CHF','Euro in Franken','Ob Urlaub in den Alpen, Pendeln in die Schweiz oder ein Einkauf in Zürich: Hier rechnest du Euro mit aktuellem Kurs in Schweizer Franken um.'),
  ('franken-in-euro','CHF','EUR','Franken in Euro','Lohn, Preise oder Erspartes in Schweizer Franken? Der Rechner zeigt dir den aktuellen Gegenwert in Euro.'),
  ('euro-in-tuerkische-lira','EUR','TRY','Euro in Türkische Lira','Für den Urlaub in der Türkei: Die Lira schwankt stark, deshalb lohnt sich vor jedem Umtausch ein Blick auf den aktuellen Kurs. Die Veränderung zum Vortag zeigt, wie stark sie sich zuletzt bewegt hat.'),
+ ('euro-in-lari','EUR','GEL','Euro in Lari','Für Georgien-Reisen, ein Leben in Tiflis oder Überweisungen nach Georgien: So viel Georgische Lari bekommst du aktuell für deine Euro.'),
+ ('euro-in-ringgit','EUR','MYR','Euro in Ringgit','Für Malaysia-Urlaub, Kuala Lumpur oder Penang: So viel Malaysische Ringgit bekommst du gerade für deine Euro.'),
+ ('euro-in-dong','EUR','VND','Euro in Dong','Für Vietnam-Reisen: Beim Dong kommen schnell sehr große Zahlen zusammen. Der Rechner und die Tabelle zeigen dir auf einen Blick, wie viel deine Euro wert sind.'),
+ ('euro-in-rubel','EUR','RUB','Euro in Rubel','Der aktuelle Kurs von Euro zu Russischem Rubel am Devisenmarkt. Beachte: Wegen Sanktionen und Kapitalverkehrsbeschränkungen weichen die tatsächlich erzielbaren Kurse oft deutlich ab.'),
+ ('euro-in-zloty','EUR','PLN','Euro in Złoty','Für Einkäufe, Urlaub oder Arbeit in Polen: So viel Polnische Złoty bekommst du aktuell für deine Euro.'),
+ ('bitcoin-in-euro','BTC','EUR','Bitcoin in Euro','Was ist ein Bitcoin gerade in Euro wert? Der Rechner zeigt den aktuellen Kurs, die Tabelle auch Bruchteile, denn du kannst Bitcoin in kleinen Stücken kaufen. Bitcoin schwankt stark; das ist eine Kursanzeige und keine Anlageberatung.'),
  ('euro-in-baht','EUR','THB','Euro in Baht','Für Thailand-Urlaub oder ein Leben als digitaler Nomade in Südostasien: So viel Thailändische Baht bekommst du aktuell für deine Euro.'),
 ]
 for slug, f, to, name, intro in FX_PAIRS:
@@ -331,7 +355,7 @@ for slug, f, to, name, intro in FX_PAIRS:
      title='%s umrechnen: aktueller Kurs und Tabelle | Geld-Kompass' % name,
      desc='%s umrechnen mit aktuellem Devisenkurs: Rechner, Umrechnungstabelle von 1 bis 5.000 %s und Veränderung zum Vortag. Kostenlos und ohne Anmeldung.' % (name, FXN[f][0]),
      eyebrow='Währungsrechner', h1='%s umrechnen: Was ist dein Geld gerade wert?' % name, lead=intro,
-     calc=fx_calc(), js=fx_js(f, to, slug), body=FX_TIPS + '\n<h2>Weitere Währungen</h2>\n<div class="more">%PAIRLINKS%</div>', faqs=fx_faqs(f, to))
+     calc=fx_calc(), js=fx_js(f, to, slug), body=(BTC_TEXT if FXN[f][1] or FXN[to][1] else FX_TIPS) + '\n<h2>Weitere Währungen</h2>\n<div class="more">%PAIRLINKS%</div>', faqs=fx_faqs(f, to))
 
 
 def esc(s): return html.escape(s, quote=True)
