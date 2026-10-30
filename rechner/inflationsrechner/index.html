@@ -58,9 +58,11 @@
 <details><summary>Ist das die offizielle Inflationsrate?</summary><p>Ja, die Werte stammen direkt aus der amtlichen Statistik von Eurostat (HVPI, Jahresdurchschnitt). Sie werden automatisch aktualisiert.</p></details><details><summary>Warum weicht meine gefühlte Inflation ab?</summary><p>Der Index misst einen durchschnittlichen Warenkorb. Wer viel für Lebensmittel, Energie oder Miete ausgibt, spürt Preissteigerungen oft stärker.</p></details><details><summary>Warum fehlt das laufende Jahr?</summary><p>Ein Jahresdurchschnitt steht erst fest, wenn das Jahr vorbei ist. Die aktuelle Monatsrate zeigt der Geld-Kompass im Kaufkraft-Check.</p></details>
 <h2>Weitere kostenlose Rechner</h2>
 <div class="more"><a href="../sparplan-rechner/">Sparplan-Rechner<small>Was aus einer monatlichen Sparrate werden kann</small></a><a href="../abo-als-aktie/">Konsument oder Eigentümer?<small>Was dein Abo oder deine Gewohnheit angelegt wäre</small></a><a href="../schuldenfrei-rechner/">Schuldenfrei-Rechner<small>Wann du schuldenfrei bist und was Extra-Raten bringen</small></a><a href="../notgroschen-rechner/">Notgroschen-Rechner<small>Wie groß deine Rücklage sein sollte</small></a><a href="../freiheitstage-rechner/">Freiheitstage-Rechner<small>Wie viele Tage dein Vermögen dich trägt</small></a><a href="../waehrungsrechner/">Währungsrechner<small>Live-Kurse für über 50 Währungen und Bitcoin</small></a></div>
+<div data-partner="newsletter" hidden></div>
 </main>
-<footer><div class="wrap">Geld-Kompass · Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung. Alle Berechnungen laufen in deinem Browser; es werden keine Daten übertragen.</div></footer>
+<footer><div class="wrap"><a href="/datenschutz/">Datenschutz</a> · Geld-Kompass · Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung. Alle Berechnungen laufen in deinem Browser; es werden keine Daten übertragen.</div></footer>
 <script src="/rechner/rechner.js"></script>
+<script src="/partner.js" defer></script>
 <script>
 var G=GKR,DATA=null,CURG={US:'USD',UK:'GBP'},SYMG={US:'$',UK:'£'};
 function F(v){var c=CURG[G.$('geo').value]||'EUR';return new Intl.NumberFormat('de-DE',{style:'currency',currency:c,maximumFractionDigits:(Math.abs(v)>=1000||Math.abs(v-Math.round(v))<0.005)?0:2}).format(v);}

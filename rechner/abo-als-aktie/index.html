@@ -59,9 +59,11 @@
 <details><summary>Warum 7 Prozent?</summary><p>Das ist eine Annahme für einen breit gestreuten Aktien-Weltindex über lange Zeiträume. Du kannst jeden anderen Wert eintragen.</p></details><details><summary>Rechnet der Rechner mit der echten Aktie von Netflix und Co.?</summary><p>Diese Seite rechnet mit einer frei wählbaren Rendite. Im vollständigen Geld-Kompass werden Marken echten Unternehmen zugeordnet.</p></details><details><summary>Ist das eine Kaufempfehlung?</summary><p>Nein. Es ist eine Modellrechnung zur Finanzbildung. Einzelaktien sind riskant und können ihren Wert vollständig verlieren.</p></details>
 <h2>Weitere kostenlose Rechner</h2>
 <div class="more"><a href="../sparplan-rechner/">Sparplan-Rechner<small>Was aus einer monatlichen Sparrate werden kann</small></a><a href="../inflationsrechner/">Inflationsrechner<small>Was dein Geld von damals heute noch wert ist</small></a><a href="../schuldenfrei-rechner/">Schuldenfrei-Rechner<small>Wann du schuldenfrei bist und was Extra-Raten bringen</small></a><a href="../notgroschen-rechner/">Notgroschen-Rechner<small>Wie groß deine Rücklage sein sollte</small></a><a href="../freiheitstage-rechner/">Freiheitstage-Rechner<small>Wie viele Tage dein Vermögen dich trägt</small></a><a href="../waehrungsrechner/">Währungsrechner<small>Live-Kurse für über 50 Währungen und Bitcoin</small></a></div>
+<div data-partner="newsletter" hidden></div>
 </main>
-<footer><div class="wrap">Geld-Kompass · Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung. Alle Berechnungen laufen in deinem Browser; es werden keine Daten übertragen.</div></footer>
+<footer><div class="wrap"><a href="/datenschutz/">Datenschutz</a> · Geld-Kompass · Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung. Alle Berechnungen laufen in deinem Browser; es werden keine Daten übertragen.</div></footer>
 <script src="/rechner/rechner.js"></script>
+<script src="/partner.js" defer></script>
 <script>
 var G=GKR;document.querySelectorAll('#pre button').forEach(function(b){b.onclick=function(){G.$('what').value=b.dataset.t;G.$('amt').value=String(b.dataset.a).replace('.',',');G.$('per').value=b.dataset.p;run();};});
 function run(){var a=G.val('amt'),p=G.$('per').value,m=a*(p==='d'?365/12:p==='w'?52/12:1),n=Math.max(1,Math.min(50,Math.round(G.val('years')))),r=G.val('ret')/100,rm=Math.pow(1+r,1/12)-1,v=0;
