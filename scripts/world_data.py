@@ -36,29 +36,57 @@ def load(path):
 
 
 # ---------- Wechselkurse ----------
+def currency_list():
+    try:
+        d = json.loads((ROOT / "data" / "currencies.json").read_text(encoding="utf-8"))
+        return [x["c"] for x in d["currencies"] if x["c"] != "EUR" and not x.get("crypto")], [x["c"] for x in d["currencies"] if x.get("crypto")]
+    except Exception:
+        return CURRENCIES, ["BTC"]
+
+
 def fx_rates(old):
+    """Kurse als Einheiten je 1 EUR. Quelle 1: Yahoo Finance (yfinance), Quelle 2 für fehlende Währungen: open.er-api.com."""
     import yfinance as yf
-    rates, change = {"EUR": 1.0}, {}
-    for cur in CURRENCIES:
+    fiat, crypto = currency_list()
+    rates, change, src = {"EUR": 1.0}, {}, {}
+    def last_two(sym):
+        closes = yf.Ticker(sym).history(period="5d", interval="1d")["Close"].dropna()
+        return (float(closes.iloc[-1]), float(closes.iloc[-2]) if len(closes) > 1 else None) if not closes.empty else (None, None)
+    for cur in fiat:
         try:
-            hist = yf.Ticker(f"EUR{cur}=X").history(period="5d", interval="1d")
-            closes = hist["Close"].dropna()
-            if closes.empty:
-                continue
-            rates[cur] = round(float(closes.iloc[-1]), 6)
-            if len(closes) > 1 and float(closes.iloc[-2]) > 0:
-                change[cur] = round((float(closes.iloc[-1]) / float(closes.iloc[-2]) - 1) * 100, 2)
+            v, p = last_two(f"EUR{cur}=X")
+            if v and v > 0:
+                rates[cur], src[cur] = round(v, 8), "yahoo"
+                if p:
+                    change[cur] = round((v / p - 1) * 100, 2)
         except Exception as e:
             print("fx fail", cur, e, file=sys.stderr)
+    for cur in crypto:  # Preis 1 BTC in EUR -> Kurs = 1 / Preis
+        try:
+            v, p = last_two(f"{cur}-EUR")
+            if v and v > 0:
+                rates[cur], src[cur] = round(1 / v, 12), "yahoo"
+                if p:
+                    change[cur] = round((p / v - 1) * 100, 2)
+        except Exception as e:
+            print("crypto fail", cur, e, file=sys.stderr)
+    missing = [c for c in fiat if c not in rates]
+    if missing:
+        try:
+            r = requests.get("https://open.er-api.com/v6/latest/EUR", headers=UA, timeout=30).json()
+            for c in missing:
+                if r.get("rates", {}).get(c):
+                    rates[c], src[c] = float(r["rates"][c]), "er-api"
+        except Exception as e:
+            print("er-api fail", e, file=sys.stderr)
     oldr = (old or {}).get("rates", {})
-    for cur in CURRENCIES:  # fehlende Kurse: letzten bekannten Wert behalten
+    for cur in fiat + crypto:  # fehlende Kurse: letzten bekannten Wert behalten
         if cur not in rates and cur in oldr:
-            rates[cur] = oldr[cur]
-    fresh = len([c for c in CURRENCIES if c in rates and c not in (set(oldr) - set(rates))])
+            rates[cur], src[cur] = oldr[cur], "alt"
     if len(rates) < 4:
         raise RuntimeError("zu wenige Wechselkurse")
-    return {"base": "EUR", "rates": rates, "change": change, "updated": NOW,
-            "source": "Yahoo Finance (yfinance), Forex-Paare EURxxx=X", "fresh": fresh}
+    return {"base": "EUR", "rates": rates, "change": change, "src": src, "updated": NOW,
+            "source": "Yahoo Finance (yfinance): Forex-Paare EURxxx=X, Krypto XXX-EUR; Ergänzung: open.er-api.com"}
 
 
 # ---------- Hilfsfunktionen Index ----------

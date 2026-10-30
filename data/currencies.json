@@ -1,0 +1,287 @@
+{
+ "note": "Währungsliste für Geld-Kompass (App, Rechner-Seiten, scripts/world_data.py). crypto=true: Kurs über Yahoo Finance XXX-EUR.",
+ "currencies": [
+  {
+   "c": "EUR",
+   "de": "Euro",
+   "en": "Euro"
+  },
+  {
+   "c": "USD",
+   "de": "US-Dollar",
+   "en": "US dollar"
+  },
+  {
+   "c": "GBP",
+   "de": "Britisches Pfund",
+   "en": "British pound"
+  },
+  {
+   "c": "CHF",
+   "de": "Schweizer Franken",
+   "en": "Swiss franc"
+  },
+  {
+   "c": "JPY",
+   "de": "Japanischer Yen",
+   "en": "Japanese yen"
+  },
+  {
+   "c": "CNY",
+   "de": "Chinesischer Yuan",
+   "en": "Chinese yuan"
+  },
+  {
+   "c": "CAD",
+   "de": "Kanadischer Dollar",
+   "en": "Canadian dollar"
+  },
+  {
+   "c": "AUD",
+   "de": "Australischer Dollar",
+   "en": "Australian dollar"
+  },
+  {
+   "c": "NZD",
+   "de": "Neuseeland-Dollar",
+   "en": "New Zealand dollar"
+  },
+  {
+   "c": "SEK",
+   "de": "Schwedische Krone",
+   "en": "Swedish krona"
+  },
+  {
+   "c": "NOK",
+   "de": "Norwegische Krone",
+   "en": "Norwegian krone"
+  },
+  {
+   "c": "DKK",
+   "de": "Dänische Krone",
+   "en": "Danish krone"
+  },
+  {
+   "c": "ISK",
+   "de": "Isländische Krone",
+   "en": "Icelandic króna"
+  },
+  {
+   "c": "PLN",
+   "de": "Polnischer Złoty",
+   "en": "Polish złoty"
+  },
+  {
+   "c": "CZK",
+   "de": "Tschechische Krone",
+   "en": "Czech koruna"
+  },
+  {
+   "c": "HUF",
+   "de": "Ungarischer Forint",
+   "en": "Hungarian forint"
+  },
+  {
+   "c": "RON",
+   "de": "Rumänischer Leu",
+   "en": "Romanian leu"
+  },
+  {
+   "c": "BGN",
+   "de": "Bulgarischer Lew",
+   "en": "Bulgarian lev"
+  },
+  {
+   "c": "RSD",
+   "de": "Serbischer Dinar",
+   "en": "Serbian dinar"
+  },
+  {
+   "c": "TRY",
+   "de": "Türkische Lira",
+   "en": "Turkish lira"
+  },
+  {
+   "c": "UAH",
+   "de": "Ukrainische Hrywnja",
+   "en": "Ukrainian hryvnia"
+  },
+  {
+   "c": "RUB",
+   "de": "Russischer Rubel",
+   "en": "Russian ruble"
+  },
+  {
+   "c": "GEL",
+   "de": "Georgischer Lari",
+   "en": "Georgian lari"
+  },
+  {
+   "c": "AMD",
+   "de": "Armenischer Dram",
+   "en": "Armenian dram"
+  },
+  {
+   "c": "AZN",
+   "de": "Aserbaidschan-Manat",
+   "en": "Azerbaijani manat"
+  },
+  {
+   "c": "KZT",
+   "de": "Kasachischer Tenge",
+   "en": "Kazakhstani tenge"
+  },
+  {
+   "c": "AED",
+   "de": "VAE-Dirham",
+   "en": "UAE dirham"
+  },
+  {
+   "c": "SAR",
+   "de": "Saudi-Riyal",
+   "en": "Saudi riyal"
+  },
+  {
+   "c": "QAR",
+   "de": "Katar-Riyal",
+   "en": "Qatari riyal"
+  },
+  {
+   "c": "ILS",
+   "de": "Israelischer Schekel",
+   "en": "Israeli shekel"
+  },
+  {
+   "c": "EGP",
+   "de": "Ägyptisches Pfund",
+   "en": "Egyptian pound"
+  },
+  {
+   "c": "MAD",
+   "de": "Marokkanischer Dirham",
+   "en": "Moroccan dirham"
+  },
+  {
+   "c": "ZAR",
+   "de": "Südafrikanischer Rand",
+   "en": "South African rand"
+  },
+  {
+   "c": "NGN",
+   "de": "Nigerianischer Naira",
+   "en": "Nigerian naira"
+  },
+  {
+   "c": "KES",
+   "de": "Kenia-Schilling",
+   "en": "Kenyan shilling"
+  },
+  {
+   "c": "INR",
+   "de": "Indische Rupie",
+   "en": "Indian rupee"
+  },
+  {
+   "c": "LKR",
+   "de": "Sri-Lanka-Rupie",
+   "en": "Sri Lankan rupee"
+  },
+  {
+   "c": "THB",
+   "de": "Thailändischer Baht",
+   "en": "Thai baht"
+  },
+  {
+   "c": "VND",
+   "de": "Vietnamesischer Dong",
+   "en": "Vietnamese dong"
+  },
+  {
+   "c": "MYR",
+   "de": "Malaysischer Ringgit",
+   "en": "Malaysian ringgit"
+  },
+  {
+   "c": "SGD",
+   "de": "Singapur-Dollar",
+   "en": "Singapore dollar"
+  },
+  {
+   "c": "IDR",
+   "de": "Indonesische Rupiah",
+   "en": "Indonesian rupiah"
+  },
+  {
+   "c": "PHP",
+   "de": "Philippinischer Peso",
+   "en": "Philippine peso"
+  },
+  {
+   "c": "KHR",
+   "de": "Kambodschanischer Riel",
+   "en": "Cambodian riel"
+  },
+  {
+   "c": "LAK",
+   "de": "Laotischer Kip",
+   "en": "Lao kip"
+  },
+  {
+   "c": "HKD",
+   "de": "Hongkong-Dollar",
+   "en": "Hong Kong dollar"
+  },
+  {
+   "c": "TWD",
+   "de": "Taiwan-Dollar",
+   "en": "Taiwan dollar"
+  },
+  {
+   "c": "KRW",
+   "de": "Südkoreanischer Won",
+   "en": "South Korean won"
+  },
+  {
+   "c": "BRL",
+   "de": "Brasilianischer Real",
+   "en": "Brazilian real"
+  },
+  {
+   "c": "MXN",
+   "de": "Mexikanischer Peso",
+   "en": "Mexican peso"
+  },
+  {
+   "c": "ARS",
+   "de": "Argentinischer Peso",
+   "en": "Argentine peso"
+  },
+  {
+   "c": "CLP",
+   "de": "Chilenischer Peso",
+   "en": "Chilean peso"
+  },
+  {
+   "c": "COP",
+   "de": "Kolumbianischer Peso",
+   "en": "Colombian peso"
+  },
+  {
+   "c": "PEN",
+   "de": "Peruanischer Sol",
+   "en": "Peruvian sol"
+  },
+  {
+   "c": "BTC",
+   "de": "Bitcoin",
+   "en": "Bitcoin",
+   "crypto": true
+  },
+  {
+   "c": "ETH",
+   "de": "Ethereum",
+   "en": "Ethereum",
+   "crypto": true
+  }
+ ]
+}
