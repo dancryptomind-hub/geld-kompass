@@ -66,6 +66,7 @@ a{color:var(--gold)}
 .sidefoot{margin-top:auto;border:1px solid rgba(227,181,90,.25);border-radius:13px;padding:12px;font-size:.78rem;color:var(--side-mute);display:flex;flex-direction:column;gap:8px}
 .sidefoot b{color:var(--side-ink)}
 .footbtns{display:flex;gap:8px;align-items:center}.langbtn{padding:5px 8px;line-height:0}.langbtn svg{width:24px;height:16px;border-radius:2px;display:block}
+.curpick{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px;font-size:.78rem;font-weight:600;color:var(--side-ink)}.curpick select{width:auto;flex:1;max-width:150px;height:32px!important;padding:4px 8px;font-size:.78rem;border-radius:9px}
 .themebtn{appearance:none;border:1px solid rgba(227,181,90,.35);background:none;color:var(--side-ink);border-radius:9px;padding:6px 10px;font-size:.78rem;font-weight:600;align-self:flex-start}
 
 .main{min-width:0;padding:24px 28px 60px}
@@ -155,6 +156,8 @@ input,select,textarea{background:var(--surface-2);border:1px solid var(--line);b
 input:not([type=range]):not([type=checkbox]),select{height:44px;box-sizing:border-box;max-width:100%}
 input[type=date],input[type=month]{appearance:none;min-height:44px}
 .form>.f{width:100%}.form>.btn{height:44px}
+.fxform{grid-template-columns:1fr 1fr auto 1fr}.fxswap{font-size:1.1rem;padding:0 14px}@media (max-width:640px){.fxform{grid-template-columns:1fr auto 1fr}.fxform>.f:first-child{grid-column:1/-1}}
+.fxbig{font:700 clamp(1.6rem,4vw,2.3rem)/1.15 var(--font-display,inherit);color:var(--gold);margin:14px 0 4px;font-variant-numeric:tabular-nums}.fxmeta{font-size:.78rem;color:var(--muted)}
 /* Gleichmäßige Felder: Beschriftung, Eingabe und Hinweis liegen in gemeinsamen Zeilen, damit alle Eingabefelder auf einer Linie stehen */
 .form{align-items:start}
 @supports (grid-template-rows:subgrid){.form>.f{display:grid;grid-template-rows:subgrid;grid-row:span 3;row-gap:5px;align-content:start}.form>.f>input,.form>.f>select{align-self:start}.form>.btn{grid-row:span 3;align-self:start;margin-top:calc(.76rem*1.5 + 5px)}}
@@ -333,7 +336,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
   </div>
   <div id="navGroups" style="display:flex;flex-direction:column;gap:18px"></div>
   <a class="chint side-hint" href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.6 9.2c.3 2.6 2.4 4.9 5.2 5.6l1.1-1.2 1.8.9c-.2 1-1.1 1.6-2.1 1.5-3.7-.4-6.6-3.3-7-7-.1-1 .5-1.9 1.5-2.1l.9 1.8z" fill="currentColor"/></svg><span><b>Geld-Kompass auf WhatsApp</b><small>Jeden Sonntag dein Geld‑Check</small></span><i aria-hidden="true">→</i></a>
-  <div class="sidefoot"><b>Deine Daten bleiben bei dir</b>Alles wird nur in diesem Browser gespeichert. Kein Konto, kein Upload.<div class="footbtns"><button class="themebtn" id="themeBtn" type="button">Helles Design</button><button class="themebtn langbtn" id="langBtn" type="button"></button></div><a class="themebtn introbtn" href="/start/" style="display:block;text-align:center;text-decoration:none;margin-top:8px">Intro ansehen</a></div>
+  <div class="sidefoot"><b>Deine Daten bleiben bei dir</b>Alles wird nur in diesem Browser gespeichert. Kein Konto, kein Upload.<div class="footbtns"><button class="themebtn" id="themeBtn" type="button">Helles Design</button><button class="themebtn langbtn" id="langBtn" type="button"></button></div><label class="curpick">Währung<select id="curSel" aria-label="Währung"><option value="EUR">€ Euro</option><option value="USD">$ US-Dollar</option><option value="GBP">£ Pfund</option><option value="CHF">CHF Franken</option></select></label><a class="themebtn introbtn" href="/start/" style="display:block;text-align:center;text-decoration:none;margin-top:8px">Intro ansehen</a></div>
 </aside>
 
 <main class="main">
@@ -473,6 +476,10 @@ dl.gloss dd{margin:0;color:var(--muted)}
 
   <!-- RECHNER -->
   <section class="page" id="p-calc">
+    <details class="tool" id="r-fx" open><summary><h3>Währungsrechner</h3><span class="chap">Live-Kurse</span></summary><div class="in">
+      <p class="desc">Rechne Beträge zwischen Währungen um, mit aktuellen Devisenkursen.</p>
+      <div class="form fxform"><label class="f">Betrag<input id="fxAmt" type="number" step="0.01" min="0" inputmode="decimal" value="100"></label><label class="f">Von<select id="fxFrom"></select></label><button class="btn fxswap" id="fxSwap" type="button" aria-label="Währungen tauschen">⇄</button><label class="f">Nach<select id="fxTo"></select></label></div>
+      <div id="fxOut" data-keepcur></div></div></details>
     <details class="tool" id="r-freiheit" open><summary><h3>Double-FF-Rechner</h3><span class="chap">Einleitung</span></summary><div class="in">
       <p class="desc">Finanziell frei bist du, wenn dein Vermögen deine Lebenskosten trägt.</p>
       <div class="form"><label class="f">Lebenskosten pro Monat (€)<input id="ffCost" type="number" step="1" min="0" inputmode="decimal"></label><label class="f">Anfängliche Entnahmerate (%)<input id="ffSwr" type="number" step="0.1" min="0.5" max="10" inputmode="decimal"></label><label class="f">Rendite pro Jahr (%)<input id="ffRet" type="number" step="0.1" min="0" max="15" inputmode="decimal"></label></div>
@@ -1391,9 +1398,15 @@ var VARY=[1.06,0.94,1.1,0.97,1.03,1];
 var BENCH=[["Wohnen & Energie", 37.5, ["Wohnen & Nebenkosten"]], ["Lebensmittel, Getränke & Tabak", 14.4, ["Lebensmittel", "Alkohol", "Zigaretten & Tabak"]], ["Mobilität", 11.9, ["Mobilität"]], ["Telefon & Internet", 4.7, ["Telefon & Internet"]]];
 
 /* ================= HELPERS ================= */
-var euro=new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR",maximumFractionDigits:0});
-var euro2=new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR",minimumFractionDigits:2,maximumFractionDigits:2});
-var euro4=new Intl.NumberFormat("de-DE",{style:"currency",currency:"EUR",maximumFractionDigits:4});
+/* Währung: Anzeige- und Eingabewährung des Geld-Kompass (pro Gerät). Kurse aus markets.json (Basis EUR) werden umgerechnet. */
+var CURS={EUR:"€",USD:"$",GBP:"£",CHF:"CHF"},CUR_KEY="geld-kompass-currency",CUR="EUR";
+try{CUR=localStorage.getItem(CUR_KEY)||"EUR";}catch(e){}if(!CURS[CUR])CUR="EUR";
+var FX={base:"EUR",rates:{EUR:1}};try{var fxc=JSON.parse(localStorage.getItem("geld-kompass-fx")||"null");if(fxc&&fxc.rates)FX=fxc;}catch(e){}
+function fxr(){return (CUR==="EUR")?1:(FX.rates[CUR]||1);}
+window.GK_setCurrency=function(c){try{localStorage.setItem(CUR_KEY,c);}catch(e){}location.reload();};
+var euro=new Intl.NumberFormat("de-DE",{style:"currency",currency:CUR,maximumFractionDigits:0});
+var euro2=new Intl.NumberFormat("de-DE",{style:"currency",currency:CUR,minimumFractionDigits:2,maximumFractionDigits:2});
+var euro4=new Intl.NumberFormat("de-DE",{style:"currency",currency:CUR,maximumFractionDigits:4});
 var nf=new Intl.NumberFormat("de-DE",{maximumFractionDigits:6});
 var nf1=new Intl.NumberFormat("de-DE",{maximumFractionDigits:1});
 var nf2=new Intl.NumberFormat("de-DE",{maximumFractionDigits:2});
@@ -1441,12 +1454,41 @@ var INSTR=[],IMAP={},ISIN={};
 function setInstr(list){var byS={};INSTR_BASE.concat(list||[]).forEach(function(x){byS[x.s]=Object.assign({},byS[x.s]||{},x);});INSTR=Object.keys(byS).map(function(k){return byS[k];});IMAP={};ISIN={};
   INSTR.forEach(function(x){IMAP[x.s]=x;if(x.i)ISIN[x.i]=x;x._q=(x.n+" "+x.s+" "+(x.i||"")+" "+(x.a||"")+" "+x.t).toLowerCase();});}
 setInstr([]);
-function priceOf(sym){if(M.live[sym])return M.live[sym];var x=IMAP[sym];if(x&&x.p)return x.p;var c=S.own.cache[sym];return c?c.p:null;}
+function priceOfEUR(sym){if(M.live[sym])return M.live[sym];var x=IMAP[sym];if(x&&x.p)return x.p;var c=S.own.cache[sym];return c?c.p:null;}
+function priceOf(sym){var p=priceOfEUR(sym);return p==null?p:p*fxr();}
 function withTimeout(p,ms){return Promise.race([p,new Promise(function(_,r){setTimeout(function(){r(new Error("Zeitüberschreitung"));},ms);})]);}
 function getJSON(url,ms){return withTimeout(fetch(url,{cache:"no-store"}),ms||8000).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.json();});}
+
+/* ================= WÄHRUNGSRECHNER ================= */
+var FXNAMES={EUR:"Euro",USD:"US-Dollar",GBP:"Britisches Pfund",CHF:"Schweizer Franken",JPY:"Japanischer Yen",CAD:"Kanadischer Dollar",AUD:"Australischer Dollar",SEK:"Schwedische Krone",NOK:"Norwegische Krone",DKK:"Dänische Krone",PLN:"Polnischer Złoty",CZK:"Tschechische Krone",HUF:"Ungarischer Forint",TRY:"Türkische Lira",THB:"Thailändischer Baht",CNY:"Chinesischer Yuan"};
+function fxInit(){var a=$("fxFrom"),b=$("fxTo");if(!a||a.options.length)return;
+  var opts=Object.keys(FXNAMES).map(function(c){return '<option value="'+c+'">'+c+' · '+FXNAMES[c]+'</option>';}).join("");a.innerHTML=b.innerHTML=opts;
+  var prev={};try{prev=JSON.parse(localStorage.getItem("geld-kompass-fxcalc")||"{}");}catch(e){}
+  a.value=prev.f||CUR;b.value=prev.t||(CUR==="USD"?"EUR":"USD");if(prev.a)$("fxAmt").value=prev.a;
+  ["fxAmt","fxFrom","fxTo"].forEach(function(id){$(id).addEventListener("input",fxRender);$(id).addEventListener("change",fxRender);});
+  $("fxSwap").addEventListener("click",function(){var x=a.value;a.value=b.value;b.value=x;fxRender();});
+  var sel=$("curSel");if(sel){sel.value=CUR;sel.addEventListener("change",function(){window.GK_setCurrency(sel.value);});}
+  fxRender();}
+function fxRender(){var out=$("fxOut");if(!out)return;var f=$("fxFrom").value,to=$("fxTo").value,amt=num($("fxAmt").value),R=FX.rates||{};
+  try{localStorage.setItem("geld-kompass-fxcalc",JSON.stringify({f:f,t:to,a:$("fxAmt").value}));}catch(e){}
+  if(!R[f]||!R[to]){out.innerHTML='<p class="desc">Wechselkurse werden geladen …</p>';return;}
+  var rate=R[to]/R[f],fmt=function(v,c){return new Intl.NumberFormat("de-DE",{style:"currency",currency:c,maximumFractionDigits:v!==0&&Math.abs(v)<1?4:2}).format(v);};
+  var ch=FX.change||{},chg=(1+(ch[to]||0)/100)/(1+(ch[f]||0)/100)-1,when=FX.updated?new Date(FX.updated).toLocaleString("de-DE",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}):"";
+  out.innerHTML='<div class="fxbig">'+fmt(amt*rate,to)+'</div>'+
+   '<p class="fxmeta">'+fmt(amt,f)+' = '+fmt(amt*rate,to)+' · 1 '+f+' = '+nf.format(+rate.toPrecision(6))+' '+to+(ch[to]!=null||ch[f]!=null?' · <span style="color:'+(chg>=0?'var(--good)':'var(--bad)')+'">'+(chg>=0?'+':'')+nf2.format(chg*100)+' % zum Vortag</span>':'')+'</p>'+
+   '<p class="fxmeta">Stand: '+esc(when)+' · Quelle: Yahoo Finance (Devisenkurse), wird laufend aktualisiert. Banken und Wechselstuben rechnen mit Auf- und Abschlägen.</p>';}
+setInterval(function(){if(document.visibilityState==="visible")getJSON("/data/markets.json").then(function(d){if(d.fx&&d.fx.rates){FX=d.fx;try{localStorage.setItem("geld-kompass-fx",JSON.stringify(d.fx));}catch(e){}fxRender();}}).catch(function(){});},5*60*1000);
+/* Währungszeichen in festen Beschriftungen anpassen (z. B. „Restschuld (€)“) */
+(function(){if(CUR==="EUR")return;var SYM=CURS[CUR];
+  function fix(n){if(n.nodeType===3){var p=n.parentNode;if(!p||p.nodeName==="SCRIPT"||p.nodeName==="STYLE"||(p.closest&&p.closest("[data-keepcur]")))return;if(n.nodeValue.indexOf("€")>-1)n.nodeValue=n.nodeValue.replace(/€/g,SYM);return;}
+    if(n.nodeType!==1||(n.closest&&n.closest("[data-keepcur]")))return;if(n.placeholder&&n.placeholder.indexOf("€")>-1)n.placeholder=n.placeholder.replace(/€/g,SYM);
+    var w=document.createTreeWalker(n,NodeFilter.SHOW_TEXT),x;while((x=w.nextNode()))fix(x);}
+  function go(){fix(document.body);new MutationObserver(function(ms){ms.forEach(function(m){if(m.type==="characterData")fix(m.target);else m.addedNodes.forEach(fix);});}).observe(document.body,{subtree:true,childList:true,characterData:true});}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",go);else go();})();
+if(document.readyState!=="loading")fxInit();else document.addEventListener("DOMContentLoaded",fxInit);
 function loadMarkets(){
-  getJSON("/data/markets.json").then(function(d){M.updated=d.updated;M.status=d.status||"start";if(d.inflation)Object.keys(d.inflation).forEach(function(k){M.inflation[k]=GeldInflation.choose(M.inflation[k],d.inflation[k]);});setInstr(d.instruments);renderAll();}).catch(function(){})
-  .then(function(){liveCrypto();liveMetals();liveInflation("DE");liveInflation("EA");refreshOnline(false);});
+  getJSON("/data/markets.json").then(function(d){if(d.fx&&d.fx.rates){FX=d.fx;try{localStorage.setItem("geld-kompass-fx",JSON.stringify(d.fx));}catch(e){}}M.updated=d.updated;M.status=d.status||"start";if(d.inflation)Object.keys(d.inflation).forEach(function(k){M.inflation[k]=GeldInflation.choose(M.inflation[k],d.inflation[k]);});setInstr(d.instruments);renderAll();}).catch(function(){})
+  .then(function(){fxInit();fxRender();liveCrypto();liveMetals();liveInflation("DE");liveInflation("EA");refreshOnline(false);});
 }
 /* Edelmetalle live: Weltmarktpreis (Yahoo Finance über den Vermittler, Ersatz: CoinGecko PAX Gold / Kinesis Silver), umgerechnet in Euro je Gramm */
 var OZ=31.1034768;
@@ -1704,15 +1746,15 @@ function renderInflation(t){
  var old=[de,ea].some(function(x){return x&&GeldInflation.ageMonths(x.period)>2;});
  $("inflDesc").textContent='Inflationsrate · HVPI · Veränderung zum Vorjahresmonat';
  if(!de){$("inflBox").innerHTML='<p class="desc">'+(failed?'Amtliche Daten derzeit nicht erreichbar. Es wird kein geschätzter Wert als aktuelle Inflationsrate angezeigt.':'Amtliche Inflationsdaten werden geladen.')+'</p>';return;}
- var r=de.rate,arr=[];for(var y=0;y<=10;y++)arr.push(1000/Math.pow(1+r/100,y));
+ var hg=CUR==='USD'?M.inflation.US:CUR==='GBP'?M.inflation.UK:null,r=(hg||de).rate,arr=[];for(var y=0;y<=10;y++)arr.push(1000/Math.pow(1+r/100,y));
  function observation(x,label){if(!x)return '';return '<div><b>'+nf1.format(x.rate)+' %</b><span>'+label+'</span><small>'+esc(monthName(x.period))+'</small><small>'+(x.checked?'Abgerufen: '+esc(new Date(x.checked).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})):'Gespeicherter Stand')+'</small></div>';}
  var checked=de.checked?new Date(de.checked).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):null;
- $("inflBox").innerHTML='<div class="infl"><p class="desc">Die Rate beschreibt die Preisänderung des Gesamtwarenkorbs gegenüber demselben Monat im Vorjahr. Sie ist kein Zins und keine Vorhersage für die nächsten zehn Jahre.</p><div class="stats">'+observation(de,'Deutschland')+observation(ea,'Euroraum')+'</div></div>'+
- '<p class="desc">Quelle: <a href="'+esc(de.url||'https://ec.europa.eu/eurostat/web/hicp')+'" target="_blank" rel="noopener">Eurostat · harmonisierter Verbraucherpreisindex</a>.'+(de.status?' Kennzeichnung der Quelle: '+esc(de.status)+'.':'')+'</p>'+
+ $("inflBox").innerHTML='<div class="infl"><p class="desc">Die Rate beschreibt die Preisänderung des Gesamtwarenkorbs gegenüber demselben Monat im Vorjahr. Sie ist kein Zins und keine Vorhersage für die nächsten zehn Jahre.</p><div class="stats">'+observation(de,'Deutschland')+observation(ea,'Euroraum')+observation(M.inflation.US,'USA')+observation(M.inflation.UK,'Großbritannien')+'</div></div>'+
+ '<p class="desc">Quelle: <a href="'+esc(de.url||'https://ec.europa.eu/eurostat/web/hicp')+'" target="_blank" rel="noopener">Eurostat · harmonisierter Verbraucherpreisindex</a>'+(M.inflation.US?' · USA: <a href="https://www.bls.gov/cpi/" target="_blank" rel="noopener">U.S. Bureau of Labor Statistics (CPI-U)</a>':'')+(M.inflation.UK?' · Großbritannien: <a href="https://www.ons.gov.uk/economy/inflationandpriceindices" target="_blank" rel="noopener">Office for National Statistics (CPI)</a>':'')+'.'+(de.status?' Kennzeichnung der Quelle: '+esc(de.status)+'.':'')+'</p>'+
  (failed?'<div class="note warn">Aktualisierung derzeit nicht erreichbar oder älter als der gespeicherte Stand. Der letzte bekannte Wert bleibt sichtbar.</div>':'')+
  (old?'<div class="note warn">Der angezeigte Datenmonat liegt länger zurück. Bitte prüfe den Datenstand, bevor du damit planst.</div>':'')+
  lineChart([{l:'Kaufkraft bei konstant angenommener Inflation',d:arr,c:'var(--warn)',fill:'var(--warn-soft)'}],10,'Kaufkraftmodell')+
- '<p class="desc">Rechenbeispiel: Bliebe die Rate zehn Jahre konstant bei '+nf1.format(r)+' %, entsprächen 1.000 € dann etwa '+E(arr[10])+' heutiger Kaufkraft. Guthabenzinsen und Steuern sind hier nicht eingerechnet.</p>'+
+ '<p class="desc">Rechenbeispiel: Bliebe die Rate zehn Jahre konstant bei '+nf1.format(r)+' %, entsprächen '+E(1000)+' dann etwa '+E(arr[10])+' heutiger Kaufkraft. Guthabenzinsen und Steuern sind hier nicht eingerechnet.</p>'+
  '<div class="gkrow">'+gkShare("Inflation in Deutschland aktuell: "+nf1.format(r)+" %. Bliebe sie so, wären 1.000 € in zehn Jahren nur noch rund "+E(arr[10])+" wert.","rechner/inflationsrechner/")+'<a class="lnk" href="/rechner/inflationsrechner/">Was sind 1.000 € von früher heute wert? Zum Inflationsrechner</a></div>';
 }
 

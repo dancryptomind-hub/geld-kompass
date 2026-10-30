@@ -76,7 +76,9 @@ def annual(series, rebase_year="2015"):
     by = {}
     for period, v in series.items():
         by.setdefault(period[:4], []).append(v)
-    full = {y: sum(v) / len(v) for y, v in by.items() if len(v) == 12}
+    this = str(dt.date.today().year)
+    # Ganze Jahre; ein fehlender Monat ist erlaubt (z. B. USA Oktober 2025: wegen Haushaltssperre nicht erhoben)
+    full = {y: sum(v) / len(v) for y, v in by.items() if len(v) == 12 or (len(v) == 11 and y < this)}
     if rebase_year in full:
         b = full[rebase_year]
         full = {y: round(v / b * 100, 2) for y, v in full.items()}
