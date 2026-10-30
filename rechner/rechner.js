@@ -43,7 +43,7 @@ function bind(ids,fn){RUNS.push(fn);ids.forEach(function(id){var e=$(id);if(e){e
   row.innerHTML='<label>'+(EN?'Currency':'Währung')+'<select id="gkCur">'+CURS.map(function(c){return '<option value="'+c+'">'+NAMES[c]+'</option>';}).join('')+'</select></label>';
   box.insertBefore(row,box.firstChild);var sel=$('gkCur');sel.value=CUR;
   /* Währungszeichen in Beschriftungen und Schnellwahl-Knöpfen mitführen */
-  var nodes=[],w=document.createTreeWalker(box,NodeFilter.SHOW_TEXT),n;while((n=w.nextNode())){if(n.nodeValue.indexOf('€')>-1)nodes.push([n,n.nodeValue]);}
+  var nodes=[],w=document.createTreeWalker(box,NodeFilter.SHOW_TEXT),n;while((n=w.nextNode())){if(n.parentNode&&n.parentNode.closest&&n.parentNode.closest('.curbar'))continue;if(n.nodeValue.indexOf('€')>-1)nodes.push([n,n.nodeValue]);}
   function relabel(){nodes.forEach(function(x){x[0].nodeValue=x[1].replace(/€/g,SYM);});}
   relabel();
   sel.addEventListener('change',function(){CUR=sel.value;try{localStorage.setItem(CKEY,CUR);}catch(e){}setFmt();relabel();RUNS.forEach(function(f){try{f();}catch(e){}});});

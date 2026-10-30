@@ -283,7 +283,7 @@ FX_JS = r'''
 var G=GKR,FX=null,F0="__F__",T0="__T__",SLUG="__S__";
 var N=__N__,CR=__CR__;
 G.$('from').value=F0;G.$('to').value=T0;if(CR[F0])G.$('amt').value='1';
-function fmt(v,c){if(CR[c]){var k=Math.abs(v)>=100?2:Math.abs(v)>=1?4:8;return new Intl.NumberFormat('de-DE',{maximumFractionDigits:k}).format(v)+' '+c;}var d=Math.abs(v)>=1000?0:(Math.abs(v)<1&&v!==0?4:2);try{return new Intl.NumberFormat('de-DE',{style:'currency',currency:c,minimumFractionDigits:d,maximumFractionDigits:d}).format(v);}catch(e){return G.nf1.format(v)+' '+c;}}
+function fmt(v,c){if(CR[c]){var k=Math.abs(v)>=100?2:Math.abs(v)>=1?4:8;return new Intl.NumberFormat('de-DE',{maximumFractionDigits:k}).format(v)+' '+c;}var d=Math.abs(v)>=1000?0:(Math.abs(v)<1&&v!==0?4:2);try{return new Intl.NumberFormat('de-DE',{style:'currency',currency:c,currencyDisplay:'narrowSymbol',minimumFractionDigits:d,maximumFractionDigits:d}).format(v);}catch(e){return G.nf1.format(v)+' '+c;}}
 function nfx(v){return new Intl.NumberFormat('de-DE',{maximumSignificantDigits:6}).format(v);}
 fetch('/data/markets.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(d){FX=d.fx;run();}).catch(function(){G.$('big').textContent='–';G.$('src').textContent='Die Devisenkurse sind gerade nicht erreichbar. Bitte später erneut versuchen.';});
 G.$('swap').onclick=function(){var a=G.$('from').value;G.$('from').value=G.$('to').value;G.$('to').value=a;run();};
