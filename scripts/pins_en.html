@@ -1,0 +1,112 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<!-- English Pinterest pins (1000 × 1500). Render with: node scripts/build_pins.js en -->
+<style>
+@font-face{font-family:F;src:url(../assets/Figtree-400.ttf);font-weight:400}
+@font-face{font-family:F;src:url(../assets/Figtree-700.ttf);font-weight:700}
+@font-face{font-family:F;src:url(../assets/Figtree-800.ttf);font-weight:800}
+@font-face{font-family:P;src:url(../assets/PlayfairDisplay-700.ttf);font-weight:700}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#555}
+.pin{width:1000px;height:1500px;min-height:1500px;position:relative;overflow:hidden;font-family:F;color:#F4F1EA;display:flex;flex-direction:column;padding:120px 84px 0;margin-bottom:20px;
+ background:radial-gradient(120% 80% at 85% 0%,#22386e 0%,#162447 45%,#0c152c 100%)}
+.pin.cream{background:#F6F1E6;color:#14203A}
+.eye{font-size:34px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:#E3B55A}
+.cream .eye{color:#A8781F}
+h1{font-family:P;font-weight:700;font-size:94px;line-height:1.07;margin-top:28px}
+.rule{width:120px;height:7px;background:#E3B55A;margin:50px 0}
+.big{white-space:nowrap;font-family:P;font-size:200px;line-height:1;color:#E3B55A;letter-spacing:-.02em}
+.cream .big{color:#A8781F}
+.sub{font-size:44px;line-height:1.35;opacity:.88;margin-top:18px}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:10px}
+.vs div{background:rgba(255,255,255,.07);border:2px solid rgba(227,181,90,.35);border-radius:30px;padding:44px 38px}
+.cream .vs div{background:#fff;border-color:rgba(168,120,31,.35)}
+.vs span{display:block;font-size:32px;opacity:.8;line-height:1.3}
+.vs b{display:block;white-space:nowrap;font-family:P;font-size:70px;line-height:1.1;margin-top:10px}
+.neg{color:#F08A7E}.pos{color:#6FD3AE}.cream .neg{color:#C2493C}.cream .pos{color:#1E8A64}
+.list{margin-top:6px;display:flex;flex-direction:column;gap:20px}
+.list div{display:flex;align-items:baseline;gap:30px;font-size:54px;font-weight:700}
+.list i{font-style:normal;font-size:36px;color:#E3B55A;font-weight:700;min-width:120px}
+.cream .list i{color:#A8781F}
+.fn{font-size:28px;opacity:.65;margin-top:auto;padding-bottom:30px;line-height:1.4}
+.foot{margin:0 -84px;padding:40px 84px;background:#E3B55A;color:#14203A;display:flex;align-items:center;gap:26px}
+.foot svg{width:84px;height:84px;flex:none}
+.foot b{font-size:44px;font-weight:800;display:block;line-height:1.1}
+.foot span{font-size:30px;font-weight:700;display:block;opacity:.8}
+.treeimg{position:absolute;right:-70px;bottom:150px;width:560px;opacity:.95}
+</style></head><body>
+<template id="logo"><svg viewBox="0 0 52 52"><circle cx="26" cy="26" r="23" fill="none" stroke="#14203A" stroke-width="2.5"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#14203A"/><circle cx="26" cy="26" r="2.5" fill="#E3B55A"/></svg></template>
+
+<section class="pin" id="e01"><div class="eye">Savings plan calculator</div>
+<h1>€100 a month.<br>20 years.<br>What it can become.</h1><div class="rule"></div>
+<div class="big">€50,754</div><div class="sub">Paid in yourself: only <b>€24,000</b>.<br>Compound interest does the rest.</div>
+<div class="fn">Model calculation at 7 % per year, without costs or taxes. Markets fluctuate. Not investment advice.</div>
+<div class="foot" data-f="Calculate your own amount|Free savings calculator · Money Compass"></div></section>
+
+<section class="pin cream" id="e02"><div class="eye">Time beats amount</div>
+<h1>Starting 10 years earlier beats saving double.</h1><div class="rule"></div>
+<div class="vs"><div><span>€100 / month<br>for 25 years</span><b class="pos">€78,304</b><span>paid in €30,000</span></div>
+<div><span>€200 / month<br>for 15 years</span><b>€62,221</b><span>paid in €36,000</span></div></div>
+<div class="fn">Both at an assumed 7 % per year, without costs or taxes. Not investment advice.</div>
+<div class="foot" data-f="When will you start?|Free savings calculator · Money Compass"></div></section>
+
+<section class="pin" id="e03"><div class="eye">Inflation calculator · USA</div>
+<h1>Your $1,000 from 2010 is only worth this today:</h1><div class="rule"></div>
+<div class="big">$677</div><div class="sub">For the same shopping you now need <b>$1,476</b>.</div>
+<div class="fn">Official data: U.S. Bureau of Labor Statistics, CPI-U annual averages 2010 and 2025.</div>
+<div class="foot" data-f="Which year is yours?|Free inflation calculator · Money Compass"></div></section>
+
+<section class="pin cream" id="e04"><div class="eye">Inflation calculator · UK</div>
+<h1>What £1,000 from 2010 is worth today</h1><div class="rule"></div>
+<div class="big">£646</div><div class="sub">The same basket now costs <b>£1,547</b>.</div>
+<div class="fn">Official data: Office for National Statistics, CPI annual averages 2010 and 2025.</div>
+<div class="foot" data-f="Check your own amount|Free inflation calculator · Money Compass"></div></section>
+
+<section class="pin" id="e05"><div class="eye">Consumer or owner?</div>
+<h1>One $5 coffee a day. For 20 years.</h1><div class="rule"></div>
+<div class="vs"><div><span>spent</span><b class="neg">$36,500</b></div><div><span>invested, model</span><b class="pos">$77,188</b></div></div>
+<div class="sub">It is not about giving things up. It is about seeing it.</div>
+<div class="fn">Assumed 7 % per year, without costs or taxes. Model calculation, not investment advice.</div>
+<div class="foot" data-f="What does your habit cost?|Free calculator · Money Compass"></div></section>
+
+<section class="pin cream" id="e06"><div class="eye">Debt-free calculator</div>
+<h1>Just €50 extra a month on a €5,000 loan:</h1><div class="rule"></div>
+<div class="vs"><div><span>debt-free</span><b class="pos">12 months</b><span>earlier</span></div><div><span>interest saved</span><b class="pos">€330</b><span>at 12 % interest</span></div></div>
+<div class="fn">€150 regular payment plus €50 extra, fixed rate, no fees. Simplified calculation.</div>
+<div class="foot" data-f="When will you be debt-free?|Free debt calculator · Money Compass"></div></section>
+
+<section class="pin" id="e07"><div class="eye">Emergency fund</div>
+<h1>How big should your emergency fund be?</h1><div class="rule"></div>
+<div class="list"><div><i>3 mo</i>secure job, no kids</div><div><i>6 mo</i>single income or family</div><div><i>6+ mo</i>self-employed</div></div>
+<div class="sub" style="margin-top:40px">Multiply your fixed monthly costs. That is your safety cushion against new debt.</div>
+<div class="fn">Rule of thumb, not a must. Keep it in an instant-access savings account, not in shares.</div>
+<div class="foot" data-f="Calculate your target|Free emergency fund calculator · Money Compass"></div></section>
+
+<section class="pin cream" id="e08"><div class="eye">Freedom days</div>
+<h1>If your income stopped tomorrow, how many days could you live?</h1><div class="rule"></div>
+<div class="big">100 days</div><div class="sub">€6,000 net worth ÷ €1,800 spending a month. Every euro saved adds days.</div>
+<div class="fn">Example: net worth divided by monthly spending, times 30.</div>
+<div class="foot" data-f="How many do you have?|Free freedom days calculator · Money Compass"></div></section>
+
+<section class="pin" id="e09"><div class="eye">Paying abroad</div>
+<h1>The card terminal asks: euro or local currency?</h1><div class="rule"></div>
+<div class="big" style="font-size:150px">Local.</div><div class="sub">The “instant conversion” offered at the terminal is usually much more expensive. Compare with the mid-market rate first.</div>
+<div class="fn">Dynamic currency conversion often adds a hidden markup. Check your card's foreign fees before you travel.</div>
+<div class="foot" data-f="Check the live rate|Free currency converter · Money Compass"></div></section>
+
+<section class="pin cream" id="e10"><div class="eye">Digital nomad rates</div>
+<h1>What €1 gets you right now</h1><div class="rule"></div>
+<div class="list"><div><i>THB</i>37.6 Thai baht</div><div><i>GEL</i>2.90 Georgian lari</div><div><i>MYR</i>4.53 Malaysian ringgit</div><div><i>VND</i>28,788 Vietnamese dong</div><div><i>IDR</i>20,234 Indonesian rupiah</div></div>
+<div class="fn">Mid-market rates on 31 October 2026 (Yahoo Finance). Rates change daily: check the live converter.</div>
+<div class="foot" data-f="Live rates for 50+ currencies|Free currency converter · Money Compass"></div></section>
+
+<section class="pin" id="e11"><div class="eye">The money tree principle</div>
+<h1>Every tree starts with a seed.</h1><div class="rule"></div>
+<div class="sub" style="max-width:430px">Budget, debt plan, portfolio and freedom days. Free, no sign-up, your data stays on your device.</div>
+<img class="treeimg" src="../start/img/goldbaum.webp" alt="">
+<div class="fn">General financial education, not investment advice.</div>
+<div class="foot" data-f="Plant your first seed|Free Money Compass · geld-kompass.com"></div></section>
+
+<script>
+document.querySelectorAll('.foot').forEach(function(f){var t=f.dataset.f.split('|');f.innerHTML=document.getElementById('logo').innerHTML+'<div><b>'+t[0]+'</b><span>'+t[1]+'</span></div>';});
+</script>
+</body></html>
