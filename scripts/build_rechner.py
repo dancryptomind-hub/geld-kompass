@@ -7,10 +7,7 @@ KANAL = 'https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E'
 BUCH = 'https://amzn.eu/d/01dK026o'
 TODAY = datetime.date.today().isoformat()
 
-LOGO = ('<svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/>'
-        '<circle cx="26" cy="26" r="17" fill="none" stroke="#e3b55a" stroke-width="1" opacity=".45"/>'
-        '<path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/>'
-        '<circle cx="26" cy="26" r="2.5" fill="#162447"/></svg>')
+LOGO = '<img class="gk-logo" src="/icons/logo-badge.webp" alt="" aria-hidden="true" width="34" height="34">'
 
 PAGES = []
 def page(**kw): PAGES.append(kw)

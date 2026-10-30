@@ -35,7 +35,7 @@ body.launch #dust,.gk-start.launch~#dust{z-index:60}
 .glow{position:fixed;inset:-20%;pointer-events:none;z-index:0;background:radial-gradient(50% 40% at 50% calc(30% + var(--gy,0%)),rgba(227,181,90,calc(.10 + var(--ga,0)*.18)),transparent 70%),radial-gradient(80% 60% at 50% 0%,#1a2b5c 0%,transparent 70%)}
 header{position:fixed;top:0;left:0;right:0;z-index:20;isolation:isolate;display:flex;align-items:center;justify-content:space-between;padding:calc(14px + env(safe-area-inset-top)) 18px 14px}
 .logo{display:flex;align-items:center;gap:9px;color:var(--ink);text-decoration:none;font:700 18px "Playfair Display",Georgia,serif}
-.logo svg{width:26px;height:26px}.logo span{color:var(--gold)}
+.logo svg,.logo img{width:30px;height:30px;object-fit:contain}.logo span{color:var(--gold)}
 .skip{color:var(--muted);font-size:14px;text-decoration:none;border:1px solid rgba(255,255,255,.14);padding:7px 14px;border-radius:99px;backdrop-filter:blur(8px);background:rgba(11,19,40,.4)}
 header:before{content:"";position:absolute;inset:0 0 -34px;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(11,19,40,.95) 0%,rgba(11,19,40,.82) 58%,rgba(11,19,40,0));opacity:var(--hb,0);transition:opacity .35s}
 .hr{display:flex;align-items:center;gap:8px}
@@ -202,7 +202,7 @@ footer a{color:var(--gold);text-decoration:none}
 <div class="glow" aria-hidden="true"></div>
 <div class="bar" aria-hidden="true"></div>
 <header>
-  <a class="logo" href="/"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg>Geld-<span>Kompass</span></a>
+  <a class="logo" href="/"><img class="gk-logo" src="/icons/logo-emblem.webp" alt="" aria-hidden="true">Geld-<span>Kompass</span></a>
   <div class="hr"><button class="lang" id="langBtn" type="button" aria-label="Sprache wechseln">EN</button><a class="skip" href="/app/#overview" data-t="skip">Direkt starten</a></div>
 </header>
 
@@ -351,7 +351,7 @@ var langBtn=document.getElementById('langBtn');
 if(lang==='en'){
   document.documentElement.lang='en';document.title='Start · Money Compass';
   document.querySelectorAll('[data-t]').forEach(function(el){var v=EN[el.getAttribute('data-t')];if(v!=null)el.innerHTML=v});
-  document.querySelector('.logo').innerHTML=document.querySelector('.logo svg').outerHTML+'Money <span>Compass</span>';
+  document.querySelector('.logo').innerHTML=document.querySelector('.logo img').outerHTML+'Money <span>Compass</span>';
   document.getElementById('startBtn').setAttribute('aria-label','Start the Money Compass');
   langBtn.textContent='DE';langBtn.setAttribute('aria-label','Auf Deutsch wechseln');
 }else{langBtn.setAttribute('aria-label','Switch to English')}

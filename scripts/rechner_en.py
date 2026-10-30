@@ -10,7 +10,7 @@ EN['sparplan-rechner'] = dict(
  desc='Free savings plan and compound interest calculator: enter your monthly amount, time frame and assumed return and instantly see what it could grow into.',
  eyebrow='Savings plan & compound interest', h1='Savings plan calculator: what will your monthly amount become?',
  lead='Enter how much you want to put aside each month. The calculator shows how much you pay in yourself and how much comes from compound interest.',
- calc=[('Monatliche Rate (€)','Monthly amount (€)'),('Laufzeit (Jahre)','Time frame (years)'),('Angenommene Rendite pro Jahr (%)','Assumed annual return (%)'),('Startbetrag (€)','Starting amount (€)'),
+ calc=[('>25 €<','>€25<'),('>50 €<','>€50<'),('>100 €<','>€100<'),('>250 €<','>€250<'),('>500 €<','>€500<'),('Monatliche Rate (€)','Monthly amount (€)'),('Laufzeit (Jahre)','Time frame (years)'),('Angenommene Rendite pro Jahr (%)','Assumed annual return (%)'),('Startbetrag (€)','Starting amount (€)'),
        ('Modellrechnung mit gleichbleibender Rendite und monatlicher Verzinsung, ohne Kosten und Steuern. Echte Märkte schwanken, auch mit Verlustjahren. Keine Anlageberatung.','Model calculation with a constant return and monthly compounding, without costs or taxes. Real markets fluctuate, including years with losses. Not investment advice.')],
  js=[("'nach '+n+' Jahren bei '+G.nf1.format(r*100)+' % pro Jahr (rechnerisch)'","'after '+n+' years at '+G.nf1.format(r*100)+' % per year (model)'"),
      ('Selbst eingezahlt','Paid in yourself'),('Zinseszins-Anteil','From compound interest'),('Anteil Zinseszins','Share of compound interest'),

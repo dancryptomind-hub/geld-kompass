@@ -51,7 +51,7 @@ a{color:var(--gold)}
 .side{background:var(--side);color:var(--side-ink);position:sticky;top:0;height:100vh;overflow-y:auto;padding:22px 14px calc(18px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:22px}
 .brand{display:flex;gap:11px;align-items:center;padding:0 6px}
 .todaychip{margin:10px 6px 0;padding:7px 10px;border:1px solid rgba(227,181,90,.28);border-radius:10px;font-size:.74rem;color:var(--side-ink);display:flex;align-items:center;gap:8px}.todaychip:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--good,#6fcf97);box-shadow:0 0 0 3px rgba(111,207,151,.18);flex:none}
-.brand svg{width:42px;height:42px;flex:none}
+.brand svg,.brand img{width:46px;height:46px;flex:none;object-fit:contain}
 .brand b{display:block;font-family:var(--font-display);font-size:1.25rem;letter-spacing:-.2px}
 .brand b span{color:var(--gold-bright)}
 .brand small{display:block;color:var(--side-mute);font-size:.78rem}
@@ -334,7 +334,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
 <div class="app">
 <aside class="side" id="side" aria-label="Navigation">
   <div class="brand">
-    <svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><circle cx="26" cy="26" r="17" fill="none" stroke="#e3b55a" stroke-width="1" opacity=".45"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg>
+    <img class="gk-logo" src="/icons/logo-emblem.webp" alt="" aria-hidden="true">
     <div><b>Geld-<span>Kompass</span></b><small>Dein Finanzleben im Blick.</small></div>
   </div>
   <div class="todaychip" id="todayChip" aria-live="polite"></div>

@@ -3,8 +3,14 @@
 'use strict';
 var BASE='https://geld-kompass.com/';
 var EN=(document.documentElement.lang||'de').slice(0,2)==='en',LANG=EN?'en':'de',LOC=EN?'en-GB':'de-DE';
-var eur0=new Intl.NumberFormat(LOC,{style:'currency',currency:'EUR',maximumFractionDigits:0});
-var eur2=new Intl.NumberFormat(LOC,{style:'currency',currency:'EUR',minimumFractionDigits:2,maximumFractionDigits:2});
+/* Währung der Rechner: gespeicherte Wahl (gemeinsam mit dem Geld-Kompass) > Region des Browsers > Sprache */
+var CURS=['EUR','USD','GBP','CHF','CAD','AUD'],CKEY='geld-kompass-currency',CUR=null;
+try{CUR=localStorage.getItem(CKEY);}catch(e){}
+if(CURS.indexOf(CUR)<0){var nl=(navigator.language||'').toUpperCase();CUR=/-CH$/.test(nl)?'CHF':/-GB$/.test(nl)?'GBP':/-CA$/.test(nl)?'CAD':/-AU$/.test(nl)?'AUD':EN?(/-US$/.test(nl)?'USD':'USD'):'EUR';}
+var eur0,eur2,SYM;
+function setFmt(){if(EN)LOC=CUR==='GBP'?'en-GB':'en-US';eur0=new Intl.NumberFormat(LOC,{style:'currency',currency:CUR,maximumFractionDigits:0});eur2=new Intl.NumberFormat(LOC,{style:'currency',currency:CUR,minimumFractionDigits:2,maximumFractionDigits:2});
+  SYM=(eur0.formatToParts(1).filter(function(x){return x.type==='currency';})[0]||{value:'€'}).value;}
+setFmt();
 var nf1=new Intl.NumberFormat(LOC,{maximumFractionDigits:1});
 var nf0=new Intl.NumberFormat(LOC,{maximumFractionDigits:0});
 var MON=EN?['January','February','March','April','May','June','July','August','September','October','November','December']:['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
@@ -28,7 +34,20 @@ function share(el,text,path){
     '<button class="btn" type="button" data-copy>'+(EN?'Copy link':'Link kopieren')+'</button>';
   el.querySelector('[data-copy]').onclick=function(){var b=this;(navigator.clipboard?navigator.clipboard.writeText(plain):Promise.reject()).then(function(){b.textContent=EN?'Copied ✓':'Kopiert ✓';},function(){prompt(EN?'Copy link:':'Link kopieren:',plain);});};
 }
-function bind(ids,fn){ids.forEach(function(id){var e=$(id);if(e){e.addEventListener('input',fn);e.addEventListener('change',fn);}});fn();}
+var RUNS=[];
+function bind(ids,fn){RUNS.push(fn);ids.forEach(function(id){var e=$(id);if(e){e.addEventListener('input',fn);e.addEventListener('change',fn);}});fn();}
+/* Währungsauswahl in jedem Rechner (nicht im Währungs- und Inflationsrechner, die haben eigene Währungen) */
+(function(){var box=document.querySelector('.calc');if(!box||$('from')||$('geo'))return;
+  var NAMES=EN?{EUR:'Euro (€)',USD:'US dollar ($)',GBP:'British pound (£)',CHF:'Swiss franc (CHF)',CAD:'Canadian dollar (CA$)',AUD:'Australian dollar (A$)'}:{EUR:'Euro (€)',USD:'US-Dollar ($)',GBP:'Britisches Pfund (£)',CHF:'Schweizer Franken (CHF)',CAD:'Kanadischer Dollar (CA$)',AUD:'Australischer Dollar (A$)'};
+  var row=document.createElement('div');row.className='curbar';
+  row.innerHTML='<label>'+(EN?'Currency':'Währung')+'<select id="gkCur">'+CURS.map(function(c){return '<option value="'+c+'">'+NAMES[c]+'</option>';}).join('')+'</select></label>';
+  box.insertBefore(row,box.firstChild);var sel=$('gkCur');sel.value=CUR;
+  /* Währungszeichen in Beschriftungen und Schnellwahl-Knöpfen mitführen */
+  var nodes=[],w=document.createTreeWalker(box,NodeFilter.SHOW_TEXT),n;while((n=w.nextNode())){if(n.nodeValue.indexOf('€')>-1)nodes.push([n,n.nodeValue]);}
+  function relabel(){nodes.forEach(function(x){x[0].nodeValue=x[1].replace(/€/g,SYM);});}
+  relabel();
+  sel.addEventListener('change',function(){CUR=sel.value;try{localStorage.setItem(CKEY,CUR);}catch(e){}setFmt();relabel();RUNS.forEach(function(f){try{f();}catch(e){}});});
+})();
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}
 window.GKR={num:num,$:$,val:val,E:E,nf1:nf1,nf0:nf0,monthName:monthName,esc:esc,share:share,bind:bind,BASE:BASE,EN:EN,LANG:LANG};
 })();
