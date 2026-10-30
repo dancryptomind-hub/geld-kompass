@@ -260,6 +260,14 @@ CTA = ('<div class="cta">'
  '<a href="' + BUCH + '" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5c2.5-1 5.2-1 8 .8 2.8-1.8 5.5-1.8 8-.8v13c-2.5-1-5.2-1-8 .8-2.8-1.8-5.5-1.8-8-.8z" fill="none" stroke="#e3b55a" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 6.3v13" stroke="#e3b55a" stroke-width="1.6"/></svg></i><div><b>Das Buch dazu</b><span>„Der einfache Weg zur Finanziellen Freiheit“: Das Geldbaum-Prinzip in sieben Stufen.</span></div></a>'
  '</div>')
 
+
+WORKBOOK_NOTES = {'schulden': ('Aus der Übersicht wird dein Schuldenplan.', 'Im Arbeitsbuch sammelst du Forderungen, hältst tragbare Raten fest und vergleichst deine nächsten Schritte. So bleibt neben der Rechnung auch deine Entscheidung sichtbar.', 'Schulden-Übung ansehen'), 'ruecklagen': ('Gib deiner Rücklage einen festen Platz.', 'Halte Zweck, Zielbetrag und Termin im Arbeitsbuch fest. Die passende Übungsseite verbindet deinen Rücklagenplan mit den tatsächlich gespeicherten Monatsständen.', 'Rücklagen-Übung ansehen'), 'monatsabschluss': ('Was behältst du bei? Was änderst du?', 'Der Kompass zeigt deine Zahlen. Im Arbeitsbuch vergleichst du den letzten Monat, hältst Fortschritte fest und entscheidest, was du als Nächstes angehst.', 'Monatsauswertung ansehen')}
+def workbook_note(slug):
+    key = {'schuldenfrei-rechner':'schulden','notgroschen-rechner':'ruecklagen','freiheitstage-rechner':'monatsabschluss'}.get(slug)
+    if not key: return ''
+    title,text,label = WORKBOOK_NOTES[key]
+    return '<aside class="workbook-note" aria-label="Passende Übung im Arbeitsbuch"><h2>'+esc(title)+'</h2><p>'+esc(text)+'</p><a href="/arbeitsbuch/#'+key+'">'+esc(label)+'</a></aside>'
+
 def render(p):
     url = BASE + 'rechner/' + p['slug'] + '/'
     faq_ld = {'@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': [
@@ -283,6 +291,7 @@ def render(p):
 <meta property="og:url" content="{url}">
 <meta property="og:locale" content="de_DE">
 <link rel="stylesheet" href="../rechner.css">
+<link rel="stylesheet" href="/arbeitsbuch/hinweise.css">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
@@ -301,6 +310,7 @@ def render(p):
 <h1>{esc(p['h1'])}</h1>
 <p class="lead">{esc(p['lead'])}</p>
 <section class="card calc" aria-label="Rechner">{p['calc']}</section>
+{workbook_note(p['slug'])}
 {CTA}
 {p['body']}
 <h2>Häufige Fragen</h2>
@@ -346,7 +356,7 @@ for p in PAGES:
     os.makedirs('rechner/' + p['slug'], exist_ok=True)
     open('rechner/%s/index.html' % p['slug'], 'w').write(render(p))
 open('rechner/index.html', 'w').write(hub())
-urls = [BASE, BASE + 'app/', BASE + 'start/', BASE + 'buchbegruessung/', BASE + 'rechner/'] + [BASE + 'rechner/' + p['slug'] + '/' for p in PAGES]
+urls = [BASE, BASE + 'app/', BASE + 'start/', BASE + 'buchbegruessung/', BASE + 'arbeitsbuch/', BASE + 'rechner/'] + [BASE + 'rechner/' + p['slug'] + '/' for p in PAGES]
 open('sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     ''.join('<url><loc>%s</loc><lastmod>%s</lastmod></url>\n' % (u, TODAY) for u in urls) + '</urlset>\n')
 print('ok', len(PAGES), 'Seiten')
