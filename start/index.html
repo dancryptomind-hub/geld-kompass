@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Start · Der einfache Weg zur Finanziellen Freiheit</title>
-<meta name="description" content="Kostenlose Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“: Geld-Kompass und Sonntagsrunde auf WhatsApp.">
+<meta name="description" content="Kostenlose Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“: Geld-Kompass und Geld-Kompass auf WhatsApp.">
 <meta name="theme-color" content="#0E1730">
 <link rel="icon" href="../icons/icon-192.png">
 <script>
@@ -29,8 +29,20 @@ a.b b{display:block;font-size:18px}a.b span{color:var(--muted);font-size:14px}sm
 <body><main>
 <div class="k">Zum Buch</div>
 <h1>Schön, dass du da bist.</h1>
-<p>Zu „Der einfache Weg zur Finanziellen Freiheit“ gehören zwei kostenlose Begleiter. Fang mit dem an, was du gerade brauchst.</p>
+<p>Verstehe die Grundlagen im Buch, halte deine Entscheidungen im Arbeitsbuch fest und prüfe deine Zahlen im Geld-Kompass. Fang mit dem Schritt an, der dir gerade hilft.</p>
 <a class="b" href="../#overview"><i>🧭</i><div><b>Geld-Kompass öffnen</b><span>Dein Finanzleben im Blick: Buchungen, Schulden-Plan, Depot, Rechner. Auch als App für dein Handy.</span></div></a>
-<a class="b" href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E"><i>🌱</i><div><b>Der Sonntagsrunde folgen</b><span>Jeden Sonntag ein kurzer Geld-Check und ein kleiner Schritt für deine Woche. Auf WhatsApp, deine Nummer bleibt privat.</span></div></a>
+<a class="b" href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E"><i>🌱</i><div><b>Lass deinen Geldbaum weiterwachsen</b><span>Geld-Kompass auf WhatsApp: Impulse für deinen Finanzalltag und deinen nächsten Schritt.</span></div></a>
 <small>Deine Zahlen bleiben auf deinem Gerät. Keine Anlageberatung.</small>
-</main></body></html>
+</main>
+<script>
+fetch('links.json', {cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error('links');return r.json();}).then(function(links){
+ var root=document.querySelector('main'),footer=root.querySelector('small');
+ [['hauptbuch','Das Hauptbuch','Gedanken und Zusammenhänge verstehen.'],['arbeitsbuch','Das Arbeitsbuch','Mit eigenen Zahlen üben und Entscheidungen festhalten.']].forEach(function(item){
+  var url=links[item[0]];if(typeof url!=='string'||!/^https:\/\//i.test(url))return;
+  var a=document.createElement('a');a.className='b';a.href=url;a.target='_blank';a.rel='noopener';
+  var icon=document.createElement('i');icon.textContent=item[0]==='hauptbuch'?'01':'02';a.appendChild(icon);
+  var block=document.createElement('div'),title=document.createElement('b'),body=document.createElement('span');title.textContent=item[1];body.textContent=item[2];block.appendChild(title);block.appendChild(body);a.appendChild(block);root.insertBefore(a,footer);
+ });
+}).catch(function(){/* The free companions remain available independently. */});
+</script>
+</body></html>
