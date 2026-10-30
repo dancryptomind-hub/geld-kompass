@@ -1499,7 +1499,7 @@ function fxSymbol(f,to){var MAJ={EUR:1,USD:1},BS={EUR:1,USD:1,GBP:1};
   if(MAJ[f]||MAJ[to])return {s:"FX_IDC:"+f+to,l:f+" in "+to};
   return {s:"FX_IDC:EUR"+to,l:"EUR in "+to};}
 function fxChart(f,to){var box=$("fxChart");if(!box||f===to)return;var sy=fxSymbol(f,to);if(sy.s===fxChartKey)return;fxChartKey=sy.s;
-  clearTimeout(fxChartT);fxChartT=setTimeout(function(){var en=window.GK_LANG==="en",light=S.theme==="light";
+  clearTimeout(fxChartT);fxChartT=setTimeout(function(){var en=window.GK_LANG==="en",light=document.documentElement.getAttribute("data-theme")==="light";
     $("fxChartT").textContent=(en?"Price chart: ":"Kursverlauf: ")+sy.l+(en?" · TradingView":" · TradingView");
     box.innerHTML='<div class="tradingview-widget-container" style="height:100%"><div class="tradingview-widget-container__widget" style="height:100%"></div></div>';
     var sc=document.createElement("script");sc.src="https://s3.tradingview.com/external-embedding/embed-widget-symbol-overview.js";sc.async=true;
@@ -2165,7 +2165,7 @@ function itemDetect(){var v=$("iName").value.trim();if(!v){$("iDetect").innerHTM
 function download(content,name,type){try{var u=URL.createObjectURL(new Blob([content],{type:type}));var a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},1000);toast("Datei erstellt");}catch(e){toast("Speichern nicht möglich. Bitte „Sicherung kopieren“ nutzen.");}}
 function btcBalance(a){return getJSON("https://mempool.space/api/address/"+a,8000).then(function(j){var c=j.chain_stats,m=j.mempool_stats;return ((c.funded_txo_sum-c.spent_txo_sum)+(m.funded_txo_sum-m.spent_txo_sum))/1e8;});}
 function syncWallets(){S.own.hold.filter(function(h){return h.addr;}).forEach(function(h){btcBalance(h.addr).then(function(b){h.qty=b;save();renderAll();}).catch(function(){});});}
-function applyTheme(){document.documentElement.setAttribute("data-theme",S.theme);$("themeBtn").textContent=S.theme==="dark"?"Helles Design":"Dunkles Design";}
+function applyTheme(){document.documentElement.setAttribute("data-theme",S.theme);if($("fxFrom")&&$("fxFrom").value){fxChartKey="";fxChart($("fxFrom").value,$("fxTo").value);}$("themeBtn").textContent=S.theme==="dark"?"Helles Design":"Dunkles Design";}
 
 /* ================= START ================= */
 load();
