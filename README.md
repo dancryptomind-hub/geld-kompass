@@ -45,3 +45,14 @@ Die Sicherung enthält Buchungen, Bestände, Schulden, Berechnungseinstellungen,
 - Renditen und Rückzahlungszeiten sind vereinfachte Modelle. Sie berücksichtigen keine unvorhersehbaren Ausgaben oder beliebigen künftigen Marktverläufe. Ein monatlicher Fehlbetrag muss vor zusätzlichen Spar- oder Tilgungszielen geklärt werden.
 
 Schriftarten: Figtree und Playfair Display, SIL Open Font License. Die Lizenztexte liegen im Ordner `assets`.
+
+## Kostenlose Rechner
+
+Einzelne Rechner zum direkten Ausprobieren, ohne Anmeldung:
+
+- [Sparplan-Rechner](https://dancryptomind-hub.github.io/geld-kompass/rechner/sparplan-rechner/): was aus einer monatlichen Rate werden kann
+- [Inflationsrechner](https://dancryptomind-hub.github.io/geld-kompass/rechner/inflationsrechner/): Kaufkraft mit amtlichen Eurostat-Daten
+- [Konsument oder Eigentümer?](https://dancryptomind-hub.github.io/geld-kompass/rechner/abo-als-aktie/): was ein Abo angelegt wäre
+- [Schuldenfrei-Rechner](https://dancryptomind-hub.github.io/geld-kompass/rechner/schuldenfrei-rechner/): wann der Kredit abbezahlt ist
+- [Notgroschen-Rechner](https://dancryptomind-hub.github.io/geld-kompass/rechner/notgroschen-rechner/): wie groß die Rücklage sein sollte
+- [Freiheitstage-Rechner](https://dancryptomind-hub.github.io/geld-kompass/rechner/freiheitstage-rechner/): wie viele Tage das Vermögen trägt

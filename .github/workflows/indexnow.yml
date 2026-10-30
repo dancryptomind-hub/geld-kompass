@@ -1,0 +1,29 @@
+name: Suchmaschinen benachrichtigen (IndexNow)
+
+on:
+  push:
+    branches: [main]
+    paths: ["sitemap.xml", "rechner/**", "start/**", "index.html"]
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Warten, bis GitHub Pages die neue Fassung ausliefert
+        run: sleep 90
+      - name: URLs aus der Sitemap an IndexNow melden (Bing, Yandex, Seznam, Naver …)
+        run: |
+          python3 - <<'PY'
+          import json, re, urllib.request
+          urls = re.findall(r"<loc>(.*?)</loc>", open("sitemap.xml").read())
+          body = {"host": "dancryptomind-hub.github.io", "key": "fe9f544f2a40ba1a4240c07bbde1ab53",
+                  "keyLocation": "https://dancryptomind-hub.github.io/geld-kompass/fe9f544f2a40ba1a4240c07bbde1ab53.txt", "urlList": urls}
+          req = urllib.request.Request("https://api.indexnow.org/indexnow", data=json.dumps(body).encode(),
+                                       headers={"Content-Type": "application/json; charset=utf-8"})
+          try:
+              r = urllib.request.urlopen(req, timeout=30); print("IndexNow", r.status, len(urls), "URLs")
+          except urllib.error.HTTPError as e:
+              print("IndexNow", e.code, e.read()[:300]); raise SystemExit(1 if e.code >= 400 and e.code != 429 else 0)
+          PY
