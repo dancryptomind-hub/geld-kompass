@@ -2,7 +2,7 @@
 Aufruf im Repo-Hauptordner: python3 scripts/build_rechner.py"""
 import json, os, html, datetime
 
-BASE = 'https://dancryptomind-hub.github.io/geld-kompass/'
+BASE = 'https://geld-kompass.com/'
 KANAL = 'https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E'
 BUCH = 'https://amzn.eu/d/01dK026o'
 TODAY = datetime.date.today().isoformat()

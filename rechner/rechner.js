@@ -1,7 +1,7 @@
 /* Gemeinsame Helfer für die Geld-Kompass-Rechner */
 (function(){
 'use strict';
-var BASE='https://dancryptomind-hub.github.io/geld-kompass/';
+var BASE='https://geld-kompass.com/';
 var eur0=new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',maximumFractionDigits:0});
 var eur2=new Intl.NumberFormat('de-DE',{style:'currency',currency:'EUR',minimumFractionDigits:2,maximumFractionDigits:2});
 var nf1=new Intl.NumberFormat('de-DE',{maximumFractionDigits:1});

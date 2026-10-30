@@ -7,14 +7,14 @@
 <title>Geld-Kompass – kostenloser Finanzplaner: Budget, Schulden, Depot</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Kostenloser Finanzplaner ohne Anmeldung: Budget und Ausgaben, Schulden-Plan mit Schuldenfrei-Datum, Depot mit aktuellen Kursen, Freiheitstage und Rechner. Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ von FreedomByDan.">
-<link rel="canonical" href="https://dancryptomind-hub.github.io/geld-kompass/">
+<link rel="canonical" href="https://geld-kompass.com/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Geld-Kompass">
 <meta property="og:title" content="Geld-Kompass – kostenloser Finanzplaner: Budget, Schulden, Depot">
 <meta property="og:description" content="Kostenloser Finanzplaner ohne Anmeldung: Budget und Ausgaben, Schulden-Plan mit Schuldenfrei-Datum, Depot mit aktuellen Kursen, Freiheitstage und Rechner. Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ von FreedomByDan.">
-<meta property="og:url" content="https://dancryptomind-hub.github.io/geld-kompass/">
+<meta property="og:url" content="https://geld-kompass.com/">
 <meta property="og:locale" content="de_DE">
-<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Geld-Kompass", "alternateName": "Geld-Kompass Finanzplaner", "url": "https://dancryptomind-hub.github.io/geld-kompass/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "inLanguage": "de", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "description": "Kostenloser Finanzplaner ohne Anmeldung: Budget und Ausgaben, Schulden-Plan mit Schuldenfrei-Datum, Depot mit aktuellen Kursen, Freiheitstage und Rechner. Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ von FreedomByDan.", "author": {"@type": "Person", "name": "FreedomByDan"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Geld-Kompass", "alternateName": "Geld-Kompass Finanzplaner", "url": "https://geld-kompass.com/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "inLanguage": "de", "isAccessibleForFree": true, "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "description": "Kostenloser Finanzplaner ohne Anmeldung: Budget und Ausgaben, Schulden-Plan mit Schuldenfrei-Datum, Depot mit aktuellen Kursen, Freiheitstage und Rechner. Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ von FreedomByDan.", "author": {"@type": "Person", "name": "FreedomByDan"}}</script>
 <style>
 /* Layout: navy sidebar (book cover) with gold compass, content grid of cards and SVG charts; bottom nav + drawer on phones */
 :root{
@@ -1636,7 +1636,7 @@ function mainKpis(t){return kpiHTML([["Einnahmen",E(t.income),monthName(ymNow())
 function netSplit(t){if(!t.aktiva&&!t.passiva)return "";var m=Math.max(t.aktiva,t.passiva,1);
   return barsHTML([{l:"Aktiva · gehört dir",v:t.aktiva,c:"var(--good)"},{l:"Passiva · Schulden",v:t.passiva,c:"var(--bad)"},{l:"Nettovermögen",v:Math.abs(t.net),c:t.net<0?"var(--warn)":"var(--c1)",lab:E(t.net)}],m);}
 /* Teilen per WhatsApp: Ergebnis + Link zur passenden öffentlichen Rechnerseite */
-var GK_BASE="https://dancryptomind-hub.github.io/geld-kompass/";
+var GK_BASE="https://geld-kompass.com/";
 function gkShare(text,path){var url=GK_BASE+path+"?ref=wa";return '<a class="gkshare" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(text+"\n\nRechne es selbst nach (kostenlos): "+url)+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Per WhatsApp teilen</a>';}
 /* Motivierender Kopf: positive Freiheitstage, Countdown zum Nullpunkt oder erster Schritt */
 function heroHTML(t,plan){
