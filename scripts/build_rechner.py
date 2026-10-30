@@ -59,13 +59,13 @@ G.bind(['rate','years','ret','start'],run);''',
 # ---------------------------------------------------------------- Inflation
 page(slug='inflationsrechner', short='Inflationsrechner', teaser='Was dein Geld von damals heute noch wert ist',
  title='Inflationsrechner: Was sind 1.000 € von früher heute wert? | Geld-Kompass',
- desc='Inflationsrechner mit amtlichen Eurostat-Daten (HVPI) für Deutschland, Österreich und den Euroraum: Kaufkraftverlust zwischen zwei Jahren kostenlos berechnen.',
+ desc='Inflationsrechner mit amtlichen Daten für Deutschland, Österreich, den Euroraum, die USA und Großbritannien: Kaufkraftverlust zwischen zwei Jahren kostenlos berechnen.',
  eyebrow='Kaufkraft & Inflation', h1='Inflationsrechner: Was ist dein Geld von damals heute noch wert?',
  lead='Wähle Betrag und Jahre. Der Rechner nutzt die amtlichen Jahresdurchschnitte des Harmonisierten Verbraucherpreisindex (HVPI) von Eurostat.',
  calc='''
 <div class="grid">
-<label>Betrag (€)<input id="amt" inputmode="decimal" value="1000"></label>
-<label>Land<select id="geo"><option value="DE">Deutschland</option><option value="AT">Österreich</option><option value="EA20">Euroraum</option></select></label>
+<label><span id="amtL">Betrag (€)</span><input id="amt" inputmode="decimal" value="1000"></label>
+<label>Land<select id="geo"><option value="DE">Deutschland</option><option value="AT">Österreich</option><option value="EA20">Euroraum</option><option value="US">USA</option><option value="UK">Großbritannien</option></select></label>
 <label>Von Jahr<select id="y0"></select></label>
 <label>Bis Jahr<select id="y1"></select></label>
 </div>
@@ -74,21 +74,22 @@ page(slug='inflationsrechner', short='Inflationsrechner', teaser='Was dein Geld 
 <p class="note" id="src">Amtliche Daten werden geladen.</p>
 <div class="share" id="share"></div>''',
  js='''
-var G=GKR,DATA=null;
+var G=GKR,DATA=null,CURG={US:'USD',UK:'GBP'},SYMG={US:'$',UK:'£'};
+function F(v){var c=CURG[G.$('geo').value]||'EUR';return new Intl.NumberFormat('de-DE',{style:'currency',currency:c,maximumFractionDigits:(Math.abs(v)>=1000||Math.abs(v-Math.round(v))<0.005)?0:2}).format(v);}
 fetch('../../data/hicp_annual.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(d){DATA=d;fill();}).catch(function(){G.$('big').textContent='–';G.$('src').textContent='Die amtlichen Daten sind gerade nicht erreichbar. Bitte später erneut versuchen.';});
 function years(){var g=DATA[G.$('geo').value]||DATA.DE;return Object.keys(g.index).sort();}
 function fill(){var ys=years(),a=G.$('y0'),b=G.$('y1'),pa=a.value,pb=b.value;
  a.innerHTML=b.innerHTML=ys.map(function(y){return '<option>'+y+'</option>';}).join('');
  a.value=ys.indexOf(pa)>-1?pa:(ys.indexOf('2010')>-1?'2010':ys[0]);b.value=ys.indexOf(pb)>-1?pb:ys[ys.length-1];run();}
-G.$('geo').addEventListener('change',fill);
+G.$('geo').addEventListener('change',function(){G.$('amtL').textContent='Betrag ('+(SYMG[G.$('geo').value]||'€')+')';fill();});
 function run(){if(!DATA)return;var g=DATA[G.$('geo').value]||DATA.DE,ix=g.index,y0=G.$('y0').value,y1=G.$('y1').value,a=G.val('amt');
  if(!(y0 in ix)||!(y1 in ix))return;var f=ix[y1]/ix[y0],same=a*f,kauf=a/f,pct=(f-1)*100,n=Math.abs(+y1-+y0),pa=n?(Math.pow(f,1/n)-1)*100:0;
  var land=G.$('geo').selectedOptions[0].textContent;
- G.$('big').textContent=G.E(kauf);
- G.$('bigsub').textContent=+y1>=+y0?'Kaufkraft von '+G.E(a)+' aus '+y0+', gemessen in Preisen von '+y1:'Wert in Preisen von '+y1;
- G.$('res').innerHTML='<div><span>Für dasselbe brauchst du '+y1+'</span><b class="neg">'+G.E(same)+'</b></div><div><span>Preise insgesamt</span><b class="gold">'+(pct>=0?'+':'')+G.nf1.format(pct)+' %</b></div><div><span>Im Schnitt pro Jahr</span><b>'+G.nf1.format(pa)+' %</b></div>';
- G.$('src').innerHTML='Quelle: Eurostat, HVPI Jahresdurchschnitt ('+G.esc(land)+', 2015 = 100). Stand der Abfrage: '+G.esc((DATA.checked||'').slice(0,10))+'. Das letzte Jahr ist der zuletzt vollständig veröffentlichte Jahresdurchschnitt.';
- G.share(G.$('share'),G.E(a)+' aus dem Jahr '+y0+' haben '+y1+' nur noch die Kaufkraft von '+G.E(kauf)+' ('+land+', amtliche Eurostat-Daten).','rechner/inflationsrechner/');}
+ G.$('big').textContent=F(kauf);
+ G.$('bigsub').textContent=+y1>=+y0?'Kaufkraft von '+F(a)+' aus '+y0+', gemessen in Preisen von '+y1:'Wert in Preisen von '+y1;
+ G.$('res').innerHTML='<div><span>Für dasselbe brauchst du '+y1+'</span><b class="neg">'+F(same)+'</b></div><div><span>Preise insgesamt</span><b class="gold">'+(pct>=0?'+':'')+G.nf1.format(pct)+' %</b></div><div><span>Im Schnitt pro Jahr</span><b>'+G.nf1.format(pa)+' %</b></div>';
+ G.$('src').innerHTML='Quelle: '+G.esc(g.source||'Eurostat, HVPI Jahresdurchschnitt')+' ('+G.esc(land)+', Jahresdurchschnitt, 2015 = 100). Stand der Abfrage: '+G.esc((DATA.checked||'').slice(0,10))+'. Das letzte Jahr ist der zuletzt vollständig veröffentlichte Jahresdurchschnitt.';
+ G.share(G.$('share'),F(a)+' aus dem Jahr '+y0+' haben '+y1+' nur noch die Kaufkraft von '+F(kauf)+' ('+land+', amtliche Daten).','rechner/inflationsrechner/');}
 G.bind(['amt','y0','y1'],run);''',
  body='''
 <h2>Was der Inflationsrechner zeigt</h2>
