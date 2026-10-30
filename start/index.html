@@ -3,12 +3,13 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Der erste Samen · Für Leser von „Der einfache Weg zur Finanziellen Freiheit“</title>
-<meta name="description" content="Für Leser von „Der einfache Weg zur Finanziellen Freiheit“: Folge dem Geld-Kompass auf WhatsApp für deinen Sonntags-Geld-Check und setze das Geldbaum-Prinzip im kostenlosen Geld-Kompass um.">
+<title>Start · Geld-Kompass</title>
+<meta name="description" content="Vom Samen zum Geldbaum: Erlebe in wenigen Sekunden, wie der kostenlose Geld-Kompass dir Überblick, einen Schulden-Plan und deine Freiheitstage zeigt. Dann ein Klick auf Start.">
 <link rel="canonical" href="https://geld-kompass.com/start/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Geld-Kompass"><meta property="og:title" content="Geld-Kompass · Start"><meta property="og:url" content="https://geld-kompass.com/start/"><meta property="og:locale" content="de_DE">
 <script>
-/* Weiterleitungen für die QR-Codes im Buch. Ziele hier ändern, gedruckte Codes bleiben gültig.
-   „community“ meint aus historischen Gründen den WhatsApp-Kanal. */
+/* Weiterleitungen für die QR-Codes im Buch (gedruckt: /start/?to=kompass und /start/?to=community).
+   NICHT entfernen. Ziele hier ändern, gedruckte Codes bleiben gültig. */
 var ZIELE = {
   kompass: "/app/#overview",
   community: "https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E"
@@ -19,36 +20,344 @@ if (to && ZIELE[to]) location.replace(ZIELE[to]);
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
-<meta name="theme-color" content="#0e1730">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Geld-Kompass">
-<link rel="stylesheet" href="/site.css">
+<meta name="theme-color" content="#0b1328">
+<style>
+@font-face{font-family:Figtree;src:url(/assets/Figtree-400.ttf) format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:Figtree;src:url(/assets/Figtree-600.ttf) format("truetype");font-weight:600;font-display:swap}
+@font-face{font-family:Figtree;src:url(/assets/Figtree-800.ttf) format("truetype");font-weight:800;font-display:swap}
+@font-face{font-family:"Playfair Display";src:url(/assets/PlayfairDisplay-700.ttf) format("truetype");font-weight:700;font-display:swap}
+:root{--bg:#0b1328;--bg2:#13204a;--gold:#e3b55a;--gold2:#f5d58f;--ink:#f3f1ea;--muted:#a9b3cc;--green:#6fcf97}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+#dust{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.glow{position:fixed;inset:-20%;pointer-events:none;z-index:0;background:radial-gradient(50% 40% at 50% calc(30% + var(--gy,0%)),rgba(227,181,90,calc(.10 + var(--ga,0)*.18)),transparent 70%),radial-gradient(80% 60% at 50% 0%,#1a2b5c 0%,transparent 70%)}
+header{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:calc(14px + env(safe-area-inset-top)) 18px 14px}
+.logo{display:flex;align-items:center;gap:9px;color:var(--ink);text-decoration:none;font:700 18px "Playfair Display",Georgia,serif}
+.logo svg{width:26px;height:26px}.logo span{color:var(--gold)}
+.skip{color:var(--muted);font-size:14px;text-decoration:none;border:1px solid rgba(255,255,255,.14);padding:7px 14px;border-radius:99px;backdrop-filter:blur(8px);background:rgba(11,19,40,.4)}
+.bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));width:calc(var(--p,0)*100%);z-index:30}
+
+.scene{position:relative;z-index:1}
+.stick{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;display:flex;align-items:center;justify-content:center}
+h1,h2{font-family:"Playfair Display",Georgia,serif;font-weight:700;letter-spacing:-.01em;margin:0}
+.k{color:var(--gold);font-size:12px;letter-spacing:.22em;text-transform:uppercase;font-weight:600}
+
+/* Szene: Kompass */
+#s1{height:260vh}
+.compass{position:absolute;width:min(60vmin,440px);aspect-ratio:1;left:50%;top:40%;transform:translate(-50%,-50%) scale(var(--cs,1));opacity:var(--co,1);will-change:transform}
+.compass .needle{transform-origin:200px 200px;transform:rotate(var(--rot,0deg))}
+.compass .ticks{transform-origin:200px 200px;transform:rotate(var(--trot,0deg))}
+.h1wrap{position:relative;text-align:center;padding:0 22px;max-width:900px}
+.h1wrap .line{position:absolute;left:0;right:0;top:0;transform:translateY(var(--y,0px));opacity:var(--o,0);padding:0 22px}
+.h1wrap h1{font-size:clamp(32px,6vw,68px);line-height:1.05;text-shadow:0 4px 40px rgba(11,19,40,.9)}
+.h1wrap h1 em{font-style:normal;background:linear-gradient(90deg,var(--gold),var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hint{position:absolute;bottom:calc(26px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);color:var(--muted);font-size:13px;letter-spacing:.18em;text-transform:uppercase;display:flex;flex-direction:column;align-items:center;gap:10px;opacity:var(--ho,1)}
+.hint i{display:block;width:1px;height:42px;background:linear-gradient(var(--gold),transparent);animation:drip 1.8s ease-in-out infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+/* Szene: Geldbaum */
+#s2{height:460vh}
+.treebox{position:absolute;left:50%;bottom:4vh;width:min(92vw,560px);transform:translateX(-50%)}
+.treebox svg{width:100%;height:auto;display:block;max-height:78svh}
+.cap{position:absolute;top:calc(13vh + env(safe-area-inset-top));left:0;right:0;text-align:center;padding:0 22px}
+.cap>div{position:absolute;left:0;right:0;padding:0 22px;opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.cap>div.on{opacity:1;transform:none}
+.cap h2{font-size:clamp(28px,5.4vw,58px);line-height:1.1}
+.cap p{color:var(--muted);margin:12px auto 0;max-width:520px;font-size:clamp(16px,2vw,19px)}
+.draw{fill:none;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:var(--d,1)}
+.leaf{transform-box:fill-box;transform-origin:center;transform:scale(var(--ls,0))}
+
+/* Szene: Drei Werkzeuge, horizontal */
+#s3{height:380vh}
+#s3 .stick{align-items:stretch;justify-content:flex-start}
+.track{display:flex;height:100%;will-change:transform;transform:translateX(var(--tx,0px))}
+.panel{flex:0 0 100vw;height:100%;display:flex;align-items:center;justify-content:center;padding:90px 22px 40px}
+.pcard{width:min(100%,980px);display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(24px,5vw,70px);align-items:center}
+.pcard h2{font-size:clamp(30px,4.6vw,56px);line-height:1.08;margin:12px 0 14px}
+.pcard p{color:var(--muted);margin:0;font-size:clamp(16px,1.8vw,19px)}
+.viz{position:relative;background:linear-gradient(160deg,rgba(27,44,87,.85),rgba(19,32,74,.85));border:1px solid rgba(227,181,90,.22);border-radius:26px;padding:clamp(20px,3.5vw,34px);box-shadow:0 40px 90px -30px rgba(0,0,0,.7),inset 0 1px 0 rgba(255,255,255,.06);transform:perspective(1200px) rotateY(calc(var(--vr,0)*1deg)) scale(calc(.92 + var(--vp,0)*.08))}
+.viz small{display:block;color:var(--muted);font-size:12px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:16px}
+.row{display:grid;grid-template-columns:92px 1fr 64px;gap:12px;align-items:center;margin:13px 0;font-size:15px}
+.row b{font-weight:600}.row span:last-child{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.track-b{height:12px;border-radius:99px;background:rgba(255,255,255,.07);overflow:hidden}
+.track-b i{display:block;height:100%;border-radius:99px;width:calc(var(--w)*var(--vp,0)*1%);background:linear-gradient(90deg,var(--gold),var(--gold2))}
+.track-b i.g{background:linear-gradient(90deg,#3aa876,var(--green))}
+.chart{width:100%;height:auto;display:block}
+.free{font:700 clamp(64px,11vw,120px)/1 "Playfair Display",Georgia,serif;background:linear-gradient(180deg,var(--gold2),var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;font-variant-numeric:tabular-nums}
+.free+div{color:var(--muted);margin-top:8px}
+.days{display:flex;flex-wrap:wrap;gap:4px;margin-top:22px}
+.days i{width:9px;height:9px;border-radius:2px;background:rgba(255,255,255,.08)}
+.days i.on{background:var(--gold)}
+.note{font-size:12px;color:var(--muted);opacity:.75;margin-top:14px}
+.dots{position:absolute;bottom:calc(22px + env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);display:flex;gap:8px}
+.dots i{width:7px;height:7px;border-radius:99px;background:rgba(255,255,255,.2);transition:all .3s}
+.dots i.on{width:26px;background:var(--gold)}
+
+/* Szene: Start */
+#s4{height:200vh}
+.final{text-align:center;padding:0 22px;display:flex;flex-direction:column;align-items:center}
+.final h2{font-size:clamp(34px,6.4vw,76px);line-height:1.05;opacity:var(--fo,0);transform:translateY(calc((1 - var(--fo,0))*30px))}
+.final p{color:var(--muted);margin:16px 0 0;opacity:var(--fo,0)}
+
+.gk-start{--size:min(54vmin,230px);position:relative;display:grid;place-items:center;width:var(--size);height:var(--size);margin-top:clamp(28px,6vh,54px);border-radius:50%;text-decoration:none;color:#14203a;transform:scale(calc(.6 + var(--bo,0)*.4));opacity:var(--bo,0);-webkit-tap-highlight-color:transparent}
+.gk-start .ring{position:absolute;inset:-14%;border-radius:50%;border:1px solid rgba(227,181,90,.45);animation:pulse 2.6s ease-out infinite}
+.gk-start .ring:nth-child(2){animation-delay:1.3s}
+@keyframes pulse{from{transform:scale(.82);opacity:.9}to{transform:scale(1.25);opacity:0}}
+.gk-start .orbit{position:absolute;inset:-6%;animation:spin 18s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.gk-start .core{position:relative;width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe9b0,var(--gold) 55%,#b8862f);box-shadow:0 0 0 1px rgba(255,255,255,.25) inset,0 30px 80px -10px rgba(227,181,90,.55),0 0 120px rgba(227,181,90,.25);display:grid;place-items:center;transition:transform .25s ease}
+.gk-start:hover .core,.gk-start:focus-visible .core{transform:scale(1.04)}
+.gk-start:active .core{transform:scale(.97)}
+.gk-start .core b{font:800 clamp(26px,7vmin,40px)/1 Figtree,sans-serif;letter-spacing:.14em;text-transform:uppercase;padding-left:.14em}
+.gk-start .core svg{position:absolute;width:30%;top:12%;opacity:.55}
+.trust{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;margin-top:clamp(26px,5vh,44px);color:var(--muted);font-size:14px;opacity:var(--bo,0)}
+.trust span:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:8px;vertical-align:middle}
+footer{position:relative;z-index:1;text-align:center;padding:40px 20px calc(40px + env(safe-area-inset-bottom));color:var(--muted);font-size:13px}
+footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 22px;margin-bottom:14px}
+footer a{color:var(--gold);text-decoration:none}
+
+@media (max-width:760px){
+  .pcard{grid-template-columns:1fr;gap:22px}
+  .pcard h2{margin:8px 0 8px}
+  .row{grid-template-columns:78px 1fr 56px;font-size:14px}
+  .panel{padding-top:78px}
+}
+@media (prefers-reduced-motion:reduce){
+  .gk-start .ring,.gk-start .orbit,.hint i{animation:none}
+}
+</style>
 </head>
-<body><main>
-<a class="logo" href="/"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><circle cx="26" cy="26" r="17" fill="none" stroke="#e3b55a" stroke-width="1" opacity=".45"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg><b>Geld-<span>Kompass</span></b></a>
+<body>
+<canvas id="dust" aria-hidden="true"></canvas>
+<div class="glow" aria-hidden="true"></div>
+<div class="bar" aria-hidden="true"></div>
+<header>
+  <a class="logo" href="/"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg>Geld-<span>Kompass</span></a>
+  <a class="skip" href="/app/#overview">Direkt starten</a>
+</header>
 
-<div class="k">Der erste Samen</div>
-<h1>Schön, dass du hier bist.</h1>
-<p class="lead">Du hast <i>„Der einfache Weg zur Finanziellen Freiheit“</i> in der Hand. Ein Baum wächst nicht an einem Tag, sondern mit jedem kleinen Schritt. Hier findest du die zwei Begleiter, die dich dabei unterstützen.</p>
+<main>
+<!-- Szene: Kompass -->
+<section class="scene" id="s1">
+  <div class="stick">
+    <svg class="compass" viewBox="0 0 400 400" aria-hidden="true">
+      <defs>
+        <radialGradient id="cg" cx="50%" cy="45%" r="55%"><stop offset="0" stop-color="#1d2f63"/><stop offset="1" stop-color="#0b1328"/></radialGradient>
+        <linearGradient id="ng" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff3d1"/><stop offset=".5" stop-color="#e3b55a"/><stop offset="1" stop-color="#9a6e22"/></linearGradient>
+      </defs>
+      <circle cx="200" cy="200" r="190" fill="url(#cg)" stroke="rgba(227,181,90,.55)" stroke-width="1.5"/>
+      <circle cx="200" cy="200" r="168" fill="none" stroke="rgba(227,181,90,.18)"/>
+      <g class="ticks" id="ticks"></g>
+      <g font-family="Playfair Display,Georgia,serif" font-size="22" fill="#e3b55a" text-anchor="middle" font-weight="700">
+        <text x="200" y="64">N</text><text x="342" y="208" fill="#a9b3cc" font-size="17">O</text><text x="200" y="350" fill="#a9b3cc" font-size="17">S</text><text x="58" y="208" fill="#a9b3cc" font-size="17">W</text>
+      </g>
+      <g class="needle">
+        <path d="M200 78 L216 200 L200 322 L184 200 Z" fill="url(#ng)"/>
+        <path d="M200 78 L216 200 L184 200 Z" fill="#fff6dd" opacity=".9"/>
+        <path d="M200 322 L216 200 L184 200 Z" fill="#2a3b6e"/>
+        <circle cx="200" cy="200" r="9" fill="#0b1328" stroke="#e3b55a" stroke-width="2"/>
+      </g>
+    </svg>
+    <div class="h1wrap" style="position:absolute;left:0;right:0;top:calc(40% + min(30vmin,220px) + 6vh);height:1px">
+      <div class="line" id="l1"><h1>Wohin fließt<br>eigentlich <em>dein Geld?</em></h1></div>
+      <div class="line" id="l2"><h1>Ab heute weißt du es.</h1></div>
+    </div>
+    <div class="hint" id="hint">Scrollen<i></i></div>
+  </div>
+</section>
 
-<a class="card" href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E" target="_blank" rel="noopener">
-  <div class="head"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#25d366"/><path d="M12 5.2a6.8 6.8 0 0 0-5.9 10.2l-.9 3.3 3.4-.9A6.8 6.8 0 1 0 12 5.2z" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/><path d="M9.6 9.1c.2 2 1.8 3.7 3.9 4.2l.8-.9 1.4.7c-.2.8-.9 1.2-1.6 1.1-2.8-.3-5-2.5-5.3-5.3-.1-.8.4-1.4 1.1-1.6l.7 1.4z" fill="#fff"/></svg><b class="t">Geld-Kompass auf WhatsApp</b></div>
-  <p>Der Kanal zum Buch. Kurz, verständlich und ohne Fachchinesisch, direkt in deinem WhatsApp.</p>
-  <ul>
-    <li>Jeden Sonntag dein Geld-Check mit einem kleinen nächsten Schritt</li>
-    <li>Jeden Mittwoch ein Impuls für deinen Finanzalltag</li>
-    <li>Kostenlos, deine Telefonnummer bleibt für andere verborgen</li>
-  </ul>
-  <span class="btn wa">Kanal folgen</span>
-</a>
+<!-- Szene: Geldbaum -->
+<section class="scene" id="s2">
+  <div class="stick">
+    <div class="cap">
+      <div><span class="k">Das Geldbaum-Prinzip</span><h2>Jeder Baum beginnt<br>mit einem Samen.</h2></div>
+      <div><span class="k">Wurzeln</span><h2>Überblick ist die Wurzel.</h2><p>Wer weiß, wohin sein Geld fließt, kann es lenken.</p></div>
+      <div><span class="k">Stamm</span><h2>Jeder getilgte Euro<br>macht dich stärker.</h2></div>
+      <div><span class="k">Krone</span><h2>Und irgendwann<br><em style="font-style:normal;color:var(--gold)">trägt dich dein Baum.</em></h2></div>
+    </div>
+    <div class="treebox">
+      <svg viewBox="0 0 400 480" aria-hidden="true">
+        <defs><linearGradient id="soil" x1="0" x2="1"><stop offset="0" stop-color="rgba(227,181,90,0)"/><stop offset=".5" stop-color="rgba(227,181,90,.55)"/><stop offset="1" stop-color="rgba(227,181,90,0)"/></linearGradient></defs>
+        <rect x="0" y="400" width="400" height="1.5" fill="url(#soil)"/>
+        <g id="roots" stroke="rgba(227,181,90,.55)" stroke-width="2">
+          <path class="draw" pathLength="1" d="M200 401 C195 420 178 432 150 444"/>
+          <path class="draw" pathLength="1" d="M200 401 C206 422 224 434 254 446"/>
+          <path class="draw" pathLength="1" d="M200 401 C199 425 196 445 192 470"/>
+          <path class="draw" pathLength="1" d="M180 425 C168 434 150 438 128 438"/>
+          <path class="draw" pathLength="1" d="M222 428 C236 440 256 444 276 444"/>
+        </g>
+        <circle id="seed" cx="200" cy="396" r="6" fill="#e3b55a"/>
+        <g id="trunk" stroke="#e3b55a">
+          <path class="draw" pathLength="1" stroke-width="9" d="M200 401 C199 350 196 300 200 250 C203 215 200 190 200 165"/>
+        </g>
+        <g id="branches" stroke="#e3b55a" stroke-width="4">
+          <path class="draw" pathLength="1" d="M199 300 C175 285 150 268 124 236"/>
+          <path class="draw" pathLength="1" d="M200 285 C226 270 254 252 280 220"/>
+          <path class="draw" pathLength="1" d="M200 238 C182 215 166 195 154 160"/>
+          <path class="draw" pathLength="1" d="M201 232 C220 210 238 190 250 152"/>
+          <path class="draw" pathLength="1" d="M200 190 C197 165 199 145 201 118"/>
+        </g>
+        <g id="leaves"></g>
+      </svg>
+    </div>
+  </div>
+</section>
 
-<a class="card" href="/app/#overview">
-  <div class="head"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><circle cx="26" cy="26" r="17" fill="none" stroke="#e3b55a" stroke-width="1" opacity=".45"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg><b class="t">Geld-Kompass öffnen</b></div>
-  <p>Setze das Geldbaum-Prinzip mit deinen eigenen Zahlen um: Budget, Schulden-Plan, Depot und deine Freiheitstage. Kostenlos, ohne Anmeldung, deine Daten bleiben auf deinem Gerät.</p>
-  <span class="btn sec">Zum Geld-Kompass</span>
-</a>
+<!-- Szene: Werkzeuge -->
+<section class="scene" id="s3">
+  <div class="stick">
+    <div class="track" id="track">
+      <div class="panel"><div class="pcard">
+        <div><span class="k">Budget</span><h2>Sieh, wohin<br>dein Geld fließt.</h2><p>Einnahmen und Ausgaben auf einen Blick. Ohne Tabellen, ohne Fachchinesisch.</p></div>
+        <div class="viz"><small>Beispiel · Monat</small>
+          <div class="row"><b>Wohnen</b><div class="track-b"><i style="--w:72"></i></div><span>950 €</span></div>
+          <div class="row"><b>Leben</b><div class="track-b"><i style="--w:48"></i></div><span>620 €</span></div>
+          <div class="row"><b>Freizeit</b><div class="track-b"><i style="--w:24"></i></div><span>310 €</span></div>
+          <div class="row"><b>Abos</b><div class="track-b"><i style="--w:10"></i></div><span>85 €</span></div>
+          <div class="row"><b>Sparen</b><div class="track-b"><i class="g" style="--w:32"></i></div><span>400 €</span></div>
+        </div>
+      </div></div>
+      <div class="panel"><div class="pcard">
+        <div><span class="k">Schulden-Plan</span><h2>Dein Schuldenfrei-Datum.<br>Schwarz auf weiß.</h2><p>Der Geld-Kompass rechnet aus, wann der letzte Euro getilgt ist, und welche Schuld du zuerst angehst.</p></div>
+        <div class="viz"><small>Beispiel · Restschuld</small>
+          <svg class="chart" viewBox="0 0 320 190" aria-hidden="true">
+            <g stroke="rgba(255,255,255,.07)"><line x1="0" y1="40" x2="320" y2="40"/><line x1="0" y1="90" x2="320" y2="90"/><line x1="0" y1="140" x2="320" y2="140"/></g>
+            <path id="debtArea" d="M10 30 C80 52 150 92 210 128 C250 152 280 166 300 170 L300 172 L10 172 Z" fill="rgba(227,181,90,.12)" style="clip-path:inset(0 calc((1 - var(--vp,0))*100%) 0 0)"/>
+            <path class="draw" pathLength="1" stroke="#e3b55a" stroke-width="3" d="M10 30 C80 52 150 92 210 128 C250 152 280 166 300 170"/>
+            <g style="opacity:calc((var(--vp,0) - .85)*7)"><circle cx="300" cy="170" r="7" fill="#6fcf97"/><circle cx="300" cy="170" r="14" fill="none" stroke="#6fcf97" opacity=".4"/><text x="296" y="152" text-anchor="end" fill="#6fcf97" font-family="Figtree,sans-serif" font-weight="600" font-size="15">Schuldenfrei</text></g>
+          </svg>
+        </div>
+      </div></div>
+      <div class="panel"><div class="pcard">
+        <div><span class="k">Freiheitstage</span><h2>Wie lange trägt<br>dich dein Vermögen?</h2><p>Depot mit aktuellen Kursen, Notgroschen und Rücklagen werden zu einer Zahl, die zählt: deine Freiheitstage.</p></div>
+        <div class="viz"><small>Beispiel</small>
+          <div class="free" id="free">0</div><div>Tage ohne Gehalt</div>
+          <div class="days" id="days"></div>
+          <div class="note">Beispielrechnung. Deine eigenen Zahlen bleiben auf deinem Gerät.</div>
+        </div>
+      </div></div>
+    </div>
+    <div class="dots" id="dots"><i></i><i></i><i></i></div>
+  </div>
+</section>
 
-<small>Allgemeine Finanzbildung, keine Anlageberatung. © FreedomByDan</small>
+<!-- Szene: Start -->
+<section class="scene" id="s4">
+  <div class="stick">
+    <div class="final">
+      <h2>Dein Plan beginnt<br>mit einem Klick.</h2>
+      <a class="gk-start" href="/app/#overview" aria-label="Geld-Kompass starten">
+        <span class="ring"></span><span class="ring"></span>
+        <svg class="orbit" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="49" fill="none" stroke="rgba(227,181,90,.5)" stroke-width=".4" stroke-dasharray="1 3"/><circle cx="50" cy="1" r="1.6" fill="#f5d58f"/></svg>
+        <span class="core"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 L15 12 L12 22 L9 12 Z" fill="#14203a"/></svg><b>Start</b></span>
+      </a>
+      <div class="trust"><span>Kostenlos</span><span>Ohne Anmeldung</span><span>Daten bleiben auf deinem Gerät</span></div>
+    </div>
+  </div>
+</section>
 </main>
-<script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}</script>
-</body></html>
+
+<footer>
+  <nav><a href="/">Startseite</a><a href="/rechner/">Kostenlose Rechner</a><a href="/buchbegruessung/">Buchbegrüßung</a><a href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E" target="_blank" rel="noopener">WhatsApp-Kanal</a></nav>
+  Allgemeine Finanzbildung, keine Anlageberatung. © FreedomByDan
+</footer>
+
+<script>
+(function(){
+'use strict';
+var R=document.documentElement, reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function cl(x){return x<0?0:x>1?1:x}
+function seg(p,a,b){return cl((p-a)/(b-a))}
+function ease(t){return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2}
+function prog(el){var r=el.getBoundingClientRect(),h=r.height-innerHeight;return h>0?cl(-r.top/h):(r.top<0?1:0)}
+function $(s){return document.getElementById(s)}
+
+/* Kompass-Skala */
+var ticks=$('ticks'),ns='http://www.w3.org/2000/svg';
+for(var i=0;i<72;i++){var l=document.createElementNS(ns,'line'),big=i%9===0;l.setAttribute('x1',200);l.setAttribute('x2',200);l.setAttribute('y1',big?18:22);l.setAttribute('y2',big?40:32);l.setAttribute('stroke',big?'#e3b55a':'rgba(227,181,90,.4)');l.setAttribute('stroke-width',big?2:1);l.setAttribute('transform','rotate('+(i*5)+' 200 200)');ticks.appendChild(l);}
+
+/* Blätter als goldene Münzen in der Krone */
+var lv=$('leaves'),seedR=7,leaves=[];
+function rnd(){seedR=(seedR*9301+49297)%233280;return seedR/233280}
+for(var j=0;j<54;j++){var a=rnd()*Math.PI*2,rr=Math.sqrt(rnd()),x=200+Math.cos(a)*rr*128,y=168+Math.sin(a)*rr*92;var c=document.createElementNS(ns,'circle');c.setAttribute('cx',x.toFixed(1));c.setAttribute('cy',y.toFixed(1));c.setAttribute('r',(5+rnd()*9).toFixed(1));c.setAttribute('class','leaf');c.setAttribute('fill',rnd()>.3?'#e3b55a':'#f5d58f');c.setAttribute('opacity',(.55+rnd()*.45).toFixed(2));lv.appendChild(c);leaves.push({el:c,t:(1-rr)*.15+rnd()*.85});}
+
+/* Freiheitstage-Raster */
+var days=$('days');for(var d=0;d<120;d++)days.appendChild(document.createElement('i'));
+var dayEls=days.children,FREE=1460,nf=new Intl.NumberFormat('de-DE');
+
+var s1=$('s1'),s2=$('s2'),s3=$('s3'),s4=$('s4'),compass=document.querySelector('.compass'),l1=$('l1'),l2=$('l2'),hint=$('hint');
+var caps=document.querySelectorAll('.cap>div'),roots=document.querySelectorAll('#roots path'),trunk=document.querySelector('#trunk path'),br=document.querySelectorAll('#branches path'),seed=$('seed');
+var track=$('track'),vizs=document.querySelectorAll('.viz'),dots=document.querySelectorAll('#dots i'),free=$('free'),debt=document.querySelector('#s3 .chart .draw');
+var fin=document.querySelector('.final'),idle=0,last=-1,ticking=false;
+
+function setD(el,t){el.style.setProperty('--d',(1-t).toFixed(4))}
+
+function frame(){
+  ticking=false;
+  var max=document.body.scrollHeight-innerHeight;R.style.setProperty('--p',(scrollY/max).toFixed(4));
+
+  /* Kompass */
+  var p1=prog(s1);
+  var settle=ease(seg(p1,0,.7));
+  compass.style.setProperty('--rot',((1-settle)*(-540+idle)).toFixed(2)+'deg');
+  compass.style.setProperty('--trot',(p1*40).toFixed(2)+'deg');
+  compass.style.setProperty('--cs',(1+seg(p1,.6,1)*.9).toFixed(3));
+  compass.style.setProperty('--co',(1-seg(p1,.75,1)).toFixed(3));
+  var a=seg(p1,0,.12),b=1-seg(p1,.28,.4);l1.style.setProperty('--o',Math.min(1,.0001+1)*b);l1.style.setProperty('--y',(-seg(p1,.28,.4)*40)+'px');
+  var o2=seg(p1,.42,.55)*(1-seg(p1,.82,.95));l2.style.setProperty('--o',o2.toFixed(3));l2.style.setProperty('--y',((1-seg(p1,.42,.55))*40)+'px');
+  hint.style.setProperty('--ho',(1-seg(p1,0,.08)).toFixed(3));
+
+  /* Geldbaum */
+  var p2=prog(s2);
+  var step=p2<.18?0:p2<.42?1:p2<.66?2:3;
+  if(step!==last){caps.forEach(function(c,i){c.classList.toggle('on',i===step)});last=step;}
+  seed.setAttribute('cy',(120+ease(seg(p2,0,.14))*276).toFixed(1));
+  seed.setAttribute('opacity',(1-seg(p2,.2,.3)).toFixed(2));
+  roots.forEach(function(r,i){setD(r,ease(seg(p2,.16+i*.03,.38+i*.02)))});
+  setD(trunk,ease(seg(p2,.36,.6)));
+  br.forEach(function(r,i){setD(r,ease(seg(p2,.5+i*.025,.68+i*.02)))});
+  leaves.forEach(function(L){var t=seg(p2,.66+L.t*.22,.72+L.t*.22);L.el.style.setProperty('--ls',ease(t).toFixed(3))});
+  R.style.setProperty('--ga',seg(p2,.66,.95).toFixed(3));
+
+  /* Werkzeuge, horizontal */
+  var p3=prog(s3),n=3,tx=-ease(seg(p3,.08,.92))*(n-1)*innerWidth;
+  /* sanftes Einrasten pro Panel */
+  var raw=seg(p3,.06,.94)*(n-1),k=Math.floor(raw),f=raw-k,snap=k+(f<.35?0:f>.65?1:(f-.35)/.3);
+  tx=-Math.min(n-1,snap)*innerWidth;track.style.setProperty('--tx',tx.toFixed(1)+'px');
+  var active=Math.round(Math.min(n-1,snap));dots.forEach(function(d,i){d.classList.toggle('on',i===active)});
+  vizs.forEach(function(v,i){var center=i,dist=Math.abs(snap-center),vp=cl(1-dist*1.4);if(i===0&&p3<.06)vp=seg(p3,0,.06);v.style.setProperty('--vp',vp.toFixed(3));v.style.setProperty('--vr',((snap-center)*-10).toFixed(2));});
+  var vp1=parseFloat(vizs[1].style.getPropertyValue('--vp'))||0;setD(debt,ease(vp1));
+  var vp2=parseFloat(vizs[2].style.getPropertyValue('--vp'))||0,cnt=Math.round(ease(vp2)*FREE);free.textContent=nf.format(cnt);
+  var on=Math.round(ease(vp2)*dayEls.length);for(var q=0;q<dayEls.length;q++)dayEls[q].className=q<on?'on':'';
+
+  /* Start */
+  var p4=prog(s4),fo=ease(seg(p4,0,.35));
+  fin.style.setProperty('--fo',fo.toFixed(3));
+  fin.style.setProperty('--bo',ease(seg(p4,.15,.55)).toFixed(3));
+  R.style.setProperty('--gy',(-seg(p4,0,.6)*10)+'%');
+}
+function req(){if(!ticking){ticking=true;requestAnimationFrame(frame)}}
+addEventListener('scroll',req,{passive:true});addEventListener('resize',req);
+/* Nadel zittert leicht, solange noch nicht gescrollt wurde */
+if(!reduce){(function wob(t){idle=Math.sin(t/700)*18+Math.sin(t/260)*5;if(prog(s1)<.7)req();requestAnimationFrame(wob)})(0)}
+frame();
+
+/* Goldstaub */
+var cv=$('dust'),cx=cv.getContext('2d'),P=[],W,H,dpr=Math.min(2,devicePixelRatio||1);
+function size(){W=cv.width=innerWidth*dpr;H=cv.height=innerHeight*dpr}
+size();addEventListener('resize',size);
+for(var z=0;z<70;z++)P.push({x:Math.random(),y:Math.random(),r:Math.random()*1.6+.4,v:Math.random()*.00025+.00008,a:Math.random()*.5+.15,ph:Math.random()*6});
+function dust(t){
+  cx.clearRect(0,0,W,H);var boost=.6+(parseFloat(R.style.getPropertyValue('--ga'))||0)*1.2;
+  for(var i=0;i<P.length;i++){var s=P[i];if(!reduce){s.y-=s.v;if(s.y<-.02){s.y=1.02;s.x=Math.random()}}
+    var tw=.6+.4*Math.sin(t/900+s.ph);cx.beginPath();cx.arc(s.x*W+Math.sin(t/3000+s.ph)*8*dpr,s.y*H,s.r*dpr,0,7);cx.fillStyle='rgba(245,213,143,'+(s.a*tw*boost).toFixed(3)+')';cx.fill();}
+  if(!reduce)requestAnimationFrame(dust);
+}
+requestAnimationFrame(dust);
+
+if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}
+})();
+</script>
+</body>
+</html>

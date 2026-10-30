@@ -346,7 +346,7 @@ for p in PAGES:
     os.makedirs('rechner/' + p['slug'], exist_ok=True)
     open('rechner/%s/index.html' % p['slug'], 'w').write(render(p))
 open('rechner/index.html', 'w').write(hub())
-urls = [BASE, BASE + 'app/', BASE + 'start/', BASE + 'rechner/'] + [BASE + 'rechner/' + p['slug'] + '/' for p in PAGES]
+urls = [BASE, BASE + 'app/', BASE + 'start/', BASE + 'buchbegruessung/', BASE + 'rechner/'] + [BASE + 'rechner/' + p['slug'] + '/' for p in PAGES]
 open('sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     ''.join('<url><loc>%s</loc><lastmod>%s</lastmod></url>\n' % (u, TODAY) for u in urls) + '</urlset>\n')
 print('ok', len(PAGES), 'Seiten')
