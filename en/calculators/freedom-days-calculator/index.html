@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script>(function(){var K='geld-kompass-lang',q=new URLSearchParams(location.search).get('lang'),w=q;if(q==='de'||q==='en'){try{localStorage.setItem(K,q);}catch(e){}}else{try{w=localStorage.getItem(K);}catch(e){}}if((w==='de'||w==='en')&&w!=='en')location.replace('/rechner/freiheitstage-rechner/'+location.search+location.hash);})();</script>
+<title>Freedom Days Calculator: How long would my money last without income? | Money Compass</title>
+<meta name="description" content="Calculate your freedom days: how many days could you live on your net worth? Plus: how many days of freedom your monthly savings add every month.">
+<link rel="canonical" href="https://geld-kompass.com/en/calculators/freedom-days-calculator/">
+<link rel="alternate" hreflang="de" href="https://geld-kompass.com/rechner/freiheitstage-rechner/">
+<link rel="alternate" hreflang="en" href="https://geld-kompass.com/en/calculators/freedom-days-calculator/">
+<link rel="alternate" hreflang="x-default" href="https://geld-kompass.com/rechner/freiheitstage-rechner/">
+<meta name="theme-color" content="#0E1730">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Freedom Days Calculator: How long would my money last without income? | Money Compass">
+<meta property="og:description" content="Calculate your freedom days: how many days could you live on your net worth? Plus: how many days of freedom your monthly savings add every month.">
+<meta property="og:url" content="https://geld-kompass.com/en/calculators/freedom-days-calculator/">
+<meta property="og:locale" content="en_GB">
+<link rel="stylesheet" href="/rechner/rechner.css">
+<link rel="stylesheet" href="/arbeitsbuch/hinweise.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Geld-Kompass">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Freedom days calculator · Money Compass", "url": "https://geld-kompass.com/en/calculators/freedom-days-calculator/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "inLanguage": "en", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "description": "Calculate your freedom days: how many days could you live on your net worth? Plus: how many days of freedom your monthly savings add every month."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Why net worth and not just savings?", "acceptedAnswer": {"@type": "Answer", "text": "Debt has to be subtracted from savings for an honest picture. Someone with €5,000 saved and €5,000 of debt is at zero."}}, {"@type": "Question", "name": "Does my home count?", "acceptedAnswer": {"@type": "Answer", "text": "In theory yes, in practice you cannot live off a home you live in. For an honest number, only enter wealth you can actually access."}}, {"@type": "Question", "name": "Where does the term come from?", "acceptedAnswer": {"@type": "Answer", "text": "It comes from the book behind the Money Compass, “Der einfache Weg zur Finanziellen Freiheit”."}}]}</script>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="logo" href="/?lang=en"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><circle cx="26" cy="26" r="17" fill="none" stroke="#e3b55a" stroke-width="1" opacity=".45"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg><b>Money <span>Compass</span></b></a><nav><a href="../">All calculators</a><a class="hide-s" href="/app/?lang=en"> · Open the Money Compass</a> · <a class="langsw" href="/rechner/freiheitstage-rechner/?lang=de" hreflang="de">Deutsch</a></nav></div></header>
+<main class="wrap">
+<div class="eyebrow">Freedom days</div>
+<h1>Freedom days calculator: how many days does your wealth carry you?</h1>
+<p class="lead">Freedom days show in a single number how long you could live on your wealth. The number grows with every euro you save or every euro of debt you repay.</p>
+<section class="card calc" aria-label="Calculator">
+<div class="grid">
+<label>Savings and investments (€)<input id="assets" inputmode="decimal" value="8000"></label>
+<label>Debt (€)<input id="debts" inputmode="decimal" value="2000"></label>
+<label>Spending per month (€)<input id="spend" inputmode="decimal" value="1800"></label>
+<label>Savings per month (€)<input id="save" inputmode="decimal" value="200"></label>
+</div>
+<div class="big" id="big"></div><div id="bigsub" class="note" style="margin-top:0"></div>
+<div class="res" id="res"></div>
+<p class="note">Calculation: net worth divided by monthly spending, times 30. Tied-up assets such as property or pension savings are not immediately available. A guide figure, not retirement planning.</p>
+<div class="share" id="share"></div></section>
+
+<div class="cta"><a href="/app/?lang=en#overview"><i><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><circle cx="26" cy="26" r="17" fill="none" stroke="#e3b55a" stroke-width="1" opacity=".45"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg></i><div><b>Continue with your real numbers</b><span>The free Money Compass: bookings, debt plan, portfolio and freedom days. No sign-up, your data stays in your browser.</span></div></a><a href="/start/?lang=en"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="#e3b55a" stroke-width="1.6"/><path d="M10 8l6 4-6 4z" fill="#e3b55a"/></svg></i><div><b>See how it works</b><span>A short animated tour: from a seed to your money tree, then one click on Start.</span></div></a><a href="https://amzn.eu/d/01dK026o" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5c2.5-1 5.2-1 8 .8 2.8-1.8 5.5-1.8 8-.8v13c-2.5-1-5.2-1-8 .8-2.8-1.8-5.5-1.8-8-.8z" fill="none" stroke="#e3b55a" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 6.3v13" stroke="#e3b55a" stroke-width="1.6"/></svg></i><div><b>The book behind it</b><span>“Der einfache Weg zur Finanziellen Freiheit”: the money tree principle in seven steps (German edition).</span></div></a></div>
+
+<h2>What are freedom days?</h2>
+<p>Imagine your income stopped tomorrow. How many days could you keep living on your current net worth without changing anything? Those are your freedom days. The number makes progress tangible: instead of “saved €2,000” it says “one more month of freedom”.</p>
+<h2>Two levers</h2>
+<p>Freedom days rise when your net worth grows, through saving, investing and repaying debt. They also rise when your monthly spending falls, because the same wealth lasts longer. If you need €100 less per month, you win twice: a higher savings rate and more days per euro.</p>
+<h2>Track it with real numbers</h2>
+<p>In the free Money Compass, your freedom days are calculated automatically from your bookings, debts and portfolio and shown month by month. Your data stays in your browser.</p>
+<h2>Frequently asked questions</h2>
+<details><summary>Why net worth and not just savings?</summary><p>Debt has to be subtracted from savings for an honest picture. Someone with €5,000 saved and €5,000 of debt is at zero.</p></details><details><summary>Does my home count?</summary><p>In theory yes, in practice you cannot live off a home you live in. For an honest number, only enter wealth you can actually access.</p></details><details><summary>Where does the term come from?</summary><p>It comes from the book behind the Money Compass, “Der einfache Weg zur Finanziellen Freiheit”.</p></details>
+<h2>More free calculators</h2>
+<div class="more"><a href="../savings-plan-calculator/">Savings plan calculator<small>What a monthly savings amount can grow into</small></a><a href="../inflation-calculator/">Inflation calculator<small>What your money from back then is worth today</small></a><a href="../subscription-as-investment/">Consumer or owner?<small>What your subscription or habit would be worth invested</small></a><a href="../debt-free-calculator/">Debt-free calculator<small>When you will be debt-free and what extra payments do</small></a><a href="../emergency-fund-calculator/">Emergency fund calculator<small>How big your safety cushion should be</small></a><a href="../currency-converter/">Currency converter<small>Live rates for 50+ currencies and bitcoin</small></a></div>
+</main>
+<footer><div class="wrap">Money Compass · companion to the book “Der einfache Weg zur Finanziellen Freiheit” · © FreedomByDan · General financial education, not investment, tax or legal advice. All calculations run in your browser; no data is sent.</div></footer>
+<script src="/rechner/rechner.js"></script>
+<script>
+var G=GKR;
+function run(){var a=G.val('assets'),d=G.val('debts'),s=G.val('spend'),sv=G.val('save'),nw=a-d,days=s>0?nw/s*30:0,gain=s>0?sv/s*30:0;
+ G.$('big').textContent=s>0?(days>=0?G.nf0.format(days)+' days':'Still negative'):'–';
+ G.$('bigsub').textContent=days>=365?'that is about '+G.nf1.format(days/365)+' years':days<0?'Your net worth is negative. Every euro of debt repaid brings you closer to day 1.':'calculated from your net worth';
+ G.$('res').innerHTML='<div><span>Net worth</span><b class="'+(nw<0?'neg':'pos')+'">'+G.E(nw)+'</b></div><div><span>Added every month</span><b class="gold">+'+G.nf1.format(gain)+' days</b></div><div><span>Added per year</span><b>+'+G.nf0.format(gain*12)+' days</b></div>';
+ G.share(G.$('share'),days>=0?'I have '+G.nf0.format(days)+' freedom days, and every month '+G.nf1.format(gain)+' more are added. How many do you have?':'I am working my way to my first freedom day. Every month '+G.nf1.format(gain)+' days are added.','en/calculators/freedom-days-calculator/');}
+G.bind(['assets','debts','spend','save'],run);</script>
+</body>
+</html>

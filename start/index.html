@@ -195,6 +195,7 @@ footer a{color:var(--gold);text-decoration:none}
   .gk-start .ring,.gk-start .rays,.gk-start .shine,.gk-start .core,.hint i{animation:none!important}
 }
 </style>
+<script src="/i18n.js"></script>
 </head>
 <body>
 <canvas id="dust" aria-hidden="true"></canvas>
@@ -332,7 +333,7 @@ footer a{color:var(--gold);text-decoration:none}
 'use strict';
 /* Sprache: gleiche Einstellung wie im Geld-Kompass (geld-kompass-lang). Ohne Einstellung entscheidet die Browsersprache. */
 var LKEY='geld-kompass-lang',lang='de';
-try{lang=localStorage.getItem(LKEY)||((navigator.language||'de').toLowerCase().indexOf('de')===0?'de':'en')}catch(e){lang=(navigator.language||'de').toLowerCase().indexOf('de')===0?'de':'en'}
+lang=window.GK_LANG||'de';
 var EN={
  skip:'Start now',l1:'Where does your<br><em>money</em> really go?',l2:'From today, you’ll know.',hint:'Scroll',
  c1k:'The money tree principle',c1:'Every tree starts<br>with a seed.',

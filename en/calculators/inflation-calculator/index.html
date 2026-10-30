@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script>(function(){var K='geld-kompass-lang',q=new URLSearchParams(location.search).get('lang'),w=q;if(q==='de'||q==='en'){try{localStorage.setItem(K,q);}catch(e){}}else{try{w=localStorage.getItem(K);}catch(e){}}if((w==='de'||w==='en')&&w!=='en')location.replace('/rechner/inflationsrechner/'+location.search+location.hash);})();</script>
+<title>Inflation Calculator: What is €1,000 from back then worth today? | Money Compass</title>
+<meta name="description" content="Inflation calculator with official data for Germany, Austria, the euro area, the USA and the UK: calculate the loss of purchasing power between two years for free.">
+<link rel="canonical" href="https://geld-kompass.com/en/calculators/inflation-calculator/">
+<link rel="alternate" hreflang="de" href="https://geld-kompass.com/rechner/inflationsrechner/">
+<link rel="alternate" hreflang="en" href="https://geld-kompass.com/en/calculators/inflation-calculator/">
+<link rel="alternate" hreflang="x-default" href="https://geld-kompass.com/rechner/inflationsrechner/">
+<meta name="theme-color" content="#0E1730">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Inflation Calculator: What is €1,000 from back then worth today? | Money Compass">
+<meta property="og:description" content="Inflation calculator with official data for Germany, Austria, the euro area, the USA and the UK: calculate the loss of purchasing power between two years for free.">
+<meta property="og:url" content="https://geld-kompass.com/en/calculators/inflation-calculator/">
+<meta property="og:locale" content="en_GB">
+<link rel="stylesheet" href="/rechner/rechner.css">
+<link rel="stylesheet" href="/arbeitsbuch/hinweise.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Geld-Kompass">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Inflation calculator · Money Compass", "url": "https://geld-kompass.com/en/calculators/inflation-calculator/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "inLanguage": "en", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "description": "Inflation calculator with official data for Germany, Austria, the euro area, the USA and the UK: calculate the loss of purchasing power between two years for free."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is this the official inflation rate?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. The values come directly from official statistics (Eurostat, BLS, ONS) as annual averages and are updated automatically."}}, {"@type": "Question", "name": "Why does my perceived inflation differ?", "acceptedAnswer": {"@type": "Answer", "text": "The index measures an average basket of goods. If you spend a lot on food, energy or rent, you often feel price increases more strongly."}}, {"@type": "Question", "name": "Why is the current year missing?", "acceptedAnswer": {"@type": "Answer", "text": "An annual average is only final once the year is over. The Money Compass shows the current monthly rate in its purchasing power check."}}]}</script>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="logo" href="/?lang=en"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><circle cx="26" cy="26" r="17" fill="none" stroke="#e3b55a" stroke-width="1" opacity=".45"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg><b>Money <span>Compass</span></b></a><nav><a href="../">All calculators</a><a class="hide-s" href="/app/?lang=en"> · Open the Money Compass</a> · <a class="langsw" href="/rechner/inflationsrechner/?lang=de" hreflang="de">Deutsch</a></nav></div></header>
+<main class="wrap">
+<div class="eyebrow">Purchasing power &amp; inflation</div>
+<h1>Inflation calculator: what is your money from back then worth today?</h1>
+<p class="lead">Choose an amount and two years. The calculator uses official annual averages from Eurostat (HICP), the U.S. Bureau of Labor Statistics and the UK Office for National Statistics.</p>
+<section class="card calc" aria-label="Calculator">
+<div class="grid">
+<label><span id="amtL">Amount (€)</span><input id="amt" inputmode="decimal" value="1000"></label>
+<label>Country<select id="geo"><option value="DE">Germany</option><option value="AT">Austria</option><option value="EA20">Euro area</option><option value="US">USA</option><option value="UK">United Kingdom</option></select></label>
+<label>From year<select id="y0"></select></label>
+<label>To year<select id="y1"></select></label>
+</div>
+<div class="big" id="big">…</div><div id="bigsub" class="note" style="margin-top:0"></div>
+<div class="res" id="res"></div>
+<p class="note" id="src">Loading official data.</p>
+<div class="share" id="share"></div></section>
+
+<div class="cta"><a href="/app/?lang=en#overview"><i><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><circle cx="26" cy="26" r="17" fill="none" stroke="#e3b55a" stroke-width="1" opacity=".45"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg></i><div><b>Continue with your real numbers</b><span>The free Money Compass: bookings, debt plan, portfolio and freedom days. No sign-up, your data stays in your browser.</span></div></a><a href="/start/?lang=en"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="#e3b55a" stroke-width="1.6"/><path d="M10 8l6 4-6 4z" fill="#e3b55a"/></svg></i><div><b>See how it works</b><span>A short animated tour: from a seed to your money tree, then one click on Start.</span></div></a><a href="https://amzn.eu/d/01dK026o" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5c2.5-1 5.2-1 8 .8 2.8-1.8 5.5-1.8 8-.8v13c-2.5-1-5.2-1-8 .8-2.8-1.8-5.5-1.8-8-.8z" fill="none" stroke="#e3b55a" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 6.3v13" stroke="#e3b55a" stroke-width="1.6"/></svg></i><div><b>The book behind it</b><span>“Der einfache Weg zur Finanziellen Freiheit”: the money tree principle in seven steps (German edition).</span></div></a></div>
+
+<h2>What the inflation calculator shows</h2>
+<p>Inflation means that the same amount of money buys less later on. The calculator compares the price index of two years. If the general price level has risen by 40 percent, for example, you need €1,400 instead of €1,000 for the same shopping. Put the other way round, €1,000 from back then only has the purchasing power of about €714 today.</p>
+<h2>Where the figures come from</h2>
+<p>For Europe the calculator uses the Harmonised Index of Consumer Prices (HICP) from Eurostat, the official measure that is comparable across Europe. For the USA it uses the consumer price index CPI-U of the U.S. Bureau of Labor Statistics, for the UK the CPI of the Office for National Statistics. Each year is the annual average.</p>
+<h2>What this means for your money</h2>
+<p>Money that sits in a current account for years without interest loses purchasing power, even if the balance stays the same. You still need an emergency fund that is available immediately. For money you will not need for many years, it is worth asking how it can at least keep up with inflation. The Money Compass shows you how much of your money is affected.</p>
+<h2>Frequently asked questions</h2>
+<details><summary>Is this the official inflation rate?</summary><p>Yes. The values come directly from official statistics (Eurostat, BLS, ONS) as annual averages and are updated automatically.</p></details><details><summary>Why does my perceived inflation differ?</summary><p>The index measures an average basket of goods. If you spend a lot on food, energy or rent, you often feel price increases more strongly.</p></details><details><summary>Why is the current year missing?</summary><p>An annual average is only final once the year is over. The Money Compass shows the current monthly rate in its purchasing power check.</p></details>
+<h2>More free calculators</h2>
+<div class="more"><a href="../savings-plan-calculator/">Savings plan calculator<small>What a monthly savings amount can grow into</small></a><a href="../subscription-as-investment/">Consumer or owner?<small>What your subscription or habit would be worth invested</small></a><a href="../debt-free-calculator/">Debt-free calculator<small>When you will be debt-free and what extra payments do</small></a><a href="../emergency-fund-calculator/">Emergency fund calculator<small>How big your safety cushion should be</small></a><a href="../freedom-days-calculator/">Freedom days calculator<small>How many days your wealth carries you</small></a><a href="../currency-converter/">Currency converter<small>Live rates for 50+ currencies and bitcoin</small></a></div>
+</main>
+<footer><div class="wrap">Money Compass · companion to the book “Der einfache Weg zur Finanziellen Freiheit” · © FreedomByDan · General financial education, not investment, tax or legal advice. All calculations run in your browser; no data is sent.</div></footer>
+<script src="/rechner/rechner.js"></script>
+<script>
+var G=GKR,DATA=null,CURG={US:'USD',UK:'GBP'},SYMG={US:'$',UK:'£'};
+function F(v){var c=CURG[G.$('geo').value]||'EUR';return new Intl.NumberFormat('en-GB',{style:'currency',currency:c,maximumFractionDigits:(Math.abs(v)>=1000||Math.abs(v-Math.round(v))<0.005)?0:2}).format(v);}
+fetch('/data/hicp_annual.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(d){DATA=d;fill();}).catch(function(){G.$('big').textContent='–';G.$('src').textContent='The official data is not available right now. Please try again later.';});
+function years(){var g=DATA[G.$('geo').value]||DATA.DE;return Object.keys(g.index).sort();}
+function fill(){var ys=years(),a=G.$('y0'),b=G.$('y1'),pa=a.value,pb=b.value;
+ a.innerHTML=b.innerHTML=ys.map(function(y){return '<option>'+y+'</option>';}).join('');
+ a.value=ys.indexOf(pa)>-1?pa:(ys.indexOf('2010')>-1?'2010':ys[0]);b.value=ys.indexOf(pb)>-1?pb:ys[ys.length-1];run();}
+G.$('geo').addEventListener('change',function(){G.$('amtL').textContent='Amount ('+(SYMG[G.$('geo').value]||'€')+')';fill();});
+function run(){if(!DATA)return;var g=DATA[G.$('geo').value]||DATA.DE,ix=g.index,y0=G.$('y0').value,y1=G.$('y1').value,a=G.val('amt');
+ if(!(y0 in ix)||!(y1 in ix))return;var f=ix[y1]/ix[y0],same=a*f,kauf=a/f,pct=(f-1)*100,n=Math.abs(+y1-+y0),pa=n?(Math.pow(f,1/n)-1)*100:0;
+ var land=G.$('geo').selectedOptions[0].textContent;
+ G.$('big').textContent=F(kauf);
+ G.$('bigsub').textContent=+y1>=+y0?'Purchasing power of '+F(a)+' from '+y0+', measured in '+y1+' prices':'Value in '+y1+' prices';
+ G.$('res').innerHTML='<div><span>For the same you need in '+y1+'</span><b class="neg">'+F(same)+'</b></div><div><span>Prices overall</span><b class="gold">'+(pct>=0?'+':'')+G.nf1.format(pct)+' %</b></div><div><span>Average per year</span><b>'+G.nf1.format(pa)+' %</b></div>';
+ G.$('src').innerHTML='Source: '+G.esc(g.source||'Eurostat, HICP annual average')+' ('+G.esc(land)+', annual average, 2015 = 100). Retrieved: '+G.esc((DATA.checked||'').slice(0,10))+'. The latest year is the most recent fully published annual average.';
+ G.share(G.$('share'),F(a)+' from '+y0+' only had the purchasing power of '+F(kauf)+' in '+y1+' ('+land+', official data).','en/calculators/inflation-calculator/');}
+G.bind(['amt','y0','y1'],run);</script>
+</body>
+</html>

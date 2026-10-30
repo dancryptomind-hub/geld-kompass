@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script>(function(){var K='geld-kompass-lang',q=new URLSearchParams(location.search).get('lang'),w=q;if(q==='de'||q==='en'){try{localStorage.setItem(K,q);}catch(e){}}else{try{w=localStorage.getItem(K);}catch(e){}}if((w==='de'||w==='en')&&w!=='en')location.replace('/rechner/schuldenfrei-rechner/'+location.search+location.hash);})();</script>
+<title>Debt-Free Calculator: When will my loan be paid off? | Money Compass</title>
+<meta name="description" content="Repayment calculator for loans, overdrafts and credit cards: enter balance, interest rate and payment and see the month you will be debt-free and how much interest an extra payment saves.">
+<link rel="canonical" href="https://geld-kompass.com/en/calculators/debt-free-calculator/">
+<link rel="alternate" hreflang="de" href="https://geld-kompass.com/rechner/schuldenfrei-rechner/">
+<link rel="alternate" hreflang="en" href="https://geld-kompass.com/en/calculators/debt-free-calculator/">
+<link rel="alternate" hreflang="x-default" href="https://geld-kompass.com/rechner/schuldenfrei-rechner/">
+<meta name="theme-color" content="#0E1730">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Debt-Free Calculator: When will my loan be paid off? | Money Compass">
+<meta property="og:description" content="Repayment calculator for loans, overdrafts and credit cards: enter balance, interest rate and payment and see the month you will be debt-free and how much interest an extra payment saves.">
+<meta property="og:url" content="https://geld-kompass.com/en/calculators/debt-free-calculator/">
+<meta property="og:locale" content="en_GB">
+<link rel="stylesheet" href="/rechner/rechner.css">
+<link rel="stylesheet" href="/arbeitsbuch/hinweise.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Geld-Kompass">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Debt-free calculator · Money Compass", "url": "https://geld-kompass.com/en/calculators/debt-free-calculator/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "inLanguage": "en", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "description": "Repayment calculator for loans, overdrafts and credit cards: enter balance, interest rate and payment and see the month you will be debt-free and how much interest an extra payment saves."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Can I repay a loan early?", "acceptedAnswer": {"@type": "Answer", "text": "For consumer loans early repayment is usually possible; the lender may charge a limited early repayment fee. Check your contract."}}, {"@type": "Question", "name": "How accurate is the calculation?", "acceptedAnswer": {"@type": "Answer", "text": "It assumes a fixed interest rate and a constant payment. Real contracts can have fees, fixed-rate periods or special repayment rules."}}, {"@type": "Question", "name": "What is better: repay faster or save?", "acceptedAnswer": {"@type": "Answer", "text": "With expensive debt, faster repayment usually pays off more than saving. You should still keep a small emergency fund so no new debt arises."}}]}</script>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="logo" href="/?lang=en"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><circle cx="26" cy="26" r="17" fill="none" stroke="#e3b55a" stroke-width="1" opacity=".45"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg><b>Money <span>Compass</span></b></a><nav><a href="../">All calculators</a><a class="hide-s" href="/app/?lang=en"> · Open the Money Compass</a> · <a class="langsw" href="/rechner/schuldenfrei-rechner/?lang=de" hreflang="de">Deutsch</a></nav></div></header>
+<main class="wrap">
+<div class="eyebrow">Debt &amp; repayment</div>
+<h1>Debt-free calculator: when will your debt be paid off?</h1>
+<p class="lead">Enter your remaining balance, interest rate and monthly payment. You will see the date you become debt-free and how much interest a small extra amount saves.</p>
+<section class="card calc" aria-label="Calculator">
+<div class="grid">
+<label>Remaining balance (€)<input id="debt" inputmode="decimal" value="5000"></label>
+<label>Interest rate per year (%)<input id="rate" inputmode="decimal" value="12"></label>
+<label>Monthly payment (€)<input id="pay" inputmode="decimal" value="150"></label>
+<label>Extra per month (€)<input id="extra" inputmode="decimal" value="50"></label>
+</div>
+<div class="big" id="big"></div><div id="bigsub" class="note" style="margin-top:0"></div>
+<div class="res" id="res"></div>
+<p class="note">Simplified calculation with a fixed rate and constant payment, without fees. If you struggle with payments, free debt advice services can help.</p>
+<div class="share" id="share"></div></section>
+
+<div class="cta"><a href="/app/?lang=en#overview"><i><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><circle cx="26" cy="26" r="17" fill="none" stroke="#e3b55a" stroke-width="1" opacity=".45"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg></i><div><b>Continue with your real numbers</b><span>The free Money Compass: bookings, debt plan, portfolio and freedom days. No sign-up, your data stays in your browser.</span></div></a><a href="/start/?lang=en"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="#e3b55a" stroke-width="1.6"/><path d="M10 8l6 4-6 4z" fill="#e3b55a"/></svg></i><div><b>See how it works</b><span>A short animated tour: from a seed to your money tree, then one click on Start.</span></div></a><a href="https://amzn.eu/d/01dK026o" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5c2.5-1 5.2-1 8 .8 2.8-1.8 5.5-1.8 8-.8v13c-2.5-1-5.2-1-8 .8-2.8-1.8-5.5-1.8-8-.8z" fill="none" stroke="#e3b55a" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 6.3v13" stroke="#e3b55a" stroke-width="1.6"/></svg></i><div><b>The book behind it</b><span>“Der einfache Weg zur Finanziellen Freiheit”: the money tree principle in seven steps (German edition).</span></div></a></div>
+
+<h2>Why small extra amounts make a big difference</h2>
+<p>With every loan, part of the payment goes to the bank as interest and only the rest reduces the debt. Every extra euro, on the other hand, goes entirely into repayment. That lowers next month's interest, so more of your normal payment reduces the debt. This effect builds up every month.</p>
+<h2>Expensive debt first</h2>
+<p>Overdrafts and credit cards often cost 10 to 20 percent interest. If you have several debts, an extra amount does the most on the most expensive one (avalanche method). Some prefer to start with the smallest debt for a quick win (snowball method). Both work if you stick with it. In the Money Compass, the debt plan compares both approaches with your real debts.</p>
+<h2>When the payment is not enough</h2>
+<p>If your payment barely covers the interest, the debt grows despite paying. That is not a personal failure but a sign to get help. Free debt advice services can also negotiate with creditors.</p>
+<h2>Frequently asked questions</h2>
+<details><summary>Can I repay a loan early?</summary><p>For consumer loans early repayment is usually possible; the lender may charge a limited early repayment fee. Check your contract.</p></details><details><summary>How accurate is the calculation?</summary><p>It assumes a fixed interest rate and a constant payment. Real contracts can have fees, fixed-rate periods or special repayment rules.</p></details><details><summary>What is better: repay faster or save?</summary><p>With expensive debt, faster repayment usually pays off more than saving. You should still keep a small emergency fund so no new debt arises.</p></details>
+<h2>More free calculators</h2>
+<div class="more"><a href="../savings-plan-calculator/">Savings plan calculator<small>What a monthly savings amount can grow into</small></a><a href="../inflation-calculator/">Inflation calculator<small>What your money from back then is worth today</small></a><a href="../subscription-as-investment/">Consumer or owner?<small>What your subscription or habit would be worth invested</small></a><a href="../emergency-fund-calculator/">Emergency fund calculator<small>How big your safety cushion should be</small></a><a href="../freedom-days-calculator/">Freedom days calculator<small>How many days your wealth carries you</small></a><a href="../currency-converter/">Currency converter<small>Live rates for 50+ currencies and bitcoin</small></a></div>
+</main>
+<footer><div class="wrap">Money Compass · companion to the book “Der einfache Weg zur Finanziellen Freiheit” · © FreedomByDan · General financial education, not investment, tax or legal advice. All calculations run in your browser; no data is sent.</div></footer>
+<script src="/rechner/rechner.js"></script>
+<script>
+var G=GKR;
+function plan(d,r,p){var rm=r/12,m=0,int=0;if(p<=d*rm+0.005)return null;while(d>0.005&&m<1200){var z=d*rm;int+=z;d=d+z-p;m++;}return {m:m,int:int};}
+function run(){var d=G.val('debt'),r=G.val('rate')/100,p=G.val('pay'),x=G.val('extra'),a=plan(d,r,p),b=plan(d,r,p+x);
+ if(!b){G.$('big').textContent='Payment too low';G.$('bigsub').textContent='The payment does not even cover the interest of '+G.E(d*r/12)+' per month. The debt is growing. A conversation with a free debt advice service is worth it.';G.$('res').innerHTML='';G.$('share').innerHTML='';return;}
+ G.$('big').textContent=G.monthName(b.m);G.$('bigsub').textContent='debt-free in '+b.m+' months'+(b.m>=12?' (about '+G.nf1.format(b.m/12)+' years)':'')+(x>0?', with '+G.E(x)+' extra per month':'');
+ var h='<div><span>Interest until debt-free</span><b class="neg">'+G.E(b.int)+'</b></div>';
+ if(x>0&&a)h+='<div><span>Debt-free without extra</span><b>'+G.monthName(a.m)+'</b></div><div><span>Extra saves in interest</span><b class="pos">'+G.E(a.int-b.int)+'</b></div><div><span>Done earlier</span><b class="gold">'+(a.m-b.m)+' months</b></div>';
+ else if(x>0&&!a)h+='<div><span>Without extra</span><b class="neg">never</b></div>';
+ G.$('res').innerHTML=h;
+ G.share(G.$('share'),x>0&&a?'With '+G.E(x)+' extra a month I will be debt-free '+(a.m-b.m)+' months earlier and save about '+G.E(a.int-b.int)+' in interest.':'With my plan I will be debt-free in '+b.m+' months.','en/calculators/debt-free-calculator/');}
+G.bind(['debt','rate','pay','extra'],run);</script>
+</body>
+</html>

@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script>(function(){var K='geld-kompass-lang',q=new URLSearchParams(location.search).get('lang'),w=q;if(q==='de'||q==='en'){try{localStorage.setItem(K,q);}catch(e){}}else{try{w=localStorage.getItem(K);}catch(e){}}if((w==='de'||w==='en')&&w!=='en')location.replace('/rechner/notgroschen-rechner/'+location.search+location.hash);})();</script>
+<title>Emergency Fund Calculator: How much do I need? | Money Compass</title>
+<meta name="description" content="Calculate your emergency fund: your fixed monthly costs give your target reserve of 3 to 6 months, and you see when you will reach it with your savings rate.">
+<link rel="canonical" href="https://geld-kompass.com/en/calculators/emergency-fund-calculator/">
+<link rel="alternate" hreflang="de" href="https://geld-kompass.com/rechner/notgroschen-rechner/">
+<link rel="alternate" hreflang="en" href="https://geld-kompass.com/en/calculators/emergency-fund-calculator/">
+<link rel="alternate" hreflang="x-default" href="https://geld-kompass.com/rechner/notgroschen-rechner/">
+<meta name="theme-color" content="#0E1730">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Emergency Fund Calculator: How much do I need? | Money Compass">
+<meta property="og:description" content="Calculate your emergency fund: your fixed monthly costs give your target reserve of 3 to 6 months, and you see when you will reach it with your savings rate.">
+<meta property="og:url" content="https://geld-kompass.com/en/calculators/emergency-fund-calculator/">
+<meta property="og:locale" content="en_GB">
+<link rel="stylesheet" href="/rechner/rechner.css">
+<link rel="stylesheet" href="/arbeitsbuch/hinweise.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Geld-Kompass">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Emergency fund calculator · Money Compass", "url": "https://geld-kompass.com/en/calculators/emergency-fund-calculator/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "inLanguage": "en", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "description": "Calculate your emergency fund: your fixed monthly costs give your target reserve of 3 to 6 months, and you see when you will reach it with your savings rate."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Where should I keep my emergency fund?", "acceptedAnswer": {"@type": "Answer", "text": "In a safe account you can access at any time, for example an instant-access savings account with deposit protection. Not in shares, because they may have fallen exactly when you need the money."}}, {"@type": "Question", "name": "Should I repay debt or save first?", "acceptedAnswer": {"@type": "Answer", "text": "Usually build a small starter emergency fund first, then repay expensive debt, and then fill up the reserve completely."}}, {"@type": "Question", "name": "Do loan payments count as fixed costs?", "acceptedAnswer": {"@type": "Answer", "text": "Yes. Everything you definitely have to pay every month counts."}}]}</script>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="logo" href="/?lang=en"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><circle cx="26" cy="26" r="17" fill="none" stroke="#e3b55a" stroke-width="1" opacity=".45"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg><b>Money <span>Compass</span></b></a><nav><a href="../">All calculators</a><a class="hide-s" href="/app/?lang=en"> · Open the Money Compass</a> · <a class="langsw" href="/rechner/notgroschen-rechner/?lang=de" hreflang="de">Deutsch</a></nav></div></header>
+<main class="wrap">
+<div class="eyebrow">Reserve &amp; safety</div>
+<h1>Emergency fund calculator: how big should your safety cushion be?</h1>
+<p class="lead">An emergency fund keeps a broken washing machine or a job change from turning into new debt. Here you see how big it should be and when you will reach it.</p>
+<section class="card calc" aria-label="Calculator">
+<div class="grid">
+<label>Fixed costs per month (€)<input id="cost" inputmode="decimal" value="1400"></label>
+<label>How many months to cover?<select id="mon"><option value="3">3 months</option><option value="4">4 months</option><option value="6" selected>6 months</option></select></label>
+<label>Already saved (€)<input id="have" inputmode="decimal" value="1000"></label>
+<label>Savings per month (€)<input id="save" inputmode="decimal" value="150"></label>
+</div>
+<div class="big" id="big"></div><div id="bigsub" class="note" style="margin-top:0"></div>
+<div class="res" id="res"></div>
+<p class="note">Fixed costs include rent, utilities, insurance, food, transport and loan payments. Rule of thumb, not a must: with an uncertain income, plan for more months.</p>
+<div class="share" id="share"></div></section>
+
+<div class="cta"><a href="/app/?lang=en#overview"><i><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><circle cx="26" cy="26" r="17" fill="none" stroke="#e3b55a" stroke-width="1" opacity=".45"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg></i><div><b>Continue with your real numbers</b><span>The free Money Compass: bookings, debt plan, portfolio and freedom days. No sign-up, your data stays in your browser.</span></div></a><a href="/start/?lang=en"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="#e3b55a" stroke-width="1.6"/><path d="M10 8l6 4-6 4z" fill="#e3b55a"/></svg></i><div><b>See how it works</b><span>A short animated tour: from a seed to your money tree, then one click on Start.</span></div></a><a href="https://amzn.eu/d/01dK026o" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5c2.5-1 5.2-1 8 .8 2.8-1.8 5.5-1.8 8-.8v13c-2.5-1-5.2-1-8 .8-2.8-1.8-5.5-1.8-8-.8z" fill="none" stroke="#e3b55a" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 6.3v13" stroke="#e3b55a" stroke-width="1.6"/></svg></i><div><b>The book behind it</b><span>“Der einfache Weg zur Finanziellen Freiheit”: the money tree principle in seven steps (German edition).</span></div></a></div>
+
+<h2>Why the emergency fund comes first</h2>
+<p>Without a reserve, every unexpected bill turns into an overdraft or an instalment plan, and those cost interest. An emergency fund is therefore not an investment but insurance against new debt. It belongs in an account you can access quickly, such as an instant-access savings account.</p>
+<h2>How big should it be?</h2>
+<p>Three to six months of your fixed costs is often recommended. With a secure job and no children, three months is often enough. Self-employed people, single earners or people with fluctuating income tend to plan for six months or more.</p>
+<h2>Start small</h2>
+<p>Even €500 covers many small emergencies. Ideally set up a standing order right after payday. The Money Compass shows you how many months your reserve already covers.</p>
+<h2>Frequently asked questions</h2>
+<details><summary>Where should I keep my emergency fund?</summary><p>In a safe account you can access at any time, for example an instant-access savings account with deposit protection. Not in shares, because they may have fallen exactly when you need the money.</p></details><details><summary>Should I repay debt or save first?</summary><p>Usually build a small starter emergency fund first, then repay expensive debt, and then fill up the reserve completely.</p></details><details><summary>Do loan payments count as fixed costs?</summary><p>Yes. Everything you definitely have to pay every month counts.</p></details>
+<h2>More free calculators</h2>
+<div class="more"><a href="../savings-plan-calculator/">Savings plan calculator<small>What a monthly savings amount can grow into</small></a><a href="../inflation-calculator/">Inflation calculator<small>What your money from back then is worth today</small></a><a href="../subscription-as-investment/">Consumer or owner?<small>What your subscription or habit would be worth invested</small></a><a href="../debt-free-calculator/">Debt-free calculator<small>When you will be debt-free and what extra payments do</small></a><a href="../freedom-days-calculator/">Freedom days calculator<small>How many days your wealth carries you</small></a><a href="../currency-converter/">Currency converter<small>Live rates for 50+ currencies and bitcoin</small></a></div>
+</main>
+<footer><div class="wrap">Money Compass · companion to the book “Der einfache Weg zur Finanziellen Freiheit” · © FreedomByDan · General financial education, not investment, tax or legal advice. All calculations run in your browser; no data is sent.</div></footer>
+<script src="/rechner/rechner.js"></script>
+<script>
+var G=GKR;
+function run(){var c=G.val('cost'),n=+G.$('mon').value,h=G.val('have'),s=G.val('save'),goal=c*n,miss=Math.max(0,goal-h),m=s>0?Math.ceil(miss/s):Infinity,cov=c>0?h/c:0;
+ G.$('big').textContent=G.E(goal);G.$('bigsub').textContent='Target reserve for '+n+' months';
+ G.$('res').innerHTML='<div><span>Lasts today for</span><b class="gold">'+G.nf1.format(cov)+' months</b></div><div><span>Still missing</span><b class="'+(miss>0?'neg':'pos')+'">'+G.E(miss)+'</b></div><div><span>Goal reached</span><b class="pos">'+(miss<=0?'already ✓':isFinite(m)?G.monthName(m):'enter savings rate')+'</b></div>';
+ G.share(G.$('share'),miss<=0?'My emergency fund is in place: it lasts '+G.nf1.format(cov)+' months.':'My emergency fund goal: '+G.E(goal)+'. With '+G.E(s)+' a month I will reach it'+(isFinite(m)?' in '+G.monthName(m):'')+'.','en/calculators/emergency-fund-calculator/');}
+G.bind(['cost','mon','have','save'],run);</script>
+</body>
+</html>
