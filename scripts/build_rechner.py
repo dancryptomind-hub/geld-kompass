@@ -250,10 +250,97 @@ G.bind(['assets','debts','spend','save'],run);''',
        ('Woher kommt der Begriff?','Er stammt aus dem Buch „Der einfache Weg zur Finanziellen Freiheit“ und dem dazugehörigen Geld-Kompass.')])
 
 # ================================================================= Ausgabe
+
+# ---------------------------------------------------------------- Währungsrechner (Hauptseite + gefragte Währungspaare)
+FXN = {'EUR':('Euro','€'),'USD':('US-Dollar','$'),'GBP':('Britisches Pfund','£'),'CHF':('Schweizer Franken','CHF'),'JPY':('Japanischer Yen','¥'),
+       'CAD':('Kanadischer Dollar','CA$'),'AUD':('Australischer Dollar','AU$'),'SEK':('Schwedische Krone','SEK'),'NOK':('Norwegische Krone','NOK'),
+       'DKK':('Dänische Krone','DKK'),'PLN':('Polnischer Złoty','zł'),'CZK':('Tschechische Krone','Kč'),'HUF':('Ungarischer Forint','Ft'),
+       'TRY':('Türkische Lira','₺'),'THB':('Thailändischer Baht','฿'),'CNY':('Chinesischer Yuan','CN¥')}
+FX_OPTS = ''.join('<option value="%s">%s · %s</option>' % (c, c, n[0]) for c, n in FXN.items())
+
+def fx_calc():
+    return ('\n<div class="grid fxg">\n<label>Betrag<input id="amt" inputmode="decimal" value="100"></label>\n'
+            '<label>Von<select id="from">' + FX_OPTS + '</select></label>\n'
+            '<button type="button" id="swap" class="swapb" aria-label="Währungen tauschen">⇄</button>\n'
+            '<label>Nach<select id="to">' + FX_OPTS + '</select></label>\n</div>\n'
+            '<div class="big" id="big">…</div><div id="bigsub" class="note" style="margin-top:0"></div>\n'
+            '<div class="res" id="res"></div>\n<table id="tab"></table>\n'
+            '<p class="note" id="src">Aktuelle Devisenkurse werden geladen.</p>\n<div class="share" id="share"></div>')
+
+FX_JS = r'''
+var G=GKR,FX=null,F0="__F__",T0="__T__",SLUG="__S__";
+var N=__N__;
+G.$('from').value=F0;G.$('to').value=T0;
+function fmt(v,c){var d=Math.abs(v)>=1000?0:(Math.abs(v)<1&&v!==0?4:2);try{return new Intl.NumberFormat('de-DE',{style:'currency',currency:c,minimumFractionDigits:d,maximumFractionDigits:d}).format(v);}catch(e){return G.nf1.format(v)+' '+c;}}
+function nfx(v){return new Intl.NumberFormat('de-DE',{maximumSignificantDigits:6}).format(v);}
+fetch('/data/markets.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(d){FX=d.fx;run();}).catch(function(){G.$('big').textContent='–';G.$('src').textContent='Die Devisenkurse sind gerade nicht erreichbar. Bitte später erneut versuchen.';});
+G.$('swap').onclick=function(){var a=G.$('from').value;G.$('from').value=G.$('to').value;G.$('to').value=a;run();};
+function run(){if(!FX||!FX.rates)return;var R=FX.rates,f=G.$('from').value,to=G.$('to').value,a=G.val('amt');if(!R[f]||!R[to])return;
+ var rate=R[to]/R[f],ch=FX.change||{},chg=((1+(ch[to]||0)/100)/(1+(ch[f]||0)/100)-1)*100;
+ G.$('big').textContent=fmt(a*rate,to);
+ G.$('bigsub').textContent=fmt(a,f)+' entsprechen aktuell '+fmt(a*rate,to)+' ('+N[f]+' in '+N[to]+')';
+ G.$('res').innerHTML='<div><span>1 '+f+' =</span><b class="gold">'+nfx(rate)+' '+to+'</b></div><div><span>1 '+to+' =</span><b>'+nfx(1/rate)+' '+f+'</b></div><div><span>Zum Vortag</span><b class="'+(chg>=0?'pos':'neg')+'">'+(chg>=0?'+':'')+new Intl.NumberFormat('de-DE',{minimumFractionDigits:2,maximumFractionDigits:2}).format(chg)+' %</b></div>';
+ var am=[1,5,10,20,50,100,200,500,1000,5000];
+ G.$('tab').innerHTML='<tr><th>'+N[f]+'</th><th>'+N[to]+'</th></tr>'+am.map(function(x){return '<tr><td>'+fmt(x,f)+'</td><td>'+fmt(x*rate,to)+'</td></tr>';}).join('');
+ var when=FX.updated?new Date(FX.updated).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):'';
+ G.$('src').textContent='Mittelkurs von Yahoo Finance (Devisenmarkt), Stand '+when+' Uhr, wird automatisch alle zwei Stunden aktualisiert. Banken, Kartenanbieter und Wechselstuben rechnen mit Auf- und Abschlägen.';
+ G.share(G.$('share'),fmt(a,f)+' sind gerade '+fmt(a*rate,to)+'. Live-Kurs und Umrechnungstabelle:','rechner/'+SLUG+'/');}
+G.bind(['amt','from','to'],run);'''
+
+def fx_js(f, to, slug):
+    return (FX_JS.replace('__F__', f).replace('__T__', to).replace('__S__', slug)
+            .replace('__N__', json.dumps({c: n[0] for c, n in FXN.items()}, ensure_ascii=False)))
+
+FX_TIPS = '''
+<h2>So zahlst du im Ausland nicht zu viel</h2>
+<p>Der Kurs oben ist der Mittelkurs am Devisenmarkt. Den bekommst du als Privatperson fast nie ganz, denn Banken, Kartenanbieter und Wechselstuben verdienen an der Differenz. Drei Dinge machen in der Praxis den größten Unterschied:</p>
+<ul><li><b>In Landeswährung zahlen.</b> Fragt dich ein Kartenterminal oder Geldautomat, ob in Euro abgerechnet werden soll, wähle die Landeswährung. Die angebotene Sofortumrechnung („Dynamic Currency Conversion“) ist meist deutlich teurer.</li>
+<li><b>Gebühren deiner Karte prüfen.</b> Viele Karten berechnen für Zahlungen in Fremdwährung einen Aufschlag. Es gibt Karten ohne diese Gebühr; ein Blick ins Preisverzeichnis lohnt sich vor der Reise.</li>
+<li><b>Bargeld nicht am Flughafen tauschen.</b> Wechselstuben an Flughäfen und Bahnhöfen haben oft schlechte Kurse. Vergleiche den angebotenen Kurs mit dem Mittelkurs oben: Je größer der Abstand, desto teurer.</li></ul>
+<h2>Woher die Kurse kommen</h2>
+<p>Die Wechselkurse stammen von Yahoo Finance und zeigen den aktuellen Mittelkurs am Devisenmarkt. Sie werden automatisch alle zwei Stunden aktualisiert. Die Veränderung zum Vortag zeigt, wie stark sich das Währungspaar zuletzt bewegt hat. Wechselkurse schwanken laufend; für Überweisungen und Kartenzahlungen gilt immer der Kurs deines Anbieters zum Zeitpunkt der Buchung.</p>'''
+
+def fx_faqs(f, to):
+    nf, nt = FXN[f][0], FXN[to][0]
+    return [('Wie viel sind 100 %s in %s?' % (nf, nt), 'Das hängt vom aktuellen Wechselkurs ab. Der Rechner oben zeigt den Betrag live, die Tabelle die gängigsten Beträge von 1 bis 5.000 %s.' % nf),
+            ('Warum bekomme ich bei der Bank weniger %s?' % nt, 'Der Rechner zeigt den Mittelkurs am Devisenmarkt. Banken und Wechselstuben rechnen mit einem Aufschlag beziehungsweise Abschlag und teils mit festen Gebühren.'),
+            ('Wie aktuell ist der Kurs?', 'Die Kurse werden automatisch alle zwei Stunden von Yahoo Finance aktualisiert. Datum und Uhrzeit des Stands stehen direkt unter dem Rechner.'),
+            ('Kostet der Rechner etwas?', 'Nein. Der Währungsrechner ist kostenlos, ohne Anmeldung und ohne Werbung. Die Rechnung läuft in deinem Browser.')]
+
+page(slug='waehrungsrechner', short='Währungsrechner', teaser='Live-Kurse für 16 Währungen umrechnen',
+ title='Währungsrechner mit Live-Kursen: Euro, Dollar, Pfund, Franken | Geld-Kompass',
+ desc='Kostenloser Währungsrechner mit aktuellen Devisenkursen: Euro, US-Dollar, Pfund, Franken, Lira, Baht und mehr umrechnen. Mit Umrechnungstabelle und Veränderung zum Vortag.',
+ eyebrow='Währungen & Wechselkurse', h1='Währungsrechner: Beträge mit aktuellen Kursen umrechnen',
+ lead='Betrag eingeben, Währungen wählen, fertig. Der Rechner nutzt aktuelle Mittelkurse vom Devisenmarkt und zeigt dir gleich eine Tabelle mit den gängigsten Beträgen.',
+ calc=fx_calc(), js=fx_js('EUR', 'USD', 'waehrungsrechner'),
+ body='\n<h2>Beliebte Umrechnungen</h2>\n<div class="more">%PAIRLINKS%</div>' + FX_TIPS,
+ faqs=fx_faqs('EUR', 'USD'))
+
+FX_PAIRS = [
+ ('euro-in-dollar','EUR','USD','Euro in Dollar','Für Online-Shopping in den USA, Reisen nach Amerika oder den Blick aufs Depot: Der US-Dollar ist die wichtigste Währung der Welt. Viele Aktien, Rohstoffe und auch Gold werden in Dollar gehandelt.'),
+ ('dollar-in-euro','USD','EUR','Dollar in Euro','Du hast Einnahmen, Preise oder Kontostände in US-Dollar und willst wissen, was das in Euro ist? Hier siehst du es mit aktuellem Kurs, inklusive Tabelle für typische Beträge.'),
+ ('euro-in-pfund','EUR','GBP','Euro in Pfund','Für eine Reise nach London, Einkäufe bei britischen Shops oder eine Überweisung nach Großbritannien: So viel Pfund Sterling bekommst du aktuell für deine Euro.'),
+ ('pfund-in-euro','GBP','EUR','Pfund in Euro','Preise, Gehalt oder Ersparnisse in Britischen Pfund? Der Rechner zeigt dir, wie viel das aktuell in Euro ist.'),
+ ('euro-in-franken','EUR','CHF','Euro in Franken','Ob Urlaub in den Alpen, Pendeln in die Schweiz oder ein Einkauf in Zürich: Hier rechnest du Euro mit aktuellem Kurs in Schweizer Franken um.'),
+ ('franken-in-euro','CHF','EUR','Franken in Euro','Lohn, Preise oder Erspartes in Schweizer Franken? Der Rechner zeigt dir den aktuellen Gegenwert in Euro.'),
+ ('euro-in-tuerkische-lira','EUR','TRY','Euro in Türkische Lira','Für den Urlaub in der Türkei: Die Lira schwankt stark, deshalb lohnt sich vor jedem Umtausch ein Blick auf den aktuellen Kurs. Die Veränderung zum Vortag zeigt, wie stark sie sich zuletzt bewegt hat.'),
+ ('euro-in-baht','EUR','THB','Euro in Baht','Für Thailand-Urlaub oder ein Leben als digitaler Nomade in Südostasien: So viel Thailändische Baht bekommst du aktuell für deine Euro.'),
+]
+for slug, f, to, name, intro in FX_PAIRS:
+    page(slug=slug, short=name + ' umrechnen', teaser='%s live: 1 %s in %s' % (name, f, to), pair=True,
+     title='%s umrechnen: aktueller Kurs und Tabelle | Geld-Kompass' % name,
+     desc='%s umrechnen mit aktuellem Devisenkurs: Rechner, Umrechnungstabelle von 1 bis 5.000 %s und Veränderung zum Vortag. Kostenlos und ohne Anmeldung.' % (name, FXN[f][0]),
+     eyebrow='Währungsrechner', h1='%s umrechnen: Was ist dein Geld gerade wert?' % name, lead=intro,
+     calc=fx_calc(), js=fx_js(f, to, slug), body=FX_TIPS + '\n<h2>Weitere Währungen</h2>\n<div class="more">%PAIRLINKS%</div>', faqs=fx_faqs(f, to))
+
+
 def esc(s): return html.escape(s, quote=True)
 
 def other_links(cur):
-    return ''.join('<a href="../%s/">%s<small>%s</small></a>' % (p['slug'], esc(p['short']), esc(p['teaser'])) for p in PAGES if p['slug'] != cur)
+    return ''.join('<a href="../%s/">%s<small>%s</small></a>' % (p['slug'], esc(p['short']), esc(p['teaser'])) for p in PAGES if p['slug'] != cur and not p.get('pair'))
+
+def pair_links(cur):
+    return ''.join('<a href="../%s/">%s<small>%s</small></a>' % (p['slug'], esc(p['short']), esc(p['teaser'])) for p in PAGES if p.get('pair') and p['slug'] != cur)
 
 CTA = ('<div class="cta">'
  '<a href="/app/#overview"><i>'+LOGO+'</i><div><b>Mit deinen echten Zahlen weiterrechnen</b><span>Der kostenlose Geld-Kompass: Buchungen, Schulden-Plan, Depot und Freiheitstage. Ohne Anmeldung, deine Daten bleiben in deinem Browser.</span></div></a>'
@@ -313,7 +400,7 @@ def render(p):
 <section class="card calc" aria-label="Rechner">{p['calc']}</section>
 {workbook_note(p['slug'])}
 {CTA}
-{p['body']}
+{p['body'].replace('%PAIRLINKS%', pair_links(p['slug']))}
 <h2>Häufige Fragen</h2>
 {faqs}
 <h2>Weitere kostenlose Rechner</h2>
@@ -327,9 +414,10 @@ def render(p):
 '''
 
 def hub():
-    cards = ''.join('<a href="%s/">%s<small>%s</small></a>' % (p['slug'], esc(p['short']), esc(p['teaser'])) for p in PAGES)
-    t = 'Kostenlose Finanzrechner: Sparplan, Inflation, Schulden, Notgroschen | Geld-Kompass'
-    d = 'Sechs kostenlose Finanzrechner ohne Anmeldung: Sparplan, Inflation, Schuldenfrei-Datum, Notgroschen, Freiheitstage und was dein Abo angelegt wäre.'
+    cards = ''.join('<a href="%s/">%s<small>%s</small></a>' % (p['slug'], esc(p['short']), esc(p['teaser'])) for p in PAGES if not p.get('pair'))
+    pcards = ''.join('<a href="%s/">%s<small>%s</small></a>' % (p['slug'], esc(p['short']), esc(p['teaser'])) for p in PAGES if p.get('pair'))
+    t = 'Kostenlose Finanzrechner: Sparplan, Inflation, Schulden, Währung | Geld-Kompass'
+    d = 'Kostenlose Finanzrechner ohne Anmeldung: Sparplan, Inflation, Schuldenfrei-Datum, Notgroschen, Freiheitstage, Abo als Aktie und Währungsrechner mit Live-Kursen.'
     return f'''<!doctype html>
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(t)}</title><meta name="description" content="{esc(d)}"><link rel="canonical" href="{BASE}rechner/">
@@ -346,6 +434,8 @@ def hub():
 <h1>Finanzrechner, die in einer Minute Klarheit bringen</h1>
 <p class="lead">Ohne Anmeldung, ohne Werbung. Alle Rechnungen laufen in deinem Browser. Wenn du mit deinen echten Zahlen weitermachen möchtest, nutze den vollständigen Geld-Kompass.</p>
 <div class="more">{cards}</div>
+<h2>Währungen umrechnen</h2>
+<div class="more">{pcards}</div>
 {CTA}
 </main>
 <footer><div class="wrap">Geld-Kompass · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung.</div></footer>
