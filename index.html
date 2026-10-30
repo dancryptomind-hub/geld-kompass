@@ -8,6 +8,14 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="Kostenloser Finanzplaner ohne Anmeldung: Budget und Ausgaben, Schulden-Plan mit Schuldenfrei-Datum, Depot mit aktuellen Kursen, Freiheitstage und Rechner. Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ von FreedomByDan.">
 <link rel="canonical" href="https://geld-kompass.com/">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0e1730">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Geld-Kompass">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Geld-Kompass">
 <meta property="og:title" content="Geld-Kompass – kostenloser Finanzplaner: Budget, Schulden, Depot">
@@ -2097,5 +2105,6 @@ setInterval(function(){liveInflation('DE');liveInflation('EA');},6*3600*1000);
 document.addEventListener('visibilitychange',function(){if(!document.hidden&&Date.now()-inflationLastAttempt>3600*1000){liveInflation('DE');liveInflation('EA');}});
 })();
 </script>
+<script>if("serviceWorker" in navigator){window.addEventListener("load",function(){navigator.serviceWorker.register("/sw.js").catch(function(){});});}</script>
 </body>
 </html>

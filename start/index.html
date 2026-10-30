@@ -2,13 +2,19 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Start · Der einfache Weg zur Finanziellen Freiheit</title>
-<meta name="description" content="Kostenlose Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“: der Geld-Kompass und der WhatsApp-Kanal.">
-<meta name="theme-color" content="#0E1730">
-<link rel="icon" href="../icons/icon-192.png">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Der erste Samen · Geld-Kompass zum Buch „Der einfache Weg zur Finanziellen Freiheit“</title>
+<meta name="description" content="Für Leser von „Der einfache Weg zur Finanziellen Freiheit“: Setze das Geldbaum-Prinzip mit deinen eigenen Zahlen um. Der Geld-Kompass ist kostenlos, ohne Anmeldung und als App für dein Handy.">
+<link rel="canonical" href="https://geld-kompass.com/start/">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0e1730">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Geld-Kompass">
 <script>
-/* Weiterleitungen für die QR-Codes im Buch. Ziele hier ändern, gedruckte Codes bleiben gültig. */
+/* Weiterleitungen für die QR-Codes im Buch. Ziele hier ändern, gedruckte Codes bleiben gültig.
+   „community“ meint aus historischen Gründen den WhatsApp-Kanal. */
 var ZIELE = {
   kompass: "../#overview",
   community: "https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E"
@@ -17,32 +23,84 @@ var to = new URLSearchParams(location.search).get("to");
 if (to && ZIELE[to]) location.replace(ZIELE[to]);
 </script>
 <style>
-:root{--bg:#0E1730;--card:#16244A;--gold:#E2B65A;--ink:#F4F1EA;--muted:#A9B2C6}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px 16px}
-main{max-width:520px;width:100%}.k{color:var(--gold);letter-spacing:.14em;font-size:12px;text-transform:uppercase;font-weight:700}
-h1{font-family:Georgia,"Times New Roman",serif;font-size:30px;line-height:1.2;margin:10px 0 12px}p{color:var(--muted);margin:0 0 22px}
-a.b{display:flex;gap:14px;align-items:center;text-decoration:none;color:var(--ink);background:var(--card);border:1px solid rgba(226,182,90,.35);border-radius:16px;padding:18px;margin:0 0 14px}
-a.b:hover{border-color:var(--gold)}a.b i{font-style:normal;font-size:26px;width:44px;height:44px;border-radius:12px;background:rgba(226,182,90,.15);display:grid;place-items:center;flex:none}
-a.b b{display:block;font-size:18px}a.b span{color:var(--muted);font-size:14px}small{display:block;color:var(--muted);font-size:13px;margin-top:20px}
+@font-face{font-family:Figtree;src:url(../assets/Figtree-400.ttf) format("truetype");font-weight:400;font-display:swap}
+@font-face{font-family:Figtree;src:url(../assets/Figtree-600.ttf) format("truetype");font-weight:600;font-display:swap}
+@font-face{font-family:Figtree;src:url(../assets/Figtree-700.ttf) format("truetype");font-weight:700;font-display:swap}
+@font-face{font-family:Playfair;src:url(../assets/PlayfairDisplay-700.ttf) format("truetype");font-weight:700;font-display:swap}
+:root{--bg:#0e1730;--card:#16244a;--card2:#1b2c57;--gold:#e3b55a;--ink:#f4f1ea;--muted:#a9b2c6;--line:rgba(227,181,90,.3)}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;background:radial-gradient(120% 70% at 50% 0%,#1d3060 0%,var(--bg) 60%);color:var(--ink);font:17px/1.55 Figtree,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;display:flex;justify-content:center;padding:calc(36px + env(safe-area-inset-top)) 16px calc(28px + env(safe-area-inset-bottom))}
+main{max-width:520px;width:100%}
+.logo{display:flex;align-items:center;gap:10px;font-family:Playfair,Georgia,serif;font-size:20px;font-weight:700}
+.logo span{color:var(--gold)}.logo svg{width:32px;height:32px}
+.k{color:var(--gold);letter-spacing:.16em;font-size:12px;text-transform:uppercase;font-weight:700;margin-top:34px}
+h1{font-family:Playfair,Georgia,serif;font-size:clamp(30px,8vw,40px);line-height:1.12;margin:10px 0 14px}
+.lead{color:var(--muted);margin:0 0 26px}
+.lead i{font-style:normal;color:var(--ink)}
+.main{display:block;text-decoration:none;color:var(--ink);background:linear-gradient(160deg,var(--card2),var(--card));border:1px solid var(--line);border-radius:20px;padding:22px;transition:border-color .15s}
+.main:hover{border-color:var(--gold)}
+.main b{display:block;font-family:Playfair,Georgia,serif;font-size:24px;margin-bottom:6px}
+.main p{color:var(--muted);margin:0 0 16px;font-size:15px}
+.main ul{list-style:none;margin:0 0 18px;padding:0;display:grid;gap:8px;font-size:15px}
+.main li{padding-left:22px;position:relative}
+.main li:before{content:"";position:absolute;left:2px;top:8px;width:9px;height:9px;border-radius:50%;background:var(--gold)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-weight:700;font-size:16px;border-radius:14px;padding:13px 18px;border:1px solid var(--gold);cursor:pointer;text-decoration:none}
+.btn.pri{background:var(--gold);color:#14203a;width:100%}
+.btn.sec{background:transparent;color:var(--gold);width:100%}
+.app{margin-top:16px;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px}
+.app h2{font-family:Playfair,Georgia,serif;font-size:21px;margin:0 0 6px}
+.app p{color:var(--muted);margin:0 0 14px;font-size:15px}
+.steps{display:none;margin:12px 0 0;padding:14px;border-radius:14px;background:rgba(227,181,90,.08);font-size:15px;color:var(--ink)}
+.steps ol{margin:0;padding-left:20px}.steps li{margin:4px 0}
+.ok{display:none;color:var(--gold);font-weight:600;font-size:15px}
+.more{margin-top:22px;font-size:14px;color:var(--muted);text-align:center}
+.more a{color:var(--gold);text-decoration:none}
+small{display:block;color:var(--muted);font-size:12px;margin-top:22px;text-align:center;opacity:.8}
 </style>
 </head>
 <body><main>
-<div class="k">Zum Buch</div>
-<h1>Schön, dass du da bist.</h1>
-<p>Verstehe die Grundlagen im Buch, halte deine Entscheidungen im Arbeitsbuch fest und prüfe deine Zahlen im Geld-Kompass. Fang mit dem Schritt an, der dir gerade hilft.</p>
-<a class="b" href="../#overview"><i>🧭</i><div><b>Geld-Kompass öffnen</b><span>Dein Finanzleben im Blick: Buchungen, Schulden-Plan, Depot, Rechner. Auch als App für dein Handy.</span></div></a>
-<a class="b" href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E"><i>🌱</i><div><b>Lass deinen Geldbaum weiterwachsen</b><span>Geld-Kompass auf WhatsApp: Impulse für deinen Finanzalltag und deinen nächsten Schritt.</span></div></a>
-<small>Deine Zahlen bleiben auf deinem Gerät. Keine Anlageberatung.</small>
+<div class="logo"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><circle cx="26" cy="26" r="17" fill="none" stroke="#e3b55a" stroke-width="1" opacity=".45"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg><b>Geld-<span>Kompass</span></b></div>
+
+<div class="k">Der erste Samen</div>
+<h1>Hier wird aus dem Buch dein Plan.</h1>
+<p class="lead">In <i>„Der einfache Weg zur Finanziellen Freiheit“</i> hast du das Geldbaum-Prinzip kennengelernt. Im Geld-Kompass setzt du es mit deinen eigenen Zahlen um: kostenlos, ohne Anmeldung, und deine Daten bleiben auf deinem Gerät.</p>
+
+<a class="main" href="../#overview">
+  <b>Geld-Kompass öffnen</b>
+  <p>Dein Finanzleben auf einen Blick, Schritt für Schritt nach den Stufen des Buches.</p>
+  <ul>
+    <li>Einnahmen und Ausgaben, die wirklich zählen</li>
+    <li>Schulden-Plan mit deinem Schuldenfrei-Datum</li>
+    <li>Depot mit aktuellen Kursen und deine Freiheitstage</li>
+  </ul>
+  <span class="btn pri">Jetzt starten</span>
+</a>
+
+<section class="app" id="app">
+  <h2>Als App auf dein Handy</h2>
+  <p>Mit eigenem Symbol auf dem Startbildschirm, ohne App-Store und auch offline nutzbar.</p>
+  <button class="btn sec" id="install" type="button">App installieren</button>
+  <div class="steps" id="ios"><ol><li>Tippe unten in Safari auf <b>Teilen</b> (das Quadrat mit dem Pfeil).</li><li>Wähle <b>Zum Home-Bildschirm</b>.</li><li>Tippe auf <b>Hinzufügen</b>.</li></ol></div>
+  <div class="steps" id="other"><ol><li>Öffne das Browser-Menü (die drei Punkte).</li><li>Wähle <b>App installieren</b> oder <b>Zum Startbildschirm hinzufügen</b>.</li></ol></div>
+  <div class="ok" id="done">Der Geld-Kompass ist auf diesem Gerät bereits als App installiert.</div>
+</section>
+
+<p class="more">Jeden Sonntag ein kurzer Geld-Check: <a href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E" target="_blank" rel="noopener">Geld-Kompass auf WhatsApp</a></p>
+<small>Allgemeine Finanzbildung, keine Anlageberatung. © FreedomByDan</small>
 </main>
 <script>
-fetch('links.json', {cache:'no-cache'}).then(function(r){if(!r.ok)throw new Error('links');return r.json();}).then(function(links){
- var root=document.querySelector('main'),footer=root.querySelector('small');
- [['hauptbuch','Das Hauptbuch','Gedanken und Zusammenhänge verstehen.'],['arbeitsbuch','Das Arbeitsbuch','Mit eigenen Zahlen üben und Entscheidungen festhalten.']].forEach(function(item){
-  var url=links[item[0]];if(typeof url!=='string'||!/^https:\/\//i.test(url))return;
-  var a=document.createElement('a');a.className='b';a.href=url;a.target='_blank';a.rel='noopener';
-  var icon=document.createElement('i');icon.textContent=item[0]==='hauptbuch'?'01':'02';a.appendChild(icon);
-  var block=document.createElement('div'),title=document.createElement('b'),body=document.createElement('span');title.textContent=item[1];body.textContent=item[2];block.appendChild(title);block.appendChild(body);a.appendChild(block);root.insertBefore(a,footer);
- });
-}).catch(function(){/* The free companions remain available independently. */});
+(function(){
+  var deferred=null,btn=document.getElementById('install'),ios=document.getElementById('ios'),other=document.getElementById('other'),done=document.getElementById('done');
+  var standalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;
+  var isIOS=/iphone|ipad|ipod/i.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  if(standalone){btn.style.display='none';done.style.display='block';}
+  window.addEventListener('beforeinstallprompt',function(e){e.preventDefault();deferred=e;});
+  window.addEventListener('appinstalled',function(){btn.style.display='none';ios.style.display='none';other.style.display='none';done.style.display='block';});
+  btn.addEventListener('click',function(){
+    if(deferred){deferred.prompt();deferred.userChoice.finally(function(){deferred=null;});return;}
+    (isIOS?ios:other).style.display='block';
+  });
+  if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}
+})();
 </script>
 </body></html>

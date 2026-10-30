@@ -23,5 +23,6 @@ function share(el,text,path){
   el.querySelector('[data-copy]').onclick=function(){var b=this,u=BASE+path;(navigator.clipboard?navigator.clipboard.writeText(u):Promise.reject()).then(function(){b.textContent='Kopiert ✓';},function(){prompt('Link kopieren:',u);});};
 }
 function bind(ids,fn){ids.forEach(function(id){var e=$(id);if(e){e.addEventListener('input',fn);e.addEventListener('change',fn);}});fn();}
+if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}
 window.GKR={num:num,$:$,val:val,E:E,nf1:nf1,nf0:nf0,monthName:monthName,esc:esc,share:share,bind:bind,BASE:BASE};
 })();

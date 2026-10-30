@@ -283,6 +283,14 @@ def render(p):
 <meta property="og:url" content="{url}">
 <meta property="og:locale" content="de_DE">
 <link rel="stylesheet" href="../rechner.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0e1730">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Geld-Kompass">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <script type="application/ld+json">{json.dumps(app_ld, ensure_ascii=False)}</script>
 <script type="application/ld+json">{json.dumps(faq_ld, ensure_ascii=False)}</script>
 </head>
@@ -316,6 +324,10 @@ def hub():
 <title>{esc(t)}</title><meta name="description" content="{esc(d)}"><link rel="canonical" href="{BASE}rechner/">
 <meta name="theme-color" content="#0E1730">
 <link rel="stylesheet" href="rechner.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<script src="rechner.js"></script>
 </head><body>
 <header class="top"><div class="wrap"><a class="logo" href="../">{LOGO}<b>Geld-<span>Kompass</span></b></a><nav><a href="../">Zum Geld-Kompass</a></nav></div></header>
 <main class="wrap">
