@@ -63,4 +63,4 @@ footer a{color:var(--muted)}
 
 .fxg{grid-template-columns:1fr 1fr auto 1fr;align-items:end}.swapb{height:46px;padding:0 14px;border-radius:12px;border:1px solid var(--line);background:none;color:var(--gold);font-size:20px;cursor:pointer}
 @media (max-width:640px){.fxg{grid-template-columns:1fr auto 1fr}.fxg>label:first-child{grid-column:1/-1}}
-.fxchart{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}#fxChart{height:340px}
+.fxchart{margin-top:18px;border-top:1px solid var(--line);padding-top:14px}#fxChart{height:340px;color-scheme:light}@media (prefers-color-scheme:dark){#fxChart{color-scheme:dark}}
