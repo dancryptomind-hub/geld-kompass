@@ -3,7 +3,7 @@
   "short_name": "Geld-Kompass",
   "description": "Budget, Schulden-Plan, Depot und Freiheitstage. Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“.",
   "id": "/",
-  "start_url": "/?quelle=app",
+  "start_url": "/app/?quelle=app",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait",
@@ -18,8 +18,8 @@
     {"src": "/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
   ],
   "shortcuts": [
-    {"name": "Buchung eintragen", "url": "/#bookings", "icons": [{"src": "/icons/icon-192.png", "sizes": "192x192"}]},
-    {"name": "Schulden-Plan", "url": "/#debts", "icons": [{"src": "/icons/icon-192.png", "sizes": "192x192"}]},
+    {"name": "Buchung eintragen", "url": "/app/#bookings", "icons": [{"src": "/icons/icon-192.png", "sizes": "192x192"}]},
+    {"name": "Schulden-Plan", "url": "/app/#debts", "icons": [{"src": "/icons/icon-192.png", "sizes": "192x192"}]},
     {"name": "Kostenlose Rechner", "url": "/rechner/", "icons": [{"src": "/icons/icon-192.png", "sizes": "192x192"}]}
   ]
 }

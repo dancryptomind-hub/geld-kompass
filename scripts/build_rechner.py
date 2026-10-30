@@ -255,9 +255,9 @@ def other_links(cur):
     return ''.join('<a href="../%s/">%s<small>%s</small></a>' % (p['slug'], esc(p['short']), esc(p['teaser'])) for p in PAGES if p['slug'] != cur)
 
 CTA = ('<div class="cta">'
- '<a href="../../#overview"><i>🧭</i><div><b>Mit deinen echten Zahlen weiterrechnen</b><span>Der kostenlose Geld-Kompass: Buchungen, Schulden-Plan, Depot und Freiheitstage. Ohne Anmeldung, deine Daten bleiben in deinem Browser.</span></div></a>'
- '<a href="' + KANAL + '" target="_blank" rel="noopener"><i>🌱</i><div><b>Geld-Kompass auf WhatsApp</b><span>Jeden Sonntag ein kurzer Geld-Check und ein kleiner nächster Schritt. Kostenlos, deine Nummer bleibt privat.</span></div></a>'
- '<a href="' + BUCH + '" target="_blank" rel="noopener"><i>📖</i><div><b>Das Buch dazu</b><span>„Der einfache Weg zur Finanziellen Freiheit“: Das Geldbaum-Prinzip in sieben Stufen.</span></div></a>'
+ '<a href="/app/#overview"><i>'+LOGO+'</i><div><b>Mit deinen echten Zahlen weiterrechnen</b><span>Der kostenlose Geld-Kompass: Buchungen, Schulden-Plan, Depot und Freiheitstage. Ohne Anmeldung, deine Daten bleiben in deinem Browser.</span></div></a>'
+ '<a href="' + KANAL + '" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#25d366"/><path d="M12 5.2a6.8 6.8 0 0 0-5.9 10.2l-.9 3.3 3.4-.9A6.8 6.8 0 1 0 12 5.2z" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/><path d="M9.6 9.1c.2 2 1.8 3.7 3.9 4.2l.8-.9 1.4.7c-.2.8-.9 1.2-1.6 1.1-2.8-.3-5-2.5-5.3-5.3-.1-.8.4-1.4 1.1-1.6l.7 1.4z" fill="#fff"/></svg></i><div><b>Geld-Kompass auf WhatsApp</b><span>Jeden Sonntag ein kurzer Geld-Check und ein kleiner nächster Schritt. Kostenlos, deine Nummer bleibt privat.</span></div></a>'
+ '<a href="' + BUCH + '" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5c2.5-1 5.2-1 8 .8 2.8-1.8 5.5-1.8 8-.8v13c-2.5-1-5.2-1-8 .8-2.8-1.8-5.5-1.8-8-.8z" fill="none" stroke="#e3b55a" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 6.3v13" stroke="#e3b55a" stroke-width="1.6"/></svg></i><div><b>Das Buch dazu</b><span>„Der einfache Weg zur Finanziellen Freiheit“: Das Geldbaum-Prinzip in sieben Stufen.</span></div></a>'
  '</div>')
 
 def render(p):
@@ -295,7 +295,7 @@ def render(p):
 <script type="application/ld+json">{json.dumps(faq_ld, ensure_ascii=False)}</script>
 </head>
 <body>
-<header class="top"><div class="wrap"><a class="logo" href="../../">{LOGO}<b>Geld-<span>Kompass</span></b></a><nav><a href="../">Alle Rechner</a><a class="hide-s" href="../../"> · Zum Geld-Kompass</a></nav></div></header>
+<header class="top"><div class="wrap"><a class="logo" href="../../">{LOGO}<b>Geld-<span>Kompass</span></b></a><nav><a href="../">Alle Rechner</a><a class="hide-s" href="/app/"> · Zum Geld-Kompass</a></nav></div></header>
 <main class="wrap">
 <div class="eyebrow">{esc(p['eyebrow'])}</div>
 <h1>{esc(p['h1'])}</h1>
@@ -329,13 +329,13 @@ def hub():
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <script src="rechner.js"></script>
 </head><body>
-<header class="top"><div class="wrap"><a class="logo" href="../">{LOGO}<b>Geld-<span>Kompass</span></b></a><nav><a href="../">Zum Geld-Kompass</a></nav></div></header>
+<header class="top"><div class="wrap"><a class="logo" href="../">{LOGO}<b>Geld-<span>Kompass</span></b></a><nav><a href="/app/">Zum Geld-Kompass</a></nav></div></header>
 <main class="wrap">
 <div class="eyebrow">Kostenlose Rechner</div>
 <h1>Finanzrechner, die in einer Minute Klarheit bringen</h1>
 <p class="lead">Ohne Anmeldung, ohne Werbung. Alle Rechnungen laufen in deinem Browser. Wenn du mit deinen echten Zahlen weitermachen möchtest, nutze den vollständigen Geld-Kompass.</p>
 <div class="more">{cards}</div>
-{CTA.replace('../../#overview', '../#overview')}
+{CTA}
 </main>
 <footer><div class="wrap">Geld-Kompass · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung.</div></footer>
 </body></html>
@@ -346,7 +346,7 @@ for p in PAGES:
     os.makedirs('rechner/' + p['slug'], exist_ok=True)
     open('rechner/%s/index.html' % p['slug'], 'w').write(render(p))
 open('rechner/index.html', 'w').write(hub())
-urls = [BASE, BASE + 'start/', BASE + 'rechner/'] + [BASE + 'rechner/' + p['slug'] + '/' for p in PAGES]
+urls = [BASE, BASE + 'app/', BASE + 'start/', BASE + 'rechner/'] + [BASE + 'rechner/' + p['slug'] + '/' for p in PAGES]
 open('sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     ''.join('<url><loc>%s</loc><lastmod>%s</lastmod></url>\n' % (u, TODAY) for u in urls) + '</urlset>\n')
 print('ok', len(PAGES), 'Seiten')
