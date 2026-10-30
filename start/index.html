@@ -31,11 +31,15 @@ if (to && ZIELE[to]) location.replace(ZIELE[to]);
 html{background:var(--bg)}
 body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 Figtree,system-ui,-apple-system,"Segoe UI",sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 #dust{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+body.launch #dust,.gk-start.launch~#dust{z-index:60}
 .glow{position:fixed;inset:-20%;pointer-events:none;z-index:0;background:radial-gradient(50% 40% at 50% calc(30% + var(--gy,0%)),rgba(227,181,90,calc(.10 + var(--ga,0)*.18)),transparent 70%),radial-gradient(80% 60% at 50% 0%,#1a2b5c 0%,transparent 70%)}
-header{position:fixed;top:0;left:0;right:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:calc(14px + env(safe-area-inset-top)) 18px 14px}
+header{position:fixed;top:0;left:0;right:0;z-index:20;isolation:isolate;display:flex;align-items:center;justify-content:space-between;padding:calc(14px + env(safe-area-inset-top)) 18px 14px}
 .logo{display:flex;align-items:center;gap:9px;color:var(--ink);text-decoration:none;font:700 18px "Playfair Display",Georgia,serif}
 .logo svg{width:26px;height:26px}.logo span{color:var(--gold)}
 .skip{color:var(--muted);font-size:14px;text-decoration:none;border:1px solid rgba(255,255,255,.14);padding:7px 14px;border-radius:99px;backdrop-filter:blur(8px);background:rgba(11,19,40,.4)}
+header:before{content:"";position:absolute;inset:0 0 -34px;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(11,19,40,.95) 0%,rgba(11,19,40,.82) 58%,rgba(11,19,40,0));opacity:var(--hb,0);transition:opacity .35s}
+.hr{display:flex;align-items:center;gap:8px}
+.lang{font:600 13px Figtree,sans-serif;color:var(--ink);cursor:pointer;border:1px solid rgba(255,255,255,.14);padding:7px 12px;border-radius:99px;background:rgba(11,19,40,.4);backdrop-filter:blur(8px);letter-spacing:.06em}
 .bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--gold2));width:calc(var(--p,0)*100%);z-index:30}
 
 .scene{position:relative;z-index:1}
@@ -61,8 +65,8 @@ h1,h2{font-family:"Playfair Display",Georgia,serif;font-weight:700;letter-spacin
 .treebox{position:absolute;left:50%;bottom:4vh;width:min(92vw,560px);transform:translateX(-50%)}
 .treebox svg{width:100%;height:auto;display:block;max-height:78svh}
 .cap{position:absolute;top:calc(13vh + env(safe-area-inset-top));left:0;right:0;text-align:center;padding:0 22px}
-.cap>div{position:absolute;left:0;right:0;padding:0 22px;opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
-.cap>div.on{opacity:1;transform:none}
+.cap>div{position:absolute;left:0;right:0;padding:0 22px;opacity:0;transform:translateY(14px);transition:opacity .25s ease,transform .25s ease;pointer-events:none}
+.cap>div.on{opacity:1;transform:none;transition:opacity .45s ease .25s,transform .45s ease .25s}
 .cap h2{font-size:clamp(28px,5.4vw,58px);line-height:1.1}
 .cap p{color:var(--muted);margin:12px auto 0;max-width:520px;font-size:clamp(16px,2vw,19px)}
 .draw{fill:none;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:var(--d,1)}
@@ -100,31 +104,59 @@ h1,h2{font-family:"Playfair Display",Georgia,serif;font-weight:700;letter-spacin
 .final h2{font-size:clamp(34px,6.4vw,76px);line-height:1.05;opacity:var(--fo,0);transform:translateY(calc((1 - var(--fo,0))*30px))}
 .final p{color:var(--muted);margin:16px 0 0;opacity:var(--fo,0)}
 
-.gk-start{--size:min(54vmin,230px);position:relative;display:grid;place-items:center;width:var(--size);height:var(--size);margin-top:clamp(28px,6vh,54px);border-radius:50%;text-decoration:none;color:#14203a;transform:scale(calc(.6 + var(--bo,0)*.4));opacity:var(--bo,0);-webkit-tap-highlight-color:transparent}
-.gk-start .ring{position:absolute;inset:-14%;border-radius:50%;border:1px solid rgba(227,181,90,.45);animation:pulse 2.6s ease-out infinite}
-.gk-start .ring:nth-child(2){animation-delay:1.3s}
-@keyframes pulse{from{transform:scale(.82);opacity:.9}to{transform:scale(1.25);opacity:0}}
-.gk-start .orbit{position:absolute;inset:-6%;animation:spin 18s linear infinite}
+.gk-start{--size:min(58vmin,250px,36svh);--c:0;position:relative;display:grid;place-items:center;width:var(--size);height:var(--size);margin-top:clamp(30px,7vh,64px);border-radius:50%;text-decoration:none;color:#14203a;opacity:var(--bo,0);transform:translate(var(--mx,0px),var(--my,0px)) scale(calc(.55 + var(--bo,0)*.45));transition:transform .35s cubic-bezier(.2,.8,.2,1);-webkit-tap-highlight-color:transparent;outline:none}
+.gk-start .rays{position:absolute;inset:-85%;border-radius:50%;pointer-events:none;background:repeating-conic-gradient(from 0deg,rgba(245,213,143,.22) 0deg 2deg,transparent 2deg 12deg);-webkit-mask:radial-gradient(circle,#000 14%,transparent 60%);mask:radial-gradient(circle,#000 14%,transparent 60%);opacity:calc(var(--c)*.8);animation:spin 60s linear infinite}
+.gk-start .halo{position:absolute;inset:-40%;border-radius:50%;pointer-events:none;background:radial-gradient(circle,rgba(245,213,143,.38),rgba(227,181,90,.10) 45%,transparent 68%);opacity:calc(var(--c)*1);filter:blur(4px)}
+.gk-start .charge{position:absolute;inset:-24%;width:148%;height:148%;pointer-events:none;overflow:visible}
+.gk-start .charge line{stroke:rgba(227,181,90,.18);stroke-width:2;stroke-linecap:round;transition:stroke .2s}
+.gk-start .charge line.on{stroke:#f5d58f;filter:drop-shadow(0 0 3px rgba(245,213,143,.9))}
+.gk-start .charge .arc{fill:none;stroke:url(#arcG);stroke-width:1.2;stroke-dasharray:1;stroke-dashoffset:calc(1 - var(--c));opacity:.8}
+.gk-start .ring{position:absolute;inset:-10%;border-radius:50%;border:1.5px solid rgba(245,213,143,.55);opacity:0;pointer-events:none}
+.gk-start.ready .ring{animation:pulse 2.4s cubic-bezier(.2,.6,.3,1) infinite}
+.gk-start.ready .ring:nth-of-type(2){animation-delay:1.2s}
+@keyframes pulse{from{transform:scale(.86);opacity:.95}to{transform:scale(1.45);opacity:0}}
 @keyframes spin{to{transform:rotate(360deg)}}
-.gk-start .core{position:relative;width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ffe9b0,var(--gold) 55%,#b8862f);box-shadow:0 0 0 1px rgba(255,255,255,.25) inset,0 30px 80px -10px rgba(227,181,90,.55),0 0 120px rgba(227,181,90,.25);display:grid;place-items:center;transition:transform .25s ease}
-.gk-start:hover .core,.gk-start:focus-visible .core{transform:scale(1.04)}
-.gk-start:active .core{transform:scale(.97)}
-.gk-start .core b{font:800 clamp(26px,7vmin,40px)/1 Figtree,sans-serif;letter-spacing:.14em;text-transform:uppercase;padding-left:.14em}
-.gk-start .core svg{position:absolute;width:30%;top:12%;opacity:.55}
-.trust{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;margin-top:clamp(26px,5vh,44px);color:var(--muted);font-size:14px;opacity:var(--bo,0)}
+.gk-start .core{position:relative;overflow:hidden;width:100%;height:100%;border-radius:50%;display:grid;place-items:center;
+  background:radial-gradient(circle at 34% 28%,#fff1c9 0%,#f0c66f 30%,#e3b55a 55%,#a9792a 100%);
+  box-shadow:0 0 0 1px rgba(255,255,255,.35) inset,0 -14px 30px rgba(120,80,20,.45) inset,0 14px 30px rgba(255,240,200,.35) inset,0 30px 90px -10px rgba(227,181,90,calc(.25 + var(--c)*.45)),0 0 calc(40px + var(--c)*120px) rgba(227,181,90,calc(var(--c)*.45));
+  filter:saturate(calc(.35 + var(--c)*.65)) brightness(calc(.65 + var(--c)*.35));transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.gk-start.ready .core{animation:breathe 3.2s ease-in-out infinite}
+@keyframes breathe{50%{box-shadow:0 0 0 1px rgba(255,255,255,.35) inset,0 -14px 30px rgba(120,80,20,.45) inset,0 14px 30px rgba(255,240,200,.35) inset,0 30px 110px -6px rgba(227,181,90,.85),0 0 200px rgba(227,181,90,.6)}}
+.gk-start .shine{position:absolute;inset:-30%;background:conic-gradient(from 0deg,transparent 0 290deg,rgba(255,255,255,.75) 325deg,transparent 350deg);mix-blend-mode:soft-light;opacity:0;pointer-events:none}
+.gk-start.ready .shine{opacity:1;animation:spin 3.6s linear infinite}
+.gk-start .needle{position:absolute;width:26%;top:11%;transform:rotate(var(--nr,0deg));transform-origin:50% 72%;opacity:.7}
+.gk-start .core b{position:relative;margin-top:14%;font:800 clamp(26px,7.5vmin,42px)/1 Figtree,sans-serif;letter-spacing:.16em;padding-left:.16em;text-transform:uppercase;opacity:calc((var(--c) - .4)*2.5);text-shadow:0 1px 0 rgba(255,255,255,.4)}
+.gk-start:hover .core,.gk-start:focus-visible .core{transform:scale(1.05)}
+.gk-start:focus-visible{box-shadow:0 0 0 3px rgba(245,213,143,.6);}
+.gk-start:active .core{transform:scale(.96)}
+.gk-start.launch .core{transform:scale(1.18);transition:transform .5s cubic-bezier(.6,0,.2,1)}
+#flash{position:fixed;left:var(--fx,50%);top:var(--fy,50%);width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;pointer-events:none;z-index:50;background:radial-gradient(circle,#fff6dc 0%,#f5d58f 35%,#e3b55a 60%,rgba(11,19,40,1) 100%);transform:scale(0);opacity:0}
+body.launch #flash{animation:flash .85s cubic-bezier(.7,0,.3,1) forwards}
+@keyframes flash{0%{transform:scale(0);opacity:1}55%{opacity:1}100%{transform:scale(90);opacity:1}}
+.trust{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 18px;margin-top:clamp(28px,6vh,52px);color:var(--muted);font-size:14px;opacity:var(--bo,0)}
 .trust span:before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);margin-right:8px;vertical-align:middle}
 footer{position:relative;z-index:1;text-align:center;padding:40px 20px calc(40px + env(safe-area-inset-bottom));color:var(--muted);font-size:13px}
 footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:10px 22px;margin-bottom:14px}
 footer a{color:var(--gold);text-decoration:none}
 
 @media (max-width:760px){
-  .pcard{grid-template-columns:1fr;gap:22px}
-  .pcard h2{margin:8px 0 8px}
-  .row{grid-template-columns:78px 1fr 56px;font-size:14px}
-  .panel{padding-top:78px}
+  .pcard{grid-template-columns:1fr;gap:18px}
+  .pcard h2{margin:8px 0 8px;font-size:clamp(25px,7vw,32px)}
+  .pcard p{font-size:15px}
+  .viz{padding:16px 18px;border-radius:20px}
+  .viz small{margin-bottom:8px}
+  .row{grid-template-columns:78px 1fr 56px;font-size:14px;margin:9px 0}
+  .free{font-size:60px}
+  .days{margin-top:14px}
+  .panel{padding:76px 18px 52px}
+}
+@media (max-width:760px) and (max-height:760px){
+  .days{display:none}.note{margin-top:8px}
+  .cap h2{font-size:26px}.cap p{font-size:15px;margin-top:8px}
+  .final h2{font-size:30px}
 }
 @media (prefers-reduced-motion:reduce){
-  .gk-start .ring,.gk-start .orbit,.hint i{animation:none}
+  .gk-start .ring,.gk-start .rays,.gk-start .shine,.gk-start .core,.hint i{animation:none!important}
 }
 </style>
 </head>
@@ -134,7 +166,7 @@ footer a{color:var(--gold);text-decoration:none}
 <div class="bar" aria-hidden="true"></div>
 <header>
   <a class="logo" href="/"><svg viewBox="0 0 52 52" aria-hidden="true"><circle cx="26" cy="26" r="23" fill="none" stroke="#e3b55a" stroke-width="2"/><path d="M26 7 L30 26 L26 45 L22 26 Z" fill="#e3b55a"/><path d="M26 7 L30 26 L22 26 Z" fill="#f3f1ea"/><circle cx="26" cy="26" r="2.5" fill="#162447"/></svg>Geld-<span>Kompass</span></a>
-  <a class="skip" href="/app/#overview">Direkt starten</a>
+  <div class="hr"><button class="lang" id="langBtn" type="button" aria-label="Sprache wechseln">EN</button><a class="skip" href="/app/#overview" data-t="skip">Direkt starten</a></div>
 </header>
 
 <main>
@@ -160,10 +192,10 @@ footer a{color:var(--gold);text-decoration:none}
       </g>
     </svg>
     <div class="h1wrap" style="position:absolute;left:0;right:0;top:calc(40% + min(30vmin,220px) + 6vh);height:1px">
-      <div class="line" id="l1"><h1>Wohin fließt<br>eigentlich <em>dein Geld?</em></h1></div>
-      <div class="line" id="l2"><h1>Ab heute weißt du es.</h1></div>
+      <div class="line" id="l1"><h1 data-t="l1">Wohin fließt<br>eigentlich <em>dein Geld?</em></h1></div>
+      <div class="line" id="l2"><h1 data-t="l2">Ab heute weißt du es.</h1></div>
     </div>
-    <div class="hint" id="hint">Scrollen<i></i></div>
+    <div class="hint" id="hint"><span data-t="hint">Scrollen</span><i></i></div>
   </div>
 </section>
 
@@ -171,10 +203,10 @@ footer a{color:var(--gold);text-decoration:none}
 <section class="scene" id="s2">
   <div class="stick">
     <div class="cap">
-      <div><span class="k">Das Geldbaum-Prinzip</span><h2>Jeder Baum beginnt<br>mit einem Samen.</h2></div>
-      <div><span class="k">Wurzeln</span><h2>Überblick ist die Wurzel.</h2><p>Wer weiß, wohin sein Geld fließt, kann es lenken.</p></div>
-      <div><span class="k">Stamm</span><h2>Jeder getilgte Euro<br>macht dich stärker.</h2></div>
-      <div><span class="k">Krone</span><h2>Und irgendwann<br><em style="font-style:normal;color:var(--gold)">trägt dich dein Baum.</em></h2></div>
+      <div><span class="k" data-t="c1k">Das Geldbaum-Prinzip</span><h2 data-t="c1">Jeder Baum beginnt<br>mit einem Samen.</h2></div>
+      <div><span class="k" data-t="c2k">Wurzeln</span><h2 data-t="c2">Überblick ist die Wurzel.</h2><p data-t="c2p">Wer weiß, wohin sein Geld fließt, kann es lenken.</p></div>
+      <div><span class="k" data-t="c3k">Stamm</span><h2 data-t="c3">Jeder getilgte Euro<br>macht dich stärker.</h2></div>
+      <div><span class="k" data-t="c4k">Krone</span><h2 data-t="c4">Und irgendwann<br><em style="font-style:normal;color:var(--gold)">trägt dich dein Baum.</em></h2></div>
     </div>
     <div class="treebox">
       <svg viewBox="0 0 400 480" aria-hidden="true">
@@ -209,32 +241,32 @@ footer a{color:var(--gold);text-decoration:none}
   <div class="stick">
     <div class="track" id="track">
       <div class="panel"><div class="pcard">
-        <div><span class="k">Budget</span><h2>Sieh, wohin<br>dein Geld fließt.</h2><p>Einnahmen und Ausgaben auf einen Blick. Ohne Tabellen, ohne Fachchinesisch.</p></div>
-        <div class="viz"><small>Beispiel · Monat</small>
-          <div class="row"><b>Wohnen</b><div class="track-b"><i style="--w:72"></i></div><span>950 €</span></div>
-          <div class="row"><b>Leben</b><div class="track-b"><i style="--w:48"></i></div><span>620 €</span></div>
-          <div class="row"><b>Freizeit</b><div class="track-b"><i style="--w:24"></i></div><span>310 €</span></div>
-          <div class="row"><b>Abos</b><div class="track-b"><i style="--w:10"></i></div><span>85 €</span></div>
-          <div class="row"><b>Sparen</b><div class="track-b"><i class="g" style="--w:32"></i></div><span>400 €</span></div>
+        <div><span class="k" data-t="b1k">Budget</span><h2 data-t="b1">Sieh, wohin<br>dein Geld fließt.</h2><p data-t="b1p">Einnahmen und Ausgaben auf einen Blick. Ohne Tabellen, ohne Fachchinesisch.</p></div>
+        <div class="viz"><small data-t="b1s">Beispiel · Monat</small>
+          <div class="row"><b data-t="rw">Wohnen</b><div class="track-b"><i style="--w:72"></i></div><span data-t="v1">950 €</span></div>
+          <div class="row"><b data-t="rl">Leben</b><div class="track-b"><i style="--w:48"></i></div><span data-t="v2">620 €</span></div>
+          <div class="row"><b data-t="rf">Freizeit</b><div class="track-b"><i style="--w:24"></i></div><span data-t="v3">310 €</span></div>
+          <div class="row"><b data-t="ra">Abos</b><div class="track-b"><i style="--w:10"></i></div><span data-t="v4">85 €</span></div>
+          <div class="row"><b data-t="rs">Sparen</b><div class="track-b"><i class="g" style="--w:32"></i></div><span data-t="v5">400 €</span></div>
         </div>
       </div></div>
       <div class="panel"><div class="pcard">
-        <div><span class="k">Schulden-Plan</span><h2>Dein Schuldenfrei-Datum.<br>Schwarz auf weiß.</h2><p>Der Geld-Kompass rechnet aus, wann der letzte Euro getilgt ist, und welche Schuld du zuerst angehst.</p></div>
-        <div class="viz"><small>Beispiel · Restschuld</small>
+        <div><span class="k" data-t="d1k">Schulden-Plan</span><h2 data-t="d1">Dein Schuldenfrei-Datum.<br>Schwarz auf weiß.</h2><p data-t="d1p">Der Geld-Kompass rechnet aus, wann der letzte Euro getilgt ist, und welche Schuld du zuerst angehst.</p></div>
+        <div class="viz"><small data-t="d1s">Beispiel · Restschuld</small>
           <svg class="chart" viewBox="0 0 320 190" aria-hidden="true">
             <g stroke="rgba(255,255,255,.07)"><line x1="0" y1="40" x2="320" y2="40"/><line x1="0" y1="90" x2="320" y2="90"/><line x1="0" y1="140" x2="320" y2="140"/></g>
             <path id="debtArea" d="M10 30 C80 52 150 92 210 128 C250 152 280 166 300 170 L300 172 L10 172 Z" fill="rgba(227,181,90,.12)" style="clip-path:inset(0 calc((1 - var(--vp,0))*100%) 0 0)"/>
             <path class="draw" pathLength="1" stroke="#e3b55a" stroke-width="3" d="M10 30 C80 52 150 92 210 128 C250 152 280 166 300 170"/>
-            <g style="opacity:calc((var(--vp,0) - .85)*7)"><circle cx="300" cy="170" r="7" fill="#6fcf97"/><circle cx="300" cy="170" r="14" fill="none" stroke="#6fcf97" opacity=".4"/><text x="296" y="152" text-anchor="end" fill="#6fcf97" font-family="Figtree,sans-serif" font-weight="600" font-size="15">Schuldenfrei</text></g>
+            <g style="opacity:calc((var(--vp,0) - .85)*7)"><circle cx="300" cy="170" r="7" fill="#6fcf97"/><circle cx="300" cy="170" r="14" fill="none" stroke="#6fcf97" opacity=".4"/><text x="296" y="152" text-anchor="end" fill="#6fcf97" font-family="Figtree,sans-serif" font-weight="600" font-size="15" data-t="d1x">Schuldenfrei</text></g>
           </svg>
         </div>
       </div></div>
       <div class="panel"><div class="pcard">
-        <div><span class="k">Freiheitstage</span><h2>Wie lange trägt<br>dich dein Vermögen?</h2><p>Depot mit aktuellen Kursen, Notgroschen und Rücklagen werden zu einer Zahl, die zählt: deine Freiheitstage.</p></div>
-        <div class="viz"><small>Beispiel</small>
-          <div class="free" id="free">0</div><div>Tage ohne Gehalt</div>
+        <div><span class="k" data-t="f1k">Freiheitstage</span><h2 data-t="f1">Wie lange trägt<br>dich dein Vermögen?</h2><p data-t="f1p">Depot mit aktuellen Kursen, Notgroschen und Rücklagen werden zu einer Zahl, die zählt: deine Freiheitstage.</p></div>
+        <div class="viz"><small data-t="f1s">Beispiel</small>
+          <div class="free" id="free">0</div><div data-t="f1u">Tage ohne Gehalt</div>
           <div class="days" id="days"></div>
-          <div class="note">Beispielrechnung. Deine eigenen Zahlen bleiben auf deinem Gerät.</div>
+          <div class="note" data-t="f1n">Beispielrechnung. Deine eigenen Zahlen bleiben auf deinem Gerät.</div>
         </div>
       </div></div>
     </div>
@@ -246,26 +278,54 @@ footer a{color:var(--gold);text-decoration:none}
 <section class="scene" id="s4">
   <div class="stick">
     <div class="final">
-      <h2>Dein Plan beginnt<br>mit einem Klick.</h2>
-      <a class="gk-start" href="/app/#overview" aria-label="Geld-Kompass starten">
-        <span class="ring"></span><span class="ring"></span>
-        <svg class="orbit" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="49" fill="none" stroke="rgba(227,181,90,.5)" stroke-width=".4" stroke-dasharray="1 3"/><circle cx="50" cy="1" r="1.6" fill="#f5d58f"/></svg>
-        <span class="core"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2 L15 12 L12 22 L9 12 Z" fill="#14203a"/></svg><b>Start</b></span>
+      <h2 data-t="e1">Dein Plan beginnt<br>mit einem Klick.</h2>
+      <a class="gk-start" id="startBtn" href="/app/#overview" aria-label="Geld-Kompass starten">
+        <span class="rays" aria-hidden="true"></span>
+        <span class="halo" aria-hidden="true"></span>
+        <svg class="charge" viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="arcG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3d1"/><stop offset="1" stop-color="#e3b55a"/></linearGradient></defs><circle class="arc" cx="100" cy="100" r="74" pathLength="1" transform="rotate(-90 100 100)"/><g id="chargeTicks"></g></svg>
+        <span class="ring" aria-hidden="true"></span><span class="ring" aria-hidden="true"></span>
+        <span class="core"><span class="shine" aria-hidden="true"></span><svg class="needle" viewBox="0 0 24 34" aria-hidden="true"><path d="M12 0 L16 24 L12 34 L8 24 Z" fill="#14203a"/><path d="M12 0 L16 24 L8 24 Z" fill="#fff6dd" opacity=".55"/></svg><b data-t="go">Start</b></span>
       </a>
-      <div class="trust"><span>Kostenlos</span><span>Ohne Anmeldung</span><span>Daten bleiben auf deinem Gerät</span></div>
+      <div class="trust"><span data-t="t1">Kostenlos</span><span data-t="t2">Ohne Anmeldung</span><span data-t="t3">Daten bleiben auf deinem Gerät</span></div>
     </div>
   </div>
 </section>
 </main>
 
+<div id="flash" aria-hidden="true"></div>
 <footer>
-  <nav><a href="/">Startseite</a><a href="/rechner/">Kostenlose Rechner</a><a href="/buchbegruessung/">Buchbegrüßung</a><a href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E" target="_blank" rel="noopener">WhatsApp-Kanal</a></nav>
-  Allgemeine Finanzbildung, keine Anlageberatung. © FreedomByDan
+  <nav><a href="/" data-t="n1">Startseite</a><a href="/rechner/" data-t="n2">Kostenlose Rechner</a><a href="/buchbegruessung/" data-t="n3">Buchbegrüßung</a><a href="https://whatsapp.com/channel/0029VbEHiDdLCoX7Bhggff2E" target="_blank" rel="noopener" data-t="n4">WhatsApp-Kanal</a></nav>
+  <span data-t="disc">Allgemeine Finanzbildung, keine Anlageberatung.</span> © FreedomByDan
 </footer>
 
 <script>
 (function(){
 'use strict';
+/* Sprache: gleiche Einstellung wie im Geld-Kompass (geld-kompass-lang). Ohne Einstellung entscheidet die Browsersprache. */
+var LKEY='geld-kompass-lang',lang='de';
+try{lang=localStorage.getItem(LKEY)||((navigator.language||'de').toLowerCase().indexOf('de')===0?'de':'en')}catch(e){lang=(navigator.language||'de').toLowerCase().indexOf('de')===0?'de':'en'}
+var EN={
+ skip:'Start now',l1:'Where does your<br><em>money</em> really go?',l2:'From today, you’ll know.',hint:'Scroll',
+ c1k:'The money tree principle',c1:'Every tree starts<br>with a seed.',
+ c2k:'Roots',c2:'Clarity is the root.',c2p:'When you know where your money goes, you can steer it.',
+ c3k:'Trunk',c3:'Every euro of debt you pay off<br>makes you stronger.',
+ c4k:'Crown',c4:'And one day<br><em style="font-style:normal;color:var(--gold)">your tree carries you.</em>',
+ b1k:'Budget',b1:'See where<br>your money goes.',b1p:'Income and spending at a glance. No spreadsheets, no jargon.',b1s:'Example · month',
+ rw:'Housing',rl:'Living',rf:'Leisure',ra:'Subscriptions',rs:'Saving',v1:'€950',v2:'€620',v3:'€310',v4:'€85',v5:'€400',
+ d1k:'Debt plan',d1:'Your debt-free date.<br>In black and white.',d1p:'The Money Compass works out when your last euro is paid off, and which debt to tackle first.',d1s:'Example · remaining debt',d1x:'Debt-free',
+ f1k:'Freedom days',f1:'How long could<br>your savings carry you?',f1p:'Your portfolio with live prices, your emergency fund and your savings turn into one number that matters: your freedom days.',f1s:'Example',f1u:'days without a paycheck',f1n:'Example calculation. Your own numbers stay on your device.',
+ e1:'Your plan starts<br>with one click.',go:'Start',t1:'Free',t2:'No sign-up',t3:'Your data stays on your device',
+ n1:'Home',n2:'Free calculators',n3:'Book welcome',n4:'WhatsApp channel',disc:'General financial education, not investment advice.'
+};
+var langBtn=document.getElementById('langBtn');
+if(lang==='en'){
+  document.documentElement.lang='en';document.title='Start · Money Compass';
+  document.querySelectorAll('[data-t]').forEach(function(el){var v=EN[el.getAttribute('data-t')];if(v!=null)el.innerHTML=v});
+  document.querySelector('.logo').innerHTML=document.querySelector('.logo svg').outerHTML+'Money <span>Compass</span>';
+  document.getElementById('startBtn').setAttribute('aria-label','Start the Money Compass');
+  langBtn.textContent='DE';langBtn.setAttribute('aria-label','Auf Deutsch wechseln');
+}else{langBtn.setAttribute('aria-label','Switch to English')}
+langBtn.addEventListener('click',function(){try{localStorage.setItem(LKEY,lang==='en'?'de':'en')}catch(e){}location.reload()});
 var R=document.documentElement, reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 function cl(x){return x<0?0:x>1?1:x}
 function seg(p,a,b){return cl((p-a)/(b-a))}
@@ -284,8 +344,11 @@ for(var j=0;j<54;j++){var a=rnd()*Math.PI*2,rr=Math.sqrt(rnd()),x=200+Math.cos(a
 
 /* Freiheitstage-Raster */
 var days=$('days');for(var d=0;d<120;d++)days.appendChild(document.createElement('i'));
-var dayEls=days.children,FREE=1460,nf=new Intl.NumberFormat('de-DE');
+var dayEls=days.children,FREE=1460,nf=new Intl.NumberFormat(lang==='en'?'en-US':'de-DE');
 
+var ct=$('chargeTicks'),CT=60,ctEls=[];
+for(var u=0;u<CT;u++){var ln=document.createElementNS(ns,'line');ln.setAttribute('x1',100);ln.setAttribute('x2',100);ln.setAttribute('y1',4);ln.setAttribute('y2',u%5===0?16:11);ln.setAttribute('transform','rotate('+(u*360/CT)+' 100 100)');ct.appendChild(ln);ctEls.push(ln);}
+var btn=$('startBtn'),lit=-1;
 var s1=$('s1'),s2=$('s2'),s3=$('s3'),s4=$('s4'),compass=document.querySelector('.compass'),l1=$('l1'),l2=$('l2'),hint=$('hint');
 var caps=document.querySelectorAll('.cap>div'),roots=document.querySelectorAll('#roots path'),trunk=document.querySelector('#trunk path'),br=document.querySelectorAll('#branches path'),seed=$('seed');
 var track=$('track'),vizs=document.querySelectorAll('.viz'),dots=document.querySelectorAll('#dots i'),free=$('free'),debt=document.querySelector('#s3 .chart .draw');
@@ -332,9 +395,13 @@ function frame(){
   var on=Math.round(ease(vp2)*dayEls.length);for(var q=0;q<dayEls.length;q++)dayEls[q].className=q<on?'on':'';
 
   /* Start */
-  var p4=prog(s4),fo=ease(seg(p4,0,.35));
+  var p4=prog(s4),r4=s4.getBoundingClientRect(),enter=cl(1-r4.top/innerHeight),fo=ease(cl(enter*1.15));
   fin.style.setProperty('--fo',fo.toFixed(3));
-  fin.style.setProperty('--bo',ease(seg(p4,.15,.55)).toFixed(3));
+  fin.style.setProperty('--bo',ease(cl(.25+enter*.5+seg(p4,0,.25)*.25)).toFixed(3));
+  var ch=seg(p4,.2,.7);btn.style.setProperty('--c',ch.toFixed(3));btn.style.setProperty('--nr',((1-ease(ch))*-900).toFixed(1)+'deg');
+  var n2=Math.round(ch*CT);if(n2!==lit){for(var w=0;w<CT;w++)ctEls[w].classList.toggle('on',w<n2);lit=n2;}
+  btn.classList.toggle('ready',ch>=1);
+  R.style.setProperty('--hb',scrollY>30?1:0);
   R.style.setProperty('--gy',(-seg(p4,0,.6)*10)+'%');
 }
 function req(){if(!ticking){ticking=true;requestAnimationFrame(frame)}}
@@ -347,15 +414,32 @@ frame();
 var cv=$('dust'),cx=cv.getContext('2d'),P=[],W,H,dpr=Math.min(2,devicePixelRatio||1);
 function size(){W=cv.width=innerWidth*dpr;H=cv.height=innerHeight*dpr}
 size();addEventListener('resize',size);
+var B=[];function burst(x,y){for(var q=0;q<90;q++){var an=Math.random()*Math.PI*2,sp=(2+Math.random()*9)*dpr;B.push({x:x*dpr,y:y*dpr,vx:Math.cos(an)*sp,vy:Math.sin(an)*sp,r:(1+Math.random()*2.6)*dpr,l:1})}if(reduce)return}
 for(var z=0;z<70;z++)P.push({x:Math.random(),y:Math.random(),r:Math.random()*1.6+.4,v:Math.random()*.00025+.00008,a:Math.random()*.5+.15,ph:Math.random()*6});
 function dust(t){
   cx.clearRect(0,0,W,H);var boost=.6+(parseFloat(R.style.getPropertyValue('--ga'))||0)*1.2;
   for(var i=0;i<P.length;i++){var s=P[i];if(!reduce){s.y-=s.v;if(s.y<-.02){s.y=1.02;s.x=Math.random()}}
     var tw=.6+.4*Math.sin(t/900+s.ph);cx.beginPath();cx.arc(s.x*W+Math.sin(t/3000+s.ph)*8*dpr,s.y*H,s.r*dpr,0,7);cx.fillStyle='rgba(245,213,143,'+(s.a*tw*boost).toFixed(3)+')';cx.fill();}
+  for(var k2=B.length-1;k2>=0;k2--){var e2=B[k2];e2.x+=e2.vx;e2.y+=e2.vy;e2.vx*=.96;e2.vy=e2.vy*.96+.08*dpr;e2.l-=.018;if(e2.l<=0){B.splice(k2,1);continue}cx.beginPath();cx.arc(e2.x,e2.y,e2.r,0,7);cx.fillStyle='rgba(255,236,180,'+e2.l.toFixed(3)+')';cx.fill();}
   if(!reduce)requestAnimationFrame(dust);
 }
 requestAnimationFrame(dust);
 
+
+/* Start: Lichtblitz aus dem Knopf, dann in den Geld-Kompass */
+btn.addEventListener('click',function(ev){
+  if(reduce||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.button)return;
+  ev.preventDefault();var r=btn.getBoundingClientRect(),cx0=r.left+r.width/2,cy0=r.top+r.height/2;
+  R.style.setProperty('--fx',cx0+'px');R.style.setProperty('--fy',cy0+'px');
+  burst(cx0,cy0);btn.classList.add('launch');setTimeout(function(){document.body.classList.add('launch')},180);
+  setTimeout(function(){location.href=btn.href},880);
+});
+addEventListener('pageshow',function(){document.body.classList.remove('launch');btn.classList.remove('launch')});
+/* Magnetischer Knopf mit Maus */
+if(matchMedia('(pointer:fine)').matches&&!reduce){
+  addEventListener('pointermove',function(e){var r=btn.getBoundingClientRect(),dx=e.clientX-(r.left+r.width/2),dy=e.clientY-(r.top+r.height/2),d=Math.hypot(dx,dy),lim=r.width*1.3;
+    if(d<lim){var k=(1-d/lim)*.22;btn.style.setProperty('--mx',(dx*k).toFixed(1)+'px');btn.style.setProperty('--my',(dy*k).toFixed(1)+'px')}else{btn.style.setProperty('--mx','0px');btn.style.setProperty('--my','0px')}},{passive:true});
+}
 if('serviceWorker' in navigator){addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})})}
 })();
 </script>
