@@ -18,10 +18,11 @@ jobs:
           python-version: "3.12"
       - run: pip install yfinance
       - run: python scripts/dividends.py
+      - run: python scripts/dividend_pages.py
       - run: |
           git config user.name "geld-kompass-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data/dividends.json
+          git add data/dividends.json dividenden-kalender en/dividend-calendar
           git diff --cached --quiet || git commit -m "Dividenden aktualisiert"
           git pull --rebase origin main
           git push origin HEAD:main

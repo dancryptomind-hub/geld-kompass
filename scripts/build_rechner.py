@@ -576,7 +576,7 @@ def hub(lang='de'):
 <div class="eyebrow">{txt['eb']}</div>
 <h1>{txt['h1']}</h1>
 <p class="lead">{txt['lead']}</p>
-<div class="more">{cards}</div>
+<div class="more">{cards}{('<a href="/en/dividend-calendar/">Dividend calendar<small>Who pays when: months, yield, Dividend Kings</small></a>' if en else '<a href="/dividenden-kalender/">Dividenden-Kalender<small>Wer zahlt wann: Monate, Rendite, Dividenden-Könige</small></a>')}</div>
 <h2>{txt['cur']}</h2>
 <div class="more">{pcards}</div>
 {txt['cta']}
