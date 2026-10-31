@@ -77,7 +77,7 @@ fetch('/data/hicp_annual.json',{cache:'no-cache'}).then(function(r){return r.jso
 function years(){var g=DATA[G.$('geo').value]||DATA.DE;return Object.keys(g.index).sort();}
 function fill(){var ys=years(),a=G.$('y0'),b=G.$('y1'),pa=a.value,pb=b.value;
  a.innerHTML=b.innerHTML=ys.map(function(y){return '<option>'+y+'</option>';}).join('');
- a.value=ys.indexOf(pa)>-1?pa:(ys.indexOf('2010')>-1?'2010':ys[0]);b.value=ys.indexOf(pb)>-1?pb:ys[ys.length-1];run();}
+ a.value=ys.indexOf(pa)>-1?pa:(ys.indexOf('2010')>-1?'2010':ys[0]);b.value=ys.indexOf(pb)>-1?pb:ys[ys.length-1];if(!DATA._sharedYears){G.restore(['y0','y1']);DATA._sharedYears=true;}run();}
 G.$('geo').addEventListener('change',function(){G.$('amtL').textContent='Betrag ('+(SYMG[G.$('geo').value]||'€')+')';fill();});
 function run(){if(!DATA)return;var g=DATA[G.$('geo').value]||DATA.DE,ix=g.index,y0=G.$('y0').value,y1=G.$('y1').value,a=G.val('amt');
  if(!(y0 in ix)||!(y1 in ix))return;var f=ix[y1]/ix[y0],same=a*f,kauf=a/f,pct=(f-1)*100,n=Math.abs(+y1-+y0),pa=n?(Math.pow(f,1/n)-1)*100:0;
@@ -535,6 +535,7 @@ def render(p):
 <div data-partner="newsletter" hidden></div>
 </main>
 <footer><div class="wrap">{T['foot']}</div></footer>
+<script src="/share-state.js"></script>
 <script src="/rechner/rechner.js"></script>
 <script src="/partner.js" defer></script>
 <script>{p['js']}</script>
@@ -569,6 +570,7 @@ def hub(lang='de'):
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<script src="/share-state.js"></script>
 <script src="/rechner/rechner.js"></script>
 </head><body>
 <header class="top"><div class="wrap"><a class="logo" href="{txt['home']}">{LOGO}<b>{txt['logo']}</b></a><nav><a href="{txt['appurl']}">{txt['app']}</a> · <a class="langsw" href="{txt['swurl'].replace(BASE, '/')}?lang={'de' if en else 'en'}">{txt['sw']}</a></nav></div></header>
@@ -592,7 +594,7 @@ for lang, base, pages in (('de', 'rechner', PAGES), ('en', 'en/calculators', PAG
         os.makedirs(base + '/' + p['slug'], exist_ok=True)
         open('%s/%s/index.html' % (base, p['slug']), 'w').write(render(p))
     open(base + '/index.html', 'w').write(hub(lang))
-urls = [BASE, BASE + 'app/', BASE + 'start/', BASE + 'buchbegruessung/', BASE + 'arbeitsbuch/', BASE + 'rechner/', BASE + 'en/calculators/'] + \
+urls = [BASE, BASE + 'app/', BASE + 'start/', BASE + 'buchbegruessung/', BASE + 'arbeitsbuch/', BASE + 'rechner/', BASE + 'en/calculators/', BASE + 'dividenden-kalender/', BASE + 'en/dividend-calendar/', BASE + 'en/workbook/'] + \
        [BASE + 'rechner/' + p['slug'] + '/' for p in PAGES] + [BASE + 'en/calculators/' + p['slug'] + '/' for p in PAGES_EN]
 open('sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     ''.join('<url><loc>%s</loc><lastmod>%s</lastmod></url>\n' % (u, TODAY) for u in urls) + '</urlset>\n')
