@@ -1,0 +1,28 @@
+name: Dividenden
+
+on:
+  schedule:
+    - cron: "23 4 * * 1"   # montags
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  div:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install yfinance
+      - run: python scripts/dividends.py
+      - run: |
+          git config user.name "geld-kompass-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data/dividends.json
+          git diff --cached --quiet || git commit -m "Dividenden aktualisiert"
+          git pull --rebase origin main
+          git push origin HEAD:main
+          git push --force origin HEAD:gh-pages
