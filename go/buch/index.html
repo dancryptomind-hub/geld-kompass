@@ -4,7 +4,7 @@
 <body><p>Du wirst zum Buch auf Amazon weitergeleitet …<br><a href="https://amzn.eu/d/01dK026o">Direkt zu Amazon</a></p>
 <script>/* Zählt den Klick als Seitenaufruf (Cloudflare Web Analytics, ohne Cookies) und leitet weiter */
 (function(){var en=((navigator.language||'').toLowerCase().indexOf('en')===0);try{var l=localStorage.getItem('geld-kompass-lang');if(l)en=l==='en';}catch(e){}
-if(en){document.documentElement.lang='en';document.querySelector('p').innerHTML='Taking you to the book on Amazon …<br><a href="https://amzn.eu/d/01dK026o">Go to Amazon</a>';}
+if(en){location.replace('/en/go/book/');return;}
 setTimeout(function(){location.replace('https://amzn.eu/d/01dK026o');},450);})();</script>
 <!-- Cloudflare Web Analytics (ohne Cookies, keine personenbezogenen Daten) --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d5b51a031e8c4e26b08ad199a6bfd2da"}'></script>
 </body></html>
