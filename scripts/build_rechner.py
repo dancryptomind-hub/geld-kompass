@@ -473,11 +473,11 @@ def render(p):
     pages = PAGES_EN if en else PAGES
     body = p['body'].replace('%PAIRLINKS%', links(pages, p['slug'], True))
     T = (dict(all='All calculators', app=' · Open the Money Compass', appurl='/app/?lang=en', home='/?lang=en', faq='Frequently asked questions', more='More free calculators', sw='Deutsch', swurl=de_url,
-              foot='<a href="/datenschutz/?lang=en">Privacy</a> · Money Compass · companion to the book “Der einfache Weg zur Finanziellen Freiheit” · © FreedomByDan · General financial education, not investment, tax or legal advice. All calculations run in your browser; no data is sent.',
+              foot='<a href="/impressum/?lang=en">Legal notice</a> · <a href="/datenschutz/?lang=en">Privacy</a> · Money Compass · companion to the book “Der einfache Weg zur Finanziellen Freiheit” · © FreedomByDan · General financial education, not investment, tax or legal advice. All calculations run in your browser; no data is sent.',
               logo='Money <span>Compass</span>', cta=CTA_EN, wb='')
          if en else
          dict(all='Alle Rechner', app=' · Zum Geld-Kompass', appurl='/app/', home='/', faq='Häufige Fragen', more='Weitere kostenlose Rechner', sw='English', swurl=en_url,
-              foot='<a href="/datenschutz/">Datenschutz</a> · Geld-Kompass · Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung. Alle Berechnungen laufen in deinem Browser; es werden keine Daten übertragen.',
+              foot='<a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a> · Geld-Kompass · Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung. Alle Berechnungen laufen in deinem Browser; es werden keine Daten übertragen.',
               logo='Geld-<span>Kompass</span>', cta=CTA, wb=workbook_note(p['slug'])))
     return f"""<!doctype html>
 <html lang="{'en' if en else 'de'}">
@@ -544,12 +544,12 @@ def hub(lang='de'):
         t = 'Free Money Calculators: Savings, Inflation, Debt, Currency | Money Compass'
         d = 'Free money calculators without sign-up: savings plan, inflation, debt-free date, emergency fund, freedom days, subscription as investment and a currency converter with live rates.'
         txt = dict(eb='Free calculators', h1='Money calculators that bring clarity in a minute', lead='No sign-up, no ads. All calculations run in your browser. If you want to continue with your real numbers, use the full Money Compass.',
-                   cur='Convert currencies', app='Open the Money Compass', appurl='/app/?lang=en', foot='<a href="/datenschutz/?lang=en">Privacy</a> · Money Compass · © FreedomByDan · General financial education, not investment, tax or legal advice.', sw='Deutsch', swurl=de_url, logo='Money <span>Compass</span>', home='/?lang=en', cta=CTA_EN)
+                   cur='Convert currencies', app='Open the Money Compass', appurl='/app/?lang=en', foot='<a href="/impressum/?lang=en">Legal notice</a> · <a href="/datenschutz/?lang=en">Privacy</a> · Money Compass · © FreedomByDan · General financial education, not investment, tax or legal advice.', sw='Deutsch', swurl=de_url, logo='Money <span>Compass</span>', home='/?lang=en', cta=CTA_EN)
     else:
         t = 'Kostenlose Finanzrechner: Sparplan, Inflation, Schulden, Währung | Geld-Kompass'
         d = 'Kostenlose Finanzrechner ohne Anmeldung: Sparplan, Inflation, Schuldenfrei-Datum, Notgroschen, Freiheitstage, Abo als Aktie und Währungsrechner mit Live-Kursen.'
         txt = dict(eb='Kostenlose Rechner', h1='Finanzrechner, die in einer Minute Klarheit bringen', lead='Ohne Anmeldung, ohne Werbung. Alle Rechnungen laufen in deinem Browser. Wenn du mit deinen echten Zahlen weitermachen möchtest, nutze den vollständigen Geld-Kompass.',
-                   cur='Währungen umrechnen', app='Zum Geld-Kompass', appurl='/app/', foot='<a href="/datenschutz/">Datenschutz</a> · Geld-Kompass · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung.', sw='English', swurl=en_url, logo='Geld-<span>Kompass</span>', home='/', cta=CTA)
+                   cur='Währungen umrechnen', app='Zum Geld-Kompass', appurl='/app/', foot='<a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a> · Geld-Kompass · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung.', sw='English', swurl=en_url, logo='Geld-<span>Kompass</span>', home='/', cta=CTA)
     return f"""<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 {lang_js(lang, de_url if en else en_url)}
