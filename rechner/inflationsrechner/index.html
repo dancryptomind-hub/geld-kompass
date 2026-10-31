@@ -61,6 +61,7 @@
 <div data-partner="newsletter" hidden></div>
 </main>
 <footer><div class="wrap"><a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a> · Geld-Kompass · Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung. Alle Berechnungen laufen in deinem Browser; es werden keine Daten übertragen.</div></footer>
+<script src="/share-state.js"></script>
 <script src="/rechner/rechner.js"></script>
 <script src="/partner.js" defer></script>
 <script>
@@ -70,7 +71,7 @@ fetch('/data/hicp_annual.json',{cache:'no-cache'}).then(function(r){return r.jso
 function years(){var g=DATA[G.$('geo').value]||DATA.DE;return Object.keys(g.index).sort();}
 function fill(){var ys=years(),a=G.$('y0'),b=G.$('y1'),pa=a.value,pb=b.value;
  a.innerHTML=b.innerHTML=ys.map(function(y){return '<option>'+y+'</option>';}).join('');
- a.value=ys.indexOf(pa)>-1?pa:(ys.indexOf('2010')>-1?'2010':ys[0]);b.value=ys.indexOf(pb)>-1?pb:ys[ys.length-1];run();}
+ a.value=ys.indexOf(pa)>-1?pa:(ys.indexOf('2010')>-1?'2010':ys[0]);b.value=ys.indexOf(pb)>-1?pb:ys[ys.length-1];if(!DATA._sharedYears){G.restore(['y0','y1']);DATA._sharedYears=true;}run();}
 G.$('geo').addEventListener('change',function(){G.$('amtL').textContent='Betrag ('+(SYMG[G.$('geo').value]||'€')+')';fill();});
 function run(){if(!DATA)return;var g=DATA[G.$('geo').value]||DATA.DE,ix=g.index,y0=G.$('y0').value,y1=G.$('y1').value,a=G.val('amt');
  if(!(y0 in ix)||!(y1 in ix))return;var f=ix[y1]/ix[y0],same=a*f,kauf=a/f,pct=(f-1)*100,n=Math.abs(+y1-+y0),pa=n?(Math.pow(f,1/n)-1)*100:0;

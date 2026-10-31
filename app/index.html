@@ -352,6 +352,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
 </style>
 <link rel="stylesheet" href="/arbeitsbuch/hinweise.css">
 <link rel="stylesheet" href="/app/visuals.css">
+<script src="/share-state.js"></script>
 <script src="/app/booking-icons.js"></script>
 <script src="/app/transaction-presets.js"></script>
 <script src="/i18n.js"></script>
@@ -786,7 +787,7 @@ function brandFor(title,cat){title=title||"";var i,r;if(/abwasser|wasserwerk|was
  for(i=0;i<EVERYDAY_BRANDS.length;i++){r=EVERYDAY_BRANDS[i];if(r[0].test(title))return {b:r[1],s:r[2],example:true};}
  for(i=0;i<BRANDS.length;i++)if(BRANDS[i][0].test(title))return {b:BRANDS[i][1],s:BRANDS[i][2],example:true};
  var c=CAT_BRAND[cat];if(c)return {b:c[0],s:c[1],example:true};return {b:"Weltweit gestreut",s:WORLD,example:true};}
-function rOf(sym){var x=IMAP[sym];return x&&x.r!=null?x.r:7;}
+function rOf(sym){if(GK_SHARED&&GK_SHARED.kind==="wi"){var v=GK_SHARED.values;if(sym===v.symbol)return v.rate;if(sym===WORLD)return v.worldRate;}var x=IMAP[sym];return x&&x.r!=null?x.r:7;}
 function rUse(r){return Math.max(-10,Math.min(15,r));}
 
 /* ================= BUCH: neue Kapitel einfach unten anhängen =================
@@ -1442,10 +1443,11 @@ var BENCH=[["Wohnen & Energie", 37.5, ["Wohnen & Nebenkosten"]], ["Lebensmittel,
 
 /* ================= HELPERS ================= */
 /* Währung: Anzeige- und Eingabewährung des Geld-Kompass (pro Gerät). Kurse aus markets.json (Basis EUR) werden umgerechnet. */
+var GK_SHARED=GKShareState.app(GKShareState.read());
 var CURLIST="EUR,USD,GBP,CHF,JPY,CNY,CAD,AUD,NZD,SEK,NOK,DKK,ISK,PLN,CZK,HUF,RON,BGN,RSD,TRY,UAH,RUB,GEL,AMD,AZN,KZT,AED,SAR,QAR,ILS,EGP,MAD,ZAR,NGN,KES,INR,LKR,THB,VND,MYR,SGD,IDR,PHP,KHR,LAK,HKD,TWD,KRW,BRL,MXN,ARS,CLP,COP,PEN".split(","),CURS={},CUR_KEY="geld-kompass-currency",CUR="EUR";
 /* Symbol je Währung (schmale Form: $, £, ฿, ₾ …) */
 CURLIST.forEach(function(c){try{var pt=new Intl.NumberFormat("en",{style:"currency",currency:c,currencyDisplay:"narrowSymbol"}).formatToParts(1).filter(function(x){return x.type==="currency";})[0];CURS[c]=pt?pt.value:c;}catch(e){CURS[c]=c;}});
-try{CUR=localStorage.getItem(CUR_KEY)||"EUR";}catch(e){}if(!CURS[CUR])CUR="EUR";
+try{CUR=localStorage.getItem(CUR_KEY)||"EUR";}catch(e){}if(GK_SHARED&&CURS[GK_SHARED.currency])CUR=GK_SHARED.currency;if(!CURS[CUR])CUR="EUR";
 var FX={base:"EUR",rates:{EUR:1}};try{var fxc=JSON.parse(localStorage.getItem("geld-kompass-fx")||"null");if(fxc&&fxc.rates)FX=fxc;}catch(e){}
 function fxr(){return (CUR==="EUR")?1:(FX.rates[CUR]||1);}
 /* Mehrwährung: Einträge können eine eigene Währung haben (c.cur). Umrechnung in die Anzeigewährung zum aktuellen Kurs. */
@@ -1513,7 +1515,7 @@ function migrate(o){if(!o.debts)o.debts=[];o.items=(o.items||[]).filter(function
 var CHMAP={1:3,2:7,3:6,4:4,5:5,6:2,7:11,8:9,9:10,10:12,11:1,12:13,13:14,14:15,15:16};
 function remapNotes(n){var o={};Object.keys(n||{}).forEach(function(k){o[CHMAP[k]||k]=n[k];});return o;}
 function load(){try{var r=localStorage.getItem(KEY);if(r){var raw=JSON.parse(r);S=merge(defaults(),raw);S.own=migrate(merge(emptyOwn(),S.own));if(raw.chv!==2){S.notes=remapNotes(S.notes);S.chv=2;localStorage.setItem(KEY,JSON.stringify(S));}}}catch(e){}}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S));storageFailed=false;}catch(e){storageFailed=true;}var warn=$("storageWarning");if(warn)warn.classList.toggle("hide",!storageFailed);return !storageFailed;}
+function save(){if(GK_SHARED)return true;try{localStorage.setItem(KEY,JSON.stringify(S));storageFailed=false;}catch(e){storageFailed=true;}var warn=$("storageWarning");if(warn)warn.classList.toggle("hide",!storageFailed);return !storageFailed;}
 
 /* ================= MARKTDATEN ================= */
 var M={updated:null,status:"none",inflation:{},live:{},liveAt:null};
@@ -1544,7 +1546,7 @@ function fxSetup(a,b){var en=window.GK_LANG==="en",o=function(c){return '<option
   var sel=$("curSel");if(sel){sel.innerHTML=CURLIST.map(function(c){return '<option value="'+c+'">'+(CURS[c]!==c?CURS[c]+" ":"")+c+" · "+esc(curName(c))+'</option>';}).join("");sel.value=CUR;sel.addEventListener("change",function(){window.GK_setCurrency(sel.value);});}
   fxRender();}
 function fxRender(){var out=$("fxOut");if(!out)return;var f=$("fxFrom").value,to=$("fxTo").value,amt=num($("fxAmt").value),R=FX.rates||{};
-  try{localStorage.setItem("geld-kompass-fxcalc",JSON.stringify({f:f,t:to,a:$("fxAmt").value}));}catch(e){}
+  try{if(!GK_SHARED)localStorage.setItem("geld-kompass-fxcalc",JSON.stringify({f:f,t:to,a:$("fxAmt").value}));}catch(e){}
   if(!R[f]||!R[to]){out.innerHTML='<p class="desc">Wechselkurse werden geladen …</p>';return;}
   var rate=R[to]/R[f],fmt=fxFmt;
   var ch=FX.change||{},chg=(1+(ch[to]||0)/100)/(1+(ch[f]||0)/100)-1,when=FX.updated?new Date(FX.updated).toLocaleString((window.GK_LOCALE||"de-DE"),{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}):"";
@@ -1553,7 +1555,7 @@ function fxRender(){var out=$("fxOut");if(!out)return;var f=$("fxFrom").value,to
    '<p class="fxmeta">'+fmt(amt,f)+' = '+fmt(amt*rate,to)+' · 1 '+f+' = '+sig.format(rate)+' '+to+' · 1 '+to+' = '+sig.format(1/rate)+' '+f+(ch[to]!=null||ch[f]!=null?' · <span style="color:'+(chg>=0?'var(--good)':'var(--bad)')+'">'+(chg>=0?'+':'')+nf2.format(chg*100)+(EN?' % vs. previous day':' % zum Vortag')+'</span>':'')+'</p>'+
    '<p class="fxmeta">'+(EN?'As of ':'Stand: ')+esc(when)+(EN?' · Source: Yahoo Finance (exchange rates), updated automatically. Banks and exchange offices add a margin.':' · Quelle: Yahoo Finance (Devisenkurse), wird laufend aktualisiert. Banken und Wechselstuben rechnen mit Auf- und Abschlägen.')+'</p>';
   var en=window.GK_LANG==="en",st=en?fmt(amt,f)+" is currently "+fmt(amt*rate,to)+". Live exchange rate and chart:":fmt(amt,f)+" sind gerade "+fmt(amt*rate,to)+". Live-Kurs und Chart:";
-  $("fxShare").innerHTML=gkShare(st,"rechner/waehrungsrechner/");
+  $("fxShare").innerHTML=gkShare(st,"rechner/waehrungsrechner/",{values:{amt:String(amt),from:f,to:to},currency:CUR});
   fxChart(f,to);}
 function fxFmt(v,c){var LO=window.GK_LANG==="en"?"en-US":"de-DE";if(FXCRYPTO[c]){var d=Math.abs(v)>=100?2:Math.abs(v)>=1?4:8;return new Intl.NumberFormat(LO,{maximumFractionDigits:d}).format(v)+" "+c;}
   var dd=Math.abs(v)>=1000?0:(v!==0&&Math.abs(v)<1?4:2);try{return new Intl.NumberFormat(LO,{style:"currency",currency:c,minimumFractionDigits:dd,maximumFractionDigits:dd}).format(v);}catch(e){return nf2.format(v)+" "+c;}}
@@ -1778,8 +1780,8 @@ function show(page,anchor){if(!PAGES[page])page="overview";
   document.querySelectorAll("[data-page]").forEach(function(b){if(b.getAttribute("data-page")===page)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
   var P=PAGES[page];$("pEye").textContent=P[0]+(P[0]!==P[1]?" · "+P[1]:"");$("pTitle").textContent=P[2];$("pSub").textContent=P[3];
   $("side").classList.remove("open");
-  try{history.replaceState(null,"","#"+(anchor||page));}catch(e){}
-  if(anchor){var el=$(anchor);if(el){if(el.tagName==="DETAILS")el.open=true;setTimeout(function(){el.scrollIntoView({behavior:"smooth",block:"start"});},40);}}else window.scrollTo(0,0);}
+  try{history.replaceState(null,"","#"+(anchor||page)+(GK_SHARED?"&gk="+encodeURIComponent(JSON.stringify(GK_SHARED)):""));}catch(e){}
+  if(anchor){var el=$(anchor);if(GK_SHARED&&$("gkSharedNote"))el=$("gkSharedNote");if(el){if(el.tagName==="DETAILS")el.open=true;setTimeout(function(){el.scrollIntoView({behavior:"smooth",block:"start"});},40);}}else window.scrollTo(0,0);}
 function goTo(id){if(PAGES[id])return show(id);var el=$(id);if(!el)return show("overview");var pg=el.closest(".page");show(pg.id.slice(2),id);}
 
 /* ================= BUCHUNGSFORMULAR ================= */
@@ -1816,7 +1818,8 @@ function netSplit(t){if(!t.aktiva&&!t.passiva)return "";var m=Math.max(t.aktiva,
 var GK_BASE="https://geld-kompass.com/";
 var GK_EN_PATHS={"rechner/waehrungsrechner/":"en/calculators/currency-converter/","rechner/inflationsrechner/":"en/calculators/inflation-calculator/","rechner/abo-als-aktie/":"en/calculators/subscription-as-investment/","rechner/schuldenfrei-rechner/":"en/calculators/debt-free-calculator/","rechner/freiheitstage-rechner/":"en/calculators/freedom-days-calculator/","rechner/notgroschen-rechner/":"en/calculators/emergency-fund-calculator/","rechner/sparplan-rechner/":"en/calculators/savings-plan-calculator/"};
 function gkEnPath(p){return GK_EN_PATHS[p]||p;}
-function gkShare(text,path){var EN=window.GK_LANG==="en";if(EN)path=gkEnPath(path);var url=GK_BASE+path+"?ref=wa&lang="+(EN?"en":"de");return '<a class="gkshare" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(text+(window.GK_LANG==="en"?"\n\nCheck it yourself (free): ":"\n\nRechne es selbst nach (kostenlos): ")+url)+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>Per WhatsApp teilen</a>';}
+function gkShare(text,path,state){var EN=window.GK_LANG==="en";if(EN)path=gkEnPath(path);var url=GKShareState.link(path,state,EN?"en":"de","wa");return '<a class="gkshare" target="_blank" rel="noopener" href="https://wa.me/?text='+encodeURIComponent(text+(EN?"\n\nCheck it yourself (free): ":"\n\nRechne es selbst nach (kostenlos): ")+url)+'"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>'+(EN?'Share on WhatsApp':'Per WhatsApp teilen')+'</a>';}
+
 /* Motivierender Kopf: positive Freiheitstage, Countdown zum Nullpunkt oder erster Schritt */
 function heroHTML(t,plan){
   if(t.surplus<0)return '<div><div class="big">'+E(-t.surplus)+'</div><small>Monatslücke</small></div><div><p><b>Zuerst den nächsten Monat sichern.</b> Deine geplanten Ausgaben liegen über deinen Einnahmen. Das ist eine lösbare Aufgabe, kein Urteil über dich. Prüfe notwendige Kosten, Ansprüche und tragbare Raten. Ein neuer Sparplan würde die Lücke zunächst vergrößern.</p><button class="btn pri sm" type="button" data-go="debts">Schulden und Raten ansehen</button></div><div class="side-num"><small>Monatlicher Geldfluss</small><b>'+E(t.surplus)+'</b><small>vor einem neuen Sparziel</small></div>';
@@ -1836,7 +1839,7 @@ function heroHTML(t,plan){
     '<div class="side-num"><small>Noch zu schaffen</small><b>'+E(gap)+'</b><small>bis zum Nullpunkt</small></div>';}
 function renderOverview(){var d=D(),t=totals(d),ds=t.debts,plan=ds.length?simulate(ds,{extra:debtExtraDefault(t),method:S.calc.debt.method,roll:true,ret:S.calc.debt.ret}):null;
   $("hero").innerHTML=heroHTML(t,plan);
-  if(S.mode==="own"&&t.net>0&&t.spend>0){var fd=freedomDays(t),hp=$("hero").querySelector("p");if(hp&&fd>=1)hp.insertAdjacentHTML("afterend",gkShare(window.GK_LANG==="en"?"I have "+DAYS(fd)+" freedom days: that is how many days I could live on my net worth. How many do you have?":"Ich habe gerade "+DAYS(fd)+" Freiheitstage: So viele Tage könnte ich rechnerisch von meinem Nettovermögen leben. Wie viele hast du?","rechner/freiheitstage-rechner/"));}
+  if(S.mode==="own"&&t.net>0&&t.spend>0){var fd=freedomDays(t),hp=$("hero").querySelector("p");if(hp&&fd>=1)hp.insertAdjacentHTML("afterend",gkShare(window.GK_LANG==="en"?"I have "+DAYS(fd)+" freedom days: that is how many days I could live on my net worth. How many do you have?":"Ich habe gerade "+DAYS(fd)+" Freiheitstage: So viele Tage könnte ich rechnerisch von meinem Nettovermögen leben. Wie viele hast du?","rechner/freiheitstage-rechner/",{values:{assets:String(t.aktiva),debts:String(t.passiva),spend:String(t.spend),save:String(t.dnet)},currency:CUR}));}
   $("kpis").innerHTML=mainKpis(t);
   $("monthTag").textContent=monthName(ymNow());$("spendDesc").textContent="Ausgaben im "+monthName(ymNow())+" nach Kategorie";$("spendTotal").textContent=E(t.spend);
   var items=topItems(t.cats,6);
@@ -1872,7 +1875,7 @@ function renderInflation(t){
  var old=[de,ea].some(function(x){return x&&GeldInflation.ageMonths(x.period)>2;});
  $("inflDesc").textContent='Inflationsrate · HVPI · Veränderung zum Vorjahresmonat';
  if(!de){$("inflBox").innerHTML='<p class="desc">'+(failed?'Amtliche Daten derzeit nicht erreichbar. Es wird kein geschätzter Wert als aktuelle Inflationsrate angezeigt.':'Amtliche Inflationsdaten werden geladen.')+'</p>';return;}
- var hg=CUR==='USD'?M.inflation.US:CUR==='GBP'?M.inflation.UK:null,r=(hg||de).rate,arr=[];for(var y=0;y<=10;y++)arr.push(1000/Math.pow(1+r/100,y));
+ var hg=CUR==='USD'?M.inflation.US:CUR==='GBP'?M.inflation.UK:null,r=GK_SHARED&&GK_SHARED.kind==="inflation"?GK_SHARED.values.rate:(hg||de).rate,arr=[];for(var y=0;y<=10;y++)arr.push(1000/Math.pow(1+r/100,y));
  function observation(x,label){if(!x)return '';return '<div><b>'+nf1.format(x.rate)+' %</b><span>'+label+'</span><small>'+esc(monthName(x.period))+'</small><small>'+(x.checked?'Abgerufen: '+esc(new Date(x.checked).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'})):'Gespeicherter Stand')+'</small></div>';}
  var checked=de.checked?new Date(de.checked).toLocaleString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric',hour:'2-digit',minute:'2-digit'}):null;
  $("inflBox").innerHTML='<div class="infl"><p class="desc">Die Rate beschreibt die Preisänderung des Gesamtwarenkorbs gegenüber demselben Monat im Vorjahr. Sie ist kein Zins und keine Vorhersage für die nächsten zehn Jahre.</p><div class="stats">'+observation(de,'Deutschland')+observation(ea,'Euroraum')+observation(M.inflation.US,'USA')+observation(M.inflation.UK,'Großbritannien')+'</div></div>'+
@@ -1881,7 +1884,7 @@ function renderInflation(t){
  (old?'<div class="note warn">Der angezeigte Datenmonat liegt länger zurück. Bitte prüfe den Datenstand, bevor du damit planst.</div>':'')+
  lineChart([{l:'Kaufkraft bei konstant angenommener Inflation',d:arr,c:'var(--warn)',fill:'var(--warn-soft)'}],10,'Kaufkraftmodell')+
  '<p class="desc">Rechenbeispiel: Bliebe die Rate zehn Jahre konstant bei '+nf1.format(r)+' %, entsprächen '+E(1000)+' dann etwa '+E(arr[10])+' heutiger Kaufkraft. Guthabenzinsen und Steuern sind hier nicht eingerechnet.</p>'+
- '<div class="gkrow">'+gkShare(window.GK_LANG==="en"?"Inflation right now: "+nf1.format(r)+" %. If it stayed like this, "+E(1000)+" would only be worth about "+E(arr[10])+" in ten years.":"Inflation in Deutschland aktuell: "+nf1.format(r)+" %. Bliebe sie so, wären 1.000 € in zehn Jahren nur noch rund "+E(arr[10])+" wert.","rechner/inflationsrechner/")+'<a class="lnk" href="/rechner/inflationsrechner/">Was sind 1.000 € von früher heute wert? Zum Inflationsrechner</a></div>';
+ '<div class="gkrow">'+gkShare(window.GK_LANG==="en"?"Assumed constant inflation: "+nf1.format(r)+" %. If it stayed like this, "+E(1000)+" would only be worth about "+E(arr[10])+" in ten years.":"Konstant angenommene Inflation: "+nf1.format(r)+" %. Bliebe sie so, wären 1.000 € in zehn Jahren nur noch rund "+E(arr[10])+" wert.","app/#inflBox",{kind:"inflation",currency:CUR,values:{rate:r}})+'<a class="lnk" href="/rechner/inflationsrechner/">Was sind 1.000 € von früher heute wert? Zum Inflationsrechner</a></div>';
 }
 
 function entTag(e){var h=isHabit(e);return '<span class="tag '+(h?"habit":e.type)+'">'+(h?"Gewohnheit":TYPES[e.type])+'</span>';}
@@ -2048,7 +2051,7 @@ function renderWI(){var w=S.calc.wi;if(document.activeElement!==$("wiTitle"))$("
   var d=detect(w.title||""),br=brandFor(w.title,d.cat),x=IMAP[br.s]||{n:br.b},m=num(w.amt)*(w.per==="day"?365/12:w.per==="week"?52/12:1),Y=Math.max(1,Math.min(40,Math.round(num(w.years)||20))),c=wiCalc(m,br.s,Y);
   $("wiDet").innerHTML=(br.example?'Mögliches Branchenbeispiel: <b>':'Marke gehört zu: <b>')+esc(x.n)+'</b><span class="tag invest">'+esc(br.s)+'</span><span>'+P(c.r)+' pro Jahr'+estNote(br.s)+'</span>'+ (br.source?'<a href="'+br.source+'" target="_blank" rel="noopener">Markenquelle</a>':'')+examplesHTML(w.title);
   $("wiRes").innerHTML='<div><span>Ausgegeben in '+Y+' Jahren</span><b class="neg">'+E(c.spent)+'</b></div><div><span>In '+esc(x.n)+' angelegt</span><b class="pos">'+E(c.brand)+'</b></div><div><span>In einen Welt-ETF angelegt</span><b class="pos">'+E(c.world)+'</b></div><div><span>Das sind pro Monat</span><b>'+E(m)+'</b></div>';
-  $("wiShare").innerHTML=m>0?gkShare(window.GK_LANG==="en"?(w.title||"My expense")+" for "+E(m)+" a month: in "+Y+" years that is "+E(c.spent)+" spent. Invested in "+x.n+" it could have become "+E(c.brand)+".":(w.title||"Meine Ausgabe")+" für "+E(m)+" im Monat: In "+Y+" Jahren sind das "+E(c.spent)+" ausgegeben. In "+x.n+" angelegt wären es rechnerisch "+E(c.brand)+".","rechner/abo-als-aktie/"):"";
+  $("wiShare").innerHTML=m>0?gkShare(window.GK_LANG==="en"?(w.title||"My expense")+" for "+E(m)+" a month: in "+Y+" years that is "+E(c.spent)+" spent. Invested in "+x.n+" it could have become "+E(c.brand)+".":(w.title||"Meine Ausgabe")+" für "+E(m)+" im Monat: In "+Y+" Jahren sind das "+E(c.spent)+" ausgegeben. In "+x.n+" angelegt wären es rechnerisch "+E(c.brand)+".","app/#wiCard",{kind:"wi",currency:CUR,values:{title:w.title||"",amt:num(w.amt),per:w.per,years:Y,symbol:br.s,rate:c.r,worldRate:c.rw}}):"";
   $("wiChart").innerHTML=lineChart([{l:"In "+x.n+" angelegt ("+P(c.ru)+")",d:c.a,c:"var(--c1)",fill:"var(--gold-soft)"},{l:"Welt-ETF ("+P(c.rw)+")",d:c.w,c:"var(--good)",w:2},{l:"Ausgegeben und weg",d:c.s,c:"var(--bad)",w:1.5,dash:true}],Y,"Konsument oder Eigentümer");
   $("wiText").innerHTML=insight("↻","Ausgaben und Eigentum im Vergleich","Die Rechnung zeigt zwei mögliche Anlagen mit angenommenen Renditen. Bei allgemeinen Ausgaben ist das Unternehmen nur ein Branchenbeispiel; daraus folgt keine Beteiligung an deinem tatsächlichen Anbieter. Kinokarten können etwa Kinobetreiber, Verleiher und Filmstudios finanzieren. Einzelaktien können stark schwanken und ihren Wert vollständig verlieren. Die Welt-ETF-Rechnung ist ebenfalls ein Modell, keine Kaufempfehlung. Vergangene Renditen sind keine Garantie.","good");}
 
@@ -2225,7 +2228,7 @@ function convertOwn(from,to){var a=curRate(from),b=curRate(to);if(!a||!b||from==
   S.own.entries.forEach(function(e){if(!e.cur)e.amount=r(e.amount);});S.own.debts.forEach(function(x){if(!x.cur){x.bal=r(x.bal);x.pay=r(x.pay);}});S.own.items.forEach(function(x){if(!x.cur)x.value=r(x.value);});
   S.own.hold.forEach(function(h){if(h.buy)h.buy=r(h.buy);if(h.price!=null&&h.price!=="")h.price=r(h.price);if(h.plan)h.plan.amt=r(h.plan.amt);});(S.own.realized||[]).forEach(function(x){if(!x.cur){x.price=r(x.price);if(x.buy)x.buy=r(x.buy);x.pl=r(x.pl);}});
   var c=S.calc;if(c){if(c.ci){c.ci.start=r(c.ci.start);c.ci.mon=r(c.ci.mon);}if(c.wi)c.wi.amt=r(c.wi.amt);if(c.pfInc!=null)c.pfInc=r(c.pfInc);if(c.debt&&c.debt.extra!=null)c.debt.extra=r(c.debt.extra);if(c.ffExternal)c.ffExternal=r(c.ffExternal);if(c.ffDividends)c.ffDividends=r(c.ffDividends);if(c.ffCost!=null)c.ffCost=r(c.ffCost);}}
-window.GK_setCurrency=function(c){try{if(S&&S.own){var from=S.own.cur||CUR;if(from!==c&&curRate(from)&&curRate(c)){convertOwn(from,c);}S.own.cur=c;save();}localStorage.setItem(CUR_KEY,c);}catch(e){}location.reload();};
+window.GK_setCurrency=function(c){if(GK_SHARED){if(CURS[c]){GK_SHARED.currency=c;location.href=GKShareState.link("app/#"+((location.hash||"#overview").slice(1).split("&")[0]),GK_SHARED,window.GK_LANG==="en"?"en":"de");}return;}try{if(S&&S.own){var from=S.own.cur||CUR;if(from!==c&&curRate(from)&&curRate(c)){convertOwn(from,c);}S.own.cur=c;save();}localStorage.setItem(CUR_KEY,c);}catch(e){}location.reload();};
 
 
 /* ================= DATENSICHERHEIT ================= */
@@ -2521,14 +2524,18 @@ function syncWallets(){S.own.hold.filter(function(h){return h.addr;}).forEach(fu
 function applyTheme(){document.documentElement.setAttribute("data-theme",S.theme);if($("fxFrom")&&$("fxFrom").value){fxChartKey="";fxChart($("fxFrom").value,$("fxTo").value);}$("themeBtn").textContent=S.theme==="dark"?"Helles Design":"Dunkles Design";}
 
 /* ================= START ================= */
-load();
+if(!GK_SHARED)load();else{
+ S=defaults();S.mode="own";S.onboarded=1;S.own.cur=CUR;var sv=GK_SHARED.values;
+ if(GK_SHARED.kind==="wi")S.calc.wi={title:sv.title,amt:sv.amt,per:sv.per,years:sv.years};
+ var banner=document.createElement("div");banner.className="note good";banner.id="gkSharedNote";banner.style.margin="12px 0";banner.appendChild(document.createTextNode(window.GK_LANG==="en"?"Shared calculation: these values are separate from your saved finances. ":"Geteilte Berechnung: Diese Werte sind von deinen gespeicherten Finanzen getrennt. "));var exit=document.createElement("a");exit.href="/app/?lang="+(window.GK_LANG==="en"?"en":"de");exit.textContent=window.GK_LANG==="en"?"Open my Money Compass":"Meinen Geld-Kompass öffnen";banner.appendChild(exit);(GK_SHARED.kind==="wi"?$("wiCard"):$("inflBox").parentElement).prepend(banner);
+}
 /* Eigene Beträge gehören zu einer Währung. Wurde sie woanders gewechselt (z. B. in einem Rechner), hier einmal umrechnen. */
 function gkReconcileCur(){if(!S.own)return;if(!S.own.cur){S.own.cur=CUR;save();return;}if(S.own.cur!==CUR&&curRate(S.own.cur)&&curRate(CUR)){convertOwn(S.own.cur,CUR);S.own.cur=CUR;save();if(typeof renderAll==="function"&&$("overview"))try{renderAll();}catch(e){}}}
 gkReconcileCur();
 var Journey=GeldJourneyUI({state:function(){return S;},data:D,totals:totals,holdInfo:holdInfo,esc:esc,E:E,E2:E2,month:ymNow,monthName:monthName,today:today,uid:uid,save:save,toast:toast,profileName:function(){return PROFILES[S.profile].short;},storageFailed:function(){return storageFailed;},metal:function(){return M.metal||{};}});
 applyTheme();buildNav();bind();renderReset(false);renderAll();
-var h0=(location.hash||"").slice(1);if(h0)goTo(h0);else show("overview");
-window.addEventListener("hashchange",function(){goTo((location.hash||"").slice(1)||"overview");});
+var h0=(location.hash||"").slice(1).split("&")[0];if(h0)goTo(h0);else show("overview");
+window.addEventListener("hashchange",function(){goTo((location.hash||"").slice(1).split("&")[0]||"overview");});
 loadMarkets();syncWallets();
 setInterval(function(){liveInflation('DE');liveInflation('EA');},6*3600*1000);
 document.addEventListener('visibilitychange',function(){if(!document.hidden&&Date.now()-inflationLastAttempt>3600*1000){liveInflation('DE');liveInflation('EA');}});
