@@ -1,7 +1,7 @@
 /* Geld-Kompass Service Worker: App-Installation und Offline-Nutzung.
    Seiten und Daten: zuerst aus dem Netz (immer aktuell), offline aus dem Speicher.
    Schriften und Symbole: aus dem Speicher (ändern sich selten). */
-var VERSION = 'gk-2026-10-31-icons-82';
+var VERSION = 'gk-2026-10-31-plus-closed-1';
 var CORE = ['/share-state.js', '/app/transaction-presets.js', '/app/visuals.css', '/app/booking-icons.js', '/', '/app/', '/i18n.js', '/inflation.js', '/journey.js', '/journey-ui.js', '/retirement.js',
   '/data/markets.json', '/data/hicp_annual.json', '/manifest.webmanifest', '/manifest.en.webmanifest',
   '/assets/Figtree-400.ttf', '/assets/Figtree-600.ttf', '/assets/Figtree-700.ttf', '/assets/Figtree-800.ttf', '/assets/PlayfairDisplay-700.ttf',

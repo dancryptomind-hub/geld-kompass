@@ -22,6 +22,7 @@ jobs:
           sleep 2
           node tests/preset-icons.js
           node tests/preset-ui.js
+          node tests/plus-closed.js
           node tests/csv_import.js
           node tests/smoke.js
           node tests/share-links.js
