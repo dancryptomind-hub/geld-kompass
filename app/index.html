@@ -286,6 +286,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
 .histsvg{width:100%;height:auto;display:block}.edmore{border:1px solid var(--line);border-radius:12px;padding:10px 12px}.edmore summary{cursor:pointer;font-weight:700}.edmore .edform{margin-top:10px}
 .ent i.lg{background:#fff;padding:3px;overflow:hidden}.ent i.lg img{width:100%;height:100%;object-fit:contain;border-radius:6px;display:block}.suglogo{width:22px;height:22px;object-fit:contain;border-radius:5px;background:#fff;padding:2px;margin-right:8px;vertical-align:middle;flex:none}
 .ent i.lg.bar{background:linear-gradient(135deg,#1f2b4d,#2c3a66);padding:2px}.ent i.lg.bar svg{width:100%;height:100%}.metalb{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:10px;display:flex;flex-direction:column;gap:8px}.metalb .row{align-items:flex-end;gap:10px}.mblist{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:4px}.mblist li{display:flex;gap:10px;align-items:center;justify-content:space-between;border-bottom:1px dashed var(--line);padding:3px 0}.mbsum{display:flex;gap:16px;flex-wrap:wrap}.txh .tbl{max-height:220px;overflow:auto}
+.dprog{margin:4px 0 10px}.letterf{margin-bottom:8px}#lfText{width:100%;font:inherit;font-size:.86rem;line-height:1.5;border-radius:12px;border:1px solid var(--line);background:var(--surface-2);color:var(--ink);padding:12px;margin-bottom:8px;resize:vertical}.dhelp summary{cursor:pointer}.dhelp ul{padding-left:18px;display:flex;flex-direction:column;gap:6px}
 .toastbtn{margin-left:12px;background:#1b1407;color:#fff;border:0;border-radius:8px;padding:5px 10px;font:inherit;font-weight:800;cursor:pointer}
 .donehead{font-size:.9rem;margin:14px 0 6px;color:var(--muted)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--gold-bright);color:#1b1407;font-weight:700;padding:11px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:60;max-width:calc(100% - 32px);font-size:.86rem}
@@ -431,7 +432,9 @@ dl.gloss dd{margin:0;color:var(--muted)}
       </form>
       <div class="chips" id="debtChips"></div>
     </div>
-    <div class="card"><div class="chead"><div><h2>Deine Schulden im Überblick</h2><p class="desc">Rot = teuer (ab 10 %), Gelb = mittel (5 bis 10 %), Grün = günstig. Der Balken zeigt, wie viel deiner Rate an die Bank geht und wie viel die Schuld wirklich senkt.</p></div></div><div class="tbl" id="debtTable"></div><div id="debtDone"></div></div>
+    <div class="card"><div class="chead"><div><h2>Deine Schulden im Überblick</h2><p class="desc">Rot = teuer (ab 10 %), Gelb = mittel (5 bis 10 %), Grün = günstig. Der Balken zeigt, wie viel deiner Rate an die Bank geht und wie viel die Schuld wirklich senkt.</p></div></div><div id="debtUrgent"></div><div id="debtProg"></div><div class="tbl" id="debtTable"></div><div id="debtDone"></div></div>
+    <div class="card" id="letterCard"><div class="chead"><div><h2>Brief an Gläubiger</h2><p class="desc">Fertiger Text für eine Ratenzahlung oder Stundung, mit deinen Zahlen. Einfach kopieren und per Post oder E-Mail schicken.</p></div></div><div id="letterOut"></div></div>
+    <div id="debtHelp"></div>
     <div class="card" id="planCard"><div class="chead"><div><h2>Dein Weg aus den Schulden</h2><p class="desc">Wie viel kannst du jeden Monat zusätzlich zur Mindestrate zahlen? Schon kleine Beträge verkürzen den Weg enorm.</p></div><span class="chap">Kapitel 5</span></div>
       <div class="form">
         <label class="f">Zusätzlich pro Monat (€)<input id="dpExtra" type="number" step="10" min="0" inputmode="decimal"></label>
@@ -699,13 +702,18 @@ var DT={
  kfw:{l:"KfW-Studienkredit",s:"Studienkredit",r:6.53,h:"6,53 %",min:function(b){return b/120;},mh:"Rate aus dem Tilgungsplan"},
  bafoeg:{l:"BAföG-Darlehen",s:"BAföG",r:0,h:"zinsfrei",min:function(){return 130;},mh:"130 € pro Monat"},
  priv:{l:"Privat geliehen (Familie, Freunde)",s:"Privat",r:0,h:"meist zinsfrei",min:function(b){return b/24;},mh:"was ihr vereinbart habt"},
+ rent:{l:"Mietrückstand",s:"Miete",r:0,h:"meist ohne Zins, aber Kündigungsgefahr",urgent:1,min:function(b){return b/12;},mh:"mit Vermieter vereinbaren"},
+ energy:{l:"Strom- oder Gasrückstand",s:"Energie",r:0,h:"meist ohne Zins, aber Sperrgefahr",urgent:1,min:function(b){return b/12;},mh:"mit Versorger vereinbaren"},
+ tax:{l:"Finanzamt / Steuerschulden",s:"Finanzamt",r:6,h:"Säumniszuschlag 1 % pro Monat möglich",urgent:1,min:function(b){return b/12;},mh:"Ratenzahlung beim Finanzamt beantragen"},
+ fine:{l:"Geldstrafe / Bußgeld",s:"Geldstrafe",r:0,h:"bei Geldstrafen droht Ersatzfreiheitsstrafe",urgent:1,min:function(b){return b/6;},mh:"Ratenzahlung bei der Behörde beantragen"},
+ support:{l:"Unterhaltsrückstand",s:"Unterhalt",r:0,h:"vorrangig",urgent:1,min:function(b){return b/12;},mh:"mit Jugendamt bzw. Empfänger vereinbaren"},
  other:{l:"Sonstige Schulden / Inkasso",s:"Sonstige",r:10,h:"Zins aus Vertrag oder Mahnung",min:function(b){return b/24;},mh:"was du zahlen kannst"}
 };
-var DT_RULES=[["card",/kreditkarte|credit card|visa|mastercard|amex|teilzahlung/i],["dispo",/dispo|überzogen|im minus|kontokorrent/i],["bnpl",/klarna|paypal|ratenkauf|bnpl|afterpay|riverty|später bezahl|ratenzahlung/i],["bafoeg",/bafög|bafoeg/i],["kfw",/kfw|studienkredit/i],["home",/baufinanz|hypothek|immobilienkredit|hauskredit|wohnungskredit|bauspar/i],["car",/auto|kfz|fahrzeug|ballon|motorrad/i],["priv",/familie|freund|eltern|mama|papa|oma|opa|privat geliehen|geliehen von/i],["other",/inkasso|mahnung|steuerschuld|rückstand|nachzahlung/i],["loan",/kredit|darlehen|schuld|leasing/i]];
+var DT_RULES=[["rent",/miet(e|rückstand|schulden)|vermieter/i],["energy",/strom|gas|energie|stadtwerke|versorger|heizung/i],["tax",/finanzamt|steuer(schuld|nachzahlung)?\b/i],["fine",/geldstrafe|bußgeld|bussgeld|strafbefehl/i],["support",/unterhalt/i],["card",/kreditkarte|credit card|visa|mastercard|amex|teilzahlung/i],["dispo",/dispo|überzogen|im minus|kontokorrent/i],["bnpl",/klarna|paypal|ratenkauf|bnpl|afterpay|riverty|später bezahl|ratenzahlung/i],["bafoeg",/bafög|bafoeg/i],["kfw",/kfw|studienkredit/i],["home",/baufinanz|hypothek|immobilienkredit|hauskredit|wohnungskredit|bauspar/i],["car",/auto|kfz|fahrzeug|ballon|motorrad/i],["priv",/familie|freund|eltern|mama|papa|oma|opa|privat geliehen|geliehen von/i],["other",/inkasso|mahnung|steuerschuld|rückstand|nachzahlung/i],["loan",/kredit|darlehen|schuld|leasing/i]];
 function detectDebt(n){for(var i=0;i<DT_RULES.length;i++)if(DT_RULES[i][1].test(n))return DT_RULES[i][0];return null;}
 var CHEAP=4.5;
 function danger(r){r=num(r);return r>=10?["Teuer","costly","var(--bad)"]:r>=CHEAP?["Mittel","mid","var(--warn)"]:["Günstig","cheap","var(--good)"];}
-var DEBT_CHIPS=[["Kreditkarte","card"],["Dispo","dispo"],["Klarna","bnpl"],["PayPal Ratenzahlung","bnpl"],["Ratenkredit","loan"],["Autokredit","car"],["Baufinanzierung","home"],["KfW-Studienkredit","kfw"],["BAföG","bafoeg"],["Geld von Familie","priv"]];
+var DEBT_CHIPS=[["Kreditkarte","card"],["Dispo","dispo"],["Klarna","bnpl"],["PayPal Ratenzahlung","bnpl"],["Ratenkredit","loan"],["Autokredit","car"],["Baufinanzierung","home"],["KfW-Studienkredit","kfw"],["BAföG","bafoeg"],["Geld von Familie","priv"],["Mietrückstand","rent"],["Strom/Gas","energy"],["Finanzamt","tax"],["Inkasso","other"]];
 
 /* Aktiva automatisch erkennen */
 var BAL_RULES=[
@@ -1675,13 +1683,13 @@ function freedomDays(t){return t.spend>0?Math.max(0,Math.round(t.net/t.spend*30)
 /* ================= SCHULDEN-SIMULATION =================
    Monat für Monat: Zinsen auflaufen lassen, Mindestraten zahlen, Extra-Geld nach Strategie verteilen,
    frei gewordene Raten rollen weiter (Schneeball-Effekt), was übrig bleibt wird angelegt. */
-function simulate(list,o){var ds=list.filter(function(x){return num(x.bal)>0;}).map(function(x){return {id:x.id,n:x.name,k:x.kind,b:num(x.bal),r:num(x.rate),p:num(x.pay),done:null};});
+function simulate(list,o){var ds=list.filter(function(x){return num(x.bal)>0;}).map(function(x){return {id:x.id,n:x.name,k:x.kind,b:num(x.bal),r:num(x.rate),p:num(x.pay),done:null,u:isUrgent(x)?1:0};});
   var thr=o.method==="compass"?CHEAP:o.method==="invest"?Infinity:-1,ret=num(o.ret),H=o.horizon||0,inv=0,intTot=0,ser=[ds.reduce(function(s,x){return s+x.b;},0)],invSer=[0],free=ds.length?null:0;
-  var ord=o.method==="snowball"?function(a,b){return a.b-b.b;}:function(a,b){return b.r-a.r||a.b-b.b;};
+  var ord=o.method==="snowball"?function(a,b){return b.u-a.u||a.b-b.b;}:function(a,b){return b.u-a.u||b.r-a.r||a.b-b.b;};
   for(var m=1;m<=600;m++){var pool=0;
     ds.forEach(function(x){if(x.b>0.005){var i=x.b*x.r/1200;x.b+=i;intTot+=i;}});
     ds.forEach(function(x){if(x.b>0.005){var pay=Math.min(x.p,x.b);x.b-=pay;if(o.roll)pool+=x.p-pay;if(x.b<=0.005&&x.done==null)x.done=m;}else if(o.roll)pool+=x.p;});
-    var ex=num(o.extra),targets=ds.filter(function(x){return x.b>0.005&&x.r>thr;}).sort(ord),toDebt,toInv;
+    var ex=num(o.extra),targets=ds.filter(function(x){return x.b>0.005&&(x.r>thr||x.u);}).sort(ord),toDebt,toInv;
     if(targets.length){toDebt=ex*(o.split==null?1:o.split)+pool;toInv=ex-ex*(o.split==null?1:o.split);}else{toDebt=0;toInv=ex+pool;}
     for(var j=0;j<targets.length&&toDebt>0.005;j++){var x=targets[j],pay=Math.min(toDebt,x.b);x.b-=pay;toDebt-=pay;if(x.b<=0.005&&x.done==null)x.done=m;}
     toInv+=toDebt;inv=inv*(1+ret/1200)+toInv;
@@ -1920,6 +1928,7 @@ function renderBookings(){var d=D(),t=totals(d),own=S.mode==="own";$("bookKpis")
 function fillDebtForm(k,keepName){var x=DT[k];$("dKind").value=k;$("dRate").value=x.r;$("dRateHint").textContent="typisch: "+x.h;$("dTilgWrap").classList.toggle("hide",k!=="home");if(!keepName)$("dName").placeholder=x.s;suggestPay();}
 function suggestPay(){var k=$("dKind").value,b=num($("dBal").value),x=DT[k];if(b>0)$("dPay").placeholder=Math.round(x.min(b,num($("dRate").value),num($("dTilg").value)))+" (Vorschlag)";else $("dPay").placeholder="";$("dPayHint").textContent=x.mh;}
 function renderDebts(){var d=D(),t=totals(d),ds=t.debts,own=S.mode==="own",c=S.calc.debt,extra=debtExtraDefault(t);
+  if(own)debtStart();$("debtUrgent").innerHTML=urgentHTML(d);$("debtProg").innerHTML=own?progressHTML(d):"";$("letterOut").innerHTML=letterHTML(d,t);$("letterCard").classList.toggle("hide",!(d.debts||[]).some(function(x){return num(x.bal)>0;}));$("debtHelp").innerHTML=helpHTML(t,(d.debts||[]).some(function(x){return isUrgent(x)&&num(x.bal)>0;}));
   var paid=(d.debts||[]).filter(function(x){return !(num(x.bal)>0);});$("debtDone").innerHTML=paid.length?'<h3 class="donehead">Erledigt</h3><div class="tbl"><table><tbody>'+paid.map(function(x){return '<tr><td><div class="ent"><i style="background:var(--good)">✓</i><div><b>'+esc(x.name)+'</b><small>abbezahlt</small></div></div></td><td>'+(own?'<div class="row" style="flex-wrap:nowrap;justify-content:flex-end"><button class="btn ghost sm" type="button" data-edit="debt" data-id="'+x.id+'">Bearbeiten</button><button class="btn ghost sm" type="button" data-ddel="'+x.id+'">Löschen</button></div>':'')+'</td></tr>';}).join("")+'</tbody></table></div>':"";
   if(document.activeElement!==$("dpExtra"))$("dpExtra").value=extra;$("dpMethod").value=c.method;if(document.activeElement!==$("dpYears"))$("dpYears").value=c.years;if(document.activeElement!==$("dpRet"))$("dpRet").value=c.ret;
   $("debtChips").innerHTML=DEBT_CHIPS.map(function(x){return '<button class="chip" type="button" data-dchip="'+x[1]+'" data-n="'+esc(x[0])+'">+ '+esc(x[0])+'</button>';}).join("");
@@ -2403,6 +2412,35 @@ function addTx(h,e){ensureTx(h).push(Object.assign({d:today()},e));}
 function txHTML(h){var t=h.tx||[{d:"",k:"in",q:num(h.qty),p:h.buy?num(h.buy):null,n:"Anfangsbestand"}],m=isMetal(h.s),L={in:"Eingang",out:"Ausgang",div:"Dividende",plan:"Sparplan"};
   return '<div class="span2 txh"><b>Historie</b><div class="tbl"><table><tbody>'+t.slice().reverse().map(function(e){var q=e.k==="div"?"":(e.k==="out"?"−":"+")+(m?fmtG(num(e.q)):nf.format(num(e.q)));
     return '<tr><td>'+(e.d?fdate(e.d):"–")+'</td><td><span class="tag '+(e.k==="out"?"debt":e.k==="div"?"income":"invest")+'">'+esc(L[e.k]||e.k)+'</span>'+(e.n?'<small class="desc" style="display:block">'+esc(e.n)+'</small>':'')+'</td><td class="n">'+q+'</td><td class="n">'+(e.k==="div"?E2(num(e.a)):e.c&&e.op?ECur(num(e.op),e.c)+(m?" / g":"")+'<small class="desc" style="display:block">≈ '+E2(num(e.p))+'</small>':e.p?E2(num(e.p))+(m?" / g":""):"–")+'</td></tr>';}).join("")+'</tbody></table></div></div>';}
+
+/* ================= SCHULDEN: DRINGENDES ZUERST, FORTSCHRITT, BRIEFE, HILFE ================= */
+/* Prinzip der Schuldnerberatung: Schulden, die Wohnung, Energie oder Freiheit gefährden, kommen vor jedem Zins. */
+function isUrgent(x){return !!(DT[x.kind]&&DT[x.kind].urgent);}
+/* Fortschritt: Startwert jeder Schuld merken */
+function debtStart(){if(S.mode!=="own")return;var ch=false;(S.own.debts||[]).forEach(function(x){if(x.start==null&&num(x.bal)>0){x.start=num(x.bal);x.since=today();ch=true;}if(num(x.bal)>num(x.start)){x.start=num(x.bal);ch=true;}});if(ch)save();}
+function progressHTML(d){var ds=(d.debts||[]).filter(function(x){return x.start>0;});if(!ds.length)return "";var st=ds.reduce(function(s,x){return s+toDisp(x.start,x.cur);},0),now=ds.reduce(function(s,x){return s+toDisp(Math.max(0,num(x.bal)),x.cur);},0),p=st>0?Math.max(0,Math.min(1,1-now/st)):0;
+  var ms=[[1,"Schuldenfrei! Jeder Euro arbeitet ab jetzt für dich."],[.75,"Drei Viertel geschafft. Das Ziel ist in Sicht."],[.5,"Halbzeit! Die Hälfte deiner Schulden ist weg."],[.25,"Ein Viertel geschafft. Der Schneeball rollt."],[.01,"Der Anfang ist gemacht. Bleib dran."]],m=ms.filter(function(x){return p>=x[0];})[0];
+  return '<div class="dprog"><div class="row" style="justify-content:space-between"><b>'+pct(p)+' abbezahlt</b><small class="desc">'+E(st-now)+' von '+E(st)+'</small></div><div class="track good"><i style="width:'+(p*100).toFixed(1)+'%"></i></div>'+(m?'<p class="desc" style="margin:6px 0 0">'+m[1]+'</p>':'<p class="desc" style="margin:6px 0 0">Ab jetzt zählt jede Rate sichtbar mit.</p>')+'</div>';}
+function urgentHTML(d){var u=(d.debts||[]).filter(function(x){return isUrgent(x)&&num(x.bal)>0;});if(!u.length)return "";
+  return '<div class="note warn"><b>Zuerst sichern, unabhängig vom Zins:</b> '+u.map(function(x){return '<span class="nm">'+esc(GKT(x.name))+'</span>';}).join(", ")+'. <span>Rückstände bei Miete, Strom und Gas, Unterhalt, Geldstrafen und beim Finanzamt können zu Kündigung, Sperre oder Vollstreckung führen. Biete hier zuerst eine kleine, sichere Rate an. Die übrigen Schulden folgen danach im Plan.</span></div>';}
+/* Briefvorlage: Ratenzahlung oder Stundung anbieten */
+function letterText(x,kind,rate){var en=window.GK_LANG==="en",nm=x.name,b=E2(num(x.bal)),r=E2(rate);
+  if(en)return kind==="defer"?"Subject: Request for payment deferral – "+nm+"\n\nDear Sir or Madam,\n\nregarding the outstanding amount of "+b+", I am currently unable to make payments due to a temporary financial difficulty. I kindly ask you to defer payments for three months. During this time I will put my budget in order and will then propose a payment plan.\n\nPlease confirm the deferral in writing and refrain from further collection costs during this period.\n\nKind regards\n[Your name]\n[Customer / reference number]":
+    "Subject: Proposal for a payment plan – "+nm+"\n\nDear Sir or Madam,\n\nregarding the outstanding amount of "+b+", I would like to settle the debt reliably. My budget allows a monthly payment of "+r+", starting on the 1st of next month.\n\nI ask you to accept this payment plan, confirm it in writing and refrain from further collection measures while I keep to it.\n\nKind regards\n[Your name]\n[Customer / reference number]";
+  return kind==="defer"?"Betreff: Bitte um Stundung – "+nm+"\n\nSehr geehrte Damen und Herren,\n\nzur offenen Forderung über "+b+" kann ich wegen einer vorübergehenden finanziellen Notlage derzeit nicht zahlen. Ich bitte Sie, die Zahlungen für drei Monate zu stunden. In dieser Zeit ordne ich meinen Haushalt und schlage Ihnen danach eine Ratenzahlung vor.\n\nBitte bestätigen Sie die Stundung schriftlich und sehen Sie in dieser Zeit von weiteren Mahn- und Inkassokosten ab.\n\nMit freundlichen Grüßen\n[Dein Name]\n[Kunden- bzw. Aktenzeichen]":
+    "Betreff: Angebot einer Ratenzahlung – "+nm+"\n\nSehr geehrte Damen und Herren,\n\nzur offenen Forderung über "+b+" möchte ich eine verlässliche Lösung finden. Mein Haushalt erlaubt eine monatliche Rate von "+r+", beginnend zum 1. des kommenden Monats.\n\nIch bitte Sie, dieser Ratenzahlung zuzustimmen, sie schriftlich zu bestätigen und von weiteren Mahn- und Inkassomaßnahmen abzusehen, solange ich die Raten einhalte.\n\nMit freundlichen Grüßen\n[Dein Name]\n[Kunden- bzw. Aktenzeichen]";}
+function letterHTML(d,t){var ds=(d.debts||[]).filter(function(x){return num(x.bal)>0;});if(!ds.length)return "";var sel=S.letter||{};var x=ds.find(function(y){return y.id===sel.id;})||ds.filter(isUrgent)[0]||ds[0],kind=sel.kind||"plan";
+  var free=Math.max(0,t.surplus),sugg=sel.rate!=null?num(sel.rate):Math.max(5,Math.round(Math.min(num(x.pay)||free,free>0?free:num(x.pay))));
+  return '<div class="form edform letterf"><label class="f"><span>Schuld</span><select id="lfDebt">'+ds.map(function(y){return '<option value="'+y.id+'"'+(y.id===x.id?' selected':'')+'>'+esc(y.name)+'</option>';}).join("")+'</select></label>'+
+    '<label class="f"><span>Art</span><select id="lfKind"><option value="plan"'+(kind==="plan"?" selected":"")+'>Ratenzahlung anbieten</option><option value="defer"'+(kind==="defer"?" selected":"")+'>Stundung erbitten</option></select></label>'+
+    (kind==="plan"?'<label class="f"><span>Rate, die du sicher zahlen kannst</span><input id="lfRate" type="number" min="1" step="1" value="'+sugg+'" inputmode="decimal"></label>':'')+
+    '</div><textarea id="lfText" rows="12" readonly>'+esc(letterText(x,kind,sugg))+'</textarea><div class="row"><button class="btn pri sm" type="button" id="lfCopy">Text kopieren</button><small class="desc">Nur zusagen, was dein Budget dauerhaft trägt. Bei mehreren Gläubigern hilft eine Schuldnerberatung, alle zusammen zu ordnen.</small></div>';}
+function helpHTML(t,urgent){var en=window.GK_LANG==="en",open=t.surplus<0||urgent;
+  return '<details class="card dhelp"'+(open?' open':'')+'><summary><b>Kostenlose Hilfe bei Schulden</b></summary>'+(en?
+    '<p class="desc">Free, nonprofit debt advice negotiates with creditors and can stop collection. USA: <a href="https://www.nfcc.org" target="_blank" rel="noopener">NFCC</a> member agencies. UK: <a href="https://www.stepchange.org" target="_blank" rel="noopener">StepChange</a>. Germany: see the German links below.</p>':'')+
+    '<ul class="desc"><li><b>Schuldnerberatung finden:</b> <a href="https://www.meine-schulden.de/beratungsstellen" target="_blank" rel="noopener">meine-schulden.de</a> (Bundesarbeitsgemeinschaft Schuldnerberatung), Verbraucherzentralen, Caritas, Diakonie. Kostenlos und vertraulich.</li><li><b>Pfändungsschutzkonto (P-Konto):</b> Jede Bank muss ein Girokonto auf Antrag in ein P-Konto umwandeln. Ein Grundbetrag bleibt dann vor Pfändung geschützt.</li><li><b>Post vom Inkasso:</b> Forderung prüfen, nicht ungeprüft anerkennen, Fristen beachten. Überhöhte Inkassokosten muss man nicht einfach hinnehmen.</li><li><b>Keine neuen Kredite</b> zum Stopfen von Löchern, und Vorsicht bei „Schuldenregulierern“ mit Vorabgebühren.</li></ul></details>';}
+document.addEventListener("change",function(ev){var id=ev.target.id;if(id==="lfDebt"||id==="lfKind"||id==="lfRate"){S.letter={id:$("lfDebt").value,kind:$("lfKind").value,rate:$("lfRate")&&id!=="lfDebt"?$("lfRate").value:null};save();renderDebts();}});
+document.addEventListener("click",function(ev){if(ev.target.id==="lfCopy"){var tx=$("lfText");try{navigator.clipboard.writeText(tx.value).then(function(){toast("Text kopiert");},function(){tx.select();});}catch(e){tx.select();}}});
 
 /* ================= EVENTS ================= */
 function bind(){
