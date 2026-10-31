@@ -1,7 +1,11 @@
 name: Webseite aktualisieren
 
+# Veröffentlicht main erst, wenn der Workflow „Tests“ für diesen Stand grün ist.
+# Notfall: manuell über „Run workflow“ starten (ohne Test).
 on:
-  push:
+  workflow_run:
+    workflows: [Tests]
+    types: [completed]
     branches: [main]
   workflow_dispatch:
 
@@ -10,9 +14,11 @@ permissions:
 
 jobs:
   sync:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
+          ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.ref }}
       - run: git push --force origin HEAD:gh-pages
