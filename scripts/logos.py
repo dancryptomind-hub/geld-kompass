@@ -53,16 +53,27 @@ def favicon(domain):
     return None
 
 
+WHY = {}
+
+
 def favicon1(domain):
-    for url in (f"https://www.google.com/s2/favicons?domain={domain}&sz=128", f"https://icons.duckduckgo.com/ip3/{domain}.ico"):
-        try:
-            r = requests.get(url, headers=UA, timeout=20)
-            if r.ok and len(r.content) > 300:
-                im = Image.open(io.BytesIO(r.content))
-                if im.width >= 32:
-                    return r.content
-        except Exception:
-            pass
+    for url in (f"https://www.google.com/s2/favicons?domain={domain}&sz=128", f"https://icons.duckduckgo.com/ip3/{domain}.ico", f"https://{domain}/apple-touch-icon.png"):
+        for attempt in range(3):
+            try:
+                r = requests.get(url, headers=UA, timeout=20)
+                if r.status_code == 429:
+                    time.sleep(5 * (attempt + 1))
+                    continue
+                if r.ok and len(r.content) > 300:
+                    im = Image.open(io.BytesIO(r.content))
+                    if im.width >= 32:
+                        return r.content
+                    WHY[domain] = "%s klein %dpx" % (url.split('/')[2], im.width)
+                else:
+                    WHY[domain] = "%s HTTP %s" % (url.split('/')[2], r.status_code)
+            except Exception as e:
+                WHY[domain] = "%s %s" % (url.split('/')[2], type(e).__name__)
+            break
     return None
 
 
@@ -73,9 +84,13 @@ def domain_of(url):
 
 def main():
     items = json.loads((ROOT / "scripts" / "instruments.json").read_text(encoding="utf-8"))
-    done = {}
+    try:
+        prev = json.loads((ROOT / "data" / "logos.json").read_text(encoding="utf-8"))
+    except Exception:
+        prev = {}
+    done = {k: v for k, v in prev.items() if (ROOT / v).exists()}
     # Kryptowährungen: CoinGecko-Bilder
-    cg = [x for x in items if x.get("cg")]
+    cg = [x for x in items if x.get("cg") and x["s"] not in done]
     if cg:
         try:
             r = requests.get("https://api.coingecko.com/api/v3/coins/markets", params={"vs_currency": "eur", "ids": ",".join(x["cg"] for x in cg)}, headers=UA, timeout=30).json()
@@ -92,6 +107,7 @@ def main():
     for x in items:
         if x["s"] in done or x.get("cg"):
             continue
+        time.sleep(0.5)
         dom = DOMAIN.get(x["s"])
         name = x["n"].lower()
         if not dom and x["t"] in ("ETF", "Rohstoff"):
@@ -112,7 +128,9 @@ def main():
                 done[x["s"]] = "logos/" + key(x["s"]) + ".png"
                 continue
         print("kein Logo:", x["s"], dom, file=sys.stderr)
+        WHY.setdefault(x["s"], "keine Domain" if not dom else WHY.get(dom, "?"))
     (ROOT / "data" / "logos.json").write_text(json.dumps(done, ensure_ascii=False, indent=0, sort_keys=True), encoding="utf-8")
+    (ROOT / "data" / "logos_missing.json").write_text(json.dumps({x["s"]: WHY.get(x["s"]) or WHY.get(DOMAIN.get(x["s"], ""), "") for x in items if x["s"] not in done}, ensure_ascii=False, indent=1), encoding="utf-8")
     print(len(done), "Logos von", len(items))
 
 
