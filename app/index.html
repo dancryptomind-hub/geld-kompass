@@ -283,6 +283,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
 .safebar{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;margin-bottom:14px}.safebar .sbtxt{flex:1 1 320px;display:flex;flex-direction:column;gap:4px}.safebar .sbtxt span,.safebar .sbtxt small{color:var(--muted);font-size:.86rem}
 #bankCard summary{display:flex;flex-direction:column;gap:2px;cursor:pointer}#bankCard tr.dim{opacity:.5}#bankCard select{max-width:180px}
 .amtcur{display:flex;gap:6px}.amtcur input{flex:1 1 auto;min-width:0}.amtcur select{flex:0 0 84px;padding-left:6px;padding-right:4px}
+.histsvg{width:100%;height:auto;display:block}.edmore{border:1px solid var(--line);border-radius:12px;padding:10px 12px}.edmore summary{cursor:pointer;font-weight:700}.edmore .edform{margin-top:10px}
 .toastbtn{margin-left:12px;background:#1b1407;color:#fff;border:0;border-radius:8px;padding:5px 10px;font:inherit;font-weight:800;cursor:pointer}
 .donehead{font-size:.9rem;margin:14px 0 6px;color:var(--muted)}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--gold-bright);color:#1b1407;font-weight:700;padding:11px 16px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:60;max-width:calc(100% - 32px);font-size:.86rem}
@@ -459,11 +460,13 @@ dl.gloss dd{margin:0;color:var(--muted)}
       <details class="more"><summary>Depot automatisch übernehmen</summary>
         <div class="g2" style="margin-top:12px">
           <div class="note"><b>Depot-Export einlesen (CSV)</b><br>In der App oder Website deines Brokers den Depotbestand als CSV exportieren und hier einlesen. Der Kompass erkennt unterstützte Spalten wie ISIN, Stückzahl und Kaufkurs. Prüfe die erkannten Positionen und angezeigten Kursstände.<div class="row" style="margin-top:8px"><label class="btn sm">CSV-Datei wählen<input type="file" id="csvFile" accept=".csv,text/csv,text/plain" class="hide"></label></div><div id="csvOut"></div></div>
-          <div class="note"><b>Bitcoin-Wallet verbinden</b><br>Nur die öffentliche Adresse, kein Zugriff auf dein Geld. Der Bestand wird über mempool.space gelesen und mit dem aktuellen Kurs bewertet.<form class="row" id="btcForm" style="margin-top:8px"><input id="btcAddr" placeholder="bc1q… oder 1… / 3…" style="flex:1;min-width:180px"><button class="btn sm" type="submit">Verbinden</button></form><div id="btcOut" class="desc"></div></div>
+          <div class="note"><b>Krypto-Wallet verbinden</b><br>Bitcoin, Ethereum, Solana oder XRP. Nur die öffentliche Adresse, kein Zugriff auf dein Geld. Der Bestand wird über einen öffentlichen Blockchain-Dienst gelesen und mit dem aktuellen Kurs bewertet.<form class="row" id="btcForm" style="margin-top:8px"><input id="btcAddr" placeholder="bc1…, 0x…, r… oder Solana-Adresse" style="flex:1;min-width:180px"><button class="btn sm" type="submit">Verbinden</button></form><div id="btcOut" class="desc"></div></div>
         </div>
       </details>
     </div>
-    <div class="card"><div class="chead"><div><h2>Dein Depot</h2><p class="desc">Kurs × Stück, mit Gewinn oder Verlust seit dem Kauf</p></div><button class="btn sm" type="button" id="refreshBtn">Kurse aktualisieren</button></div><div class="tbl" id="depotTable"></div></div>
+    <div class="card"><div class="chead"><div><h2>Dein Depot</h2><p class="desc">Kurs × Stück, mit Gewinn oder Verlust seit dem Kauf</p></div><button class="btn sm" type="button" id="refreshBtn">Kurse aktualisieren</button></div><div class="tbl" id="depotTable"></div><div id="taxNote"></div></div>
+    <div class="card"><div class="chead"><div><h2>Depot-Verlauf</h2><p class="desc">Dein Depotwert über die Zeit</p></div></div><div id="depotHist"></div></div>
+    <div id="realizedBox"></div>
     <div class="g2">
       <div class="card"><div class="chead"><div><h2>Depot-Aufteilung</h2><p class="desc">Nach Anlageart</p></div></div><div id="depotDonut"></div></div>
       <div class="card"><div class="chead"><div><h2>Gewinn und Verlust</h2><p class="desc">Je Position seit dem Kauf</p></div></div><div id="plBars"></div></div>
@@ -1975,19 +1978,20 @@ function renderRefi(ds,extra,ret){var costly=ds.filter(function(x){return ["card
     '<div class="note">Du würdest <b>'+costly.map(function(x){return esc(GKT(x.name));}).join(", ")+'</b> mit einem Ratenkredit ablösen und weiter dieselben Raten zahlen. Das lohnt sich nur, wenn du danach Karte und Ratenkauf nicht wieder belastest. Der Zins hängt von deiner Bonität ab, vergleiche mehrere Angebote und achte auf den effektiven Jahreszins.</div>';}
 
 /* ================= RENDER: VERMÖGEN & DEPOT ================= */
-function renderAssets(){var d=D(),t=totals(d),own=S.mode==="own";
+function renderAssets(){var d=D(),t=totals(d),own=S.mode==="own";if(own){try{runPlans();}catch(e){}t=totals(d);}
   if(t.surplus<0)$("exDebt").innerHTML='<div class="note warn"><b>Zuerst die Monatslücke von '+E(-t.surplus)+' schließen.</b> Solange die angegebenen Raten nicht im Budget gedeckt sind, gibt es keinen belastbaren Rückzahlungstermin. Kläre einen tragbaren Haushalt und bei Bedarf einen Zahlungsplan mit Unterstützung.</div>';
   var hs=d.hold.map(function(h){var i=holdInfo(h);i.h=h;return i;});var cost=hs.reduce(function(s,x){return s+(x.pl!=null?x.cost:0);},0),plv=hs.reduce(function(s,x){return s+(x.pl||0);},0);
-  $("assetKpis").innerHTML=kpiHTML([["Depotwert",E(t.depot),hs.length+" Position"+(hs.length===1?"":"en")],["Gewinn / Verlust",(plv>=0?"+":"")+E(plv),cost?pct(plv/cost)+" seit Kauf":"Kaufkurs eintragen",plv<0?"neg":"pos"],["Aktiva gesamt",E(t.aktiva),"Konten, Besitz, Depot"],["Nettovermögen",E(t.net),"Aktiva minus Passiva",t.net<0?"neg":""]]);
+  if(own)recordHist(t.depot);var tx=taxEst(hs);
+  $("assetKpis").innerHTML=kpiHTML([["Depotwert",E(t.depot),hs.length+" Position"+(hs.length===1?"":"en")],["Gewinn / Verlust",(plv>=0?"+":"")+E(plv),cost?pct(plv/cost)+" seit Kauf"+(tx.tax>0?" · nach Steuer ca. "+(plv-tx.tax>=0?"+":"")+E(plv-tx.tax):""):"Kaufkurs eintragen",plv<0?"neg":"pos"],["Aktiva gesamt",E(t.aktiva),"Konten, Besitz, Depot"],["Nettovermögen",E(t.net),"Aktiva minus Passiva",t.net<0?"neg":""]]);
   var st=M.updated?new Date(M.updated):null;$("priceStamp").innerHTML=M.status==="live"&&st?'<span class="dot live"></span>Kurse vom '+st.toLocaleDateString((window.GK_LOCALE||"de-DE")):M.status==="start"?'<span class="dot old"></span>Startwerte, noch nicht tagesaktuell':'<span class="dot"></span>Kurse werden geladen';
   $("depotTable").innerHTML=hs.length?'<table><thead><tr><th>Wertpapier</th><th class="n">Stück</th><th class="n">Kaufkurs</th><th class="n">Kurs</th><th class="n">Wert</th><th class="n">Gewinn / Verlust</th><th></th></tr></thead><tbody>'+hs.map(function(x){var h=x.h;
-    return '<tr><td><div class="ent"><i style="background:'+(x.t==="Krypto"?"var(--c1)":x.t==="ETF"?"var(--c3)":"var(--c2)")+'">'+(x.t==="Krypto"?"₿":x.t==="ETF"?"E":"A")+'</i><div><b>'+esc(x.name)+'</b><small>'+esc(h.s)+(h.addr?' · <span>Wallet verbunden</span>':'')+' · <span>'+esc(x.t)+'</span>'+(x.t==="Edelmetall"?' · <span>Preise in €/g</span> · '+(M.metal&&M.metal[h.s]?'Live-Kurs '+M.metal[h.s].at.toLocaleTimeString((window.GK_LOCALE||"de-DE"),{hour:"2-digit",minute:"2-digit"})+' Uhr'+(own&&h.price!=null&&h.price!==""?' · dein Rückkaufpreis zählt':''):h.priceDate?'Stand '+esc(h.priceDate):M.live[h.s]?'Weltmarktpreis, automatisch aktualisiert':'Beispielpreis'):'')+'</small></div></div></td>'+
+    return '<tr><td><div class="ent"><i style="background:'+(x.t==="Krypto"?"var(--c1)":x.t==="ETF"?"var(--c3)":"var(--c2)")+'">'+(x.t==="Krypto"?"₿":x.t==="ETF"?"E":"A")+'</i><div><b>'+esc(x.name)+'</b><small>'+esc(h.s)+(h.addr?' · <span>Wallet verbunden</span>':'')+' · <span>'+esc(x.t)+'</span>'+(x.t==="Edelmetall"?' · <span>Preise in €/g</span> · '+(M.metal&&M.metal[h.s]?'Live-Kurs '+M.metal[h.s].at.toLocaleTimeString((window.GK_LOCALE||"de-DE"),{hour:"2-digit",minute:"2-digit"})+' Uhr'+(own&&h.price!=null&&h.price!==""?' · dein Rückkaufpreis zählt':''):h.priceDate?'Stand '+esc(h.priceDate):M.live[h.s]?'Weltmarktpreis, automatisch aktualisiert':'Beispielpreis'):'')+(h.plan?' · <span class="tag rec">Sparplan '+E(num(h.plan.amt))+'</span>':'')+'</small></div></div></td>'+
     '<td class="n">'+nf.format(num(h.qty))+(x.t==="Edelmetall"?' g':'')+'</td><td class="n">'+(h.buy?E2(h.buy):(own?'<input type="number" step="any" min="0" placeholder="eintragen" data-buy="'+h.id+'" style="width:100px;text-align:right" aria-label="Kaufkurs">':'–'))+'</td><td class="n">'+(x.t==="Edelmetall"&&own?'<input type="number" min="0.01" step="any" value="'+(h.price!=null&&h.price!==""?h.price:"")+'" placeholder="'+(M.live[h.s]?(M.live[h.s]*fxr()).toFixed(2):"Preis")+'" data-metalprice="'+h.id+'" aria-label="Rückkaufpreis in Euro je Gramm" style="width:110px">'+(M.live[h.s]?'<small class="desc" style="display:block">Live: '+E2(M.live[h.s]*fxr())+'</small>':''):x.missing?'–':E2(x.price))+'</td><td class="n" style="font-weight:800">'+(x.missing?'–':E(x.value))+'</td>'+
     '<td class="n '+(x.pl==null?"":x.pl<0?"neg":"pos")+'">'+(x.pl==null?'–':(x.pl>=0?"+":"")+E(x.pl)+'<small class="desc" style="display:block">'+(x.pl>=0?"+":"")+pct(x.pl/x.cost)+'</small>')+'</td><td>'+(own?'<div class="row" style="flex-wrap:nowrap"><button class="btn ghost sm" type="button" data-edit="hold" data-id="'+h.id+'">Bearbeiten</button><button class="btn ghost sm" type="button" data-hdel="'+h.id+'">Löschen</button></div>':'')+'</td></tr>';}).join("")+'</tbody></table>':emptyHTML("Noch kein Depot eingetragen","Such oben ein ETF, eine Aktie oder Bitcoin, oder lies deinen Depot-Export ein.");
   var by={};hs.forEach(function(x){if(x.value>0)by[x.cls]=(by[x.cls]||0)+x.value;});var di=topItems(by,6);
   $("depotDonut").innerHTML=di.length?donut(di.map(function(x){x.lab=E(x.v)+" · "+pct(x.v/t.depot);return x;}),E(t.depot),"Depot"):emptyHTML("Noch leer","Erscheint mit deiner ersten Position.");
   var pls=hs.filter(function(x){return x.pl!=null;});$("plBars").innerHTML=pls.length?barsHTML(pls.map(function(x){return {l:x.name,v:x.pl,c:x.pl<0?"var(--bad)":"var(--good)",lab:(x.pl>=0?"+":"")+E(x.pl)+" · "+(x.pl>=0?"+":"")+pct(x.pl/x.cost)};})):emptyHTML("Kein Kaufkurs hinterlegt","Trag den Kaufkurs ein, dann siehst du hier Gewinn und Verlust je Position.");
-  $("netSplit2").innerHTML=netSplit(t);
+  $("netSplit2").innerHTML=netSplit(t);if($("depotHist"))$("depotHist").innerHTML=own?histHTML():'<p class="desc">Im eigenen Depot zeigt der Geld-Kompass hier den Verlauf deines Depotwerts.</p>';if($("realizedBox"))$("realizedBox").innerHTML=own?realizedHTML():"";if($("taxNote"))$("taxNote").innerHTML=own&&tx.tax>0?'<p class="desc">Grobe Steuerschätzung für Deutschland bei Verkauf: etwa <b>'+E(tx.tax)+'</b> (26,375 % Abgeltungsteuer mit Soli, Sparerpauschbetrag 1.000 €, Aktien-ETFs 30 % steuerfrei; ohne Kirchensteuer, Krypto und Edelmetalle ausgenommen, da nach 1 Jahr steuerfrei). Keine Steuerberatung.</p>':"";
   var rows=t.rows.slice().sort(function(a,b){return a.side===b.side?b.value-a.value:(a.side==="Aktiva"?-1:1);});
   $("balTable").innerHTML=rows.length?'<table><thead><tr><th>Position</th><th>Seite</th><th>Art</th><th class="n">Wert</th><th></th></tr></thead><tbody>'+rows.map(function(r){
     return '<tr><td><b>'+esc(r.name)+'</b>'+(r.kind==="debt"?'<small class="desc" style="display:block">'+P(r.rate)+' Zins · '+E(r.pay)+' Rate · <button class="btn link sm" type="button" data-go="debts">im Schulden-Plan</button></small>':'')+'</td><td><span class="tag '+r.side+'">'+r.side+'</span></td><td>'+esc(r.cls)+'</td>'+
@@ -2177,7 +2181,7 @@ function openEdit(kind,id){var list={entry:S.own.entries,debt:S.own.debts,hold:S
       edField("Kaufkurs"+unit+" (€, optional)",edInp("edBuy",x.buy?num(x.buy):"",NUMA+' placeholder="leer = ohne Kaufkurs"'))+
       edField((live?"Eigener Kurs":"Aktueller Kurs")+unit+" (€"+(live?", optional":"")+")",edInp("edPrice",x.price!=null&&x.price!==""?num(x.price):"",NUMA+(live?' placeholder="leer = Live-Kurs"':' placeholder="Kurs eintragen"')),"span2")+
       (x.addr?'<p class="desc span2">Die Menge kommt direkt aus deiner Wallet und wird beim Öffnen aktualisiert.</p>':'')+
-      (live?'<p class="desc span2">Lass „Eigener Kurs“ leer, dann rechnet der Geld-Kompass mit dem Live-Kurs.'+(metal?' Einen Rückkaufpreis deines Händlers kannst du hier eintragen.':'')+'</p>':'<p class="desc span2">Für diesen Wert gibt es keinen Live-Kurs. Trag den aktuellen Kurs ein, sonst bleibt der Wert stehen.</p>');}
+      '<details class="span2 edmore"'+(x.plan?' open':'')+'><summary>Verkaufen, Dividende, Sparplan</summary><div class="form edform">'+(x.addr?'':edField("Verkauft: Menge",edInp("edSellQ","",NUMA+' placeholder="0"'))+edField("Verkaufskurs"+unit,edInp("edSellP","",NUMA+' placeholder="'+(live?live.toFixed(2):'')+'"')))+edField("Dividende / Ausschüttung erhalten",edInp("edDiv","",NUMA+' placeholder="Betrag"'))+(x.addr?'':edField("Sparplan pro Monat",edInp("edPlan",x.plan?num(x.plan.amt):"",NUMA+' placeholder="0 = kein Sparplan"')))+'<p class="desc span2">Ein Verkauf senkt die Menge und landet mit Gewinn oder Verlust unter „Verkäufe“. Eine Dividende wird als Einnahme gebucht. Der Sparplan kauft jeden Monat zum aktuellen Kurs nach.</p></div></details>'+(live?'<p class="desc span2">Lass „Eigener Kurs“ leer, dann rechnet der Geld-Kompass mit dem Live-Kurs.'+(metal?' Einen Rückkaufpreis deines Händlers kannst du hier eintragen.':'')+'</p>':'<p class="desc span2">Für diesen Wert gibt es keinen Live-Kurs. Trag den aktuellen Kurs ein, sonst bleibt der Wert stehen.</p>');}
   else if(kind==="item"){ttl="Konto oder Besitz bearbeiten";var cl=BAL_RULES.map(function(r){return r[0];});if(cl.indexOf("Sonstiges")<0)cl.push("Sonstiges");
     h=edField("Name",edInp("edName",x.name,'required'),"span2")+edField("Wert",edInp("edVal",num(x.value),NUMA))+edField("Währung",'<select id="edCur">'+curOptions(x.cur||CUR)+'</select>')+edField("Art",edSel("edCls",cl.map(function(c){return [c,c];}),x.cls||detectAsset(x.name)));}
   $("edTitleH").textContent=ttl;$("edBody").innerHTML=h;var dlg=$("editDlg");
@@ -2191,10 +2195,14 @@ function saveEdit(){if(!EDIT)return;var k=EDIT.kind,list={entry:S.own.entries,de
     var dt=v("edDate")||x.date,en=v("edEnd");if(v("edFreq")!=="once"&&en&&en<dt.slice(0,7)){toast("Das Ende liegt vor dem Start.");return;}
     x.title=v("edTitle");x.type=v("edType");x.cat=v("edCat")||x.cat;x.amount=a;x.freq=v("edFreq");x.date=dt;if(x.freq!=="once"&&en)x.end=en;else delete x.end;}
   else if(k==="debt"){if(!v("edName")){toast("Bitte einen Namen eintragen.");return;}x.name=v("edName");x.kind=v("edKind");x.bal=posNum(v("edBal"));x.rate=Math.min(100,posNum(v("edRate")));x.pay=posNum(v("edPay"));}
-  else if(k==="hold"){if(!x.addr){var q=num(v("edQty"));if(!(q>0)){toast("Die Anzahl muss größer als 0 sein.");return;}x.qty=q;}
+  else if(k==="hold"){if(!x.addr){var q=num(v("edQty"));if(!(q>0)){toast("Die Anzahl muss größer als 0 sein.");return;}x.qty=q;}if(num(v("edSellP"))<0||num(v("edDiv"))<0){toast("Bitte keine negativen Werte.");return;}
     var b=v("edBuy");if(b===""||!(num(b)>0))delete x.buy;else x.buy=num(b);
     var p=v("edPrice");if(p===""||!(num(p)>0)){delete x.price;delete x.priceDate;}else{x.price=num(p);x.priceDate=today();}
-    if($("edName")&&v("edName"))x.name=v("edName");}
+    if($("edName")&&v("edName"))x.name=v("edName");
+    var sq=num(v("edSellQ")),sp=num(v("edSellP"))||num(holdInfo(x).price);if(sq>0){if(sq>num(x.qty)+1e-9){toast("Du kannst nicht mehr verkaufen, als du besitzt.");return;}var info=holdInfo(x);(S.own.realized||(S.own.realized=[])).push({date:today(),s:x.s,name:info.name,qty:sq,price:sp,buy:x.buy||null,pl:x.buy?Math.round((sp-num(x.buy))*sq*100)/100:0});x.qty=Math.round((num(x.qty)-sq)*1e8)/1e8;}
+    var dv=num(v("edDiv"));if(dv>0)S.own.entries.push({id:uid(),title:GKT("Dividende")+" "+holdInfo(x).name,amount:dv,type:"income",cat:"Zinsen & Dividenden",freq:"once",date:today()});
+    if($("edPlan")){var pa=num(v("edPlan"));if(pa>0){if(!x.plan)x.plan={amt:pa,last:ymNow()};else x.plan.amt=pa;}else delete x.plan;}
+    if(!(num(x.qty)>0)&&!x.addr){S.own.hold=S.own.hold.filter(function(y){return y!==x;});}}
   else if(k==="item"){if(!v("edName")){toast("Bitte einen Namen eintragen.");return;}x.name=v("edName");x.value=posNum(v("edVal"));x.cls=v("edCls");}
   if($("edCur")&&k!=="hold"){var nc=v("edCur");if(nc&&nc!==CUR)x.cur=nc;else delete x.cur;}
   save();closeEdit();renderAll();toast("Gespeichert");}
@@ -2208,7 +2216,7 @@ function addHolding(h){var ex=!h.addr&&S.own.hold.find(function(y){return y.s===
 function curRate(c){return rateOf(c);}
 function convertOwn(from,to){var a=curRate(from),b=curRate(to);if(!a||!b||from===to)return;var f=b/a;function r(v){return Math.round(num(v)*f*1e4)/1e4;}
   S.own.entries.forEach(function(e){if(!e.cur)e.amount=r(e.amount);});S.own.debts.forEach(function(x){if(!x.cur){x.bal=r(x.bal);x.pay=r(x.pay);}});S.own.items.forEach(function(x){if(!x.cur)x.value=r(x.value);});
-  S.own.hold.forEach(function(h){if(h.buy)h.buy=r(h.buy);if(h.price!=null&&h.price!=="")h.price=r(h.price);});
+  S.own.hold.forEach(function(h){if(h.buy)h.buy=r(h.buy);if(h.price!=null&&h.price!=="")h.price=r(h.price);if(h.plan)h.plan.amt=r(h.plan.amt);});(S.own.realized||[]).forEach(function(x){if(!x.cur){x.price=r(x.price);if(x.buy)x.buy=r(x.buy);x.pl=r(x.pl);}});
   var c=S.calc;if(c){if(c.ci){c.ci.start=r(c.ci.start);c.ci.mon=r(c.ci.mon);}if(c.wi)c.wi.amt=r(c.wi.amt);if(c.pfInc!=null)c.pfInc=r(c.pfInc);if(c.debt&&c.debt.extra!=null)c.debt.extra=r(c.debt.extra);if(c.ffExternal)c.ffExternal=r(c.ffExternal);if(c.ffDividends)c.ffDividends=r(c.ffDividends);if(c.ffCost!=null)c.ffCost=r(c.ffCost);}}
 window.GK_setCurrency=function(c){try{if(S&&S.own){var from=S.own.cur||CUR;if(from!==c&&curRate(from)&&curRate(c)){convertOwn(from,c);}S.own.cur=c;save();}localStorage.setItem(CUR_KEY,c);}catch(e){}location.reload();};
 
@@ -2294,6 +2302,34 @@ document.addEventListener("click",function(ev){var b=ev.target.closest("[data-ba
     save();BANK=null;bankRender();renderAll();toast(GKT("Übernommen:")+" "+add.length);}});
 function bankFile(f){if(!f)return;var rd=new FileReader();rd.onload=function(){try{BANK=bankParse(bankDecode(rd.result));}catch(e){BANK={err:"Die Datei konnte nicht gelesen werden."};}bankRender();};rd.readAsArrayBuffer(f);}
 
+/* ================= DEPOT: VERKAUF, DIVIDENDE, SPARPLAN, VERLAUF, STEUER, WALLETS ================= */
+/* Sparplan: jeden Monat wird der Betrag zum aktuellen Kurs nachgekauft (bei verpassten Monaten mit dem heutigen Kurs, als Schätzung markiert). */
+function runPlans(){if(S.mode!=="own"||!S.own.hold)return;var now=ymNow(),changed=false;
+  S.own.hold.forEach(function(h){var pl=h.plan;if(!pl||!(num(pl.amt)>0))return;var p=holdInfo(h).price;if(!(p>0))return;var m=pl.last||now;
+    while(m<now){m=ymAdd(m,1);var q=num(pl.amt)/p,q0=num(h.qty);if(h.buy)h.buy=Math.round((q0*num(h.buy)+num(pl.amt))/(q0+q)*1e6)/1e6;h.qty=Math.round((q0+q)*1e8)/1e8;pl.last=m;if(m<now)pl.est=true;changed=true;}});
+  if(changed)save();}
+/* Depot-Verlauf: einmal am Tag der Depotwert (in Euro gespeichert, damit ein Währungswechsel den Verlauf nicht verfälscht) */
+function recordHist(depot){if(S.mode!=="own"||M.status!=="live"||!(depot>0))return;var h=S.own.hist||(S.own.hist={}),d=today(),v=Math.round(depot/fxr()*100)/100;if(h[d]!==v){h[d]=v;var ks=Object.keys(h).sort();while(ks.length>800)delete h[ks.shift()];save();}}
+function histHTML(){var h=S.own.hist||{},ks=Object.keys(h).sort();if(ks.length<2)return '<p class="desc">Der Verlauf füllt sich ab jetzt jeden Tag, an dem du den Geld-Kompass öffnest.</p>';
+  ks=ks.slice(-365);var vs=ks.map(function(k){return h[k]*fxr();}),mn=Math.min.apply(null,vs),mx=Math.max.apply(null,vs),W=600,H=160,pad=6;if(mx===mn)mx=mn+1;
+  var pts=vs.map(function(v,i){return (pad+(W-2*pad)*i/(vs.length-1)).toFixed(1)+","+(pad+(H-2*pad)*(1-(v-mn)/(mx-mn))).toFixed(1);}).join(" ");var up=vs[vs.length-1]>=vs[0];
+  return '<svg viewBox="0 0 '+W+' '+H+'" class="histsvg" role="img" aria-label="Depotwert"><polyline points="'+pts+'" fill="none" stroke="'+(up?"var(--good)":"var(--bad)")+'" stroke-width="2.5" stroke-linejoin="round"/></svg>'+
+    '<div class="row" style="justify-content:space-between"><small class="desc">'+fdate(ks[0])+': '+E(vs[0])+'</small><small class="desc">'+fdate(ks[ks.length-1])+': <b class="'+(up?"pos":"neg")+'">'+E(vs[vs.length-1])+'</b> ('+(up?"+":"")+pct(vs[vs.length-1]/vs[0]-1)+')</small></div>';}
+/* Grobe Steuerschätzung Deutschland: Abgeltungsteuer + Soli 26,375 %, Sparerpauschbetrag 1.000 €, Teilfreistellung Aktien-ETF 30 %. Krypto ausgenommen (nach 1 Jahr steuerfrei). */
+function taxEst(hs){var g=0;hs.forEach(function(x){if(x.pl==null||x.t==="Krypto"||x.t==="Edelmetall")return;g+=x.t==="ETF"?x.pl*0.7:x.pl;});var free=1000*fxr(),base=Math.max(0,g-free);return {gain:g,tax:base*0.26375};}
+function realizedHTML(){var r=S.own.realized||[];if(!r.length)return "";var sum=r.reduce(function(s,x){return s+toDisp(x.pl,x.cur);},0);
+  return '<div class="card"><div class="chead"><div><h2>Verkäufe</h2><p class="desc">Realisierte Gewinne und Verluste</p></div><b class="'+(sum<0?"neg":"pos")+'">'+(sum>=0?"+":"")+E(sum)+'</b></div><div class="tbl"><table><tbody>'+
+    r.slice().reverse().map(function(x){return '<tr><td>'+fdate(x.date)+'</td><td><b>'+esc(x.name)+'</b><small class="desc" style="display:block">'+nf.format(x.qty)+' × '+E2(toDisp(x.price,x.cur))+'</small></td><td class="n '+(x.pl<0?"neg":"pos")+'">'+(x.buy?(x.pl>=0?"+":"")+E2(toDisp(x.pl,x.cur)):"–")+'</td></tr>';}).join("")+'</tbody></table></div></div>';}
+/* Wallets: Bitcoin (mempool.space), Ethereum (Blockscout), Solana (PublicNode), XRP (xrplcluster). Nur öffentliche Adressen. */
+function walletType(a){if(/^(bc1[02-9ac-hj-np-z]{20,90}|[13][a-km-zA-HJ-NP-Z1-9]{25,34})$/.test(a))return "BTC";if(/^0x[0-9a-fA-F]{40}$/.test(a))return "ETH";if(/^r[1-9A-HJ-NP-Za-km-z]{24,34}$/.test(a))return "XRP";if(/^[1-9A-HJ-NP-Za-km-z]{32,44}$/.test(a))return "SOL";return null;}
+function postJSON(u,b){return withTimeout(fetch(u,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(b)}),9000).then(function(r){return r.json();});}
+function walletBalance(a){var t=walletType(a);
+  if(t==="BTC")return btcBalance(a);
+  if(t==="ETH")return getJSON("https://eth.blockscout.com/api/v2/addresses/"+a,9000).then(function(j){return Number(j.coin_balance||0)/1e18;});
+  if(t==="SOL")return postJSON("https://solana-rpc.publicnode.com",{jsonrpc:"2.0",id:1,method:"getBalance",params:[a]}).then(function(j){if(!j.result)throw 0;return j.result.value/1e9;});
+  if(t==="XRP")return postJSON("https://xrplcluster.com/",{method:"account_info",params:[{account:a,ledger_index:"validated"}]}).then(function(j){if(!j.result||!j.result.account_data)throw 0;return Number(j.result.account_data.Balance)/1e6;});
+  return Promise.reject();}
+
 /* ================= EVENTS ================= */
 function bind(){
   document.addEventListener("click",function(ev){var t=ev.target,el;
@@ -2372,8 +2408,8 @@ function bind(){
     if(!r||r.err){out.innerHTML='<p class="neg" style="margin-top:8px">'+esc(r?r.err:"Datei leer.")+'</p>';return;}
     var ok=r.rows.filter(function(x){return x.x;}).length;out.innerHTML='<p style="margin-top:8px">'+r.rows.length+' Positionen gefunden, '+ok+' davon mit automatischem Kurs.'+(r.rows.length-ok?' Die übrigen werden mit dem Kaufkurs bewertet, bis du einen Kurs einträgst.':'')+'</p><button class="btn sm pri" type="button" id="csvGo">Ins Depot übernehmen</button>';
     $("csvGo").onclick=function(){ensureOwn();r.rows.forEach(function(x){var h={id:uid(),qty:x.qty};if(x.buy)h.buy=x.buy;if(x.x)h.s=x.x.s;else{h.s=x.isin||x.name;h.name=x.name;h.price=x.buy||null;}addHolding(h);});save();renderAll();out.innerHTML='<p class="pos" style="margin-top:8px">'+r.rows.length+' Positionen übernommen.</p>';};};rd.readAsText(f);ev.target.value="";});
-  $("btcForm").addEventListener("submit",function(ev){ev.preventDefault();var a=$("btcAddr").value.trim();if(/^BC1/.test(a))a=a.toLowerCase();if(!/^(bc1|[13])[a-zA-HJ-NP-Z0-9]{20,90}$/.test(a)){$("btcOut").textContent="Das sieht nicht nach einer Bitcoin-Adresse aus.";return;}
-    $("btcOut").textContent="Bestand wird gelesen …";btcBalance(a).then(function(b){ensureOwn();var ex=S.own.hold.find(function(h){return h.addr===a;});if(ex)ex.qty=b;else S.own.hold.push({id:uid(),s:"BTC-EUR",qty:b,addr:a,name:"Bitcoin-Wallet …"+a.slice(-6)});save();renderAll();$("btcAddr").value="";$("btcOut").textContent="Verbunden: "+nf.format(b)+" BTC. Wird bei jedem Öffnen aktualisiert.";}).catch(function(){$("btcOut").textContent="mempool.space gerade nicht erreichbar. Bitte später noch einmal versuchen.";});});
+  $("btcForm").addEventListener("submit",function(ev){ev.preventDefault();var a=$("btcAddr").value.trim();if(/^BC1/.test(a))a=a.toLowerCase();var wt=walletType(a);if(!wt){$("btcOut").textContent="Das sieht nicht nach einer Bitcoin-, Ethereum-, Solana- oder XRP-Adresse aus.";return;}
+    $("btcOut").textContent="Bestand wird gelesen …";walletBalance(a).then(function(b){ensureOwn();var ex=S.own.hold.find(function(h){return h.addr===a;});if(ex)ex.qty=b;else S.own.hold.push({id:uid(),s:wt+"-EUR",qty:b,addr:a,name:({BTC:"Bitcoin",ETH:"Ethereum",SOL:"Solana",XRP:"XRP"})[wt]+"-Wallet …"+a.slice(-6)});save();renderAll();$("btcAddr").value="";$("btcOut").textContent="Verbunden: "+nf.format(b)+" "+wt+". Wird bei jedem Öffnen aktualisiert.";}).catch(function(){$("btcOut").textContent="Der Blockchain-Dienst ist gerade nicht erreichbar. Bitte später noch einmal versuchen.";});});
   /* Konten & Besitz (Schulden werden in den Schulden-Plan umgeleitet) */
   $("iName").addEventListener("input",itemDetect);
   $("itemForm").addEventListener("submit",function(ev){ev.preventDefault();var n=$("iName").value.trim(),v=num($("iVal").value);if(!n)return;var k=detectDebt(n);ensureOwn();
@@ -2409,7 +2445,7 @@ function itemDetect(){var v=$("iName").value.trim();if(!v){$("iDetect").innerHTM
   $("iDetect").innerHTML=k&&!/^(auto|fahrzeug|haus|wohnung|immobilie)$/i.test(v)?'Erkannt: <span class="tag Passiva">Schuld</span><span>'+esc(DT[k].l)+'. Wird im Schulden-Plan eingetragen.</span>':'Erkannt: <span class="tag Aktiva">Aktiva · gehört dir</span><span>'+esc(detectAsset(v))+'</span>';}
 function download(content,name,type){try{var u=URL.createObjectURL(new Blob([content],{type:type}));var a=document.createElement("a");a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},1000);toast("Datei erstellt");}catch(e){toast("Speichern nicht möglich. Bitte „Sicherung kopieren“ nutzen.");}}
 function btcBalance(a){return getJSON("https://mempool.space/api/address/"+a,8000).then(function(j){var c=j.chain_stats,m=j.mempool_stats;return ((c.funded_txo_sum-c.spent_txo_sum)+(m.funded_txo_sum-m.spent_txo_sum))/1e8;});}
-function syncWallets(){S.own.hold.filter(function(h){return h.addr;}).forEach(function(h){btcBalance(h.addr).then(function(b){h.qty=b;save();renderAll();}).catch(function(){});});}
+function syncWallets(){S.own.hold.filter(function(h){return h.addr;}).forEach(function(h){walletBalance(h.addr).then(function(b){h.qty=b;save();renderAll();}).catch(function(){});});}
 function applyTheme(){document.documentElement.setAttribute("data-theme",S.theme);if($("fxFrom")&&$("fxFrom").value){fxChartKey="";fxChart($("fxFrom").value,$("fxTo").value);}$("themeBtn").textContent=S.theme==="dark"?"Helles Design":"Dunkles Design";}
 
 /* ================= START ================= */
