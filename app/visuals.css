@@ -12,3 +12,21 @@
 .wealth-donut{display:flex;flex-wrap:wrap;justify-content:center;gap:20px 28px}.wealth-donut .donut{flex:1 1 170px;max-width:220px}.wealth-donut .legend{flex:1 1 190px;min-width:0}
 
 @media(max-width:600px){.wealth-chart svg.chart text{font-size:16px}.wealth-after svg.chart text{font-size:14px}}
+
+/* Geldfluss: keine Maskierung des inneren Inhalts, klare Betraege und Anteile. */
+#flow .wealth-bars{border-radius:0;overflow:visible;container-type:normal}
+#flow .bars{gap:22px}
+#flow .bmeta{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:8px 16px}
+#flow .bmeta>b{font-size:13px;line-height:1.5;overflow-wrap:anywhere;white-space:normal;min-width:0}
+#flow .bmeta>span{display:flex;align-items:center;justify-content:flex-end;gap:10px;white-space:nowrap}
+#flow .bmeta .flow-amount{font:600 16px/1.3 Figtree,sans-serif;color:#f3f1ea;font-variant-numeric:tabular-nums}
+#flow .bmeta .flow-percent{font:500 12px/1.3 Figtree,sans-serif;color:#c0c9de;min-width:48px;text-align:center;padding:4px 7px;border:1px solid rgba(219,227,250,.13);border-radius:99px;background:rgba(255,255,255,.035)}
+#flow .btrack{height:10px;margin-top:7px;background:rgba(219,227,250,.09);overflow:hidden}
+#flow .btrack i{height:100%;min-width:0;box-shadow:inset 0 1px 0 rgba(255,255,255,.25)}
+#flow .split{height:12px;gap:4px}
+#flow .split i{border-radius:3px}
+/* Karten bleiben so hoch wie ihr Inhalt statt auf die Nachbarkarte zu wachsen. */
+.g2{align-items:start}
+.card>.wealth-chart:last-child{margin-bottom:0}
+#spendDonut>.wealth-chart,#assetDonut>.wealth-chart,#depotDonut>.wealth-chart,#recDonut>.wealth-chart,#exDonut>.wealth-chart,#trend>.wealth-chart,#plBars>.wealth-chart,#netSplit>.wealth-chart,#netSplit2>.wealth-chart{margin-top:0;margin-bottom:0}
+@media(max-width:600px){#flow .bmeta{grid-template-columns:1fr;gap:5px}#flow .bmeta>span{justify-content:space-between}#flow .bars{gap:20px}#flow .bmeta .flow-amount{font-size:17px}}
