@@ -20,6 +20,8 @@ jobs:
       - run: |
           python3 -m http.server 8765 >/dev/null 2>&1 &
           sleep 2
+          node tests/preset-icons.js
+          node tests/preset-ui.js
           node tests/smoke.js
           node tests/share-links.js
           node tests/app-share-links.js
