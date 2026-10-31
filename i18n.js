@@ -9,6 +9,7 @@
  window.GK_LANG=lang;window.GK_LOCALE=lang==='en'?'en-GB':'de-DE';
  window.GK_setLang=function(l){if(l!=='de'&&l!=='en')return;try{localStorage.setItem(KEY,l);}catch(e){}location.reload();};
  document.documentElement.lang=lang;
+ if(lang==='en'){try{var mf=document.querySelector('link[rel=manifest]');if(mf)mf.setAttribute('href','/manifest.en.webmanifest');var at=document.querySelector('meta[name=apple-mobile-web-app-title]');if(at)at.setAttribute('content','Money Compass');}catch(e){}}
  function common(){
   if(lang==='en'){var md=document.querySelector('meta[name=description]');if(md){var t0=tr(md.getAttribute('content')||'');if(t0)md.setAttribute('content',t0);}}
   if(!document.getElementById('langBtn')){var nav=document.createElement('nav');nav.className='gk-language';nav.setAttribute('aria-label',lang==='en'?'Language':'Sprache');
