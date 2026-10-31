@@ -13,7 +13,15 @@ ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "logos"
 OUT.mkdir(exist_ok=True)
 UA = {"User-Agent": "Mozilla/5.0 (GeldKompass logo fetcher; +https://geld-kompass.com)"}
-ISSUER = {"ishares": "ishares.com", "vanguard": "vanguard.com", "xtrackers": "dws.com", "spdr": "ssga.com", "vaneck": "vaneck.com",
+DOMAIN = {"GOOGL": "google.com", "BRK-B": "berkshirehathaway.com", "TSM": "tsmc.com", "AMD": "amd.com", "COST": "costco.com", "OR.PA": "loreal.com",
+          "2914.T": "jt.com", "HEIA.AS": "heineken.com", "CARL-B.CO": "carlsberg.com", "MNST": "monsterbevcorp.com", "PDD": "temu.com",
+          "TTE.PA": "totalenergies.com", "XOM": "exxonmobil.com", "VOD": "vodafone.com", "NEM": "newmont.com", "AEM": "agnicoeagle.com",
+          "FNV": "franco-nevada.com", "KGC": "kinross.com", "FCX": "fcx.com", "ENB.TO": "enbridge.com", "AAL.L": "angloamerican.com",
+          "FRES.L": "fresnilloplc.com", "NWG.L": "natwestgroup.com", "TSCO.L": "tesco.com", "NG.L": "nationalgrid.com", "UNH": "unitedhealthgroup.com",
+          "CSCO": "cisco.com", "BA": "boeing.com", "NEE": "nexteraenergy.com", "BABA": "alibaba.com", "9988.HK": "alibaba.com", "1211.HK": "byd.com",
+          "1299.HK": "aia.com", "000660.KS": "skhynix.com", "9984.T": "softbank.jp", "8306.T": "mufg.jp", "HDB": "hdfcbank.com",
+          "RELIANCE.NS": "ril.com", "URNM": "sprott.com", "4GLD.DE": "xetra-gold.com", "SLV": "ishares.com", "CPER": "uscfinvestments.com"}
+ISSUER = {"ishares": "ishares.com", "vanguard": "vanguard.com", "xtrackers": "etf.dws.com", "spdr": "ssga.com", "vaneck": "vaneck.com",
           "global x": "globalxetfs.com", "amundi": "amundi.com", "invesco": "invesco.com", "kraneshares": "kraneshares.com",
           "sprott": "sprott.com", "united states": "uscfinvestments.com", "wisdomtree": "wisdomtree.com", "xetra-gold": "xetra-gold.com",
           "franklin": "franklintempleton.com", "fidelity": "fidelity.com", "jpmorgan": "jpmorgan.com", "ubs": "ubs.com", "hanetf": "hanetf.com"}
@@ -34,7 +42,18 @@ def save(img_bytes, sym):
     return True
 
 
+ALT = {"etf.dws.com": ["dws.com", "xtrackers.com"], "ssga.com": ["spdrs.com", "statestreet.com"], "vaneck.com": ["vaneck.de"], "xetra-gold.com": ["deutsche-boerse-commodities.com"]}
+
+
 def favicon(domain):
+    for d in [domain] + ALT.get(domain, []):
+        b = favicon1(d)
+        if b:
+            return b
+    return None
+
+
+def favicon1(domain):
     for url in (f"https://www.google.com/s2/favicons?domain={domain}&sz=128", f"https://icons.duckduckgo.com/ip3/{domain}.ico"):
         try:
             r = requests.get(url, headers=UA, timeout=20)
@@ -73,9 +92,9 @@ def main():
     for x in items:
         if x["s"] in done or x.get("cg"):
             continue
-        dom = None
+        dom = DOMAIN.get(x["s"])
         name = x["n"].lower()
-        if x["t"] in ("ETF", "Rohstoff"):
+        if not dom and x["t"] in ("ETF", "Rohstoff"):
             dom = next((d for k, d in ISSUER.items() if name.startswith(k) or k in name), None)
         if not dom:
             try:
