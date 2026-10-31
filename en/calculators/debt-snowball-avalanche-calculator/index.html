@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script>(function(){var K='geld-kompass-lang',q=new URLSearchParams(location.search).get('lang'),w=q;if(q==='de'||q==='en'){try{localStorage.setItem(K,q);}catch(e){}}else{try{w=localStorage.getItem(K);}catch(e){}}if((w==='de'||w==='en')&&w!=='en')location.replace('/rechner/schneeball-lawine-rechner/'+location.search+location.hash);})();</script>
+<title>Debt Snowball vs. Avalanche Calculator | Money Compass</title>
+<meta name="description" content="Snowball or avalanche? Enter up to four debts and your monthly budget and compare which method gets you debt-free faster and how much interest you save.">
+<link rel="canonical" href="https://geld-kompass.com/en/calculators/debt-snowball-avalanche-calculator/">
+<link rel="alternate" hreflang="de" href="https://geld-kompass.com/rechner/schneeball-lawine-rechner/">
+<link rel="alternate" hreflang="en" href="https://geld-kompass.com/en/calculators/debt-snowball-avalanche-calculator/">
+<link rel="alternate" hreflang="x-default" href="https://geld-kompass.com/rechner/schneeball-lawine-rechner/">
+<meta name="theme-color" content="#0E1730">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Debt Snowball vs. Avalanche Calculator | Money Compass">
+<meta property="og:description" content="Snowball or avalanche? Enter up to four debts and your monthly budget and compare which method gets you debt-free faster and how much interest you save.">
+<meta property="og:url" content="https://geld-kompass.com/en/calculators/debt-snowball-avalanche-calculator/">
+<meta property="og:locale" content="en_GB">
+<link rel="stylesheet" href="/rechner/rechner.css">
+<link rel="stylesheet" href="/arbeitsbuch/hinweise.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Geld-Kompass">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Snowball or avalanche? · Money Compass", "url": "https://geld-kompass.com/en/calculators/debt-snowball-avalanche-calculator/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "inLanguage": "en", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "description": "Snowball or avalanche? Enter up to four debts and your monthly budget and compare which method gets you debt-free faster and how much interest you save."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Which method is better?", "acceptedAnswer": {"@type": "Answer", "text": "The avalanche usually saves more interest. The snowball motivates with quick wins. The best method is the one you stick with."}}, {"@type": "Question", "name": "What if my budget does not cover all minimum payments?", "acceptedAnswer": {"@type": "Answer", "text": "Then no method alone will help. Talk to your creditors or a free debt counselling service."}}, {"@type": "Question", "name": "Should I save at the same time?", "acceptedAnswer": {"@type": "Answer", "text": "A small emergency fund prevents new debt. After that, paying off expensive debt quickly usually pays off."}}]}</script>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="logo" href="/?lang=en"><img class="gk-logo" src="/icons/logo-badge.webp" alt="" aria-hidden="true" width="34" height="34"><b>Money <span>Compass</span></b></a><nav><a href="../">All calculators</a><a class="hide-s" href="/app/?lang=en"> · Open the Money Compass</a> · <a class="langsw" href="/rechner/schneeball-lawine-rechner/?lang=de" hreflang="de">Deutsch</a></nav></div></header>
+<main class="wrap">
+<div class="eyebrow">Debt &amp; repayment</div>
+<h1>Snowball or avalanche: which debt should you pay off first?</h1>
+<p class="lead">Enter your debts and the total amount you can pay each month. The calculator compares both methods with your numbers.</p>
+<section class="card calc" aria-label="Calculator"><div class="dgrid"><div class="drow"><label>Debt 1 (€)<input id="b1" inputmode="decimal" value="3000"></label><label>Rate % APR<input id="r1" inputmode="decimal" value="19.9"></label><label>Minimum (€)<input id="m1" inputmode="decimal" value="90"></label></div><div class="drow"><label>Debt 2 (€)<input id="b2" inputmode="decimal" value="1200"></label><label>Rate % APR<input id="r2" inputmode="decimal" value="12.9"></label><label>Minimum (€)<input id="m2" inputmode="decimal" value="50"></label></div><div class="drow"><label>Debt 3 (€)<input id="b3" inputmode="decimal" value="8000"></label><label>Rate % APR<input id="r3" inputmode="decimal" value="6.2"></label><label>Minimum (€)<input id="m3" inputmode="decimal" value="160"></label></div><div class="drow"><label>Debt 4 (€)<input id="b4" inputmode="decimal" value=""></label><label>Rate % APR<input id="r4" inputmode="decimal" value=""></label><label>Minimum (€)<input id="m4" inputmode="decimal" value=""></label></div></div><div class="grid"><label>Total per month (€)<input id="budget" inputmode="decimal" value="450"></label></div>
+<div class="big" id="big"></div><div id="bigsub" class="note" style="margin-top:0"></div>
+<div class="res" id="res"></div><div id="order" class="note"></div>
+<p class="note">Avalanche: extra money goes to the debt with the highest rate. Snowball: to the smallest balance. Both keep paying every minimum. Simplified, fixed rates, no fees.</p>
+<div class="share" id="share"></div></section>
+
+<div class="cta"><a href="/app/?lang=en#overview"><i><img class="gk-logo" src="/icons/logo-badge.webp" alt="" aria-hidden="true" width="34" height="34"></i><div><b>Continue with your real numbers</b><span>The free Money Compass: bookings, debt plan, portfolio and freedom days. No sign-up, your data stays in your browser.</span></div></a><a href="/start/?lang=en"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="#e3b55a" stroke-width="1.6"/><path d="M10 8l6 4-6 4z" fill="#e3b55a"/></svg></i><div><b>See how it works</b><span>A short animated tour: from a seed to your money tree, then one click on Start.</span></div></a><a href="/go/buch/" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5c2.5-1 5.2-1 8 .8 2.8-1.8 5.5-1.8 8-.8v13c-2.5-1-5.2-1-8 .8-2.8-1.8-5.5-1.8-8-.8z" fill="none" stroke="#e3b55a" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 6.3v13" stroke="#e3b55a" stroke-width="1.6"/></svg></i><div><b>The book behind it</b><span>“Der einfache Weg zur Finanziellen Freiheit”: the money tree principle in seven steps (German edition).</span></div></a></div>
+
+<h2>The avalanche method</h2>
+<p>You pay the minimum everywhere. Every extra dollar or euro goes to the debt with the highest interest rate. Once it is gone, its payment moves to the next most expensive one. Mathematically this is almost always the cheapest way.</p>
+<h2>The snowball method</h2>
+<p>Here the extra money goes to the smallest balance. You get a quick win because the first debt disappears soon. It usually costs a little more interest, but helps many people stay on track.</p>
+<h2>What matters most</h2>
+<p>The difference between the two is often smaller than expected. Far more important is paying more than the minimum at all and not adding new debt. The Money Compass debt plan keeps calculating with your real debts.</p>
+<h2>Frequently asked questions</h2>
+<details><summary>Which method is better?</summary><p>The avalanche usually saves more interest. The snowball motivates with quick wins. The best method is the one you stick with.</p></details><details><summary>What if my budget does not cover all minimum payments?</summary><p>Then no method alone will help. Talk to your creditors or a free debt counselling service.</p></details><details><summary>Should I save at the same time?</summary><p>A small emergency fund prevents new debt. After that, paying off expensive debt quickly usually pays off.</p></details>
+<h2>More free calculators</h2>
+<div class="more"><a href="../savings-plan-calculator/">Savings plan calculator<small>What a monthly savings amount can grow into</small></a><a href="../inflation-calculator/">Inflation calculator<small>What your money from back then is worth today</small></a><a href="../subscription-as-investment/">Consumer or owner?<small>What your subscription or habit would be worth invested</small></a><a href="../debt-free-calculator/">Debt-free calculator<small>When you will be debt-free and what extra payments do</small></a><a href="../emergency-fund-calculator/">Emergency fund calculator<small>How big your safety cushion should be</small></a><a href="../freedom-days-calculator/">Freedom days calculator<small>How many days your wealth carries you</small></a><a href="../4-percent-rule-calculator/">4 % rule calculator<small>How much you need to live off your portfolio</small></a><a href="../credit-card-payoff-calculator/">Credit card payoff calculator<small>What the minimum payment really costs you</small></a><a href="../currency-converter/">Currency converter<small>Live rates for 50+ currencies and bitcoin</small></a></div>
+<div data-partner="newsletter" hidden></div>
+</main>
+<footer><div class="wrap"><a href="/impressum/?lang=en">Legal notice</a> · <a href="/datenschutz/?lang=en">Privacy</a> · Money Compass · companion to the book “Der einfache Weg zur Finanziellen Freiheit” · © FreedomByDan · General financial education, not investment, tax or legal advice. All calculations run in your browser; no data is sent.</div></footer>
+<script src="/rechner/rechner.js"></script>
+<script src="/partner.js" defer></script>
+<script>
+var G=GKR,EN=G.EN;
+function rows(){var a=[];for(var i=1;i<=4;i++){var b=G.val('b'+i);if(b>0)a.push({n:(EN?'Debt ':'Schuld ')+i,b:b,r:G.val('r'+i),m:G.val('m'+i)});}return a;}
+function sim(ds,budget,key){var d=ds.map(function(x){return {n:x.n,b:x.b,r:x.r,m:x.m,done:0};}),mo=0,int=0,order=[];
+ while(d.some(function(x){return x.b>0.005;})&&mo<1200){mo++;var av=budget;d.forEach(function(x){if(x.b>0){var z=x.b*x.r/1200;x.b+=z;int+=z;}});
+  d.forEach(function(x){if(x.b>0){var p=Math.min(x.m,x.b);x.b-=p;av-=p;}});if(av<0)return null;
+  d.filter(function(x){return x.b>0.005;}).sort(key).forEach(function(x){if(av<=0)return;var p=Math.min(av,x.b);x.b-=p;av-=p;});
+  d.forEach(function(x){if(x.b<=0.005&&!x.done){x.done=mo;order.push(x.n);}});}
+ return mo>=1200?null:{m:mo,int:int,order:order};}
+function run(){var ds=rows(),bu=G.val('budget'),need=ds.reduce(function(s,x){return s+x.m;},0);
+ if(!ds.length){G.$('big').textContent='–';G.$('res').innerHTML='';G.$('order').textContent='';G.$('share').innerHTML='';return;}
+ var a=sim(ds,bu,function(x,y){return y.r-x.r;}),s=sim(ds,bu,function(x,y){return x.b-y.b;});
+ if(!a||!s||bu<need){G.$('big').textContent=EN?'Budget too low':'Budget zu niedrig';G.$('bigsub').textContent=(EN?'Your minimum payments add up to ':'Deine Mindestraten ergeben zusammen ')+G.E(need)+(EN?' a month, or the interest grows faster than you pay.':' im Monat, oder die Zinsen wachsen schneller, als du zahlst.');G.$('res').innerHTML='';G.$('order').textContent='';G.$('share').innerHTML='';return;}
+ var diff=s.int-a.int;G.$('big').textContent=G.monthName(a.m);G.$('bigsub').textContent=(EN?'debt-free with the avalanche, in ':'schuldenfrei mit der Lawine, in ')+a.m+(EN?' months':' Monaten');
+ G.$('res').innerHTML='<div><span>'+(EN?'Avalanche: interest':'Lawine: Zinsen')+'</span><b class="pos">'+G.E(a.int)+'</b></div><div><span>'+(EN?'Snowball: interest':'Schneeball: Zinsen')+'</span><b>'+G.E(s.int)+'</b></div><div><span>'+(EN?'Avalanche saves':'Lawine spart')+'</span><b class="gold">'+G.E(Math.max(0,diff))+'</b></div><div><span>'+(EN?'Snowball: debt-free':'Schneeball: schuldenfrei')+'</span><b>'+G.monthName(s.m)+'</b></div>';
+ G.$('order').textContent=(EN?'Order paid off. Avalanche: ':'Reihenfolge erledigt. Lawine: ')+a.order.join(' → ')+(EN?' · Snowball: ':' · Schneeball: ')+s.order.join(' → ');
+ G.share(G.$('share'),EN?'Avalanche or snowball? With my debts the avalanche saves '+G.E(Math.max(0,diff))+' in interest. I am debt-free in '+G.monthName(a.m)+'.':'Schneeball oder Lawine? Bei meinen Schulden spart die Lawine '+G.E(Math.max(0,diff))+' Zinsen. Schuldenfrei bin ich im '+G.monthName(a.m)+'.','en/calculators/debt-snowball-avalanche-calculator/');}
+G.bind(['b1','r1','m1','b2','r2','m2','b3','r3','m3','b4','r4','m4','budget'],run);</script>
+<!-- Cloudflare Web Analytics (ohne Cookies, keine personenbezogenen Daten) --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d5b51a031e8c4e26b08ad199a6bfd2da"}'></script>
+</body>
+</html>

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<script>(function(){var K='geld-kompass-lang',q=new URLSearchParams(location.search).get('lang'),w=q;if(q==='de'||q==='en'){try{localStorage.setItem(K,q);}catch(e){}}else{try{w=localStorage.getItem(K);}catch(e){}}if((w==='de'||w==='en')&&w!=='en')location.replace('/rechner/kreditkarten-rechner/'+location.search+location.hash);})();</script>
+<title>Credit Card Minimum Payment Calculator | Money Compass</title>
+<meta name="description" content="Credit card payoff calculator: how long repayment takes with minimum payments only and how much a fixed monthly amount saves. Free, no sign-up.">
+<link rel="canonical" href="https://geld-kompass.com/en/calculators/credit-card-payoff-calculator/">
+<link rel="alternate" hreflang="de" href="https://geld-kompass.com/rechner/kreditkarten-rechner/">
+<link rel="alternate" hreflang="en" href="https://geld-kompass.com/en/calculators/credit-card-payoff-calculator/">
+<link rel="alternate" hreflang="x-default" href="https://geld-kompass.com/rechner/kreditkarten-rechner/">
+<meta name="theme-color" content="#0E1730">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Credit Card Minimum Payment Calculator | Money Compass">
+<meta property="og:description" content="Credit card payoff calculator: how long repayment takes with minimum payments only and how much a fixed monthly amount saves. Free, no sign-up.">
+<meta property="og:url" content="https://geld-kompass.com/en/calculators/credit-card-payoff-calculator/">
+<meta property="og:locale" content="en_GB">
+<link rel="stylesheet" href="/rechner/rechner.css">
+<link rel="stylesheet" href="/arbeitsbuch/hinweise.css">
+<link rel="manifest" href="/manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Geld-Kompass">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "Credit card payoff calculator · Money Compass", "url": "https://geld-kompass.com/en/calculators/credit-card-payoff-calculator/", "applicationCategory": "FinanceApplication", "operatingSystem": "Web", "inLanguage": "en", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "EUR"}, "description": "Credit card payoff calculator: how long repayment takes with minimum payments only and how much a fixed monthly amount saves. Free, no sign-up."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How high is credit card interest?", "acceptedAnswer": {"@type": "Answer", "text": "In the US often 20 % APR or more, in Germany 14 to 25 % for revolving credit. Your statement shows your exact rate."}}, {"@type": "Question", "name": "Can I change my minimum payment?", "acceptedAnswer": {"@type": "Answer", "text": "Many issuers let you pay more or set up autopay for a fixed amount or the full balance in the app."}}, {"@type": "Question", "name": "What if I can no longer pay?", "acceptedAnswer": {"@type": "Answer", "text": "Talk to your card issuer early and get help from a free, nonprofit credit counselling service."}}]}</script>
+</head>
+<body>
+<header class="top"><div class="wrap"><a class="logo" href="/?lang=en"><img class="gk-logo" src="/icons/logo-badge.webp" alt="" aria-hidden="true" width="34" height="34"><b>Money <span>Compass</span></b></a><nav><a href="../">All calculators</a><a class="hide-s" href="/app/?lang=en"> · Open the Money Compass</a> · <a class="langsw" href="/rechner/kreditkarten-rechner/?lang=de" hreflang="de">Deutsch</a></nav></div></header>
+<main class="wrap">
+<div class="eyebrow">Debt &amp; repayment</div>
+<h1>Credit card calculator: the minimum payment trap</h1>
+<p class="lead">With minimum payments the payment shrinks along with the balance, so paying off often takes many years. Compare that with a fixed monthly amount.</p>
+<section class="card calc" aria-label="Calculator">
+<div class="grid">
+<label>Balance (€)<input id="bal" inputmode="decimal" value="3000"></label>
+<label>APR (%)<input id="apr" inputmode="decimal" value="19.9"></label>
+<label>Minimum payment (% of balance)<input id="minp" inputmode="decimal" value="3"></label>
+<label>At least (€)<input id="minf" inputmode="decimal" value="25"></label>
+<label>Fixed amount per month (€)<input id="fix" inputmode="decimal" value="150"></label>
+</div>
+<div class="big" id="big"></div><div id="bigsub" class="note" style="margin-top:0"></div>
+<div class="res" id="res"></div>
+<p class="note">Simplified, without new purchases or fees. Your card agreement has the exact terms.</p>
+<div class="share" id="share"></div></section>
+
+<div class="cta"><a href="/app/?lang=en#overview"><i><img class="gk-logo" src="/icons/logo-badge.webp" alt="" aria-hidden="true" width="34" height="34"></i><div><b>Continue with your real numbers</b><span>The free Money Compass: bookings, debt plan, portfolio and freedom days. No sign-up, your data stays in your browser.</span></div></a><a href="/start/?lang=en"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="#e3b55a" stroke-width="1.6"/><path d="M10 8l6 4-6 4z" fill="#e3b55a"/></svg></i><div><b>See how it works</b><span>A short animated tour: from a seed to your money tree, then one click on Start.</span></div></a><a href="/go/buch/" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5c2.5-1 5.2-1 8 .8 2.8-1.8 5.5-1.8 8-.8v13c-2.5-1-5.2-1-8 .8-2.8-1.8-5.5-1.8-8-.8z" fill="none" stroke="#e3b55a" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 6.3v13" stroke="#e3b55a" stroke-width="1.6"/></svg></i><div><b>The book behind it</b><span>“Der einfache Weg zur Finanziellen Freiheit”: the money tree principle in seven steps (German edition).</span></div></a></div>
+
+<h2>Why the minimum payment is so expensive</h2>
+<p>The minimum payment is usually a small percentage of the balance. As the debt shrinks, so does the payment. At first most of it goes to interest, and repayment drags on for years. For the card issuer, that is good business.</p>
+<h2>The way out: a fixed amount</h2>
+<p>If you pay the same fixed amount every month, the balance falls faster and faster because the interest part shrinks. Set up a fixed payment if you can and stop using the card until it is paid off.</p>
+<h2>Consider consolidating</h2>
+<p>A personal loan often costs much less interest than a credit card. It only pays off if you don't run the card up again. The Money Compass debt plan shows what refinancing could bring.</p>
+<h2>Frequently asked questions</h2>
+<details><summary>How high is credit card interest?</summary><p>In the US often 20 % APR or more, in Germany 14 to 25 % for revolving credit. Your statement shows your exact rate.</p></details><details><summary>Can I change my minimum payment?</summary><p>Many issuers let you pay more or set up autopay for a fixed amount or the full balance in the app.</p></details><details><summary>What if I can no longer pay?</summary><p>Talk to your card issuer early and get help from a free, nonprofit credit counselling service.</p></details>
+<h2>More free calculators</h2>
+<div class="more"><a href="../savings-plan-calculator/">Savings plan calculator<small>What a monthly savings amount can grow into</small></a><a href="../inflation-calculator/">Inflation calculator<small>What your money from back then is worth today</small></a><a href="../subscription-as-investment/">Consumer or owner?<small>What your subscription or habit would be worth invested</small></a><a href="../debt-free-calculator/">Debt-free calculator<small>When you will be debt-free and what extra payments do</small></a><a href="../emergency-fund-calculator/">Emergency fund calculator<small>How big your safety cushion should be</small></a><a href="../freedom-days-calculator/">Freedom days calculator<small>How many days your wealth carries you</small></a><a href="../debt-snowball-avalanche-calculator/">Snowball or avalanche?<small>Which debt to pay off first</small></a><a href="../4-percent-rule-calculator/">4 % rule calculator<small>How much you need to live off your portfolio</small></a><a href="../currency-converter/">Currency converter<small>Live rates for 50+ currencies and bitcoin</small></a></div>
+<div data-partner="newsletter" hidden></div>
+</main>
+<footer><div class="wrap"><a href="/impressum/?lang=en">Legal notice</a> · <a href="/datenschutz/?lang=en">Privacy</a> · Money Compass · companion to the book “Der einfache Weg zur Finanziellen Freiheit” · © FreedomByDan · General financial education, not investment, tax or legal advice. All calculations run in your browser; no data is sent.</div></footer>
+<script src="/rechner/rechner.js"></script>
+<script src="/partner.js" defer></script>
+<script>
+var G=GKR,EN=G.EN;
+function sim(b,r,f){var m=0,int=0;while(b>0.005&&m<1200){var z=b*r/1200;int+=z;b+=z;var p=f(b);if(p<=z+0.005&&p<b)return null;b-=Math.min(p,b);m++;}return m>=1200?null:{m:m,int:int};}
+function run(){var b=G.val('bal'),r=G.val('apr'),mp=G.val('minp')/100,mf=G.val('minf'),fx=G.val('fix');
+ var a=sim(b,r,function(x){return Math.max(mf,x*mp);}),c=fx>0?sim(b,r,function(){return fx;}):null;
+ G.$('big').textContent=a?(a.m>=24?G.nf1.format(a.m/12)+(EN?' years':' Jahre'):a.m+(EN?' months':' Monate')):(EN?'never':'nie');G.$('bigsub').textContent=EN?'with minimum payments only':'nur mit der Mindestrate';
+ G.$('res').innerHTML='<div><span>'+(EN?'Interest with minimum':'Zinsen mit Mindestrate')+'</span><b class="neg">'+(a?G.E(a.int):'–')+'</b></div><div><span>'+(EN?'With fixed amount':'Mit festem Betrag')+'</span><b class="pos">'+(c?c.m+(EN?' months':' Monate'):(EN?'amount too low':'Betrag zu niedrig'))+'</b></div><div><span>'+(EN?'Interest with fixed amount':'Zinsen mit festem Betrag')+'</span><b>'+(c?G.E(c.int):'–')+'</b></div><div><span>'+(EN?'You save':'Du sparst')+'</span><b class="gold">'+(a&&c?G.E(Math.max(0,a.int-c.int)):'–')+'</b></div>';
+ G.share(G.$('share'),a&&c?(EN?'Only the minimum payment on my card would take '+G.nf1.format(a.m/12)+' years. With '+G.E(fx)+' a month it is '+c.m+' months and I save '+G.E(a.int-c.int)+' in interest.':'Nur mit der Mindestrate bräuchte ich '+G.nf1.format(a.m/12)+' Jahre. Mit '+G.E(fx)+' im Monat sind es '+c.m+' Monate und ich spare '+G.E(a.int-c.int)+' Zinsen.'):(EN?'Credit card calculator':'Kreditkarten-Rechner'),'en/calculators/credit-card-payoff-calculator/');}
+G.bind(['bal','apr','minp','minf','fix'],run);</script>
+<!-- Cloudflare Web Analytics (ohne Cookies, keine personenbezogenen Daten) --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "d5b51a031e8c4e26b08ad199a6bfd2da"}'></script>
+</body>
+</html>

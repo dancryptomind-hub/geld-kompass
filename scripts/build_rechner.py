@@ -248,6 +248,11 @@ G.bind(['assets','debts','spend','save'],run);''',
 
 # ================================================================= Ausgabe
 
+# ---------------------------------------------------------------- Weitere Rechner (Schneeball/Lawine, 4-%-Regel, Kreditkarte)
+import sys as _sys; _sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from rechner_neu import NEW, EN_NEW
+for _p in NEW: page(**_p)
+
 # ---------------------------------------------------------------- Währungsrechner (Hauptseite + gefragte Währungspaare)
 
 import sys
@@ -419,6 +424,10 @@ def en_page(p):
             desc='Convert %s at the current rate: calculator, conversion table and change versus the previous day. Free and without sign-up.' % name,
             eyebrow='Currency converter', h1='Convert %s: what is your money worth right now?' % name, lead=EN_FX_INTRO[es],
             calc=fx_calc('en'), js=fx_js(f, to, es, 'en'), body=(BTC_TEXT_EN if crypto else FX_TIPS_EN) + '\n<h2>More currencies</h2>\n<div class="more">%PAIRLINKS%</div>', faqs=fx_faqs(f, to, 'en'))
+    if p['slug'] in EN_NEW:
+        e = EN_NEW[p['slug']]
+        js = p['js'].replace("'rechner/%s/'" % p['slug'], "'en/calculators/%s/'" % e['slug'])
+        return dict(p, lang='en', slug=e['slug'], short=e['short'], teaser=e['teaser'], title=e['title'], desc=e['desc'], eyebrow=e['eyebrow'], h1=e['h1'], lead=e['lead'], calc=tr(p['calc'], e['calc'], p['slug'] + ' calc'), js=js, body=e['body'], faqs=e['faqs'])
     e = EN_TXT[p['slug']]
     js = tr(p['js'], e['js'], p['slug'] + ' js').replace("'rechner/%s/'" % p['slug'], "'en/calculators/%s/'" % e['slug'])
     return dict(p, lang='en', slug=e['slug'], short=e['short'], teaser=e['teaser'], title=e['title'], desc=e['desc'], eyebrow=e['eyebrow'],
