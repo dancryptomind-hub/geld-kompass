@@ -1,0 +1,11 @@
+Statement,Header,Field Name,Field Value
+Statement,Data,BrokerName,Interactive Brokers Ireland Limited
+Statement,Data,Period,"January 1, 2026 - October 30, 2026"
+Open Positions,Header,DataDiscriminator,Asset Category,Currency,Symbol,Quantity,Mult,Cost Price,Cost Basis,Close Price,Value,Unrealized P/L,Code
+Open Positions,Data,Summary,Stocks,USD,AAPL,12,1,180.5521,2166.6252,227.5,2730,563.3748,
+Open Positions,Data,Summary,Stocks,USD,O,100,1,55.12,5512,57.4,5740,228,
+Open Positions,Data,Summary,Stocks,EUR,SAP,4,1,170.25,681,241.3,965.2,284.2,
+Open Positions,Data,Summary,Stocks,USD,BRK B,2,1,410.1,820.2,472.5,945,124.8,
+Open Positions,Total,,Stocks,USD,,,,,8498.8252,,9415,916.1748,
+Trades,Header,DataDiscriminator,Asset Category,Currency,Symbol,Date/Time,Quantity,T. Price,C. Price,Proceeds,Comm/Fee,Basis,Realized P/L,Code
+Trades,Data,Order,Stocks,USD,AAPL,"2026-03-02, 10:15:00",12,180.5521,181,-2166.6252,-1,2167.6252,0,O
