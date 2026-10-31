@@ -2008,11 +2008,11 @@ function searchLocal(q){q=q.toLowerCase().trim();if(!q)return [];var toks=q.spli
   return INSTR.map(function(x){var sc=0;if(x.s.toLowerCase()===q||(x.i||"").toLowerCase()===q)sc+=100;if(x.n.toLowerCase().indexOf(q)===0)sc+=20;for(var i=0;i<toks.length;i++){if(x._q.indexOf(toks[i])<0)return null;sc+=5;}if(x.t==="ETF")sc+=2;return {x:x,sc:sc};})
     .filter(Boolean).sort(function(a,b){return b.sc-a.sc;}).slice(0,9).map(function(r){return r.x;});}
 function showCryptoPicks(){var box=$("vSugg");SUG=["BTC-EUR","ETH-EUR","XRP-EUR","USDT-EUR"].map(function(s){return IMAP[s];}).filter(Boolean);SUGI=-1;
-  box.innerHTML=SUG.map(function(x,i){var p=priceOf(x.s);return '<button type="button" data-sug="'+i+'">'+(LOGOS[x.s]?'<img class="suglogo" src="/'+LOGOS[x.s]+'" alt="" loading="lazy">':'')+'<b>'+esc(x.n)+'</b><small>'+esc(x.t)+' · '+esc(x.s)+'</small><em>'+(p?E2(p):'')+'</em></button>';}).join("")+'<button type="button" class="online" data-morecrypto="1">Andere Kryptowährung suchen</button>';box.classList.remove("hide");}
+  box.innerHTML=SUG.map(function(x,i){var p=priceOf(x.s);return '<button type="button" data-sug="'+i+'">'+'<b>'+sugLogo(x.s)+esc(x.n)+'</b><small>'+esc(x.t)+' · '+esc(x.s)+'</small><em>'+(p?E2(p):'')+'</em></button>';}).join("")+'<button type="button" class="online" data-morecrypto="1">Andere Kryptowährung suchen</button>';box.classList.remove("hide");}
 document.addEventListener("click",function(ev){var b=ev.target.closest('[data-addasset="Krypto"]');if(b){var inp=$("vSym");inp.value="";PICK=null;var f=$("invForm");if(f)f.scrollIntoView({behavior:"smooth",block:"center"});setTimeout(function(){inp.focus();showCryptoPicks();},300);return;}
   if(ev.target.closest("[data-morecrypto]")){var i2=$("vSym");i2.value="Krypto";i2.dispatchEvent(new Event("input",{bubbles:true}));i2.focus();}});
 function renderSugg(){var box=$("vSugg");var q=$("vSym").value.trim();if(!q||(PICK&&PICK._label===q)){box.classList.add("hide");return;}
-  SUG=searchLocal(q);var html=SUG.map(function(x,i){var p=priceOf(x.s);return '<button type="button" data-sug="'+i+'" class="'+(i===SUGI?"act":"")+'"><b>'+esc(x.n)+'</b><small>'+esc(x.t)+' · '+esc(x.s)+(x.i?' · '+esc(x.i):'')+'</small><em>'+(p?E2(p):'')+'</em></button>';}).join("");
+  SUG=searchLocal(q);var html=SUG.map(function(x,i){var p=priceOf(x.s);return '<button type="button" data-sug="'+i+'" class="'+(i===SUGI?"act":"")+'"><b>'+sugLogo(x.s)+esc(x.n)+'</b><small>'+esc(x.t)+' · '+esc(x.s)+(x.i?' · '+esc(x.i):'')+'</small><em>'+(p?E2(p):'')+'</em></button>';}).join("");
   if(ONLINE&&ONLINE.q===q)html+=ONLINE.list.length?ONLINE.list.map(function(x,i){return '<button type="button" data-osug="'+i+'"><b>'+esc(x.n)+'</b><small>'+esc(x.t)+' · '+esc(x.s)+' · '+esc(x.ex)+' · online gefunden</small><em></em></button>';}).join(""):'<button type="button" class="online" disabled>'+esc(ONLINE.err||"Online nichts gefunden. Du kannst den Kurs selbst eingeben.")+'</button>';
   else html+='<button type="button" class="online" data-online="1">Nicht dabei? Online bei Yahoo Finance weitersuchen</button>';
   box.innerHTML=html;box.classList.remove("hide");}
@@ -2360,6 +2360,7 @@ function saveOnboard(){var c=$("onbCur").value,inc=posNum($("onbInc").value),ren
 
 /* Logos: selbst gehostet unter /logos/ (siehe scripts/logos.py), Liste in data/logos.json. Ohne Logo bleibt das Buchstaben-Symbol. */
 var LOGOS={};
+function sugLogo(sym){return LOGOS[sym]?'<img class="suglogo" src="/'+LOGOS[sym]+'" alt="" loading="lazy">':'';}
 function holdIcon(sym,t){var bg=t==="Krypto"?"var(--c1)":t==="ETF"?"var(--c3)":t==="Edelmetall"?"var(--warn)":"var(--c2)",let_=t==="Krypto"?"₿":t==="ETF"?"E":t==="Edelmetall"?"Au":"A";
   if(LOGOS[sym])return '<i class="lg"><img src="/'+LOGOS[sym]+'" alt="" loading="lazy" onerror="this.parentNode.textContent=\''+let_+'\';this.parentNode.className=\'\'"></i>';
   return '<i style="background:'+bg+'">'+let_+'</i>';}
