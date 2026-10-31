@@ -20,7 +20,7 @@ DOMAIN = {"GOOGL": "google.com", "BRK-B": "berkshirehathaway.com", "TSM": "tsmc.
           "FRES.L": "fresnilloplc.com", "NWG.L": "natwestgroup.com", "TSCO.L": "tesco.com", "NG.L": "nationalgrid.com", "UNH": "unitedhealthgroup.com",
           "CSCO": "cisco.com", "BA": "boeing.com", "NEE": "nexteraenergy.com", "BABA": "alibaba.com", "9988.HK": "alibaba.com", "1211.HK": "byd.com",
           "1299.HK": "aia.com", "000660.KS": "skhynix.com", "9984.T": "softbank.jp", "8306.T": "mufg.jp", "HDB": "hdfcbank.com",
-          "RELIANCE.NS": "ril.com", "URNM": "sprott.com", "4GLD.DE": "xetra-gold.com", "SLV": "ishares.com", "CPER": "uscfinvestments.com"}
+          "RELIANCE.NS": "ril.com", "URNM": "sprott.com", "IBN": "icicibank.com", "4GLD.DE": "xetra-gold.com", "SLV": "ishares.com", "CPER": "uscfinvestments.com"}
 ISSUER = {"ishares": "ishares.com", "vanguard": "vanguard.com", "xtrackers": "etf.dws.com", "spdr": "ssga.com", "vaneck": "vaneck.com",
           "global x": "globalxetfs.com", "amundi": "amundi.com", "invesco": "invesco.com", "kraneshares": "kraneshares.com",
           "sprott": "sprott.com", "united states": "uscfinvestments.com", "wisdomtree": "wisdomtree.com", "xetra-gold": "xetra-gold.com",
@@ -56,8 +56,32 @@ def favicon(domain):
 WHY = {}
 
 
+def page_icons(domain):
+    """Symbol-Verweise aus der Startseite (apple-touch-icon, icon mit Größe), ohne SVG."""
+    try:
+        h = requests.get("https://" + domain, headers=UA, timeout=15).text[:200000]
+    except Exception:
+        return []
+    out = []
+    for tag in re.findall(r"<link[^>]+>", h, flags=re.I):
+        if re.search(r"rel=[\"'][^\"']*(icon|apple-touch)", tag, re.I):
+            m = re.search(r"href=[\"']([^\"']+)", tag)
+            if m and not m.group(1).lower().split("?")[0].endswith(".svg"):
+                u = m.group(1)
+                if u.startswith("//"):
+                    u = "https:" + u
+                elif u.startswith("/"):
+                    u = "https://" + domain + u
+                elif not u.startswith("http"):
+                    u = "https://" + domain + "/" + u
+                out.append(u)
+    out.sort(key=lambda u: ("apple" not in u.lower(), -max([int(x) for x in re.findall(r"(\d{2,3})x\d{2,3}", u)] or [0])))
+    return out[:4]
+
+
 def favicon1(domain):
-    for url in (f"https://www.google.com/s2/favicons?domain={domain}&sz=128", f"https://icons.duckduckgo.com/ip3/{domain}.ico", f"https://{domain}/apple-touch-icon.png"):
+    for url in [f"https://www.google.com/s2/favicons?domain={domain}&sz=128", f"https://www.google.com/s2/favicons?domain={domain}&sz=64",
+                f"https://icons.duckduckgo.com/ip3/{domain}.ico", f"https://{domain}/apple-touch-icon.png"] + page_icons(domain):
         for attempt in range(3):
             try:
                 r = requests.get(url, headers=UA, timeout=20)
