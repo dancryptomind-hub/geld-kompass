@@ -48,11 +48,11 @@ T = {
 CSS = """.eb-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:18px;align-items:start}
 @media(max-width:820px){.eb-grid{grid-template-columns:1fr}}
 .eb-form label{display:block;margin:0 0 12px;font-weight:600}
-.eb-form select{display:block;width:100%;margin-top:6px;padding:10px 12px;border-radius:10px;border:1px solid rgba(14,23,48,.18);background:#fff;color:inherit;font:inherit}
-.eb-form select option{color:#0E1730}
-.eb-code{width:100%;min-height:150px;font:12.5px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:12px;border-radius:10px;border:1px solid rgba(227,181,90,.4);background:#fffaf0;color:#0E1730;resize:vertical;box-sizing:border-box}
+.eb-form select{display:block;width:100%;margin-top:6px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--ink);font:inherit;font-size:16px}
+.eb-form select option{background:var(--card);color:var(--ink)}.eb-form select:focus,.eb-code:focus{outline:2px solid var(--gold);outline-offset:1px}
+.eb-code{width:100%;min-height:150px;font:12.5px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--ink);resize:vertical;box-sizing:border-box}
 .eb-btn{margin-top:10px;width:100%;padding:12px 16px;border:0;border-radius:12px;background:linear-gradient(135deg,#f0c56a,#c99227);color:#1a1405;font-weight:800;font-size:1rem;cursor:pointer}
-.eb-prev{border:1px dashed rgba(14,23,48,.2);border-radius:14px;padding:10px;background:rgba(255,255,255,.03)}
+.eb-prev{border:1px dashed var(--line);border-radius:14px;padding:10px;background:var(--bg)}
 .eb-prev iframe{display:block;width:100%;border:0;min-height:400px;border-radius:10px}
 .eb-steps{counter-reset:s;list-style:none;padding:0}.eb-steps li{counter-increment:s;padding:6px 0 6px 38px;position:relative}
 .eb-steps li:before{content:counter(s);position:absolute;left:0;top:4px;width:26px;height:26px;border-radius:50%;background:#c99227;color:#1a1405;font-weight:800;display:grid;place-items:center;font-size:.85rem}
@@ -69,10 +69,10 @@ def page(lang):
     ld = json.dumps({"@context": "https://schema.org", "@type": "WebPage", "name": t['h1'], "url": url, "inLanguage": lang, "description": t['desc']}, ensure_ascii=False)
     js = """(function(){var C=%s,L='%s';var $=function(i){return document.getElementById(i);};
  function code(){var c=C[+$('ebCalc').value],l=$('ebLang').value,cur=$('ebCur').value,path=l==='en'?'/en/calculators/'+c[2]+'/':'/rechner/'+c[0]+'/',name=l==='en'?c[3]:c[1];
-  var src='https://geld-kompass.com'+path+'?embed=1'+(cur?'&cur='+cur:'');
+  var th=$('ebTheme').value,qs='?embed=1'+(cur?'&cur='+cur:'')+(th?'&theme='+th:''),src='https://geld-kompass.com'+path+qs;
   $('ebCode').value='<iframe data-gk src="'+src+'" title="'+name+' · Geld-Kompass Pro" loading="lazy" style="width:100%%;max-width:760px;height:'+c[4]+'px;border:0;border-radius:12px"></iframe>\\n<script src="https://geld-kompass.com/embed.js" async></'+'script>';
-  var f=$('ebFrame'),p=path+'?embed=1'+(cur?'&cur='+cur:'');if(f.getAttribute('src')!==p){f.style.height=c[4]+'px';f.setAttribute('src',p);}}
- ['ebCalc','ebLang','ebCur'].forEach(function(i){$(i).addEventListener('change',code);});
+  var f=$('ebFrame'),p=path+qs;if(f.getAttribute('src')!==p){f.style.height=c[4]+'px';f.setAttribute('src',p);}}
+ ['ebCalc','ebLang','ebCur','ebTheme'].forEach(function(i){$(i).addEventListener('change',code);});
  $('ebCopy').addEventListener('click',function(){var t=$('ebCode'),b=this,done=function(){b.textContent='%s';setTimeout(function(){b.textContent='%s';},1800);};
   if(navigator.clipboard)navigator.clipboard.writeText(t.value).then(done,function(){t.select();document.execCommand('copy');done();});else{t.select();document.execCommand('copy');done();}});
  $('ebCode').addEventListener('focus',function(){this.select();});code();})();""" % (data, lang, t['copied'], t['copy'])
@@ -96,6 +96,7 @@ def page(lang):
 <label>{t['calc']}<select id="ebCalc">{opts}</select></label>
 <label>{t['lang']}<select id="ebLang"><option value="de"{'' if en else ' selected'}>Deutsch</option><option value="en"{' selected' if en else ''}>English</option></select></label>
 <label>{t['cur']}<select id="ebCur"><option value="">{'Automatic' if en else 'Automatisch'}</option><option value="EUR"{'' if en else ' selected'}>EUR €</option><option value="USD"{' selected' if en else ''}>USD $</option><option value="GBP">GBP £</option><option value="CHF">CHF</option><option value="CAD">CAD</option><option value="AUD">AUD</option></select></label>
+<label>{'Design' if en else 'Farben'}<select id="ebTheme"><option value="light" selected>{'Light (white websites)' if en else 'Hell (für helle Websites)'}</option><option value="dark">{'Dark' if en else 'Dunkel'}</option><option value="">{'Follow visitor setting' if en else 'Wie Gerät des Besuchers'}</option></select></label>
 <label>{t['code']}<textarea id="ebCode" class="eb-code" readonly spellcheck="false"></textarea></label>
 <button type="button" class="eb-btn" id="ebCopy">{t['copy']}</button>
 {lic}

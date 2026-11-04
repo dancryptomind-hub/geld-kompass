@@ -10,11 +10,11 @@
 <style>.eb-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:18px;align-items:start}
 @media(max-width:820px){.eb-grid{grid-template-columns:1fr}}
 .eb-form label{display:block;margin:0 0 12px;font-weight:600}
-.eb-form select{display:block;width:100%;margin-top:6px;padding:10px 12px;border-radius:10px;border:1px solid rgba(14,23,48,.18);background:#fff;color:inherit;font:inherit}
-.eb-form select option{color:#0E1730}
-.eb-code{width:100%;min-height:150px;font:12.5px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:12px;border-radius:10px;border:1px solid rgba(227,181,90,.4);background:#fffaf0;color:#0E1730;resize:vertical;box-sizing:border-box}
+.eb-form select{display:block;width:100%;margin-top:6px;padding:10px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--ink);font:inherit;font-size:16px}
+.eb-form select option{background:var(--card);color:var(--ink)}.eb-form select:focus,.eb-code:focus{outline:2px solid var(--gold);outline-offset:1px}
+.eb-code{width:100%;min-height:150px;font:12.5px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--ink);resize:vertical;box-sizing:border-box}
 .eb-btn{margin-top:10px;width:100%;padding:12px 16px;border:0;border-radius:12px;background:linear-gradient(135deg,#f0c56a,#c99227);color:#1a1405;font-weight:800;font-size:1rem;cursor:pointer}
-.eb-prev{border:1px dashed rgba(14,23,48,.2);border-radius:14px;padding:10px;background:rgba(255,255,255,.03)}
+.eb-prev{border:1px dashed var(--line);border-radius:14px;padding:10px;background:var(--bg)}
 .eb-prev iframe{display:block;width:100%;border:0;min-height:400px;border-radius:10px}
 .eb-steps{counter-reset:s;list-style:none;padding:0}.eb-steps li{counter-increment:s;padding:6px 0 6px 38px;position:relative}
 .eb-steps li:before{content:counter(s);position:absolute;left:0;top:4px;width:26px;height:26px;border-radius:50%;background:#c99227;color:#1a1405;font-weight:800;display:grid;place-items:center;font-size:.85rem}
@@ -29,6 +29,7 @@
 <label>Rechner<select id="ebCalc"><option value="0">Sparplan-Rechner</option><option value="1">Notgroschen-Rechner</option><option value="2">Freiheitstage-Rechner</option><option value="3">Schuldenfrei-Rechner</option><option value="4">Schneeball oder Lawine?</option><option value="5">4-Prozent-Regel-Rechner</option><option value="6">Kreditkarten-Rechner</option><option value="7">Inflationsrechner</option><option value="8">Konsument oder Eigentümer?</option><option value="9">Währungsrechner</option></select></label>
 <label>Sprache<select id="ebLang"><option value="de" selected>Deutsch</option><option value="en">English</option></select></label>
 <label>Währung<select id="ebCur"><option value="">Automatisch</option><option value="EUR" selected>EUR €</option><option value="USD">USD $</option><option value="GBP">GBP £</option><option value="CHF">CHF</option><option value="CAD">CAD</option><option value="AUD">AUD</option></select></label>
+<label>Farben<select id="ebTheme"><option value="light" selected>Hell (für helle Websites)</option><option value="dark">Dunkel</option><option value="">Wie Gerät des Besuchers</option></select></label>
 <label>Dein Einbettungscode<textarea id="ebCode" class="eb-code" readonly spellcheck="false"></textarea></label>
 <button type="button" class="eb-btn" id="ebCopy">Code kopieren</button>
 <div class="eb-lic"><b>Lizenz-Version für Unternehmen</b><br>Ohne Hinweis, in deinen Farben, mit eigenen Rechnern oder deinem Logo. Schreib an <a href="mailto:kontakt@geld-kompass.com?subject=Rechner-Lizenz">kontakt@geld-kompass.com</a>.</div>
@@ -40,10 +41,10 @@
 <script src="/embed.js"></script>
 <script>(function(){var C=[["sparplan-rechner", "Sparplan-Rechner", "savings-plan-calculator", "Savings plan calculator", 860], ["notgroschen-rechner", "Notgroschen-Rechner", "emergency-fund-calculator", "Emergency fund calculator", 700], ["freiheitstage-rechner", "Freiheitstage-Rechner", "freedom-days-calculator", "Freedom days calculator", 700], ["schuldenfrei-rechner", "Schuldenfrei-Rechner", "debt-free-calculator", "Debt-free calculator", 820], ["schneeball-lawine-rechner", "Schneeball oder Lawine?", "debt-snowball-avalanche-calculator", "Snowball or avalanche?", 900], ["vier-prozent-regel-rechner", "4-Prozent-Regel-Rechner", "4-percent-rule-calculator", "4 percent rule calculator", 760], ["kreditkarten-rechner", "Kreditkarten-Rechner", "credit-card-payoff-calculator", "Credit card payoff calculator", 760], ["inflationsrechner", "Inflationsrechner", "inflation-calculator", "Inflation calculator", 700], ["abo-als-aktie", "Konsument oder Eigentümer?", "subscription-as-investment", "Consumer or owner?", 760], ["waehrungsrechner", "Währungsrechner", "currency-converter", "Currency converter", 640]],L='de';var $=function(i){return document.getElementById(i);};
  function code(){var c=C[+$('ebCalc').value],l=$('ebLang').value,cur=$('ebCur').value,path=l==='en'?'/en/calculators/'+c[2]+'/':'/rechner/'+c[0]+'/',name=l==='en'?c[3]:c[1];
-  var src='https://geld-kompass.com'+path+'?embed=1'+(cur?'&cur='+cur:'');
+  var th=$('ebTheme').value,qs='?embed=1'+(cur?'&cur='+cur:'')+(th?'&theme='+th:''),src='https://geld-kompass.com'+path+qs;
   $('ebCode').value='<iframe data-gk src="'+src+'" title="'+name+' · Geld-Kompass Pro" loading="lazy" style="width:100%;max-width:760px;height:'+c[4]+'px;border:0;border-radius:12px"></iframe>\n<script src="https://geld-kompass.com/embed.js" async></'+'script>';
-  var f=$('ebFrame'),p=path+'?embed=1'+(cur?'&cur='+cur:'');if(f.getAttribute('src')!==p){f.style.height=c[4]+'px';f.setAttribute('src',p);}}
- ['ebCalc','ebLang','ebCur'].forEach(function(i){$(i).addEventListener('change',code);});
+  var f=$('ebFrame'),p=path+qs;if(f.getAttribute('src')!==p){f.style.height=c[4]+'px';f.setAttribute('src',p);}}
+ ['ebCalc','ebLang','ebCur','ebTheme'].forEach(function(i){$(i).addEventListener('change',code);});
  $('ebCopy').addEventListener('click',function(){var t=$('ebCode'),b=this,done=function(){b.textContent='Kopiert ✓';setTimeout(function(){b.textContent='Code kopieren';},1800);};
   if(navigator.clipboard)navigator.clipboard.writeText(t.value).then(done,function(){t.select();document.execCommand('copy');done();});else{t.select();document.execCommand('copy');done();}});
  $('ebCode').addEventListener('focus',function(){this.select();});code();})();</script>
