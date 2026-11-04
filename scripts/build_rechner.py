@@ -7,7 +7,7 @@ KANAL = 'https://geld-kompass.com/go/whatsapp/'
 BUCH = '/go/buch/'
 TODAY = datetime.date.today().isoformat()
 
-LOGO = '<img class="gk-logo" src="/icons/logo-badge.webp" alt="" aria-hidden="true" width="34" height="34">'
+LOGO = '<img class="gk-logo" src="/icons/logo-badge.webp?v=3" alt="" aria-hidden="true" width="34" height="34">'
 
 PAGES = []
 def page(**kw): PAGES.append(kw)
@@ -509,8 +509,8 @@ def render(p):
 <link rel="stylesheet" href="/rechner/rechner.css">
 <link rel="stylesheet" href="/arbeitsbuch/hinweise.css">
 <link rel="manifest" href="/manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
-<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=3">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=3">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Geld-Kompass Pro">
@@ -568,8 +568,8 @@ def hub(lang='de'):
 <meta name="theme-color" content="#0E1730">
 <link rel="stylesheet" href="/rechner/rechner.css">
 <link rel="manifest" href="/manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png">
-<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=3">
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=3">
 <script src="/share-state.js"></script>
 <script src="/rechner/rechner.js"></script>
 </head><body>

@@ -101,7 +101,7 @@ def page(lang):
     return f'''<!doctype html><html lang="{lang}" data-page-lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(t["title"])}</title><meta name="description" content="{esc(t["desc"])}">
 <link rel="canonical" href="{url_de if de else url_en}"><link rel="alternate" hreflang="de" href="{url_de}"><link rel="alternate" hreflang="en" href="{url_en}"><link rel="alternate" hreflang="x-default" href="{url_de}">
-<meta name="theme-color" content="#0E1730"><link rel="stylesheet" href="/rechner/rechner.css"><link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+<meta name="theme-color" content="#0E1730"><link rel="stylesheet" href="/rechner/rechner.css"><link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=3"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=3">
 <meta property="og:title" content="{esc(t["h1"])}"><meta property="og:description" content="{esc(t["desc"])}"><meta property="og:image" content="https://geld-kompass.com/pins/{"pin" if de else "en"}-div-king.jpg">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
 <style>.mf{{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 10px}}.mf button{{all:unset;cursor:pointer;padding:6px 11px;border-radius:999px;border:1px solid rgba(219,227,250,.18);font-size:.85rem}}.mf button.on{{background:#e3b55a;color:#0e1730;border-color:#e3b55a;font-weight:700}}
@@ -113,13 +113,13 @@ def page(lang):
 @media(max-width:640px){{.dt td:nth-child(2),.dt th:nth-child(2){{display:none}}.ent .inf{{display:none}}}}
 .faq details{{border-bottom:1px solid rgba(219,227,250,.1);padding:10px 0}}.faq summary{{cursor:pointer;font-weight:700}}</style>
 <script src="/i18n.js"></script></head><body>
-<header class="top"><div class="wrap"><a class="logo" href="/"><img class="gk-logo" src="/icons/logo-badge.webp" alt="" aria-hidden="true" width="34" height="34"><b>Geld-<span>Kompass</span> <span class="pro">Pro</span></b></a><nav><a href="{app}">{"Zum Geld-Kompass Pro" if de else "Open the Geld-Kompass Pro"}</a> · {other}</nav></div></header>
+<header class="top"><div class="wrap"><a class="logo" href="/"><img class="gk-logo" src="/icons/logo-badge.webp?v=3" alt="" aria-hidden="true" width="34" height="34"><b>Geld-<span>Kompass</span> <span class="pro">Pro</span></b></a><nav><a href="{app}">{"Zum Geld-Kompass Pro" if de else "Open the Geld-Kompass Pro"}</a> · {other}</nav></div></header>
 <main class="wrap"><div class="eyebrow">{t["eyebrow"]}</div><h1>{t["h1"]}</h1><p class="lead">{t["lead"]}</p>
 <div class="mf" id="mf"><button type="button" data-f="0" class="on">{t["all"]}</button>{months}</div>
 <input id="dq" type="search" placeholder="{t["q"]}" aria-label="{t["q"]}">
 <div style="overflow-x:auto"><table class="dt"><thead><tr><th>{t["th"][0]}</th><th>{t["th"][1]}</th><th class="n">{t["th"][2]}<br><small>{t["per"]}</small></th><th class="n">{t["th"][3]}</th></tr></thead><tbody id="dtb">{"".join(trs)}</tbody></table></div>
 <div data-partner="broker" hidden></div>
-<div class="cta"><a href="{app}"><i><img class="gk-logo" src="/icons/logo-badge.webp" alt="" aria-hidden="true" width="34" height="34"></i><div><b>{t["cta_b"]}</b><span>{t["cta_s"]}</span></div></a></div>
+<div class="cta"><a href="{app}"><i><img class="gk-logo" src="/icons/logo-badge.webp?v=3" alt="" aria-hidden="true" width="34" height="34"></i><div><b>{t["cta_b"]}</b><span>{t["cta_s"]}</span></div></a></div>
 <h2>{"Häufige Fragen" if de else "FAQ"}</h2><div class="faq">{"".join(f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in faq)}</div>
 <p class="lead" style="font-size:.85rem;opacity:.75">{"Daten: Ausschüttungen der letzten 12 Monate laut Yahoo Finance, wöchentlich aktualisiert. Die Monate richten sich nach dem Ex-Tag, die Zahlung kommt meist 2 bis 4 Wochen später. Abzeichen nach Jahren ununterbrochener Dividendenerhöhung, Stand 2026. Keine Anlageberatung." if de else "Data: last 12 months of payouts from Yahoo Finance, updated weekly. Months follow the ex-dividend date; the payment usually arrives 2 to 4 weeks later. Badges based on consecutive years of dividend increases, as of 2026. Not investment advice."}</p>
 </main><footer><div class="wrap"><a href="/impressum/">{"Impressum" if de else "Legal notice"}</a> · <a href="/datenschutz/">{"Datenschutz" if de else "Privacy"}</a> · Geld-Kompass Pro · © FreedomByDan · {"Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung." if de else "General financial education, not investment, tax or legal advice."}</div></footer>
