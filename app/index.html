@@ -433,10 +433,13 @@ tr.cfrow{cursor:pointer}tr.cfrow:hover td,tr.cfrow.on td{background:var(--surfac
 </style>
 <link rel="stylesheet" href="/arbeitsbuch/hinweise.css">
 <link rel="stylesheet" href="/app/visuals.css">
-<style>[data-plus][hidden]{display:none!important}</style>
+<style>[data-plus][hidden],#gkAdminBadge[hidden]{display:none!important}</style>
 <script src="/share-state.js"></script>
 <script src="/app/booking-icons.js"></script>
 <script src="/app/transaction-presets.js"></script>
+<script src="/assets/supabase-2.118.0.js" defer></script>
+<script src="/konto/config.js"></script>
+<script src="/konto/admin-access.js" defer></script>
 <script src="/i18n.js"></script>
 <script src="/partner.js" defer></script>
 </head>
@@ -1903,10 +1906,32 @@ var PAGES={
  data:["Einstellungen","Daten & Quellen","Deine Daten gehören dir.","Sicherung, Gerätewechsel und woher die Zahlen kommen."]
 };
 var GROUPS=[["Dashboard",["overview","bookings","debts","assets","plan","stress","recurring","calc","nomad"]],["Beispiele & Leitfaden",["examples","lexikon"]],["Zum Buch",["book"]],["Einstellungen",["data"]]];
-/* Plus stays closed during construction, including for signed-in accounts.
-   A future server-verified entitlement must replace this release gate. */
-function plusAllowed(){return false;}
-function buildNav(){$("navGroups").innerHTML=GROUPS.map(function(g){return '<div class="navgroup"><div class="navlabel">'+g[0]+'</div>'+g[1].filter(function(p){return p!=="nomad"||plusAllowed();}).map(function(p){return '<button class="nav" type="button" data-page="'+p+'">'+ico(p)+PAGES[p][1]+'</button>';}).join("")+(g[0]==="Einstellungen"?'<a class="nav" href="/konto/?lang='+(window.GK_LANG==="en"?"en":"de")+'">'+ico("account")+(window.GK_LANG==="en"?"Account":"Konto")+'</a>':"")+'</div>';}).join("");
+/* Dan requested an open construction preview until his personal admin login is verified.
+   With previewOpen disabled, only the server-verified app admin sees these panels. */
+var ADMIN_ACCESS=null,ADMIN_CLIENT=null,ADMIN_ROUTE=(location.hash||"").slice(1).split("&")[0];
+var PUBLIC_BUILD_PREVIEW=!!(window.GK_ACCOUNT_CONFIG&&window.GK_ACCOUNT_CONFIG.previewOpen===true);
+function isAdminPreview(){return !!ADMIN_ACCESS&&ADMIN_ACCESS.allowed();}
+function plusAllowed(){return PUBLIC_BUILD_PREVIEW||isAdminPreview();}
+function applyAdminPreview(){
+ var allowed=plusAllowed();
+ document.querySelectorAll("[data-plus]").forEach(function(el){el.hidden=!allowed;});
+ ["edAlUp","edAlDn"].forEach(function(id){var field=$(id);if(field){field.disabled=!allowed;var label=field.closest("label");if(label)label.hidden=!allowed;}});
+ if(!allowed){["cashflowOut","taxBox","alarmBox","nomadOut"].forEach(function(id){if($(id))$(id).innerHTML="";});if($("p-nomad").classList.contains("on"))show("overview");}
+ buildNav();renderAll();
+ if(allowed&&["nomad","cashflowBox","taxBox","alarmBox"].indexOf(ADMIN_ROUTE)>-1){var target=ADMIN_ROUTE;ADMIN_ROUTE="";goTo(target);}
+}
+function initAdminPreview(){
+ var cfg=window.GK_ACCOUNT_CONFIG;
+ if(!window.supabase||!window.GKAdminGate||!cfg||!cfg.url||!cfg.key){document.documentElement.dataset.gkAdminChecked="true";return;}
+ ADMIN_CLIENT=window.supabase.createClient(cfg.url,cfg.key,{auth:{storageKey:"gk.account.v1",persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,flowType:"pkce"}});
+ ADMIN_ACCESS=window.GKAdminGate.create({getUser:function(){return ADMIN_CLIENT.auth.getUser();},onChange:applyAdminPreview,onChecked:function(){document.documentElement.dataset.gkAdminChecked="true";}});
+ ADMIN_CLIENT.auth.onAuthStateChange(function(event){if(event==="SIGNED_OUT")ADMIN_ACCESS.revoke();else setTimeout(function(){ADMIN_ACCESS.refresh();},0);});
+ ADMIN_ACCESS.refresh();setInterval(function(){if(!document.hidden)ADMIN_ACCESS.refresh();},30000);
+ window.addEventListener("offline",function(){ADMIN_ACCESS.revoke();});window.addEventListener("online",function(){ADMIN_ACCESS.refresh();});
+ document.addEventListener("visibilitychange",function(){if(!document.hidden)ADMIN_ACCESS.refresh();});
+}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initAdminPreview);else setTimeout(initAdminPreview,0);
+function buildNav(){$("navGroups").innerHTML=GROUPS.map(function(g){return '<div class="navgroup"><div class="navlabel">'+g[0]+'</div>'+g[1].filter(function(p){return p!=="nomad"||plusAllowed();}).map(function(p){return '<button class="nav" type="button" data-page="'+p+'">'+ico(p)+PAGES[p][1]+'</button>';}).join("")+(g[0]==="Einstellungen"?'<a class="nav" href="/konto/?lang='+(window.GK_LANG==="en"?"en":"de")+'">'+ico("account")+(window.GK_LANG==="en"?"Account":"Konto")+'</a>':"")+'</div>';}).join("")+'<p id="gkAdminBadge" class="tag income"'+(isAdminPreview()?'':' hidden')+'>'+(window.GK_LANG==="en"?'Admin · All features':'Admin · Alle Funktionen')+'</p>';
   $("mnav").innerHTML=[["overview","Start"],["bookings","Buchen"],["debts","Schulden"],["assets","Depot"],["more","Mehr"]].map(function(x){return '<button type="button" '+(x[0]==="more"?'data-menu="1"':'data-page="'+x[0]+'"')+'>'+ico(x[0])+x[1]+'</button>';}).join("");}
 function show(page,anchor){if(!PAGES[page]||(page==="nomad"&&!plusAllowed())){page="overview";anchor=null;}
   document.querySelectorAll(".page").forEach(function(s){s.classList.toggle("on",s.id==="p-"+page);});
@@ -3343,6 +3368,7 @@ if(!GK_SHARED)load();else{
 function gkReconcileCur(){if(!S.own)return;if(!S.own.cur){S.own.cur=CUR;save();return;}if(S.own.cur!==CUR&&curRate(S.own.cur)&&curRate(CUR)){convertOwn(S.own.cur,CUR);S.own.cur=CUR;save();if(typeof renderAll==="function"&&$("overview"))try{renderAll();}catch(e){}}}
 gkReconcileCur();
 var Journey=GeldJourneyUI({state:function(){return S;},data:D,totals:totals,holdInfo:holdInfo,esc:esc,E:E,E2:E2,month:ymNow,monthName:monthName,today:today,uid:uid,save:save,toast:toast,profileName:function(){return PROFILES[S.profile].short;},storageFailed:function(){return storageFailed;},metal:function(){return M.metal||{};}});
+document.querySelectorAll("[data-plus]").forEach(function(el){el.hidden=!plusAllowed();});
 applyTheme();buildNav();bind();renderReset(false);renderAll();
 var h0=(location.hash||"").slice(1).split("&")[0];if(h0)goTo(h0);else show("overview");
 window.addEventListener("hashchange",function(){goTo((location.hash||"").slice(1).split("&")[0]||"overview");});

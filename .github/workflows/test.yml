@@ -23,6 +23,7 @@ jobs:
           node tests/preset-icons.js
           node tests/preset-ui.js
           node tests/plus-closed.js
+          node tests/admin-preview-ui.js
           node tests/account-ui.js
           node tests/account-callbacks.js
           node tests/service-worker-auth.js
