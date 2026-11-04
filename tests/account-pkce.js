@@ -19,7 +19,7 @@ const BASE=process.env.BASE||'http://localhost:8765';
  if(mode==='valid'){
   await p.locator('#submit').filter({hasText:/Neues Passwort speichern|Save new password/}).waitFor();assert.equal(exchanges,1);assert.equal(await p.locator('#signedIn').isVisible(),false);await p.reload();await p.locator('#submit').filter({hasText:/Neues Passwort speichern|Save new password/}).waitFor();await p.locator('#password').fill('new-fixture-password');await p.locator('#submit').click();await p.locator('#signedIn').waitFor({state:'visible'});assert.equal(updates,1);
  }else{
-  await p.locator('#status').filter({hasText:/diesem Browser|this browser/}).waitFor();assert.equal(await p.locator('#submit').textContent(),lang==='de'?'Link anfordern':'Request link');assert.equal(await p.locator('#signedIn').isVisible(),false);assert.equal(updates,0);assert.equal(exchanges,mode==='expired'?1:0);
+  await p.locator('#status').filter({hasText:/Einmalcode|one-time code/}).waitFor();assert.equal(await p.locator('#submit').textContent(),lang==='de'?'Code anfordern':'Request code');assert.equal(await p.locator('#signedIn').isVisible(),false);assert.equal(updates,0);assert.equal(exchanges,mode==='expired'?1:0);
  }
  assert.equal(new URL(p.url()).searchParams.has('code'),false);assert.equal(await p.evaluate(()=>localStorage.getItem('geldkompass.v3')),'financial-data-must-stay-local');assert.deepEqual(errors,[]);console.log(lang+' '+mode+': PKCE callback, password setup or explicit recovery error checked');await c.close();
 }}finally{await browser.close()}})().catch(e=>{console.error(e);process.exitCode=1});
