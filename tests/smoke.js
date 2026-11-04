@@ -4,7 +4,7 @@
    Lokal: python3 -m http.server 8765 & node tests/smoke.js */
 const {chromium}=require('playwright');
 const BASE=process.env.BASE||'http://localhost:8765';
-const PAGES=['/','/start/','/buchbegruessung/','/arbeitsbuch/','/impressum/','/datenschutz/','/rechner/','/en/calculators/'];
+const PAGES=['/konto/','/','/start/','/buchbegruessung/','/arbeitsbuch/','/impressum/','/datenschutz/','/rechner/','/en/calculators/'];
 const fs=require('fs');
 for(const d of fs.readdirSync('rechner',{withFileTypes:true}))if(d.isDirectory())PAGES.push('/rechner/'+d.name+'/');
 for(const d of fs.readdirSync('en/calculators',{withFileTypes:true}))if(d.isDirectory())PAGES.push('/en/calculators/'+d.name+'/');

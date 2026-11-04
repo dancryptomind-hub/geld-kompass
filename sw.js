@@ -1,7 +1,7 @@
 /* Geld-Kompass Pro Service Worker: App-Installation und Offline-Nutzung.
    Seiten und Daten: zuerst aus dem Netz (immer aktuell), offline aus dem Speicher.
    Schriften und Symbole: aus dem Speicher (ändern sich selten). */
-var VERSION = 'gk-2026-11-04-5';
+var VERSION = 'gk-2026-11-04-account-3';
 var CORE = ['/share-state.js', '/app/transaction-presets.js', '/app/visuals.css', '/app/booking-icons.js', '/', '/app/', '/i18n.js', '/inflation.js', '/journey.js', '/journey-ui.js', '/retirement.js',
   '/data/markets.json', '/data/hicp_annual.json', '/manifest.webmanifest', '/manifest.en.webmanifest',
   '/assets/Figtree-400.ttf', '/assets/Figtree-600.ttf', '/assets/Figtree-700.ttf', '/assets/Figtree-800.ttf', '/assets/PlayfairDisplay-700.ttf',
@@ -18,7 +18,8 @@ self.addEventListener('activate', function (e) {
 });
 self.addEventListener('fetch', function (e) {
   var req = e.request, url = new URL(req.url);
-  if (req.method !== 'GET' || url.origin !== self.location.origin) return;
+  // Authentication callbacks can contain one-time codes: never put account URLs in offline caches.
+  if (req.method !== 'GET' || url.origin !== self.location.origin || url.pathname === '/konto' || url.pathname.indexOf('/konto/') === 0) return;
   var stat = /\.(ttf|png|jpg|svg|ico)$/.test(url.pathname);
   if (stat) {
     e.respondWith(caches.match(req).then(function (hit) {
