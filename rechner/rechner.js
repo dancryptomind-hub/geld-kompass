@@ -12,6 +12,8 @@ if(SHARED&&'EUR,USD,GBP,CHF,JPY,CNY,CAD,AUD,NZD,SEK,NOK,DKK,ISK,PLN,CZK,HUF,RON,
 var eur0,eur2,SYM;
 function setFmt(){if(EN)LOC=CUR==='GBP'?'en-GB':'en-US';eur0=new Intl.NumberFormat(LOC,{style:'currency',currency:CUR,maximumFractionDigits:0});eur2=new Intl.NumberFormat(LOC,{style:'currency',currency:CUR,minimumFractionDigits:2,maximumFractionDigits:2});
   SYM=(eur0.formatToParts(1).filter(function(x){return x.type==='currency';})[0]||{value:'€'}).value;}
+/* Einbetten (?embed=1): Währung aus ?cur= */
+var QS=new URLSearchParams(location.search),EMBED=QS.get('embed')==='1';(function(){var qc=(QS.get('cur')||'').toUpperCase();if(CURS.indexOf(qc)>-1)CUR=qc;})();
 setFmt();
 var nf1=new Intl.NumberFormat(LOC,{maximumFractionDigits:1});
 var nf0=new Intl.NumberFormat(LOC,{maximumFractionDigits:0});
@@ -74,6 +76,14 @@ function bind(ids,fn){restore(ids);sharedNote();RUNS.push(fn);ids.forEach(functi
   var cb=box.querySelector('.curbar');box.insertBefore(bar,cb?cb.nextSibling:box.firstChild);
   bar.querySelector('button').addEventListener('click',function(){keys.forEach(function(k){var el=$(k);el.value=String(M[k]).replace('.',EN?'.':',');if(el.type==='number')el.value=M[k];el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));});RUNS.forEach(function(f){try{f();}catch(e){}});bar.classList.add('done');bar.querySelector('button').textContent=EN?'Filled ✓':'Übernommen ✓';});
   var st=document.createElement('style');st.textContent='.gkfill{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 14px;padding:12px 14px;border-radius:14px;border:1px solid rgba(227,181,90,.55);background:linear-gradient(135deg,rgba(245,213,143,.14),rgba(201,146,39,.06))}.gkfill b{display:block}.gkfill small{opacity:.75;font-size:.8rem}.gkfill-b{border:0;border-radius:10px;padding:9px 16px;font-weight:800;background:linear-gradient(135deg,#f5d58f,#c99227);color:#0e1730;cursor:pointer}.gkfill.done{border-color:rgba(111,207,151,.6)}';document.head.appendChild(st);
+})();
+/* Rechner zum Einbetten (Idee 7): ?embed=1 zeigt nur den Rechner, meldet die Höhe an die einbettende Seite und verlinkt dezent zurück */
+(function(){if(!EMBED)return;var d=document.documentElement;d.classList.add('gk-embed');var host='';try{host=document.referrer?new URL(document.referrer).hostname:'';}catch(e){}
+  var st=document.createElement('style');st.textContent='.gk-embed body{background:transparent}.gk-embed header.top,.gk-embed footer,.gk-embed .gkfill,.gk-embed .share,.gk-embed [data-partner],.gk-embed main>*:not(.calc):not(h1):not(.gkpow){display:none!important}.gk-embed main.wrap{padding:10px 12px 6px;max-width:none}.gk-embed h1{font-size:1.15rem;margin:0 0 10px;line-height:1.25}.gkpow{display:flex;justify-content:flex-end;align-items:center;gap:8px;margin:10px 2px 2px;font-size:.78rem;opacity:.85}.gkpow a{display:inline-flex;align-items:center;gap:6px;color:inherit;text-decoration:none;font-weight:700}.gkpow img{width:20px;height:20px;border-radius:5px}.gkpow b{color:#c99227}';document.head.appendChild(st);
+  var main=document.querySelector('main');if(main){var p=document.createElement('div');p.className='gkpow';var home=EN?'/app/?lang=en':'/app/';p.innerHTML='<a href="https://geld-kompass.com'+home+(home.indexOf('?')>-1?'&':'?')+'ref=embed'+(host?'&host='+encodeURIComponent(host):'')+'" target="_blank" rel="noopener"><img src="/icons/logo-badge.webp?v=3" alt="">'+(EN?'Powered by ':'Bereitgestellt von ')+'<b>Geld-Kompass Pro</b></a>';main.appendChild(p);
+    document.querySelectorAll('main a[href^="/"],main a[href^="https://geld-kompass.com"]').forEach(function(a){if(!a.target)a.target='_blank';});}
+  function post(){try{parent.postMessage({gk:'h',h:Math.ceil(document.documentElement.scrollHeight)},'*');}catch(e){}}
+  post();window.addEventListener('load',post);if(window.ResizeObserver)new ResizeObserver(post).observe(document.body);setInterval(post,1500);
 })();
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}
 window.GKR={num:num,$:$,val:val,E:E,nf1:nf1,nf0:nf0,monthName:monthName,esc:esc,share:share,bind:bind,restore:restore,BASE:BASE,EN:EN,LANG:LANG};

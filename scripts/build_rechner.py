@@ -465,7 +465,7 @@ def workbook_note(slug):
 
 def lang_js(me, other):
     """Sprache aus geteiltem Link (?lang=) oder gespeicherter Einstellung übernehmen und ggf. zur anderen Sprachfassung wechseln."""
-    return ("<script>(function(){var K='geld-kompass-lang',q=new URLSearchParams(location.search).get('lang'),w=q;"
+    return ("<script>(function(){var K='geld-kompass-lang',q=new URLSearchParams(location.search).get('lang'),w=q;if(new URLSearchParams(location.search).get('embed')==='1')return;"
             "if(q==='de'||q==='en'){try{localStorage.setItem(K,q);}catch(e){}}else{try{w=localStorage.getItem(K);}catch(e){}}"
             "if((w==='de'||w==='en')&&w!=='%s')location.replace('%s'+location.search+location.hash);})();</script>" % (me, other.replace(BASE, '/')))
 
@@ -581,7 +581,7 @@ def hub(lang='de'):
 <div class="more">{cards}{('<a href="/en/dividend-calendar/">Dividend calendar<small>Who pays when: months, yield, Dividend Kings</small></a>' if en else '<a href="/dividenden-kalender/">Dividenden-Kalender<small>Wer zahlt wann: Monate, Rendite, Dividenden-Könige</small></a>')}</div>
 <h2>{txt['cur']}</h2>
 <div class="more">{pcards}</div>
-{txt['cta']}
+{('<h2>Calculators for your website</h2>\n<div class="more"><a href="/en/embed/">Embed a calculator for free<small>For blogs, clubs and finance sites: copy the code, done</small></a></div>\n' if en else '<h2>Rechner für deine Website</h2>\n<div class="more"><a href="/einbinden/">Rechner kostenlos einbinden<small>Für Blogs, Vereine und Finanz-Seiten: Code kopieren, fertig</small></a></div>\n')}{txt['cta']}
 </main>
 <footer><div class="wrap">{txt['foot']}</div></footer>
 <!-- Cloudflare Web Analytics (ohne Cookies, keine personenbezogenen Daten) --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{{"token": "d5b51a031e8c4e26b08ad199a6bfd2da"}}'></script>
@@ -594,7 +594,7 @@ for lang, base, pages in (('de', 'rechner', PAGES), ('en', 'en/calculators', PAG
         os.makedirs(base + '/' + p['slug'], exist_ok=True)
         open('%s/%s/index.html' % (base, p['slug']), 'w').write(render(p))
     open(base + '/index.html', 'w').write(hub(lang))
-urls = [BASE, BASE + 'app/', BASE + 'start/', BASE + 'buchbegruessung/', BASE + 'arbeitsbuch/', BASE + 'rechner/', BASE + 'en/calculators/', BASE + 'dividenden-kalender/', BASE + 'en/dividend-calendar/', BASE + 'en/workbook/'] + \
+urls = [BASE, BASE + 'app/', BASE + 'start/', BASE + 'buchbegruessung/', BASE + 'arbeitsbuch/', BASE + 'rechner/', BASE + 'en/calculators/', BASE + 'dividenden-kalender/', BASE + 'en/dividend-calendar/', BASE + 'en/workbook/', BASE + 'einbinden/', BASE + 'en/embed/'] + \
        [BASE + 'rechner/' + p['slug'] + '/' for p in PAGES] + [BASE + 'en/calculators/' + p['slug'] + '/' for p in PAGES_EN]
 open('sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     ''.join('<url><loc>%s</loc><lastmod>%s</lastmod></url>\n' % (u, TODAY) for u in urls) + '</urlset>\n')
