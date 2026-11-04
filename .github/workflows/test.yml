@@ -34,5 +34,6 @@ jobs:
           node tests/service-worker-auth.js
           node tests/csv_import.js
           node tests/smoke.js
+          node tests/layout-gaps.js
           node tests/share-links.js
           node tests/app-share-links.js

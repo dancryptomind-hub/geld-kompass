@@ -418,7 +418,7 @@ tr.cfrow{cursor:pointer}tr.cfrow:hover td,tr.cfrow.on td{background:var(--surfac
 .mrgoal{border:1px solid rgba(227,181,90,.45);background:linear-gradient(135deg,rgba(227,181,90,.12),rgba(227,181,90,.03))}.mrgoal p{margin:4px 0 0}.mrshare{align-items:center;gap:10px;margin:6px 0}
 @media(max-width:560px){.mrhero{align-items:flex-start}.mrgrade{width:68px;height:68px}.mrgrade b{font-size:1.9rem}.chead .mrnav{margin-top:8px}}
 /* Übersicht: Kartenpaare gleich hoch, der Hinweis am Kartenende rutscht nach unten, damit keine Lücken zwischen den Reihen entstehen (nur ab 2 Spalten) */
-@media(min-width:700px){#p-overview>.g2{align-items:stretch}#spendDonut{flex:1;display:flex;flex-direction:column;justify-content:center}#spendInsight,#flowInsight{margin-top:auto}#debtMini{flex:1;display:flex;flex-direction:column;gap:12px}#debtMini>:last-child{margin-top:auto}}
+@media(min-width:700px){.page>.g2{align-items:stretch}#recDonut{flex:1;display:flex;flex-direction:column;justify-content:center}#resetArea{margin-top:auto}#spendDonut{flex:1;display:flex;flex-direction:column;justify-content:center}#spendInsight,#flowInsight{margin-top:auto}#debtMini{flex:1;display:flex;flex-direction:column;gap:12px}#debtMini>:last-child{margin-top:auto}}
 #kmCard,#stressOut,#mrCard{position:relative;border:1px solid rgba(227,181,90,.45);background:radial-gradient(130% 90% at 100% 0%,rgba(227,181,90,.10),transparent 55%),radial-gradient(120% 80% at 0% 100%,rgba(123,152,242,.08),transparent 60%),var(--card,#132044);box-shadow:0 0 0 1px rgba(227,181,90,.08),0 18px 50px -20px rgba(227,181,90,.25)}
 .kmpres{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:6px 0 12px}.kmpre{all:unset;box-sizing:border-box;cursor:pointer;border-radius:16px;padding:12px 14px;border:1px solid var(--line,rgba(127,127,127,.2));background:var(--surface-2,rgba(255,255,255,.03));display:flex;flex-direction:column;gap:2px;transition:transform .15s,border-color .15s}.kmpre:hover{transform:translateY(-2px);border-color:var(--c1)}.kmpre.on{border-color:transparent;background:linear-gradient(135deg,rgba(245,213,143,.22),rgba(201,146,39,.18));box-shadow:inset 0 0 0 1px #e3b55a}.kmpre em{font-style:normal;font-weight:800;color:var(--gold2,#f5d58f)}.kmpre small{color:var(--muted);font-size:.74rem}
 .kmhero{display:grid;grid-template-columns:240px minmax(0,1fr);gap:22px;align-items:center;margin:16px 0}@media(max-width:760px){.kmhero{grid-template-columns:1fr}}
@@ -672,19 +672,17 @@ tr.cfrow{cursor:pointer}tr.cfrow:hover td,tr.cfrow.on td{background:var(--surfac
     <div class="phero" id="pHero"></div>
     <div class="g2">
       <div class="card"><div class="chead"><div><h2>Monatliche Aufteilung</h2><p class="desc">Was vom Einkommen übrig bleibt und wohin es fließt</p></div></div><div id="exDonut"></div><div id="exHabit"></div></div>
-      <div class="card"><div class="chead"><div><h2>Was würde sich ändern?</h2><p class="desc">Rechne mit dem Profil, statt nur darüber zu lesen.</p></div></div>
-        <label class="f">Monatliche Gewohnheitskosten reduzieren um <b id="exRedL" style="color:var(--gold);font-size:.95rem">50 %</b><input id="exRed" type="range" min="0" max="100" step="1" value="50"><input id="exRedNum" type="number" min="0" max="100" step="1" value="50" aria-label="Gewohnheitskosten reduzieren in Prozent"></label>
-        <div class="res" id="exSave"></div>
-        <div class="form"><label class="f">Zusätzlich anlegen (€/Monat)<input id="exAdd" type="number" min="0" step="10" inputmode="decimal"></label><label class="f">Jahre<input id="exYears" type="number" min="1" max="50" step="1" value="15" inputmode="numeric"></label><label class="f">Rendite p. a. (%)<input id="exRet" type="number" min="0" max="15" step="0.5" value="5" inputmode="decimal"></label></div>
-        <div id="exChart"></div>
-        <div class="bars" id="exBrand"></div>
-      </div>
-    </div>
-    <div class="card" id="exDebtCard"><div class="chead"><div><h2>Der Weg aus den Schulden</h2><p class="desc">Mit dem Kompass-Weg und dem freien Geld aus dem Profil</p></div><span class="chap">Kapitel 5</span></div><div id="exDebt"></div></div>
-    <div class="g2">
-      <div class="card"><div class="chead"><div><h2>Beispiel-Depot</h2><p class="desc">Rechnet mit dem angezeigten Kursstand</p></div></div><div id="exDepot"></div></div>
       <div class="card"><div class="chead"><div><h2>Was zeigen die Zahlen?</h2><p class="desc">Die Erklärung zum Profil</p></div></div><div id="exLesson" class="bars"></div></div>
     </div>
+    <div class="card"><div class="chead"><div><h2>Was würde sich ändern?</h2><p class="desc">Rechne mit dem Profil, statt nur darüber zu lesen.</p></div></div>
+      <label class="f">Monatliche Gewohnheitskosten reduzieren um <b id="exRedL" style="color:var(--gold);font-size:.95rem">50 %</b><input id="exRed" type="range" min="0" max="100" step="1" value="50"><input id="exRedNum" type="number" min="0" max="100" step="1" value="50" aria-label="Gewohnheitskosten reduzieren in Prozent"></label>
+      <div class="res" id="exSave"></div>
+      <div class="form"><label class="f">Zusätzlich anlegen (€/Monat)<input id="exAdd" type="number" min="0" step="10" inputmode="decimal"></label><label class="f">Jahre<input id="exYears" type="number" min="1" max="50" step="1" value="15" inputmode="numeric"></label><label class="f">Rendite p. a. (%)<input id="exRet" type="number" min="0" max="15" step="0.5" value="5" inputmode="decimal"></label></div>
+      <div id="exChart"></div>
+      <div class="bars" id="exBrand"></div>
+    </div>
+    <div class="card" id="exDebtCard"><div class="chead"><div><h2>Der Weg aus den Schulden</h2><p class="desc">Mit dem Kompass-Weg und dem freien Geld aus dem Profil</p></div><span class="chap">Kapitel 5</span></div><div id="exDebt"></div></div>
+    <div class="card"><div class="chead"><div><h2>Beispiel-Depot</h2><p class="desc">Rechnet mit dem angezeigten Kursstand</p></div></div><div id="exDepot"></div></div>
     <div class="card"><h2>So nutzt du den Geld-Kompass Pro</h2>
       <div class="steps">
         <div class="step"><div><b>Einnahmen zuerst.</b> Unter „Buchungen“ dein Gehalt eintragen und „Monatlich“ wählen. Es zählt dann jeden Monat automatisch.</div></div>
