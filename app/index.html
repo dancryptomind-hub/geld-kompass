@@ -417,6 +417,8 @@ tr.cfrow{cursor:pointer}tr.cfrow:hover td,tr.cfrow.on td{background:var(--surfac
 .mrbig,.mrgoal{border-radius:14px;padding:12px 14px;margin:10px 0;background:rgba(127,127,127,.08)}.mrbig span,.mrgoal span{display:block;font-size:.8rem;opacity:.8}.mrbig b{display:block;font-size:1.05rem}.mrbig small{opacity:.8}
 .mrgoal{border:1px solid rgba(227,181,90,.45);background:linear-gradient(135deg,rgba(227,181,90,.12),rgba(227,181,90,.03))}.mrgoal p{margin:4px 0 0}.mrshare{align-items:center;gap:10px;margin:6px 0}
 @media(max-width:560px){.mrhero{align-items:flex-start}.mrgrade{width:68px;height:68px}.mrgrade b{font-size:1.9rem}.chead .mrnav{margin-top:8px}}
+/* Übersicht: Kartenpaare gleich hoch, der Hinweis am Kartenende rutscht nach unten, damit keine Lücken zwischen den Reihen entstehen (nur ab 2 Spalten) */
+@media(min-width:700px){#p-overview>.g2{align-items:stretch}#spendDonut{flex:1;display:flex;flex-direction:column;justify-content:center}#spendInsight,#flowInsight{margin-top:auto}#debtMini{flex:1;display:flex;flex-direction:column;gap:12px}#debtMini>:last-child{margin-top:auto}}
 #kmCard,#stressOut,#mrCard{position:relative;border:1px solid rgba(227,181,90,.45);background:radial-gradient(130% 90% at 100% 0%,rgba(227,181,90,.10),transparent 55%),radial-gradient(120% 80% at 0% 100%,rgba(123,152,242,.08),transparent 60%),var(--card,#132044);box-shadow:0 0 0 1px rgba(227,181,90,.08),0 18px 50px -20px rgba(227,181,90,.25)}
 .kmpres{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:6px 0 12px}.kmpre{all:unset;box-sizing:border-box;cursor:pointer;border-radius:16px;padding:12px 14px;border:1px solid var(--line,rgba(127,127,127,.2));background:var(--surface-2,rgba(255,255,255,.03));display:flex;flex-direction:column;gap:2px;transition:transform .15s,border-color .15s}.kmpre:hover{transform:translateY(-2px);border-color:var(--c1)}.kmpre.on{border-color:transparent;background:linear-gradient(135deg,rgba(245,213,143,.22),rgba(201,146,39,.18));box-shadow:inset 0 0 0 1px #e3b55a}.kmpre em{font-style:normal;font-weight:800;color:var(--gold2,#f5d58f)}.kmpre small{color:var(--muted);font-size:.74rem}
 .kmhero{display:grid;grid-template-columns:240px minmax(0,1fr);gap:22px;align-items:center;margin:16px 0}@media(max-width:760px){.kmhero{grid-template-columns:1fr}}
@@ -509,11 +511,11 @@ tr.cfrow{cursor:pointer}tr.cfrow:hover td,tr.cfrow.on td{background:var(--surfac
     </div>
     <div class="g2">
       <div class="card"><div class="chead"><div><h2>Dein Vermögen</h2><p class="desc">Was dir gehört, nach Art verteilt</p></div><button class="btn sm" type="button" data-go="assets">Details</button></div><div id="assetDonut"></div><div id="netSplit"></div></div>
-      <div class="card"><div class="chead"><div><h2>Kaufkraft-Check</h2><p class="desc" id="inflDesc"></p></div></div><div id="inflBox"></div></div>
+      <div class="card"><div class="chead"><div><h2>Zuletzt gebucht</h2><p class="desc">Deine letzten Einträge</p></div><button class="btn sm" type="button" data-go="bookings">Alle ansehen</button></div><div id="recent"></div></div>
     </div>
     <div class="g2">
       <div class="card"><div class="chead"><div><h2>Schnell buchen</h2><p class="desc">Tippen, was es ist. Art, Kategorie und Rhythmus erkennt der Kompass.</p></div></div><div id="quickHost"></div></div>
-      <div class="card"><div class="chead"><div><h2>Zuletzt gebucht</h2><p class="desc">Deine letzten Einträge</p></div><button class="btn sm" type="button" data-go="bookings">Alle ansehen</button></div><div id="recent"></div></div>
+      <div class="card"><div class="chead"><div><h2>Kaufkraft-Check</h2><p class="desc" id="inflDesc"></p></div></div><div id="inflBox"></div></div>
     </div>
     <div class="card"><div class="chead"><div><h2>Was der Kompass sieht</h2><p class="desc">Hinweise aus deinen Zahlen, passend zu den Kapiteln im Buch</p></div></div><div class="bars" id="insights"></div></div>
   </section>
@@ -2072,7 +2074,7 @@ function renderInflation(t){
 
 function entTag(e){var h=isHabit(e);return '<span class="tag '+(h?"habit":e.type)+'">'+(h?"Gewohnheit":TYPES[e.type])+'</span>';}
 function entIcon(e){var c=e.type==="income"?"#79d1a1":e.type==="invest"?"#96adf4":e.type==="debt"?"#e3b55a":isHabit(e)?"#edaa89":"#e3b55a";return '<i class="entry-icon" style="--entry-accent:'+c+'">'+GKBookingIcons.render(e)+'</i>';}
-function renderRecent(d){var rows=d.entries.filter(function(e){return (e.date||"")<=today();}).sort(function(a,b){return (b.date||"").localeCompare(a.date||"");}).slice(0,6);
+function renderRecent(d){var rows=d.entries.filter(function(e){return (e.date||"")<=today();}).sort(function(a,b){return (b.date||"").localeCompare(a.date||"");}).slice(0,8);
   $("recent").innerHTML=rows.length?'<div class="tbl"><table><tbody>'+rows.map(function(e){return '<tr><td><div class="ent">'+entIcon(e)+'<div><b>'+esc(e.title)+'</b><small><span>'+esc(e.cat)+'</span> · <span>'+(e.freq==="once"?fdate(e.date):FREQ[e.freq])+'</span></small></div></div></td><td class="n" style="font-weight:800;color:'+(e.type==="income"?"var(--good)":"var(--ink)")+'">'+(e.type==="income"?"+":"−")+(e.cur&&e.cur!==CUR?ECur(num(e.amount),e.cur):E2(e.amount))+'</td></tr>';}).join("")+'</tbody></table></div>':emptyHTML("Deine Buchungen erscheinen hier","Starte mit einer Einnahme oder Ausgabe.");}
 function renderInsights(t,d,plan){
   if(t.surplus<0){$("insights").innerHTML=insight('5','Dein nächster Schritt: die Monatslücke schließen.','Prüfe notwendige Ausgaben, mögliche Ansprüche und tragbare Raten. Hole frühzeitig Unterstützung bei einer anerkannten Schuldnerberatung. Ein kleiner Fortschritt zählt auch ohne Sparplan.','warn');return;}
