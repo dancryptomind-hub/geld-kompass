@@ -27,6 +27,7 @@ jobs:
           node tests/account-ui.js
           node tests/account-callbacks.js
           node tests/account-pkce.js
+          node tests/account-recovery-code.js
           node tests/service-worker-auth.js
           node tests/csv_import.js
           node tests/smoke.js
