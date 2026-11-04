@@ -112,7 +112,7 @@ def page(lang):
 .cal{{display:grid;grid-template-columns:repeat(12,16px);gap:2px}}.cal i{{font-style:normal;font-size:.6rem;text-align:center;line-height:16px;border-radius:4px;background:rgba(255,255,255,.05);opacity:.5}}.cal i.on{{background:#6fcf97;color:#0e1730;opacity:1;font-weight:700}}
 @media(max-width:640px){{.dt td:nth-child(2),.dt th:nth-child(2){{display:none}}.ent .inf{{display:none}}}}
 .faq details{{border-bottom:1px solid rgba(219,227,250,.1);padding:10px 0}}.faq summary{{cursor:pointer;font-weight:700}}</style>
-<script src="/i18n.js"></script></head><body>
+<script src="/i18n.js"></script><link rel=stylesheet href=/visuals.css?v20261104a><script src=/visuals.js?v20261104a></script></head><body>
 <header class="top"><div class="wrap"><a class="logo" href="/"><img class="gk-logo" src="/icons/logo-badge.webp?v=3" alt="" aria-hidden="true" width="34" height="34"><b>Geld-<span>Kompass</span> <span class="pro">Pro</span></b></a><nav><a href="{app}">{"Zum Geld-Kompass Pro" if de else "Open the Geld-Kompass Pro"}</a> · {other}</nav></div></header>
 <main class="wrap"><div class="eyebrow">{t["eyebrow"]}</div><h1>{t["h1"]}</h1><p class="lead">{t["lead"]}</p>
 <div class="mf" id="mf"><button type="button" data-f="0" class="on">{t["all"]}</button>{months}</div>

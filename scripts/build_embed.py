@@ -86,7 +86,7 @@ def page(lang):
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=3"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=3">
 <script type="application/ld+json">{ld}</script>
 <style>{CSS}</style>
-</head><body data-page-lang="{lang}">
+<link rel=stylesheet href=/visuals.css?v20261104a><script src=/visuals.js?v20261104a></script></head><body data-page-lang="{lang}">
 <header class="top"><div class="wrap"><a class="logo" href="{t['home']}">{LOGO}<b>{t['logo']}</b></a><nav><a href="{t['allurl']}">{t['all']}</a> · <a class="langsw" href="{t['swurl']}">{t['sw']}</a></nav></div></header>
 <main class="wrap">
 <div class="eyebrow">{t['eb']}</div>

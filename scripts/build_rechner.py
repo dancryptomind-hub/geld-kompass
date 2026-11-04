@@ -517,7 +517,7 @@ def render(p):
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <script type="application/ld+json">{json.dumps(app_ld, ensure_ascii=False)}</script>
 <script type="application/ld+json">{json.dumps(faq_ld, ensure_ascii=False)}</script>
-</head>
+<link rel=stylesheet href=/visuals.css?v20261104a><script src=/visuals.js?v20261104a></script></head>
 <body>
 <header class="top"><div class="wrap"><a class="logo" href="{T['home']}">{LOGO}<b>{T['logo']}</b></a><nav><a href="../">{T['all']}</a><a class="hide-s" href="{T['appurl']}">{T['app']}</a> · <a class="langsw" href="{T['swurl'].replace(BASE, '/')}?lang={'de' if en else 'en'}" hreflang="{'de' if en else 'en'}">{T['sw']}</a></nav></div></header>
 <main class="wrap">
@@ -572,7 +572,7 @@ def hub(lang='de'):
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=3">
 <script src="/share-state.js"></script>
 <script src="/rechner/rechner.js"></script>
-</head><body>
+<link rel=stylesheet href=/visuals.css?v20261104a><script src=/visuals.js?v20261104a></script></head><body>
 <header class="top"><div class="wrap"><a class="logo" href="{txt['home']}">{LOGO}<b>{txt['logo']}</b></a><nav><a href="{txt['appurl']}">{txt['app']}</a> · <a class="langsw" href="{txt['swurl'].replace(BASE, '/')}?lang={'de' if en else 'en'}">{txt['sw']}</a></nav></div></header>
 <main class="wrap">
 <div class="eyebrow">{txt['eb']}</div>
