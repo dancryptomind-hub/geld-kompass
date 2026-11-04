@@ -14,7 +14,7 @@ def page(**kw): PAGES.append(kw)
 
 # ---------------------------------------------------------------- Sparplan
 page(slug='sparplan-rechner', short='Sparplan-Rechner', teaser='Was aus einer monatlichen Sparrate werden kann',
- title='Sparplan-Rechner: Was werden 100 € im Monat? | Geld-Kompass',
+ title='Sparplan-Rechner: Was werden 100 € im Monat? | Geld-Kompass Pro',
  desc='Kostenloser Sparplan- und Zinseszinsrechner: Monatliche Rate, Laufzeit und angenommene Rendite eingeben und sofort sehen, was daraus rechnerisch werden kann.',
  eyebrow='Sparplan & Zinseszins', h1='Sparplan-Rechner: Was wird aus deiner monatlichen Rate?',
  lead='Gib ein, wie viel du monatlich zurücklegen möchtest. Der Rechner zeigt dir, wie viel du selbst einzahlst und welcher Teil rechnerisch durch Zinseszins entsteht.',
@@ -48,14 +48,14 @@ G.bind(['rate','years','ret','start'],run);''',
 <h2>Welche Rendite ist realistisch?</h2>
 <p>Breit gestreute Aktien-ETFs auf den Weltmarkt haben über lange Zeiträume historisch im Schnitt etwa 6 bis 8 Prozent pro Jahr erzielt, mit starken Schwankungen und Jahren mit deutlichen Verlusten. Tagesgeld und Anleihen liegen meist darunter. Vergangene Renditen sind keine Garantie. Rechne deshalb ruhig mehrere Varianten durch, zum Beispiel mit 4, 6 und 8 Prozent.</p>
 <h2>Der wichtigste Hebel ist die Zeit</h2>
-<p>Wer 10 Jahre früher beginnt, braucht für dasselbe Ziel oft eine deutlich kleinere Rate. Darum lohnt es sich, mit einem kleinen Betrag anzufangen, statt auf den perfekten Zeitpunkt zu warten. Im Geld-Kompass siehst du, welche Rate dein Monat tatsächlich hergibt.</p>''',
+<p>Wer 10 Jahre früher beginnt, braucht für dasselbe Ziel oft eine deutlich kleinere Rate. Darum lohnt es sich, mit einem kleinen Betrag anzufangen, statt auf den perfekten Zeitpunkt zu warten. Im Geld-Kompass Pro siehst du, welche Rate dein Monat tatsächlich hergibt.</p>''',
  faqs=[('Was ist der Zinseszins-Effekt?','Erträge werden wieder angelegt und erzielen selbst Erträge. Dadurch wächst ein Betrag mit der Zeit nicht gleichmäßig, sondern immer schneller.'),
        ('Sind Steuern und Kosten berücksichtigt?','Nein. Der Rechner zeigt die reine Mechanik. In der Praxis mindern Fondskosten, Depotgebühren und Abgeltungsteuer das Ergebnis.'),
        ('Ist das eine Anlageempfehlung?','Nein. Es ist eine Modellrechnung zur Finanzbildung. Welche Anlage zu dir passt, hängt von deiner Lage, deinem Zeitraum und deiner Risikobereitschaft ab.')])
 
 # ---------------------------------------------------------------- Inflation
 page(slug='inflationsrechner', short='Inflationsrechner', teaser='Was dein Geld von damals heute noch wert ist',
- title='Inflationsrechner: Was sind 1.000 € von früher heute wert? | Geld-Kompass',
+ title='Inflationsrechner: Was sind 1.000 € von früher heute wert? | Geld-Kompass Pro',
  desc='Inflationsrechner mit amtlichen Daten für Deutschland, Österreich, den Euroraum, die USA und Großbritannien: Kaufkraftverlust zwischen zwei Jahren kostenlos berechnen.',
  eyebrow='Kaufkraft & Inflation', h1='Inflationsrechner: Was ist dein Geld von damals heute noch wert?',
  lead='Wähle Betrag und Jahre. Der Rechner nutzt die amtlichen Jahresdurchschnitte des Harmonisierten Verbraucherpreisindex (HVPI) von Eurostat.',
@@ -94,14 +94,14 @@ G.bind(['amt','y0','y1'],run);''',
 <h2>Woher die Zahlen kommen</h2>
 <p>Verwendet wird der Harmonisierte Verbraucherpreisindex (HVPI) von Eurostat, also die amtliche, europaweit vergleichbare Messung der Verbraucherpreise. Für jedes Jahr gilt der Jahresdurchschnitt. Der deutsche Verbraucherpreisindex des Statistischen Bundesamts (VPI) weicht leicht davon ab, weil er anders gewichtet ist; die Größenordnung ist dieselbe.</p>
 <h2>Was das für dein Geld bedeutet</h2>
-<p>Geld, das jahrelang ohne Zinsen auf dem Girokonto liegt, verliert an Kaufkraft, auch wenn der Kontostand gleich bleibt. Einen Notgroschen brauchst du trotzdem sofort verfügbar. Für Geld, das du viele Jahre nicht brauchst, lohnt sich deshalb die Frage, wie es mindestens die Inflation ausgleichen kann. Im Geld-Kompass siehst du, wie viel davon bei dir betroffen ist.</p>''',
+<p>Geld, das jahrelang ohne Zinsen auf dem Girokonto liegt, verliert an Kaufkraft, auch wenn der Kontostand gleich bleibt. Einen Notgroschen brauchst du trotzdem sofort verfügbar. Für Geld, das du viele Jahre nicht brauchst, lohnt sich deshalb die Frage, wie es mindestens die Inflation ausgleichen kann. Im Geld-Kompass Pro siehst du, wie viel davon bei dir betroffen ist.</p>''',
  faqs=[('Ist das die offizielle Inflationsrate?','Ja, die Werte stammen direkt aus der amtlichen Statistik von Eurostat (HVPI, Jahresdurchschnitt). Sie werden automatisch aktualisiert.'),
        ('Warum weicht meine gefühlte Inflation ab?','Der Index misst einen durchschnittlichen Warenkorb. Wer viel für Lebensmittel, Energie oder Miete ausgibt, spürt Preissteigerungen oft stärker.'),
-       ('Warum fehlt das laufende Jahr?','Ein Jahresdurchschnitt steht erst fest, wenn das Jahr vorbei ist. Die aktuelle Monatsrate zeigt der Geld-Kompass im Kaufkraft-Check.')])
+       ('Warum fehlt das laufende Jahr?','Ein Jahresdurchschnitt steht erst fest, wenn das Jahr vorbei ist. Die aktuelle Monatsrate zeigt der Geld-Kompass Pro im Kaufkraft-Check.')])
 
 # ---------------------------------------------------------------- Abo als Aktie
 page(slug='abo-als-aktie', short='Konsument oder Eigentümer?', teaser='Was dein Abo oder deine Gewohnheit angelegt wäre',
- title='Konsument oder Eigentümer? Was wäre dein Abo als Sparplan? | Geld-Kompass',
+ title='Konsument oder Eigentümer? Was wäre dein Abo als Sparplan? | Geld-Kompass Pro',
  desc='Netflix, Kaffee, Zigaretten oder Handyvertrag: Berechne kostenlos, was eine regelmäßige Ausgabe über Jahre gekostet hat und was sie angelegt rechnerisch geworden wäre.',
  eyebrow='Konsument oder Eigentümer?', h1='Was wäre aus deinem Abo geworden, wenn du es angelegt hättest?',
  lead='Jede regelmäßige Ausgabe macht ein Unternehmen reicher. Rechne nach, was dich eine Gewohnheit über die Jahre kostet und was derselbe Betrag angelegt rechnerisch hätte werden können.',
@@ -130,14 +130,14 @@ G.bind(['what','amt','per','years','ret'],run);''',
 <h2>Es geht nicht um Verzicht</h2>
 <p>Niemand muss auf alles verzichten. Der Rechner macht nur sichtbar, was eine kleine, regelmäßige Ausgabe über lange Zeit bedeutet. Oft reicht es schon, eine von mehreren Gewohnheiten zu halbieren und die Differenz automatisch zurückzulegen.</p>
 <h2>Mit echten Unternehmen rechnen</h2>
-<p>Im kostenlosen Geld-Kompass erkennt der Bereich „Konsument oder Eigentümer?“ viele Marken automatisch und rechnet mit den durchschnittlichen Renditen der dazugehörigen Aktien der letzten Jahre, verglichen mit einem Welt-ETF.</p>''',
+<p>Im kostenlosen Geld-Kompass Pro erkennt der Bereich „Konsument oder Eigentümer?“ viele Marken automatisch und rechnet mit den durchschnittlichen Renditen der dazugehörigen Aktien der letzten Jahre, verglichen mit einem Welt-ETF.</p>''',
  faqs=[('Warum 7 Prozent?','Das ist eine Annahme für einen breit gestreuten Aktien-Weltindex über lange Zeiträume. Du kannst jeden anderen Wert eintragen.'),
-       ('Rechnet der Rechner mit der echten Aktie von Netflix und Co.?','Diese Seite rechnet mit einer frei wählbaren Rendite. Im vollständigen Geld-Kompass werden Marken echten Unternehmen zugeordnet.'),
+       ('Rechnet der Rechner mit der echten Aktie von Netflix und Co.?','Diese Seite rechnet mit einer frei wählbaren Rendite. Im vollständigen Geld-Kompass Pro werden Marken echten Unternehmen zugeordnet.'),
        ('Ist das eine Kaufempfehlung?','Nein. Es ist eine Modellrechnung zur Finanzbildung. Einzelaktien sind riskant und können ihren Wert vollständig verlieren.')])
 
 # ---------------------------------------------------------------- Schuldenfrei
 page(slug='schuldenfrei-rechner', short='Schuldenfrei-Rechner', teaser='Wann du schuldenfrei bist und was Extra-Raten bringen',
- title='Schuldenfrei-Rechner: Wann ist mein Kredit abbezahlt? | Geld-Kompass',
+ title='Schuldenfrei-Rechner: Wann ist mein Kredit abbezahlt? | Geld-Kompass Pro',
  desc='Tilgungsrechner für Ratenkredit, Dispo und Kreditkarte: Restschuld, Zins und Rate eingeben und sehen, in welchem Monat du schuldenfrei bist und wie viel Zinsen eine Extra-Rate spart.',
  eyebrow='Schulden & Tilgung', h1='Schuldenfrei-Rechner: Wann ist deine Schuld abbezahlt?',
  lead='Gib deine Restschuld, den Zinssatz und deine monatliche Rate ein. Du siehst das Datum, an dem du schuldenfrei bist, und wie viel Zinsen ein kleiner Extra-Betrag spart.',
@@ -168,7 +168,7 @@ G.bind(['debt','rate','pay','extra'],run);''',
 <h2>Warum schon kleine Extra-Beträge viel bewirken</h2>
 <p>Bei jedem Kredit geht ein Teil der Rate an die Bank (Zinsen) und nur der Rest verringert die Schuld (Tilgung). Jeder zusätzliche Euro geht dagegen komplett in die Tilgung. Dadurch sinken die Zinsen im nächsten Monat, und mehr von deiner normalen Rate tilgt. Dieser Effekt verstärkt sich jeden Monat.</p>
 <h2>Teure Schulden zuerst</h2>
-<p>Dispo und Kreditkarte kosten oft 10 bis 20 Prozent Zinsen. Hast du mehrere Schulden, bringt ein Extra-Betrag bei der teuersten am meisten (Lawinen-Methode). Manche fangen lieber mit der kleinsten Schuld an, um schnell ein Erfolgserlebnis zu haben (Schneeball-Methode). Beides funktioniert, wenn du dranbleibst. Im Geld-Kompass vergleicht der Schulden-Plan beide Wege mit deinen echten Schulden.</p>
+<p>Dispo und Kreditkarte kosten oft 10 bis 20 Prozent Zinsen. Hast du mehrere Schulden, bringt ein Extra-Betrag bei der teuersten am meisten (Lawinen-Methode). Manche fangen lieber mit der kleinsten Schuld an, um schnell ein Erfolgserlebnis zu haben (Schneeball-Methode). Beides funktioniert, wenn du dranbleibst. Im Geld-Kompass Pro vergleicht der Schulden-Plan beide Wege mit deinen echten Schulden.</p>
 <h2>Wenn die Rate nicht reicht</h2>
 <p>Deckt deine Rate kaum die Zinsen, wächst die Schuld trotz Zahlung. Dann ist das kein persönliches Versagen, sondern ein Zeichen, Hilfe zu holen. Kostenlose Schuldnerberatungen, etwa bei Verbraucherzentralen, Caritas oder Diakonie, verhandeln auch mit Gläubigern.</p>''',
  faqs=[('Darf ich einen Ratenkredit früher zurückzahlen?','Bei Verbraucherkrediten in Deutschland ist eine vorzeitige Rückzahlung grundsätzlich möglich; die Bank kann unter Umständen eine begrenzte Vorfälligkeitsentschädigung verlangen. Schau in deinen Vertrag.'),
@@ -177,7 +177,7 @@ G.bind(['debt','rate','pay','extra'],run);''',
 
 # ---------------------------------------------------------------- Notgroschen
 page(slug='notgroschen-rechner', short='Notgroschen-Rechner', teaser='Wie groß deine Rücklage sein sollte',
- title='Notgroschen-Rechner: Wie viel Rücklage brauche ich? | Geld-Kompass',
+ title='Notgroschen-Rechner: Wie viel Rücklage brauche ich? | Geld-Kompass Pro',
  desc='Notgroschen berechnen: Aus deinen festen Monatskosten ergibt sich deine Ziel-Rücklage von 3 bis 6 Monaten, und du siehst, wann du sie mit deiner Sparrate erreichst.',
  eyebrow='Rücklage & Sicherheit', h1='Notgroschen-Rechner: Wie viel Rücklage brauchst du?',
  lead='Ein Notgroschen schützt dich davor, bei einer kaputten Waschmaschine oder einem Jobwechsel neue Schulden zu machen. Hier siehst du, wie groß er sein sollte und wann du ihn erreichst.',
@@ -205,14 +205,14 @@ G.bind(['cost','mon','have','save'],run);''',
 <h2>Wie groß sollte er sein?</h2>
 <p>Häufig genannt werden drei bis sechs Monate deiner festen Kosten. Mit sicherem Job und ohne Kinder reichen oft drei Monate. Selbstständige, Alleinverdiener oder Menschen mit schwankendem Einkommen planen eher sechs Monate oder mehr.</p>
 <h2>Klein anfangen</h2>
-<p>Auch 500 € fangen schon viele kleine Notfälle ab. Richte am besten einen Dauerauftrag direkt nach dem Gehaltseingang ein. Im Geld-Kompass siehst du, wie viele Monate deine Rücklage bereits trägt.</p>''',
+<p>Auch 500 € fangen schon viele kleine Notfälle ab. Richte am besten einen Dauerauftrag direkt nach dem Gehaltseingang ein. Im Geld-Kompass Pro siehst du, wie viele Monate deine Rücklage bereits trägt.</p>''',
  faqs=[('Wo parke ich den Notgroschen am besten?','Auf einem sicheren, jederzeit verfügbaren Konto, zum Beispiel Tagesgeld mit Einlagensicherung. Nicht in Aktien, weil die genau im Notfall gefallen sein können.'),
        ('Soll ich erst Schulden tilgen oder sparen?','Meist zuerst einen kleinen Start-Notgroschen aufbauen, dann teure Schulden tilgen und danach die Rücklage vollständig auffüllen.'),
        ('Zählen Raten zu den festen Kosten?','Ja. Alles, was du jeden Monat sicher zahlen musst, gehört dazu.')])
 
 # ---------------------------------------------------------------- Freiheitstage
 page(slug='freiheitstage-rechner', short='Freiheitstage-Rechner', teaser='Wie viele Tage dein Vermögen dich trägt',
- title='Freiheitstage-Rechner: Wie lange reicht mein Geld ohne Einkommen? | Geld-Kompass',
+ title='Freiheitstage-Rechner: Wie lange reicht mein Geld ohne Einkommen? | Geld-Kompass Pro',
  desc='Freiheitstage berechnen: Wie viele Tage könntest du von deinem Nettovermögen leben? Plus: Wie viele Tage Freiheit dir deine monatliche Sparrate jeden Monat dazugibt.',
  eyebrow='Freiheitstage', h1='Freiheitstage-Rechner: Wie viele Tage trägt dich dein Vermögen?',
  lead='Freiheitstage zeigen in einer einzigen Zahl, wie lange du rechnerisch von deinem Vermögen leben könntest. Diese Zahl wächst mit jedem Euro, den du sparst oder an Schulden tilgst.',
@@ -241,10 +241,10 @@ G.bind(['assets','debts','spend','save'],run);''',
 <h2>Zwei Hebel</h2>
 <p>Freiheitstage steigen, wenn dein Nettovermögen wächst, also durch Sparen, Anlegen und Tilgen. Sie steigen aber auch, wenn deine monatlichen Ausgaben sinken, denn dann reicht dasselbe Vermögen länger. Wer 100 € weniger pro Monat braucht, gewinnt doppelt: mehr Sparrate und mehr Tage pro Euro.</p>
 <h2>Mit echten Zahlen verfolgen</h2>
-<p>Im kostenlosen Geld-Kompass werden deine Freiheitstage automatisch aus deinen Buchungen, Schulden und deinem Depot berechnet und Monat für Monat sichtbar. Deine Daten bleiben dabei in deinem Browser.</p>''',
+<p>Im kostenlosen Geld-Kompass Pro werden deine Freiheitstage automatisch aus deinen Buchungen, Schulden und deinem Depot berechnet und Monat für Monat sichtbar. Deine Daten bleiben dabei in deinem Browser.</p>''',
  faqs=[('Warum Nettovermögen und nicht nur Erspartes?','Schulden muss man von Ersparnissen abziehen, damit das Bild ehrlich ist. Wer 5.000 € gespart und 5.000 € Schulden hat, steht bei null.'),
        ('Gehört die Wohnung dazu?','Rechnerisch ja, praktisch kann man von einer selbst genutzten Wohnung nicht leben. Trag für eine ehrliche Zahl lieber nur verfügbares Vermögen ein.'),
-       ('Woher kommt der Begriff?','Er stammt aus dem Buch „Der einfache Weg zur Finanziellen Freiheit“ und dem dazugehörigen Geld-Kompass.')])
+       ('Woher kommt der Begriff?','Er stammt aus dem Buch „Der einfache Weg zur Finanziellen Freiheit“ und dem dazugehörigen Geld-Kompass Pro.')])
 
 # ================================================================= Ausgabe
 
@@ -375,7 +375,7 @@ def fx_faqs(f, to, lang='de'):
             ('Kostet der Rechner etwas?', 'Nein. Der Währungsrechner ist kostenlos, ohne Anmeldung und ohne Werbung. Die Rechnung läuft in deinem Browser.')]
 
 page(slug='waehrungsrechner', short='Währungsrechner', teaser='Live-Kurse für über 50 Währungen und Bitcoin', fx=('EUR', 'USD'),
- title='Währungsrechner mit Live-Kursen und Chart: über 50 Währungen und Bitcoin | Geld-Kompass',
+ title='Währungsrechner mit Live-Kursen und Chart: über 50 Währungen und Bitcoin | Geld-Kompass Pro',
  desc='Kostenloser Währungsrechner mit aktuellen Kursen für über 50 Währungen und Bitcoin: Euro, Dollar, Pfund, Franken, Lira, Lari, Baht, Dong und mehr. Mit Live-Chart und Umrechnungstabelle.',
  eyebrow='Währungen & Wechselkurse', h1='Währungsrechner: Beträge mit aktuellen Kursen umrechnen',
  lead='Betrag eingeben, Währungen wählen, fertig. Der Rechner nutzt aktuelle Mittelkurse vom Devisenmarkt und zeigt dir gleich eine Tabelle mit den gängigsten Beträgen.',
@@ -401,7 +401,7 @@ FX_PAIRS = [
 ]
 for slug, f, to, name, intro in FX_PAIRS:
     page(slug=slug, short=name + ' umrechnen', teaser='%s live: 1 %s in %s' % (name, f, to), pair=True, fx=(f, to),
-     title='%s umrechnen: aktueller Kurs und Tabelle | Geld-Kompass' % name,
+     title='%s umrechnen: aktueller Kurs und Tabelle | Geld-Kompass Pro' % name,
      desc='%s umrechnen mit aktuellem Devisenkurs: Rechner, Umrechnungstabelle und Veränderung zum Vortag. Kostenlos und ohne Anmeldung.' % name,
      eyebrow='Währungsrechner', h1='%s umrechnen: Was ist dein Geld gerade wert?' % name, lead=intro,
      calc=fx_calc(), js=fx_js(f, to, slug), body=(BTC_TEXT if FXN[f][1] or FXN[to][1] else FX_TIPS) + '\n<h2>Weitere Währungen</h2>\n<div class="more">%PAIRLINKS%</div>', faqs=fx_faqs(f, to))
@@ -413,14 +413,14 @@ def en_page(p):
         f, to = p['fx']; es = EN_FX_SLUG[p['slug']]; crypto = FXN[f][1] or FXN[to][1]
         if p['slug'] == 'waehrungsrechner':
             return dict(p, lang='en', slug=es, short='Currency converter', teaser='Live rates for 50+ currencies and bitcoin',
-                title='Currency Converter with Live Rates and Chart: 50+ Currencies and Bitcoin | Money Compass',
+                title='Currency Converter with Live Rates and Chart: 50+ Currencies and Bitcoin | Money Compass Pro',
                 desc='Free currency converter with current rates for over 50 currencies and bitcoin: euro, dollar, pound, franc, lira, lari, baht, dong and more. With live chart and conversion table.',
                 eyebrow='Currencies & exchange rates', h1='Currency converter: convert amounts at current rates',
                 lead='Enter an amount, choose currencies, done. The converter uses current mid-market rates and shows a table of the most common amounts.',
                 calc=fx_calc('en'), js=fx_js(f, to, es, 'en'), body='\n<h2>Popular conversions</h2>\n<div class="more">%PAIRLINKS%</div>' + FX_TIPS_EN, faqs=fx_faqs(f, to, 'en'))
         name = '%s to %s' % (FXN_EN[f], FXN_EN[to])
         return dict(p, lang='en', slug=es, short='Convert ' + name, teaser='%s live: 1 %s in %s' % (name, f, to),
-            title='Convert %s: live rate and table | Money Compass' % name,
+            title='Convert %s: live rate and table | Money Compass Pro' % name,
             desc='Convert %s at the current rate: calculator, conversion table and change versus the previous day. Free and without sign-up.' % name,
             eyebrow='Currency converter', h1='Convert %s: what is your money worth right now?' % name, lead=EN_FX_INTRO[es],
             calc=fx_calc('en'), js=fx_js(f, to, es, 'en'), body=(BTC_TEXT_EN if crypto else FX_TIPS_EN) + '\n<h2>More currencies</h2>\n<div class="more">%PAIRLINKS%</div>', faqs=fx_faqs(f, to, 'en'))
@@ -444,13 +444,13 @@ def links(pages, cur, pair):
     return ''.join('<a href="../%s/">%s<small>%s</small></a>' % (p['slug'], esc(p['short']), esc(p['teaser'])) for p in pages if p['slug'] != cur and bool(p.get('pair')) == pair)
 
 CTA = ('<div class="cta">'
- '<a href="/app/#overview"><i>'+LOGO+'</i><div><b>Mit deinen echten Zahlen weiterrechnen</b><span>Der kostenlose Geld-Kompass: Buchungen, Schulden-Plan, Depot und Freiheitstage. Ohne Anmeldung, deine Daten bleiben in deinem Browser.</span></div></a>'
- '<a href="' + KANAL + '" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#25d366"/><path d="M12 5.2a6.8 6.8 0 0 0-5.9 10.2l-.9 3.3 3.4-.9A6.8 6.8 0 1 0 12 5.2z" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/><path d="M9.6 9.1c.2 2 1.8 3.7 3.9 4.2l.8-.9 1.4.7c-.2.8-.9 1.2-1.6 1.1-2.8-.3-5-2.5-5.3-5.3-.1-.8.4-1.4 1.1-1.6l.7 1.4z" fill="#fff"/></svg></i><div><b>Geld-Kompass auf WhatsApp</b><span>Jeden Sonntag ein kurzer Geld-Check und ein kleiner nächster Schritt. Kostenlos, deine Nummer bleibt privat.</span></div></a>'
+ '<a href="/app/#overview"><i>'+LOGO+'</i><div><b>Mit deinen echten Zahlen weiterrechnen</b><span>Der kostenlose Geld-Kompass Pro: Buchungen, Schulden-Plan, Depot und Freiheitstage. Ohne Anmeldung, deine Daten bleiben in deinem Browser.</span></div></a>'
+ '<a href="' + KANAL + '" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="#25d366"/><path d="M12 5.2a6.8 6.8 0 0 0-5.9 10.2l-.9 3.3 3.4-.9A6.8 6.8 0 1 0 12 5.2z" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"/><path d="M9.6 9.1c.2 2 1.8 3.7 3.9 4.2l.8-.9 1.4.7c-.2.8-.9 1.2-1.6 1.1-2.8-.3-5-2.5-5.3-5.3-.1-.8.4-1.4 1.1-1.6l.7 1.4z" fill="#fff"/></svg></i><div><b>Geld-Kompass Pro auf WhatsApp</b><span>Jeden Sonntag ein kurzer Geld-Check und ein kleiner nächster Schritt. Kostenlos, deine Nummer bleibt privat.</span></div></a>'
  '<a href="' + BUCH + '" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5c2.5-1 5.2-1 8 .8 2.8-1.8 5.5-1.8 8-.8v13c-2.5-1-5.2-1-8 .8-2.8-1.8-5.5-1.8-8-.8z" fill="none" stroke="#e3b55a" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 6.3v13" stroke="#e3b55a" stroke-width="1.6"/></svg></i><div><b>Das Buch dazu</b><span>„Der einfache Weg zur Finanziellen Freiheit“: Das Geldbaum-Prinzip in sieben Stufen.</span></div></a>'
  '</div>')
 
 CTA_EN = ('<div class="cta">'
- '<a href="/app/?lang=en#overview"><i>'+LOGO+'</i><div><b>Continue with your real numbers</b><span>The free Money Compass: bookings, debt plan, portfolio and freedom days. No sign-up, your data stays in your browser.</span></div></a>'
+ '<a href="/app/?lang=en#overview"><i>'+LOGO+'</i><div><b>Continue with your real numbers</b><span>The free Money Compass Pro: bookings, debt plan, portfolio and freedom days. No sign-up, your data stays in your browser.</span></div></a>'
  '<a href="/start/?lang=en"><i><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="none" stroke="#e3b55a" stroke-width="1.6"/><path d="M10 8l6 4-6 4z" fill="#e3b55a"/></svg></i><div><b>See how it works</b><span>A short animated tour: from a seed to your money tree, then one click on Start.</span></div></a>'
  '<a href="' + BUCH + '" target="_blank" rel="noopener"><i><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5.5c2.5-1 5.2-1 8 .8 2.8-1.8 5.5-1.8 8-.8v13c-2.5-1-5.2-1-8 .8-2.8-1.8-5.5-1.8-8-.8z" fill="none" stroke="#e3b55a" stroke-width="1.6" stroke-linejoin="round"/><path d="M12 6.3v13" stroke="#e3b55a" stroke-width="1.6"/></svg></i><div><b>The book behind it</b><span>“Der einfache Weg zur Finanziellen Freiheit”: the money tree principle in seven steps (German edition).</span></div></a>'
  '</div>')
@@ -475,19 +475,19 @@ def render(p):
     de_url, en_url = (p['alt'], url) if en else (url, p['alt'])
     faq_ld = {'@context': 'https://schema.org', '@type': 'FAQPage', 'mainEntity': [
         {'@type': 'Question', 'name': q, 'acceptedAnswer': {'@type': 'Answer', 'text': a}} for q, a in p['faqs']]}
-    app_ld = {'@context': 'https://schema.org', '@type': 'WebApplication', 'name': p['short'] + (' · Money Compass' if en else ' · Geld-Kompass'),
+    app_ld = {'@context': 'https://schema.org', '@type': 'WebApplication', 'name': p['short'] + (' · Money Compass Pro' if en else ' · Geld-Kompass Pro'),
               'url': url, 'applicationCategory': 'FinanceApplication', 'operatingSystem': 'Web', 'inLanguage': 'en' if en else 'de',
               'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'EUR'}, 'description': p['desc']}
     faqs = ''.join('<details><summary>%s</summary><p>%s</p></details>' % (esc(q), esc(a)) for q, a in p['faqs'])
     pages = PAGES_EN if en else PAGES
     body = p['body'].replace('%PAIRLINKS%', links(pages, p['slug'], True))
-    T = (dict(all='All calculators', app=' · Open the Money Compass', appurl='/app/?lang=en', home='/?lang=en', faq='Frequently asked questions', more='More free calculators', sw='Deutsch', swurl=de_url,
-              foot='<a href="/impressum/?lang=en">Legal notice</a> · <a href="/datenschutz/?lang=en">Privacy</a> · Money Compass · companion to the book “Der einfache Weg zur Finanziellen Freiheit” · © FreedomByDan · General financial education, not investment, tax or legal advice. All calculations run in your browser; no data is sent.',
+    T = (dict(all='All calculators', app=' · Open the Money Compass Pro', appurl='/app/?lang=en', home='/?lang=en', faq='Frequently asked questions', more='More free calculators', sw='Deutsch', swurl=de_url,
+              foot='<a href="/impressum/?lang=en">Legal notice</a> · <a href="/datenschutz/?lang=en">Privacy</a> · Money Compass Pro · companion to the book “Der einfache Weg zur Finanziellen Freiheit” · © FreedomByDan · General financial education, not investment, tax or legal advice. All calculations run in your browser; no data is sent.',
               logo='Money <span>Compass</span>', cta=CTA_EN, wb='')
          if en else
-         dict(all='Alle Rechner', app=' · Zum Geld-Kompass', appurl='/app/', home='/', faq='Häufige Fragen', more='Weitere kostenlose Rechner', sw='English', swurl=en_url,
-              foot='<a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a> · Geld-Kompass · Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung. Alle Berechnungen laufen in deinem Browser; es werden keine Daten übertragen.',
-              logo='Geld-<span>Kompass</span>', cta=CTA, wb=workbook_note(p['slug'])))
+         dict(all='Alle Rechner', app=' · Zum Geld-Kompass Pro', appurl='/app/', home='/', faq='Häufige Fragen', more='Weitere kostenlose Rechner', sw='English', swurl=en_url,
+              foot='<a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a> · Geld-Kompass Pro · Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung. Alle Berechnungen laufen in deinem Browser; es werden keine Daten übertragen.',
+              logo='Geld-<span>Kompass</span> <span class="pro">Pro</span>', cta=CTA, wb=workbook_note(p['slug'])))
     return f"""<!doctype html>
 <html lang="{'en' if en else 'de'}">
 <head>
@@ -513,7 +513,7 @@ def render(p):
 <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Geld-Kompass">
+<meta name="apple-mobile-web-app-title" content="Geld-Kompass Pro">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <script type="application/ld+json">{json.dumps(app_ld, ensure_ascii=False)}</script>
 <script type="application/ld+json">{json.dumps(faq_ld, ensure_ascii=False)}</script>
@@ -551,15 +551,15 @@ def hub(lang='de'):
     pcards = ''.join('<a href="%s/">%s<small>%s</small></a>' % (p['slug'], esc(p['short']), esc(p['teaser'])) for p in pages if p.get('pair'))
     de_url, en_url = BASE + 'rechner/', BASE + 'en/calculators/'
     if en:
-        t = 'Free Money Calculators: Savings, Inflation, Debt, Currency | Money Compass'
+        t = 'Free Money Calculators: Savings, Inflation, Debt, Currency | Money Compass Pro'
         d = 'Free money calculators without sign-up: savings plan, inflation, debt-free date, emergency fund, freedom days, subscription as investment and a currency converter with live rates.'
-        txt = dict(eb='Free calculators', h1='Money calculators that bring clarity in a minute', lead='No sign-up, no ads. All calculations run in your browser. If you want to continue with your real numbers, use the full Money Compass.',
-                   cur='Convert currencies', app='Open the Money Compass', appurl='/app/?lang=en', foot='<a href="/impressum/?lang=en">Legal notice</a> · <a href="/datenschutz/?lang=en">Privacy</a> · Money Compass · © FreedomByDan · General financial education, not investment, tax or legal advice.', sw='Deutsch', swurl=de_url, logo='Money <span>Compass</span>', home='/?lang=en', cta=CTA_EN)
+        txt = dict(eb='Free calculators', h1='Money calculators that bring clarity in a minute', lead='No sign-up, no ads. All calculations run in your browser. If you want to continue with your real numbers, use the full Money Compass Pro.',
+                   cur='Convert currencies', app='Open the Money Compass Pro', appurl='/app/?lang=en', foot='<a href="/impressum/?lang=en">Legal notice</a> · <a href="/datenschutz/?lang=en">Privacy</a> · Money Compass Pro · © FreedomByDan · General financial education, not investment, tax or legal advice.', sw='Deutsch', swurl=de_url, logo='Money <span>Compass</span>', home='/?lang=en', cta=CTA_EN)
     else:
-        t = 'Kostenlose Finanzrechner: Sparplan, Inflation, Schulden, Währung | Geld-Kompass'
+        t = 'Kostenlose Finanzrechner: Sparplan, Inflation, Schulden, Währung | Geld-Kompass Pro'
         d = 'Kostenlose Finanzrechner ohne Anmeldung: Sparplan, Inflation, Schuldenfrei-Datum, Notgroschen, Freiheitstage, Abo als Aktie und Währungsrechner mit Live-Kursen.'
-        txt = dict(eb='Kostenlose Rechner', h1='Finanzrechner, die in einer Minute Klarheit bringen', lead='Ohne Anmeldung, ohne Werbung. Alle Rechnungen laufen in deinem Browser. Wenn du mit deinen echten Zahlen weitermachen möchtest, nutze den vollständigen Geld-Kompass.',
-                   cur='Währungen umrechnen', app='Zum Geld-Kompass', appurl='/app/', foot='<a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a> · Geld-Kompass · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung.', sw='English', swurl=en_url, logo='Geld-<span>Kompass</span>', home='/', cta=CTA)
+        txt = dict(eb='Kostenlose Rechner', h1='Finanzrechner, die in einer Minute Klarheit bringen', lead='Ohne Anmeldung, ohne Werbung. Alle Rechnungen laufen in deinem Browser. Wenn du mit deinen echten Zahlen weitermachen möchtest, nutze den vollständigen Geld-Kompass Pro.',
+                   cur='Währungen umrechnen', app='Zum Geld-Kompass Pro', appurl='/app/', foot='<a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a> · Geld-Kompass Pro · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung.', sw='English', swurl=en_url, logo='Geld-<span>Kompass</span> <span class="pro">Pro</span>', home='/', cta=CTA)
     return f"""<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 {lang_js(lang, de_url if en else en_url)}

@@ -1,4 +1,4 @@
-/* Buchweg, Rücklagen und Monatsstände im vorhandenen Geld-Kompass. */
+/* Buchweg, Rücklagen und Monatsstände im vorhandenen Geld-Kompass Pro. */
 (function(root){'use strict';root.GeldJourneyUI=function(api){
  var J=root.GeldJourney,$=function(id){return document.getElementById(id);},esc=api.esc,E=api.E2||api.E,pending=null,lastScope="";
  var stages=[

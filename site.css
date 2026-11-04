@@ -30,3 +30,6 @@ a.card:hover{border-color:var(--gold)}
 .links{margin-top:22px;font-size:14px;color:var(--muted);text-align:center;display:flex;flex-wrap:wrap;justify-content:center;gap:6px 16px}
 .links a{color:var(--gold);text-decoration:none}
 small{display:block;color:var(--muted);font-size:12px;margin-top:18px;text-align:center;opacity:.8}
+.pro{display:inline-block;font-size:.58em;font-weight:800;letter-spacing:.08em;line-height:1;padding:.22em .42em;margin-left:.3em;border-radius:.45em;background:linear-gradient(135deg,#f5d58f,#c99227);color:#0e1730;vertical-align:.28em;-webkit-text-fill-color:#0e1730}
+
+.logo b,header .logo{white-space:nowrap}

@@ -1,4 +1,4 @@
-/* Partner-Links und E-Mail-Liste des Geld-Kompass.
+/* Partner-Links und E-Mail-Liste des Geld-Kompass Pro.
    Solange ein Eintrag null ist, wird an dieser Stelle NICHTS angezeigt.
    Eintragen, sobald Impressum steht und das Partnerprogramm bestätigt ist, z. B.:
    broker: {url:'https://…', name:'Name', de:'Text deutsch', en:'English text'}

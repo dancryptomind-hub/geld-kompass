@@ -62,7 +62,7 @@ def page(lang):
     kings = [r for r in R if r["b"] == "king"]
     monthly = [r for r in R if len(r["m"]) >= 12]
     t = {
-        "title": "Dividenden-Kalender: Wer zahlt wann? Monate, Rendite, Dividenden-Könige | Geld-Kompass" if de else "Dividend calendar: who pays when? Months, yield, Dividend Kings | Geld-Kompass",
+        "title": "Dividenden-Kalender: Wer zahlt wann? Monate, Rendite, Dividenden-Könige | Geld-Kompass Pro" if de else "Dividend calendar: who pays when? Months, yield, Dividend Kings | Geld-Kompass Pro",
         "desc": f"Kostenloser Dividenden-Kalender für {len(R)} Aktien und ETFs: in welchem Monat gezahlt wird, Dividendenrendite, Monatszahler, Dividenden-Könige und Aristokraten. Wöchentlich aktualisiert." if de else f"Free dividend calendar for {len(R)} stocks and ETFs: which month they pay, dividend yield, monthly payers, Dividend Kings and Aristocrats. Updated weekly.",
         "eyebrow": "Kostenloser Dividenden-Kalender" if de else "Free dividend calendar",
         "h1": "Dividenden-Kalender: Wer zahlt wann?" if de else "Dividend calendar: who pays when?",
@@ -72,19 +72,19 @@ def page(lang):
         "th": ["Wertpapier", "Zahlungsmonate", "Dividende / Jahr", "Rendite"] if de else ["Security", "Payment months", "Dividend / year", "Yield"],
         "per": "je Anteil, in Euro" if de else "per share, in euro",
         "cta_b": "Deinen eigenen Dividenden-Kalender planen" if de else "Plan your own dividend calendar",
-        "cta_s": "Trag deine Aktien im kostenlosen Geld-Kompass ein: Du siehst Monat für Monat, wie viel passives Einkommen kommt. Ohne Anmeldung." if de else "Add your stocks to the free Geld-Kompass and see month by month how much passive income arrives. No sign-up.",
-        "foot": "Impressum · Datenschutz · Geld-Kompass · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung." if de else "Legal notice · Privacy · Geld-Kompass · © FreedomByDan · General financial education, not investment, tax or legal advice.",
+        "cta_s": "Trag deine Aktien im kostenlosen Geld-Kompass Pro ein: Du siehst Monat für Monat, wie viel passives Einkommen kommt. Ohne Anmeldung." if de else "Add your stocks to the free Geld-Kompass Pro and see month by month how much passive income arrives. No sign-up.",
+        "foot": "Impressum · Datenschutz · Geld-Kompass Pro · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung." if de else "Legal notice · Privacy · Geld-Kompass Pro · © FreedomByDan · General financial education, not investment, tax or legal advice.",
     }
     faq = ([("Was ist ein Dividenden-König?", f"Ein Unternehmen, das seine Dividende mindestens 50 Jahre in Folge erhöht hat. In dieser Liste: {', '.join(r['n'] for r in kings)}. Das zeigt ein sehr stabiles Geschäft, garantiert aber keine künftigen Erhöhungen."),
             ("Was ist ein Dividenden-Aristokrat?", "Ein Unternehmen aus dem US-Index S&P 500 mit mindestens 25 Jahren ununterbrochener Dividendenerhöhung, zum Beispiel Realty Income, McDonald’s oder ExxonMobil."),
             ("Welche Aktien zahlen monatlich?", (", ".join(r["n"] for r in monthly) or "In dieser Liste keine") + ". Mit drei Quartalszahlern, die in unterschiedlichen Monaten zahlen, kommt ebenfalls jeden Monat Geld."),
             ("Wie wird die Rendite berechnet?", "Summe der Ausschüttungen der letzten 12 Monate je Anteil, umgerechnet in Euro, geteilt durch den aktuellen Kurs. Künftige Dividenden können sinken oder ausfallen."),
-            ("Wie plane ich jeden Monat Dividenden?", "Kombiniere Werte mit unterschiedlichen Zahlungsmonaten, zum Beispiel Quartalszahler aus Januar/April/Juli/Oktober, Februar/Mai/August/November und März/Juni/September/Dezember. Im Geld-Kompass siehst du das Ergebnis für dein Depot.")] if de else
+            ("Wie plane ich jeden Monat Dividenden?", "Kombiniere Werte mit unterschiedlichen Zahlungsmonaten, zum Beispiel Quartalszahler aus Januar/April/Juli/Oktober, Februar/Mai/August/November und März/Juni/September/Dezember. Im Geld-Kompass Pro siehst du das Ergebnis für dein Depot.")] if de else
            [("What is a Dividend King?", f"A company that has raised its dividend for at least 50 consecutive years. In this list: {', '.join(r['n'] for r in kings)}. It shows a very stable business but does not guarantee future increases."),
             ("What is a Dividend Aristocrat?", "A company in the US S&P 500 index with at least 25 consecutive years of dividend increases, for example Realty Income, McDonald’s or ExxonMobil."),
             ("Which stocks pay monthly?", (", ".join(r["n"] for r in monthly) or "None in this list") + ". Three quarterly payers paying in different months also give you money every month."),
             ("How is the yield calculated?", "Sum of the last 12 months of payouts per share, converted to euro, divided by the current price. Future dividends may fall or be cancelled."),
-            ("How do I get dividends every month?", "Combine holdings with different payment months, e.g. quarterly payers in Jan/Apr/Jul/Oct, Feb/May/Aug/Nov and Mar/Jun/Sep/Dec. The Geld-Kompass shows the result for your portfolio.")])
+            ("How do I get dividends every month?", "Combine holdings with different payment months, e.g. quarterly payers in Jan/Apr/Jul/Oct, Feb/May/Aug/Nov and Mar/Jun/Sep/Dec. The Geld-Kompass Pro shows the result for your portfolio.")])
     trs = []
     for r in R:
         cal = "".join(f'<i class="{"on" if (k + 1) in r["m"] else ""}" title="{ML[lang][k]}">{MS[lang][k][0]}</i>' for k in range(12))
@@ -113,7 +113,7 @@ def page(lang):
 @media(max-width:640px){{.dt td:nth-child(2),.dt th:nth-child(2){{display:none}}.ent .inf{{display:none}}}}
 .faq details{{border-bottom:1px solid rgba(219,227,250,.1);padding:10px 0}}.faq summary{{cursor:pointer;font-weight:700}}</style>
 <script src="/i18n.js"></script></head><body>
-<header class="top"><div class="wrap"><a class="logo" href="/"><img class="gk-logo" src="/icons/logo-badge.webp" alt="" aria-hidden="true" width="34" height="34"><b>Geld-<span>Kompass</span></b></a><nav><a href="{app}">{"Zum Geld-Kompass" if de else "Open the Geld-Kompass"}</a> · {other}</nav></div></header>
+<header class="top"><div class="wrap"><a class="logo" href="/"><img class="gk-logo" src="/icons/logo-badge.webp" alt="" aria-hidden="true" width="34" height="34"><b>Geld-<span>Kompass</span> <span class="pro">Pro</span></b></a><nav><a href="{app}">{"Zum Geld-Kompass Pro" if de else "Open the Geld-Kompass Pro"}</a> · {other}</nav></div></header>
 <main class="wrap"><div class="eyebrow">{t["eyebrow"]}</div><h1>{t["h1"]}</h1><p class="lead">{t["lead"]}</p>
 <div class="mf" id="mf"><button type="button" data-f="0" class="on">{t["all"]}</button>{months}</div>
 <input id="dq" type="search" placeholder="{t["q"]}" aria-label="{t["q"]}">
@@ -122,7 +122,7 @@ def page(lang):
 <div class="cta"><a href="{app}"><i><img class="gk-logo" src="/icons/logo-badge.webp" alt="" aria-hidden="true" width="34" height="34"></i><div><b>{t["cta_b"]}</b><span>{t["cta_s"]}</span></div></a></div>
 <h2>{"Häufige Fragen" if de else "FAQ"}</h2><div class="faq">{"".join(f"<details><summary>{esc(q)}</summary><p>{esc(a)}</p></details>" for q, a in faq)}</div>
 <p class="lead" style="font-size:.85rem;opacity:.75">{"Daten: Ausschüttungen der letzten 12 Monate laut Yahoo Finance, wöchentlich aktualisiert. Die Monate richten sich nach dem Ex-Tag, die Zahlung kommt meist 2 bis 4 Wochen später. Abzeichen nach Jahren ununterbrochener Dividendenerhöhung, Stand 2026. Keine Anlageberatung." if de else "Data: last 12 months of payouts from Yahoo Finance, updated weekly. Months follow the ex-dividend date; the payment usually arrives 2 to 4 weeks later. Badges based on consecutive years of dividend increases, as of 2026. Not investment advice."}</p>
-</main><footer><div class="wrap"><a href="/impressum/">{"Impressum" if de else "Legal notice"}</a> · <a href="/datenschutz/">{"Datenschutz" if de else "Privacy"}</a> · Geld-Kompass · © FreedomByDan · {"Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung." if de else "General financial education, not investment, tax or legal advice."}</div></footer>
+</main><footer><div class="wrap"><a href="/impressum/">{"Impressum" if de else "Legal notice"}</a> · <a href="/datenschutz/">{"Datenschutz" if de else "Privacy"}</a> · Geld-Kompass Pro · © FreedomByDan · {"Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung." if de else "General financial education, not investment, tax or legal advice."}</div></footer>
 <script>(function(){{var f=0,q="",rows=[].slice.call(document.querySelectorAll("#dtb tr"));function run(){{rows.forEach(function(r){{var ok=(!f||(" "+r.getAttribute("data-m")+" ").indexOf(" "+f+" ")>-1)&&(!q||r.getAttribute("data-q").indexOf(q)>-1);r.style.display=ok?"":"none";}});}}
 document.getElementById("mf").addEventListener("click",function(e){{var b=e.target.closest("button");if(!b)return;f=+b.getAttribute("data-f");[].forEach.call(this.children,function(x){{x.classList.toggle("on",x===b);}});run();}});
 document.getElementById("dq").addEventListener("input",function(e){{q=e.target.value.toLowerCase().trim();run();}});var m=(location.hash.match(/m=(\\d+)/)||[])[1];if(m){{var b=document.querySelector('#mf [data-f="'+m+'"]');if(b)b.click();}}}})();</script>

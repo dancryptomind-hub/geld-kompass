@@ -1,4 +1,4 @@
-"""Wechselkurse und Inflation USA / Großbritannien für den Geld-Kompass.
+"""Wechselkurse und Inflation USA / Großbritannien für den Geld-Kompass Pro.
 
 Läuft in der GitHub Action nach update_data.py und hicp_annual.py:
   - Wechselkurse (Basis EUR) über yfinance (Yahoo Finance, Forex-Paare EURxxx=X)

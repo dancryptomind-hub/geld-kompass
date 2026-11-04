@@ -3,10 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Start · Geld-Kompass</title>
-<meta name="description" content="Vom Samen zum Geldbaum: Erlebe in wenigen Sekunden, wie der kostenlose Geld-Kompass dir Überblick, einen Schulden-Plan und deine Freiheitstage zeigt. Dann ein Klick auf Start.">
+<title>Start · Geld-Kompass Pro</title>
+<meta name="description" content="Vom Samen zum Geldbaum: Erlebe in wenigen Sekunden, wie der kostenlose Geld-Kompass Pro dir Überblick, einen Schulden-Plan und deine Freiheitstage zeigt. Dann ein Klick auf Start.">
 <link rel="canonical" href="https://geld-kompass.com/start/">
-<meta property="og:type" content="website"><meta property="og:site_name" content="Geld-Kompass"><meta property="og:title" content="Geld-Kompass · Start"><meta property="og:url" content="https://geld-kompass.com/start/"><meta property="og:locale" content="de_DE">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Geld-Kompass Pro"><meta property="og:title" content="Geld-Kompass Pro · Start"><meta property="og:url" content="https://geld-kompass.com/start/"><meta property="og:locale" content="de_DE">
 <script>
 /* Weiterleitungen für die QR-Codes im Buch (gedruckt: /start/?to=kompass und /start/?to=community).
    NICHT entfernen. Ziele hier ändern, gedruckte Codes bleiben gültig. */
@@ -194,6 +194,7 @@ footer a{color:var(--gold);text-decoration:none}
 @media (prefers-reduced-motion:reduce){
   .gk-start .ring,.gk-start .rays,.gk-start .shine,.gk-start .core,.hint i{animation:none!important}
 }
+.pro{display:inline-block;font-size:.58em;font-weight:800;letter-spacing:.08em;line-height:1;padding:.22em .42em;margin-left:.3em;border-radius:.45em;background:linear-gradient(135deg,#f5d58f,#c99227);color:#0e1730;vertical-align:.28em;-webkit-text-fill-color:#0e1730}
 </style>
 <script src="/i18n.js"></script>
 </head>
@@ -202,7 +203,7 @@ footer a{color:var(--gold);text-decoration:none}
 <div class="glow" aria-hidden="true"></div>
 <div class="bar" aria-hidden="true"></div>
 <header>
-  <a class="logo" href="/"><img class="gk-logo" src="/icons/logo-emblem.webp" alt="" aria-hidden="true">Geld-<span>Kompass</span></a>
+  <a class="logo" href="/"><img class="gk-logo" src="/icons/logo-emblem.webp" alt="" aria-hidden="true"><i style="white-space:nowrap;font-style:normal">Geld-<span>Kompass</span> <span class="pro">Pro</span></i></a>
   <div class="hr"><button class="lang" id="langBtn" type="button" aria-label="Sprache wechseln">EN</button><a class="skip" href="/app/#overview" data-t="skip">Direkt starten</a></div>
 </header>
 
@@ -273,7 +274,7 @@ footer a{color:var(--gold);text-decoration:none}
         </div>
       </div></div>
       <div class="panel"><div class="pcard">
-        <div><span class="k" data-t="d1k">Schulden-Plan</span><h2 data-t="d1">Dein Schuldenfrei-Datum.<br>Schwarz auf weiß.</h2><p data-t="d1p">Der Geld-Kompass rechnet aus, wann der letzte Euro getilgt ist, und welche Schuld du zuerst angehst.</p></div>
+        <div><span class="k" data-t="d1k">Schulden-Plan</span><h2 data-t="d1">Dein Schuldenfrei-Datum.<br>Schwarz auf weiß.</h2><p data-t="d1p">Der Geld-Kompass Pro rechnet aus, wann der letzte Euro getilgt ist, und welche Schuld du zuerst angehst.</p></div>
         <div class="viz dviz">
           <div class="vhead"><small data-t="d1s">Beispiel · Restschuld</small><b class="vnum" id="debtNum">12.400 €</b></div>
           <div class="chartbox">
@@ -309,7 +310,7 @@ footer a{color:var(--gold);text-decoration:none}
   <div class="stick">
     <div class="final">
       <h2 data-t="e1">Dein Plan beginnt<br>mit einem Klick.</h2>
-      <a class="gk-start" id="startBtn" href="/app/#overview" aria-label="Geld-Kompass starten">
+      <a class="gk-start" id="startBtn" href="/app/#overview" aria-label="Geld-Kompass Pro starten">
         <span class="beam" aria-hidden="true"></span><span class="rays" aria-hidden="true"></span>
         <span class="halo" aria-hidden="true"></span>
         <svg class="charge" viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="arcG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff3d1"/><stop offset="1" stop-color="#e3b55a"/></linearGradient></defs><circle class="arc" cx="100" cy="100" r="74" pathLength="1" transform="rotate(-90 100 100)"/><g id="chargeTicks"></g></svg>
@@ -331,7 +332,7 @@ footer a{color:var(--gold);text-decoration:none}
 <script>
 (function(){
 'use strict';
-/* Sprache: gleiche Einstellung wie im Geld-Kompass (geld-kompass-lang). Ohne Einstellung entscheidet die Browsersprache. */
+/* Sprache: gleiche Einstellung wie im Geld-Kompass Pro (geld-kompass-lang). Ohne Einstellung entscheidet die Browsersprache. */
 var LKEY='geld-kompass-lang',lang='de';
 lang=window.GK_LANG||'de';
 var EN={
@@ -342,17 +343,17 @@ var EN={
  c4k:'Crown',c4:'And one day<br><em style="font-style:normal;color:var(--gold)">your tree carries you.</em>',
  b1k:'Budget',b1:'See where<br>your money goes.',b1p:'Income and spending at a glance. No spreadsheets, no jargon.',b1s:'Example · month',
  rw:'Housing',rl:'Living',rf:'Leisure',ra:'Subscriptions',rs:'Saving',v1:'€950',v2:'€620',v3:'€310',v4:'€85',v5:'€400',
- d1k:'Debt plan',d1:'Your debt-free date.<br>In black and white.',d1p:'The Money Compass works out when your last euro is paid off, and which debt to tackle first.',d1s:'Example · remaining debt',d1x:'Debt-free',d1a:'Today',d1b:'March 2029',y1:'1 year',y2:'2 years',y3:'3 years',y4:'4 years',fa:'€57,600',fb:'savings',fc:'€1,200',fd:'spending per month',
+ d1k:'Debt plan',d1:'Your debt-free date.<br>In black and white.',d1p:'The Money Compass Pro works out when your last euro is paid off, and which debt to tackle first.',d1s:'Example · remaining debt',d1x:'Debt-free',d1a:'Today',d1b:'March 2029',y1:'1 year',y2:'2 years',y3:'3 years',y4:'4 years',fa:'€57,600',fb:'savings',fc:'€1,200',fd:'spending per month',
  f1k:'Freedom days',f1:'How long could<br>your savings carry you?',f1p:'Your portfolio with live prices, your emergency fund and your savings turn into one number that matters: your freedom days.',f1s:'Example',f1u:'days without a paycheck',f1n:'Example calculation. Your own numbers stay on your device.',
  e1:'Your plan starts<br>with one click.',go:'Start',t1:'Free',t2:'No sign-up',t3:'Your data stays on your device',
  n1:'Home',n2:'Free calculators',n3:'Book welcome',n4:'WhatsApp channel',n5:'Privacy',n6:'Legal notice',disc:'General financial education, not investment advice.'
 };
 var langBtn=document.getElementById('langBtn');
 if(lang==='en'){
-  document.documentElement.lang='en';document.title='Start · Money Compass';
+  document.documentElement.lang='en';document.title='Start · Money Compass Pro';
   document.querySelectorAll('[data-t]').forEach(function(el){var v=EN[el.getAttribute('data-t')];if(v!=null)el.innerHTML=v});
   document.querySelector('.logo').innerHTML=document.querySelector('.logo img').outerHTML+'Money <span>Compass</span>';
-  document.getElementById('startBtn').setAttribute('aria-label','Start the Money Compass');
+  document.getElementById('startBtn').setAttribute('aria-label','Start the Money Compass Pro');
   langBtn.textContent='DE';langBtn.setAttribute('aria-label','Auf Deutsch wechseln');
 }else{langBtn.setAttribute('aria-label','Switch to English')}
 langBtn.addEventListener('click',function(){try{localStorage.setItem(LKEY,lang==='en'?'de':'en')}catch(e){}location.reload()});
@@ -460,7 +461,7 @@ function dust(t){
 requestAnimationFrame(dust);
 
 
-/* Start: Lichtblitz aus dem Knopf, dann in den Geld-Kompass */
+/* Start: Lichtblitz aus dem Knopf, dann in den Geld-Kompass Pro */
 btn.addEventListener('click',function(ev){
   if(reduce||ev.metaKey||ev.ctrlKey||ev.shiftKey||ev.button)return;
   ev.preventDefault();var r=btn.getBoundingClientRect(),cx0=r.left+r.width/2,cy0=r.top+r.height/2;

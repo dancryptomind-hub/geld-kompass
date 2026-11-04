@@ -1,4 +1,4 @@
-/* Original Geld-Kompass pictograms. Drawn for this project, no icon font or third-party assets. */
+/* Original Geld-Kompass Pro pictograms. Drawn for this project, no icon font or third-party assets. */
 (function(root){'use strict';
 var shapes={
  salary:'<path d="M7 11h18v13H7zM12 11V8h8v3M7 15q9 5 18 0M14 17h4v4h-4z"/>',

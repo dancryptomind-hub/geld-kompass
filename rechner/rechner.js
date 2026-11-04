@@ -3,7 +3,7 @@
 'use strict';
 var BASE='https://geld-kompass.com/';
 var EN=(document.documentElement.lang||'de').slice(0,2)==='en',LANG=EN?'en':'de',LOC=EN?'en-GB':'de-DE';
-/* Währung der Rechner: gespeicherte Wahl (gemeinsam mit dem Geld-Kompass) > Region des Browsers > Sprache */
+/* Währung der Rechner: gespeicherte Wahl (gemeinsam mit dem Geld-Kompass Pro) > Region des Browsers > Sprache */
 var SHARED=window.GKShareState.read();
 var CURS=['EUR','USD','GBP','CHF','CAD','AUD'],CKEY='geld-kompass-currency',CUR=null;
 try{CUR=localStorage.getItem(CKEY);}catch(e){}

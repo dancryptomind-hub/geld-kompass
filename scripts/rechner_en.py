@@ -6,7 +6,7 @@ EN = {}
 
 EN['sparplan-rechner'] = dict(
  slug='savings-plan-calculator', short='Savings plan calculator', teaser='What a monthly savings amount can grow into',
- title='Savings Plan Calculator: What does €100 a month become? | Money Compass',
+ title='Savings Plan Calculator: What does €100 a month become? | Money Compass Pro',
  desc='Free savings plan and compound interest calculator: enter your monthly amount, time frame and assumed return and instantly see what it could grow into.',
  eyebrow='Savings plan & compound interest', h1='Savings plan calculator: what will your monthly amount become?',
  lead='Enter how much you want to put aside each month. The calculator shows how much you pay in yourself and how much comes from compound interest.',
@@ -24,14 +24,14 @@ EN['sparplan-rechner'] = dict(
 <h2>What return is realistic?</h2>
 <p>Broadly diversified global equity ETFs have historically returned roughly 6 to 8 percent per year over long periods, with strong swings and years of clear losses. Savings accounts and bonds usually return less. Past returns are no guarantee, so try several scenarios, for example 4, 6 and 8 percent.</p>
 <h2>Time is the biggest lever</h2>
-<p>Starting 10 years earlier often means you need a much smaller monthly amount for the same goal. That is why it pays to start with a small amount instead of waiting for the perfect moment. The Money Compass shows you what monthly amount your budget really allows.</p>''',
+<p>Starting 10 years earlier often means you need a much smaller monthly amount for the same goal. That is why it pays to start with a small amount instead of waiting for the perfect moment. The Money Compass Pro shows you what monthly amount your budget really allows.</p>''',
  faqs=[('What is the compound interest effect?','Returns are reinvested and earn returns themselves. That is why an amount does not grow evenly over time but faster and faster.'),
        ('Are taxes and costs included?','No. The calculator shows the pure mechanics. In practice, fund costs, account fees and taxes reduce the result.'),
        ('Is this investment advice?','No. It is a model calculation for financial education. Which investment suits you depends on your situation, time frame and risk tolerance.')])
 
 EN['inflationsrechner'] = dict(
  slug='inflation-calculator', short='Inflation calculator', teaser='What your money from back then is worth today',
- title='Inflation Calculator: What is €1,000 from back then worth today? | Money Compass',
+ title='Inflation Calculator: What is €1,000 from back then worth today? | Money Compass Pro',
  desc='Inflation calculator with official data for Germany, Austria, the euro area, the USA and the UK: calculate the loss of purchasing power between two years for free.',
  eyebrow='Purchasing power & inflation', h1='Inflation calculator: what is your money from back then worth today?',
  lead='Choose an amount and two years. The calculator uses official annual averages from Eurostat (HICP), the U.S. Bureau of Labor Statistics and the UK Office for National Statistics.',
@@ -51,14 +51,14 @@ EN['inflationsrechner'] = dict(
 <h2>Where the figures come from</h2>
 <p>For Europe the calculator uses the Harmonised Index of Consumer Prices (HICP) from Eurostat, the official measure that is comparable across Europe. For the USA it uses the consumer price index CPI-U of the U.S. Bureau of Labor Statistics, for the UK the CPI of the Office for National Statistics. Each year is the annual average.</p>
 <h2>What this means for your money</h2>
-<p>Money that sits in a current account for years without interest loses purchasing power, even if the balance stays the same. You still need an emergency fund that is available immediately. For money you will not need for many years, it is worth asking how it can at least keep up with inflation. The Money Compass shows you how much of your money is affected.</p>''',
+<p>Money that sits in a current account for years without interest loses purchasing power, even if the balance stays the same. You still need an emergency fund that is available immediately. For money you will not need for many years, it is worth asking how it can at least keep up with inflation. The Money Compass Pro shows you how much of your money is affected.</p>''',
  faqs=[('Is this the official inflation rate?','Yes. The values come directly from official statistics (Eurostat, BLS, ONS) as annual averages and are updated automatically.'),
        ('Why does my perceived inflation differ?','The index measures an average basket of goods. If you spend a lot on food, energy or rent, you often feel price increases more strongly.'),
-       ('Why is the current year missing?','An annual average is only final once the year is over. The Money Compass shows the current monthly rate in its purchasing power check.')])
+       ('Why is the current year missing?','An annual average is only final once the year is over. The Money Compass Pro shows the current monthly rate in its purchasing power check.')])
 
 EN['abo-als-aktie'] = dict(
  slug='subscription-as-investment', short='Consumer or owner?', teaser='What your subscription or habit would be worth invested',
- title='Consumer or owner? What would your subscription be as an investment? | Money Compass',
+ title='Consumer or owner? What would your subscription be as an investment? | Money Compass Pro',
  desc='Netflix, coffee, cigarettes or phone contract: calculate for free what a regular expense has cost you over the years and what it could have become if invested.',
  eyebrow='Consumer or owner?', h1='What would your subscription have become if you had invested it?',
  lead='Every regular expense makes a company richer. Calculate what a habit costs you over the years and what the same amount could have become if invested.',
@@ -77,18 +77,18 @@ EN['abo-als-aktie'] = dict(
       "w+' for '+G.E(m)+' a month: in '+n+' years that is '+G.E(spent)+' spent. Invested at '+G.nf1.format(r*100)+' % per year it could have become '+G.E(v)+'.'")],
  body='''
 <h2>Consumer or owner</h2>
-<p>When you buy a coffee every day, the chain, the roaster and many others earn from it. As a customer you pay; as an owner, for example through shares or a broadly diversified fund, you would share in such profits. This question runs through the book behind the Money Compass.</p>
+<p>When you buy a coffee every day, the chain, the roaster and many others earn from it. As a customer you pay; as an owner, for example through shares or a broadly diversified fund, you would share in such profits. This question runs through the book behind the Money Compass Pro.</p>
 <h2>It is not about giving things up</h2>
 <p>Nobody has to give up everything. The calculator simply makes visible what a small, regular expense means over a long time. Often it is enough to halve one of several habits and put the difference aside automatically.</p>
 <h2>Calculating with real companies</h2>
-<p>In the free Money Compass, the section “Consumer or owner?” recognises many brands automatically and calculates with the average returns of the related shares over recent years, compared with a global ETF.</p>''',
+<p>In the free Money Compass Pro, the section “Consumer or owner?” recognises many brands automatically and calculates with the average returns of the related shares over recent years, compared with a global ETF.</p>''',
  faqs=[('Why 7 percent?','It is an assumption for a broadly diversified global equity index over long periods. You can enter any other value.'),
-       ('Does the calculator use the real Netflix share and others?','This page calculates with a return you choose. In the full Money Compass, brands are matched to real companies.'),
+       ('Does the calculator use the real Netflix share and others?','This page calculates with a return you choose. In the full Money Compass Pro, brands are matched to real companies.'),
        ('Is this a recommendation to buy?','No. It is a model calculation for financial education. Individual shares are risky and can lose their entire value.')])
 
 EN['schuldenfrei-rechner'] = dict(
  slug='debt-free-calculator', short='Debt-free calculator', teaser='When you will be debt-free and what extra payments do',
- title='Debt-Free Calculator: When will my loan be paid off? | Money Compass',
+ title='Debt-Free Calculator: When will my loan be paid off? | Money Compass Pro',
  desc='Repayment calculator for loans, overdrafts and credit cards: enter balance, interest rate and payment and see the month you will be debt-free and how much interest an extra payment saves.',
  eyebrow='Debt & repayment', h1='Debt-free calculator: when will your debt be paid off?',
  lead='Enter your remaining balance, interest rate and monthly payment. You will see the date you become debt-free and how much interest a small extra amount saves.',
@@ -106,7 +106,7 @@ EN['schuldenfrei-rechner'] = dict(
 <h2>Why small extra amounts make a big difference</h2>
 <p>With every loan, part of the payment goes to the bank as interest and only the rest reduces the debt. Every extra euro, on the other hand, goes entirely into repayment. That lowers next month's interest, so more of your normal payment reduces the debt. This effect builds up every month.</p>
 <h2>Expensive debt first</h2>
-<p>Overdrafts and credit cards often cost 10 to 20 percent interest. If you have several debts, an extra amount does the most on the most expensive one (avalanche method). Some prefer to start with the smallest debt for a quick win (snowball method). Both work if you stick with it. In the Money Compass, the debt plan compares both approaches with your real debts.</p>
+<p>Overdrafts and credit cards often cost 10 to 20 percent interest. If you have several debts, an extra amount does the most on the most expensive one (avalanche method). Some prefer to start with the smallest debt for a quick win (snowball method). Both work if you stick with it. In the Money Compass Pro, the debt plan compares both approaches with your real debts.</p>
 <h2>When the payment is not enough</h2>
 <p>If your payment barely covers the interest, the debt grows despite paying. That is not a personal failure but a sign to get help. Free debt advice services can also negotiate with creditors.</p>''',
  faqs=[('Can I repay a loan early?','For consumer loans early repayment is usually possible; the lender may charge a limited early repayment fee. Check your contract.'),
@@ -115,7 +115,7 @@ EN['schuldenfrei-rechner'] = dict(
 
 EN['notgroschen-rechner'] = dict(
  slug='emergency-fund-calculator', short='Emergency fund calculator', teaser='How big your safety cushion should be',
- title='Emergency Fund Calculator: How much do I need? | Money Compass',
+ title='Emergency Fund Calculator: How much do I need? | Money Compass Pro',
  desc='Calculate your emergency fund: your fixed monthly costs give your target reserve of 3 to 6 months, and you see when you will reach it with your savings rate.',
  eyebrow='Reserve & safety', h1='Emergency fund calculator: how big should your safety cushion be?',
  lead='An emergency fund keeps a broken washing machine or a job change from turning into new debt. Here you see how big it should be and when you will reach it.',
@@ -133,14 +133,14 @@ EN['notgroschen-rechner'] = dict(
 <h2>How big should it be?</h2>
 <p>Three to six months of your fixed costs is often recommended. With a secure job and no children, three months is often enough. Self-employed people, single earners or people with fluctuating income tend to plan for six months or more.</p>
 <h2>Start small</h2>
-<p>Even €500 covers many small emergencies. Ideally set up a standing order right after payday. The Money Compass shows you how many months your reserve already covers.</p>''',
+<p>Even €500 covers many small emergencies. Ideally set up a standing order right after payday. The Money Compass Pro shows you how many months your reserve already covers.</p>''',
  faqs=[('Where should I keep my emergency fund?','In a safe account you can access at any time, for example an instant-access savings account with deposit protection. Not in shares, because they may have fallen exactly when you need the money.'),
        ('Should I repay debt or save first?','Usually build a small starter emergency fund first, then repay expensive debt, and then fill up the reserve completely.'),
        ('Do loan payments count as fixed costs?','Yes. Everything you definitely have to pay every month counts.')])
 
 EN['freiheitstage-rechner'] = dict(
  slug='freedom-days-calculator', short='Freedom days calculator', teaser='How many days your wealth carries you',
- title='Freedom Days Calculator: How long would my money last without income? | Money Compass',
+ title='Freedom Days Calculator: How long would my money last without income? | Money Compass Pro',
  desc='Calculate your freedom days: how many days could you live on your net worth? Plus: how many days of freedom your monthly savings add every month.',
  eyebrow='Freedom days', h1='Freedom days calculator: how many days does your wealth carry you?',
  lead='Freedom days show in a single number how long you could live on your wealth. The number grows with every euro you save or every euro of debt you repay.',
@@ -158,10 +158,10 @@ EN['freiheitstage-rechner'] = dict(
 <h2>Two levers</h2>
 <p>Freedom days rise when your net worth grows, through saving, investing and repaying debt. They also rise when your monthly spending falls, because the same wealth lasts longer. If you need €100 less per month, you win twice: a higher savings rate and more days per euro.</p>
 <h2>Track it with real numbers</h2>
-<p>In the free Money Compass, your freedom days are calculated automatically from your bookings, debts and portfolio and shown month by month. Your data stays in your browser.</p>''',
+<p>In the free Money Compass Pro, your freedom days are calculated automatically from your bookings, debts and portfolio and shown month by month. Your data stays in your browser.</p>''',
  faqs=[('Why net worth and not just savings?','Debt has to be subtracted from savings for an honest picture. Someone with €5,000 saved and €5,000 of debt is at zero.'),
        ('Does my home count?','In theory yes, in practice you cannot live off a home you live in. For an honest number, only enter wealth you can actually access.'),
-       ('Where does the term come from?','It comes from the book behind the Money Compass, “Der einfache Weg zur Finanziellen Freiheit”.')])
+       ('Where does the term come from?','It comes from the book behind the Money Compass Pro, “Der einfache Weg zur Finanziellen Freiheit”.')])
 
 # Währungsrechner: englische Adressen der Paarseiten
 EN_FX_SLUG = {'waehrungsrechner':'currency-converter','euro-in-dollar':'eur-to-usd','dollar-in-euro':'usd-to-eur','euro-in-pfund':'eur-to-gbp','pfund-in-euro':'gbp-to-eur',

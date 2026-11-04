@@ -1,4 +1,4 @@
-# Geld-Kompass
+# Geld-Kompass Pro
 
 Dein Begleiter zu „Der einfache Weg zur Finanziellen Freiheit“.
 

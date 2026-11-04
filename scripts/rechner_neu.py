@@ -6,7 +6,7 @@ DEBTROWS = ''.join('''<div class="drow"><label>Schuld %d (€)<input id="b%d" in
 
 NEW = []
 NEW.append(dict(slug='schneeball-lawine-rechner', short='Schneeball oder Lawine?', teaser='Welche Schuld du zuerst abzahlst',
- title='Schneeball- oder Lawinen-Methode: Rechner für mehrere Schulden | Geld-Kompass',
+ title='Schneeball- oder Lawinen-Methode: Rechner für mehrere Schulden | Geld-Kompass Pro',
  desc='Schneeball oder Lawine? Gib bis zu vier Schulden und dein Monatsbudget ein und vergleiche, welche Methode schneller schuldenfrei macht und wie viel Zinsen du sparst.',
  eyebrow='Schulden & Tilgung', h1='Schneeball oder Lawine: Welche Schuld zahlst du zuerst ab?',
  lead='Trag deine Schulden und den Betrag ein, den du jeden Monat insgesamt zahlen kannst. Der Rechner vergleicht beide Methoden mit deinen Zahlen.',
@@ -39,13 +39,13 @@ G.bind(['b1','r1','m1','b2','r2','m2','b3','r3','m3','b4','r4','m4','budget'],ru
 <h2>Die Schneeball-Methode</h2>
 <p>Hier geht das Extra-Geld an die kleinste Schuld. Du hast schneller ein Erfolgserlebnis, weil die erste Schuld bald verschwindet. Das kostet meist etwas mehr Zinsen, hilft aber vielen, dranzubleiben.</p>
 <h2>Was zählt am meisten?</h2>
-<p>Der Unterschied zwischen beiden Methoden ist oft kleiner als gedacht. Viel wichtiger ist, dass du überhaupt mehr als die Mindestrate zahlst und keine neuen Schulden dazukommen. Im Geld-Kompass rechnet der Schulden-Plan mit deinen echten Schulden weiter.</p>''',
+<p>Der Unterschied zwischen beiden Methoden ist oft kleiner als gedacht. Viel wichtiger ist, dass du überhaupt mehr als die Mindestrate zahlst und keine neuen Schulden dazukommen. Im Geld-Kompass Pro rechnet der Schulden-Plan mit deinen echten Schulden weiter.</p>''',
  faqs=[('Welche Methode ist besser?','Die Lawine spart rechnerisch meist mehr Zinsen. Der Schneeball motiviert durch schnelle Erfolge. Die beste Methode ist die, bei der du durchhältst.'),
        ('Was ist, wenn mein Budget nicht für alle Mindestraten reicht?','Dann hilft keine Methode allein. Sprich mit deinen Gläubigern oder einer kostenlosen Schuldnerberatung, zum Beispiel bei einer Verbraucherzentrale.'),
        ('Sollte ich parallel sparen?','Ein kleiner Notgroschen verhindert, dass neue Schulden entstehen. Danach lohnt sich bei teuren Schulden meist das schnelle Tilgen.')]))
 
 NEW.append(dict(slug='vier-prozent-regel-rechner', short='4-Prozent-Regel-Rechner', teaser='Wie viel Vermögen du für ein Leben vom Depot brauchst',
- title='4-Prozent-Regel-Rechner: Wie viel Vermögen brauche ich? | Geld-Kompass',
+ title='4-Prozent-Regel-Rechner: Wie viel Vermögen brauche ich? | Geld-Kompass Pro',
  desc='Mit der 4-Prozent-Regel berechnen, wie viel Vermögen du für deine monatlichen Ausgaben brauchst und wann du es mit deiner Sparrate erreichst. Kostenlos und ohne Anmeldung.',
  eyebrow='Finanzielle Freiheit', h1='4-Prozent-Regel: Wie viel Vermögen brauchst du?',
  lead='Gib ein, wie viel du im Monat ausgibst und was du schon hast. Der Rechner zeigt deine Freiheitszahl und wann du sie mit deiner Sparrate erreichen könntest.',
@@ -76,13 +76,13 @@ G.bind(['spend','other','swr','have','save','ret'],run);''',
 <h2>Warum vorsichtiger oft besser ist</h2>
 <p>Wer früh aufhört zu arbeiten, braucht das Geld deutlich länger als 30 Jahre. Viele rechnen deshalb mit 3 bis 3,5 Prozent. Steuern, Kosten und schlechte Börsenjahre direkt zu Beginn können den Plan zusätzlich belasten.</p>
 <h2>Der Hebel liegt bei den Ausgaben</h2>
-<p>Jeder Euro, den du dauerhaft weniger ausgibst, senkt deine Freiheitszahl um das 25-Fache. 100 € weniger Ausgaben im Monat sind 30.000 € weniger nötiges Vermögen. Im Geld-Kompass siehst du, wo dein Geld hinfließt.</p>''',
+<p>Jeder Euro, den du dauerhaft weniger ausgibst, senkt deine Freiheitszahl um das 25-Fache. 100 € weniger Ausgaben im Monat sind 30.000 € weniger nötiges Vermögen. Im Geld-Kompass Pro siehst du, wo dein Geld hinfließt.</p>''',
  faqs=[('Ist die 4-Prozent-Regel sicher?','Nein, sie ist eine Faustregel aus historischen Daten. Zukünftige Renditen können niedriger ausfallen. Eine niedrigere Entnahmerate gibt mehr Sicherheit.'),
        ('Zählt die gesetzliche Rente mit?','Ja. Trag sie als andere Einnahme ein. Dann sinkt der Betrag, den dein Depot liefern muss.'),
        ('Gilt die Regel auch in Deutschland?','Das Prinzip ja. Beachte aber Abgeltungsteuer, Kosten und dass die Studien auf US-Märkten beruhen.')]))
 
 NEW.append(dict(slug='kreditkarten-rechner', short='Kreditkarten-Rechner', teaser='Was dich die Mindestrate wirklich kostet',
- title='Kreditkarten-Rechner: Was kostet die Mindestrate wirklich? | Geld-Kompass',
+ title='Kreditkarten-Rechner: Was kostet die Mindestrate wirklich? | Geld-Kompass Pro',
  desc='Kreditkarten-Teilzahlung berechnen: Wie lange dauert die Rückzahlung, wenn du nur die Mindestrate zahlst, und wie viel sparst du mit einem festen Betrag? Kostenlos.',
  eyebrow='Schulden & Tilgung', h1='Kreditkarten-Rechner: Die Mindestraten-Falle',
  lead='Bei der Teilzahlung sinkt die Mindestrate mit der Schuld. Dadurch dauert die Rückzahlung oft viele Jahre. Vergleiche das mit einem festen Monatsbetrag.',
@@ -113,14 +113,14 @@ G.bind(['bal','apr','minp','minf','fix'],run);''',
 <h2>Der Ausweg: ein fester Betrag</h2>
 <p>Zahlst du jeden Monat denselben festen Betrag, sinkt die Schuld immer schneller, weil der Zinsanteil kleiner wird. Stell die Teilzahlung wenn möglich auf einen festen Betrag um und nutze die Karte nicht weiter, bis sie abbezahlt ist.</p>
 <h2>Umschulden prüfen</h2>
-<p>Ein Ratenkredit kostet oft deutlich weniger Zinsen als die Kreditkarte. Das lohnt sich aber nur, wenn die Karte danach nicht wieder belastet wird. Im Geld-Kompass zeigt der Schulden-Plan, was eine Umschuldung bringen könnte.</p>''',
+<p>Ein Ratenkredit kostet oft deutlich weniger Zinsen als die Kreditkarte. Das lohnt sich aber nur, wenn die Karte danach nicht wieder belastet wird. Im Geld-Kompass Pro zeigt der Schulden-Plan, was eine Umschuldung bringen könnte.</p>''',
  faqs=[('Wie hoch sind Kreditkartenzinsen in Deutschland?','Für die Teilzahlung oft 14 bis 25 Prozent pro Jahr. Den genauen Satz findest du in deiner Abrechnung oder im Vertrag.'),
        ('Kann ich die Mindestrate ändern?','Bei vielen Banken lässt sich der monatliche Betrag in der App oder telefonisch erhöhen oder auf vollständige Zahlung umstellen.'),
        ('Was mache ich, wenn ich nicht mehr zahlen kann?','Sprich frühzeitig mit der Bank und hol dir Hilfe bei einer kostenlosen Schuldnerberatung.')]))
 
 EN_NEW = {
 'schneeball-lawine-rechner': dict(slug='debt-snowball-avalanche-calculator', short='Snowball or avalanche?', teaser='Which debt to pay off first',
- title='Debt Snowball vs. Avalanche Calculator | Money Compass',
+ title='Debt Snowball vs. Avalanche Calculator | Money Compass Pro',
  desc='Snowball or avalanche? Enter up to four debts and your monthly budget and compare which method gets you debt-free faster and how much interest you save.',
  eyebrow='Debt & repayment', h1='Snowball or avalanche: which debt should you pay off first?',
  lead='Enter your debts and the total amount you can pay each month. The calculator compares both methods with your numbers.',
@@ -132,12 +132,12 @@ EN_NEW = {
 <h2>The snowball method</h2>
 <p>Here the extra money goes to the smallest balance. You get a quick win because the first debt disappears soon. It usually costs a little more interest, but helps many people stay on track.</p>
 <h2>What matters most</h2>
-<p>The difference between the two is often smaller than expected. Far more important is paying more than the minimum at all and not adding new debt. The Money Compass debt plan keeps calculating with your real debts.</p>''',
+<p>The difference between the two is often smaller than expected. Far more important is paying more than the minimum at all and not adding new debt. The Money Compass Pro debt plan keeps calculating with your real debts.</p>''',
  faqs=[('Which method is better?','The avalanche usually saves more interest. The snowball motivates with quick wins. The best method is the one you stick with.'),
        ('What if my budget does not cover all minimum payments?','Then no method alone will help. Talk to your creditors or a free debt counselling service.'),
        ('Should I save at the same time?','A small emergency fund prevents new debt. After that, paying off expensive debt quickly usually pays off.')]),
 'vier-prozent-regel-rechner': dict(slug='4-percent-rule-calculator', short='4 % rule calculator', teaser='How much you need to live off your portfolio',
- title='4 Percent Rule Calculator: How much do I need to retire? | Money Compass',
+ title='4 Percent Rule Calculator: How much do I need to retire? | Money Compass Pro',
  desc='Use the 4 % rule to calculate how much wealth you need for your monthly spending and when you could reach it with your savings rate. Free, no sign-up.',
  eyebrow='Financial freedom', h1='The 4 % rule: how much do you need?',
  lead='Enter how much you spend each month and what you already have. The calculator shows your freedom number and when your savings could get you there.',
@@ -150,12 +150,12 @@ EN_NEW = {
 <h2>Why more caution often makes sense</h2>
 <p>If you stop working early, the money has to last much longer than 30 years. Many therefore plan with 3 to 3.5 %. Taxes, costs and bad market years right at the start can put extra strain on the plan.</p>
 <h2>The lever is your spending</h2>
-<p>Every dollar or euro you spend less each month lowers your freedom number by 25 times as much per year. Spending 100 less a month means 30,000 less you need. The Money Compass shows where your money goes.</p>''',
+<p>Every dollar or euro you spend less each month lowers your freedom number by 25 times as much per year. Spending 100 less a month means 30,000 less you need. The Money Compass Pro shows where your money goes.</p>''',
  faqs=[('Is the 4 % rule safe?','No, it is a rule of thumb based on history. Future returns may be lower. A lower withdrawal rate gives more safety.'),
        ('Does a pension count?','Yes. Enter it as other income, so your portfolio needs to deliver less.'),
        ('Does it apply outside the US?','The principle does. Consider local taxes, costs and that the studies are based on US markets.')]),
 'kreditkarten-rechner': dict(slug='credit-card-payoff-calculator', short='Credit card payoff calculator', teaser='What the minimum payment really costs you',
- title='Credit Card Minimum Payment Calculator | Money Compass',
+ title='Credit Card Minimum Payment Calculator | Money Compass Pro',
  desc='Credit card payoff calculator: how long repayment takes with minimum payments only and how much a fixed monthly amount saves. Free, no sign-up.',
  eyebrow='Debt & repayment', h1='Credit card calculator: the minimum payment trap',
  lead='With minimum payments the payment shrinks along with the balance, so paying off often takes many years. Compare that with a fixed monthly amount.',
@@ -167,7 +167,7 @@ EN_NEW = {
 <h2>The way out: a fixed amount</h2>
 <p>If you pay the same fixed amount every month, the balance falls faster and faster because the interest part shrinks. Set up a fixed payment if you can and stop using the card until it is paid off.</p>
 <h2>Consider consolidating</h2>
-<p>A personal loan often costs much less interest than a credit card. It only pays off if you don't run the card up again. The Money Compass debt plan shows what refinancing could bring.</p>''',
+<p>A personal loan often costs much less interest than a credit card. It only pays off if you don't run the card up again. The Money Compass Pro debt plan shows what refinancing could bring.</p>''',
  faqs=[('How high is credit card interest?','In the US often 20 % APR or more, in Germany 14 to 25 % for revolving credit. Your statement shows your exact rate.'),
        ('Can I change my minimum payment?','Many issuers let you pay more or set up autopay for a fixed amount or the full balance in the app.'),
        ('What if I can no longer pay?','Talk to your card issuer early and get help from a free, nonprofit credit counselling service.')]),

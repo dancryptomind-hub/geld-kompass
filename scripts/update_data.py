@@ -1,4 +1,4 @@
-"""Aktualisiert data/markets.json für den Geld Kompass.
+"""Aktualisiert data/markets.json für den Geld-Kompass Pro.
 
 Läuft täglich per GitHub Action. Quellen (alle kostenlos, ohne API-Schlüssel):
   - ETFs und Aktien: Yahoo Finance über yfinance
