@@ -8,6 +8,9 @@ window.GK_PARTNER = {
   broker: null,      /* App: Sparplan-Rechner („Sparplan anlegen“) */
   fx: null,          /* Währungsrechner (App und Rechnerseiten): Geld ins Ausland senden */
   kredit: null,      /* App: „Umschulden prüfen“ */
+  versicherung: null, /* Festung: Turm „Versicherungen“ fehlt (BU-/Haftpflicht-Vergleich) */
+  tagesgeld: null,   /* Festung: Turm „Notgroschen“ fehlt (Tagesgeld) */
+  wallet: null,      /* Festung: Krypto liegt auf einer Börse (Hardware-Wallet) */
   newsletter: null   /* App „Zum Buch“ und Rechnerseiten: Arbeitsbuch-PDF gegen E-Mail */
 };
 (function(){
