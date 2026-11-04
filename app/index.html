@@ -2413,7 +2413,7 @@ function renderReset(c){$("resetArea").innerHTML=c?'<div class="confirm">Wirklic
 var LIVEQ={};
 function ensureLive(){var now=Date.now();D().hold.forEach(function(h){var s=h.s,x=IMAP[s];if(!x||x.cg||s==="GOLD-G"||s==="SILVER-G")return;if(LIVEQ[s]&&now-LIVEQ[s]<15*60*1000)return;LIVEQ[s]=now;
   yahooQuoteEUR(s).then(function(p){if(p>0){M.live[s]=p;M.liveQ=new Date();renderAll();}}).catch(function(){});});}
-function renderAll(){ensureLive();try{renderSafe();}catch(e){}setTimeout(function(){try{alarmCheck();}catch(e){}},1500);try{autoSnap();}catch(e){}renderMode();renderOverview();renderBookings();renderDebts();renderAssets();renderRecurring();try{renderTax();}catch(e){}try{renderNomad();}catch(e){}try{renderFM();}catch(e){}try{renderKompass();}catch(e){}try{renderAudit();}catch(e){}try{renderStress();}catch(e){}try{renderLex();}catch(e){}renderCalc();renderExamples();renderBook();renderData();if(Journey)Journey.render();}
+function renderAll(){ensureLive();try{renderSafe();}catch(e){}setTimeout(function(){try{alarmCheck();}catch(e){}},1500);try{autoSnap();}catch(e){}renderMode();renderOverview();renderBookings();renderDebts();renderAssets();renderRecurring();try{renderTax();}catch(e){}try{renderNomad();}catch(e){}try{renderFM();}catch(e){}try{renderKompass();}catch(e){}try{renderAudit();}catch(e){}try{gkSummary();}catch(e){}try{renderStress();}catch(e){}try{renderLex();}catch(e){}renderCalc();renderExamples();renderBook();renderData();if(Journey)Journey.render();}
 
 /* ================= BEARBEITEN, RÜCKGÄNGIG, WÄHRUNGSWECHSEL ================= */
 /* Jede eigene Position lässt sich vollständig ändern, ohne sie zu löschen. Löschen ist 6 s rückgängig zu machen. */
@@ -3336,6 +3336,12 @@ document.addEventListener("click",function(ev){if(ev.target.closest&&ev.target.c
 /* ================= STEUER-COCKPIT AUFKLAPPBAR ================= */
 document.addEventListener("toggle",function(ev){if(ev.target.id==="taxDet"){S.calc.taxOpen=ev.target.open?1:0;save();}},true);
 
+/* ================= EINE QUELLE FÜR ALLE RECHNER (Gemini Phase 1) ================= */
+/* Kurzfassung der eigenen Zahlen nur auf diesem Gerät, damit die Rechnerseiten sie auf Knopfdruck übernehmen können. Nichts verlässt das Gerät. */
+function gkSummary(){try{if(S.mode!=="own"){localStorage.removeItem("geld-kompass-summary");return;}var d=S.own,t=totals(d);if(!(t.income>0||t.spend>0||t.net))return;
+  var ds=(t.debts||[]).filter(function(x){return num(x.bal)>0;}).map(function(x){return {n:x.name,k:x.kind,b:Math.round(num(x.bal)),r:num(x.rate),p:Math.round(num(x.pay))};}).sort(function(a,b){return b.b-a.b;});
+  var rates={};["EUR","USD","GBP","CHF","CAD","AUD"].forEach(function(c){var r=rateOf(c);if(r)rates[c]=r;});
+  localStorage.setItem("geld-kompass-summary",JSON.stringify({v:1,at:today(),cur:CUR,rcur:rateOf(CUR)||1,rates:rates,income:Math.round(t.income),spend:Math.round(t.spend),invest:Math.round(t.invest),surplus:Math.round(t.surplus),liquid:Math.round(t.liquid),depot:Math.round(t.depot),aktiva:Math.round(t.aktiva),net:Math.round(t.net),debts:ds}));}catch(e){}}
 /* ================= EVENTS ================= */
 function bind(){
   document.addEventListener("click",function(ev){var t=ev.target,el;

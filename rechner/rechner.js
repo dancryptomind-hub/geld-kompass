@@ -56,6 +56,25 @@ function bind(ids,fn){restore(ids);sharedNote();RUNS.push(fn);ids.forEach(functi
   relabel();
   sel.addEventListener('change',function(){CUR=sel.value;try{localStorage.setItem(CKEY,CUR);}catch(e){}setFmt();relabel();RUNS.forEach(function(f){try{f();}catch(e){}});});
 })();
+/* Eine Quelle (Gemini Phase 1): eigene Zahlen aus dem Geld-Kompass Pro auf Knopfdruck übernehmen. Liest nur die Kurzfassung auf diesem Gerät. */
+(function(){if(SHARED)return;var box=document.querySelector('.calc');if(!box)return;var G=null;try{G=JSON.parse(localStorage.getItem('geld-kompass-summary')||'null');}catch(e){}if(!G||G.v!==1)return;
+  function cv(v){var a=G.rates&&G.rates[CUR],b=G.rcur||1;if(G.cur===CUR||!a)return v;return Math.round(v/b*a);}
+  var path=location.pathname,D=G.debts||[],totB=D.reduce(function(s,x){return s+x.b;},0),totP=D.reduce(function(s,x){return s+x.p;},0),wr=totB?D.reduce(function(s,x){return s+x.b*x.r;},0)/totB:0,save=Math.max(0,G.surplus)+Math.max(0,G.invest);
+  var M=null;
+  if(/sparplan|savings-plan/.test(path))M={rate:cv(Math.max(G.invest,save)||G.invest),start:cv(G.depot)};
+  else if(/notgroschen|emergency-fund/.test(path))M={cost:cv(G.spend),have:cv(G.liquid),save:cv(Math.max(0,G.surplus))};
+  else if(/freiheitstage|freedom-days/.test(path))M={assets:cv(G.aktiva),debts:cv(totB),spend:cv(G.spend),save:cv(save)};
+  else if(/schuldenfrei|debt-free/.test(path)){if(!D.length)return;M={debt:cv(totB),rate:Math.round(wr*10)/10,pay:cv(totP),extra:cv(Math.max(0,G.surplus))};}
+  else if(/schneeball|snowball/.test(path)){if(!D.length)return;M={budget:cv(totP+Math.max(0,G.surplus))};for(var i=0;i<4;i++){var x=D[i];M['b'+(i+1)]=x?cv(x.b):0;M['r'+(i+1)]=x?x.r:0;M['m'+(i+1)]=x?cv(x.p):0;}}
+  else if(/vier-prozent|4-percent/.test(path))M={spend:cv(G.spend),have:cv(G.liquid+G.depot),save:cv(save)};
+  else if(/kreditkarten|credit-card/.test(path)){var c=D.filter(function(x){return x.k==='card';})[0];if(!c)return;M={bal:cv(c.b),apr:c.r,fix:cv(c.p)};}
+  if(!M)return;var keys=Object.keys(M).filter(function(k){return $(k);});if(!keys.length)return;
+  var bar=document.createElement('div');bar.className='gkfill';
+  bar.innerHTML='<div><b>'+(EN?'Use your numbers from Geld-Kompass Pro':'Deine Zahlen aus dem Geld-Kompass Pro übernehmen')+'</b><small>'+(EN?'From your app on this device, as of ':'Aus deiner App auf diesem Gerät, Stand ')+esc(G.at)+(EN?'. Nothing is sent.':'. Es wird nichts gesendet.')+'</small></div><button type="button" class="gkfill-b">'+(EN?'Fill in':'Übernehmen')+'</button>';
+  var cb=box.querySelector('.curbar');box.insertBefore(bar,cb?cb.nextSibling:box.firstChild);
+  bar.querySelector('button').addEventListener('click',function(){keys.forEach(function(k){var el=$(k);el.value=String(M[k]).replace('.',EN?'.':',');if(el.type==='number')el.value=M[k];el.dispatchEvent(new Event('input',{bubbles:true}));el.dispatchEvent(new Event('change',{bubbles:true}));});RUNS.forEach(function(f){try{f();}catch(e){}});bar.classList.add('done');bar.querySelector('button').textContent=EN?'Filled ✓':'Übernommen ✓';});
+  var st=document.createElement('style');st.textContent='.gkfill{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:0 0 14px;padding:12px 14px;border-radius:14px;border:1px solid rgba(227,181,90,.55);background:linear-gradient(135deg,rgba(245,213,143,.14),rgba(201,146,39,.06))}.gkfill b{display:block}.gkfill small{opacity:.75;font-size:.8rem}.gkfill-b{border:0;border-radius:10px;padding:9px 16px;font-weight:800;background:linear-gradient(135deg,#f5d58f,#c99227);color:#0e1730;cursor:pointer}.gkfill.done{border-color:rgba(111,207,151,.6)}';document.head.appendChild(st);
+})();
 if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}
 window.GKR={num:num,$:$,val:val,E:E,nf1:nf1,nf0:nf0,monthName:monthName,esc:esc,share:share,bind:bind,restore:restore,BASE:BASE,EN:EN,LANG:LANG};
 })();
