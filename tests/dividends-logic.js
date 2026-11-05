@@ -2,7 +2,7 @@
 const { chromium } = require('playwright');
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1280, height: 900 } }); const errs = []; p.on('pageerror', e => errs.push(e.message));
-  await p.goto('http://localhost:8765/app/?lang=de#overview'); await p.waitForTimeout(1500);
+  await p.goto((process.env.BASE||'http://localhost:8765')+'/app/?lang=de#overview'); await p.waitForTimeout(1500);
   const ym = await p.evaluate(() => { const d = new Date(); return d.toISOString().slice(0, 7); });
   await p.evaluate((ym) => {
     const S = JSON.parse(localStorage.getItem('geldkompass.v3') || '{}'); S.mode = 'own'; S.onboarded = 1; S.own = S.own || {};
