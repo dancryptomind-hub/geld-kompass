@@ -22,6 +22,8 @@ jobs:
           sleep 2
           node tests/preset-icons.js
           node tests/preset-ui.js
+          node tests/tax-guide.js
+          node tests/nomad-tax-link.js
           node tests/chart-interactions.js
           node tests/audit-calculation.js
           node tests/audit-fx-ui.js
