@@ -25,6 +25,7 @@ jobs:
           node tests/tax-guide.js
           node tests/nomad-tax-link.js
           node tests/chart-interactions.js
+          node tests/privacy-charts.js
           node tests/audit-calculation.js
           node tests/audit-fx-ui.js
           node tests/audit-portfolio-ui.js
