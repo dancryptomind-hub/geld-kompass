@@ -43,10 +43,9 @@ main.lp>#app,main.lp>.links,main.lp>small{max-width:560px;margin-left:auto;margi
 
 .lp-feat article.lp-globe{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:20px;padding:24px;background:radial-gradient(ellipse at 24% 40%,rgba(31,95,113,.13),transparent 65%),var(--card)}.lp-globe [data-home-globe]{display:block;width:100%;height:auto;max-height:none;margin:0;background:none;border-radius:0;touch-action:none;cursor:grab;outline-offset:-12px}.lp-globe [data-home-globe]:active{cursor:grabbing}.lp-globe [data-home-globe]:focus-visible{outline:2px solid var(--gold);border-radius:20px}.nomad-art{min-width:0}.globe-help{text-align:center;font-size:12px!important;color:var(--muted)!important;margin:-6px 0 0!important}.nomad-copy{min-width:0}.lp-globe h3{font-size:clamp(22px,2.5vw,30px);font-family:Playfair,Georgia,serif;margin-top:0}.globe-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;margin:20px 0 14px}.globe-tabs button{font:inherit;font-size:12px;color:var(--muted);background:transparent;border:1px solid var(--line);border-radius:10px;padding:10px 5px;cursor:pointer;min-width:0}.globe-tabs button span{display:block;font-size:23px;margin-bottom:3px}.globe-tabs button[aria-pressed=true]{color:var(--gold);border-color:var(--gold);background:rgba(227,181,90,.07)}.globe-tabs button:focus-visible{outline:2px solid var(--gold);outline-offset:3px}.globe-readout{display:grid;grid-template-columns:1.4fr 1fr;gap:14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0}.globe-readout small{display:block;color:var(--muted);font-size:12px}.globe-readout b{display:block;font-size:22px;line-height:1.6;font-variant-numeric:tabular-nums}.globe-note{font-size:12px!important;line-height:1.5}.nomad-copy .btn{width:auto!important;display:inline-block;font-size:13px;margin-top:4px}@media(max-width:760px){.lp-feat article.lp-globe{grid-template-columns:1fr;padding:16px;gap:8px}.nomad-art{max-width:540px;width:100%;margin:auto}.lp-globe h3{font-size:25px}.globe-help{margin-top:-16px!important}.globe-readout b{font-size:21px}}
 </style>
-</head>
-<body><main class="lp">
-<a class="logo" href="/"><img class="gk-logo" src="/icons/logo-emblem.webp?v=3" alt="" aria-hidden="true"><b>Geld-<span>Kompass</span> <span class="pro">Pro</span></b></a>
-
+<link rel="stylesheet" href="/ui.css?v=1"></head>
+<body class="gk-u">
+<header class="top gk-chrome"><div class="wrap"><a class="logo" href="/"><img class="gk-logo" src="/icons/logo-badge.webp?v=3" alt="" aria-hidden="true" width="34" height="34"><b>Geld-<span>Kompass</span> <span class="pro">Pro</span></b></a><nav><a href="/rechner/">Rechner</a><a href="/ratgeber/">Ratgeber</a><a class="langsw" data-bi href="?lang=en" hreflang="en">English</a><script>(function(){var a=document.currentScript.previousElementSibling;if(document.documentElement.lang==="en"){a.href="?lang=de";a.hreflang="de";a.textContent="Deutsch";a.setAttribute("data-i18n-skip","")}})();</script><a class="navapp" href="/app/"><span class="l">App öffnen</span><span class="s">App</span></a></nav></div></header><main class="lp">
 <div class="lp-hero"><div class="lp-copy">
 <div class="k">Kostenloser Finanzplaner</div>
 <h1>Die Finanz-App, die in Freiheit rechnet, nicht in Fiat.</h1>
@@ -94,9 +93,9 @@ main.lp>#app,main.lp>.links,main.lp>small{max-width:560px;margin-left:auto;margi
   <div class="ok" id="done">Der Geld-Kompass Pro ist auf diesem Gerät bereits als App installiert.</div>
 </section>
 
-<nav class="links"><a href="/rechner/">Kostenlose Rechner</a><a href="/impressum/">Impressum</a><a href="/datenschutz/">Datenschutz</a><a href="/werbung/">Werbung</a><a href="https://geld-kompass.com/go/whatsapp/" target="_blank" rel="noopener">WhatsApp-Kanal</a><a href="/go/buch/" target="_blank" rel="noopener">Das Buch</a><a href="/arbeitsbuch/">Arbeitsbuch</a></nav>
-<small>Allgemeine Finanzbildung, keine Anlageberatung. © FreedomByDan</small>
+
 </main>
+<footer class="gk-foot"><div class="wrap"><nav><a href="/rechner/">Rechner</a><a href="/ratgeber/">Ratgeber</a><a href="/einbinden/">Einbinden</a><a href="/auswandern-finanzen/">Auswandern</a><a href="/arbeitsbuch/">Arbeitsbuch</a><a href="/impressum/">Impressum</a><a href="/datenschutz/">Datenschutz</a><a href="/werbung/">Werbung</a><a href="https://geld-kompass.com/go/whatsapp/" target="_blank" rel="noopener">WhatsApp</a></nav><p>Geld-Kompass Pro · © FreedomByDan · Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung. Alle Berechnungen sind Modellrechnungen.</p></div></footer>
 <script>(function(){
   var deferred=null,btn=document.getElementById('install'),ios=document.getElementById('ios'),other=document.getElementById('other'),done=document.getElementById('done');
   var standalone=window.matchMedia('(display-mode: standalone)').matches||navigator.standalone===true;

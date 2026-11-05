@@ -157,3 +157,7 @@ for p in PAGES:
     open('ratgeber/%s/index.html' % p['slug'], 'w').write(page(p))
 open('ratgeber/index.html', 'w').write(hub())
 print('ok', len(PAGES))
+
+# Einheitlicher Rahmen (Kopfzeile, Fuß, ui.css) für alle öffentlichen Seiten
+import importlib.util as _ilu, os as _os
+_sp = _ilu.spec_from_file_location('unify_chrome', _os.path.join(_os.path.dirname(_os.path.abspath(__file__)), 'unify_chrome.py')); _m = _ilu.module_from_spec(_sp); _sp.loader.exec_module(_m); _m.run()

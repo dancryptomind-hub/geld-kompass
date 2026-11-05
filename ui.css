@@ -1,0 +1,39 @@
+/* Geld-Kompass Pro · gemeinsamer Rahmen für alle öffentlichen Seiten (Kopfzeile, Fuß, Grundtypografie).
+   Wird nach site.css bzw. rechner.css geladen und vereinheitlicht beide. */
+@font-face{font-family:Playfair;src:url(/assets/PlayfairDisplay-700.ttf) format("truetype");font-weight:700;font-display:swap}
+:root{--gk-bg:#0e1730;--gk-card:#16244a;--gk-card2:#1b2c57;--gk-gold:#e3b55a;--gk-ink:#f4f1ea;--gk-muted:#a9b2c6;--gk-line:rgba(227,181,90,.3)}
+html{scroll-padding-top:76px}
+body{background:radial-gradient(120% 70% at 50% 0%,#1d3060 0%,var(--gk-bg) 60%) no-repeat,var(--gk-bg)}
+body.gk-u{display:block;padding:0}
+body.gk-u>main{margin:0 auto;padding:28px 16px 0;width:100%}
+body.gk-u>main.legal{max-width:760px}
+body.gk-u>main:not(.lp):not(.legal){max-width:760px}
+/* Kopfzeile */
+header.top.gk-chrome{position:sticky;top:0;z-index:50;background:rgba(14,23,48,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--gk-line)}
+header.top.gk-chrome .wrap{max-width:1120px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:14px}
+header.top.gk-chrome .logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--gk-ink);font-family:Playfair,Georgia,serif;font-size:20px;font-weight:700;white-space:nowrap}
+header.top.gk-chrome .logo b{font-weight:700}header.top.gk-chrome .logo span{color:var(--gk-gold)}
+header.top.gk-chrome .logo img{width:34px;height:34px;border-radius:8px;flex:none}
+header.top.gk-chrome .logo .pro{font-family:Figtree,system-ui,sans-serif;font-size:11px;font-weight:800;letter-spacing:.04em;color:#1a1405;background:linear-gradient(135deg,#f0c56a,#c99227);padding:2px 7px;border-radius:6px;vertical-align:3px;margin-left:2px}
+header.top.gk-chrome nav{display:flex;align-items:center;gap:6px;flex-wrap:nowrap}
+header.top.gk-chrome nav a{font:600 14px/1 Figtree,system-ui,sans-serif;color:var(--gk-muted);text-decoration:none;padding:9px 10px;border-radius:10px;white-space:nowrap}
+header.top.gk-chrome nav a:hover{color:var(--gk-gold);background:rgba(227,181,90,.08)}
+header.top.gk-chrome nav a.navapp{background:linear-gradient(135deg,#f0c56a,#c99227);color:#1a1405;padding:10px 14px;margin-left:4px}
+header.top.gk-chrome nav a.navapp:hover{filter:brightness(1.06);color:#1a1405}
+header.top.gk-chrome .navapp .s{display:none}
+@media(max-width:640px){header.top.gk-chrome nav a:not(.navapp):not(.langsw){display:none}header.top.gk-chrome .logo{font-size:17px;gap:8px}header.top.gk-chrome .logo img{width:30px;height:30px}header.top.gk-chrome nav a.langsw{padding:9px 6px;font-size:13px}header.top.gk-chrome .navapp .l{display:none}header.top.gk-chrome .navapp .s{display:inline}header.top.gk-chrome .wrap{gap:8px}}
+@media(max-width:380px){header.top.gk-chrome .logo .pro{display:none}}
+/* Fuß */
+footer.gk-foot{margin:56px 0 0;border-top:1px solid var(--gk-line);padding:26px 0 calc(34px + env(safe-area-inset-bottom));font-size:13px;color:var(--gk-muted);background:rgba(10,17,36,.35)}
+footer.gk-foot .wrap{max-width:1120px;margin:0 auto;padding:0 16px}
+footer.gk-foot nav{display:flex;flex-wrap:wrap;gap:6px 18px;margin-bottom:10px}
+footer.gk-foot nav a{color:var(--gk-ink);text-decoration:none;font-weight:600;font-size:14px}footer.gk-foot nav a:hover{color:var(--gk-gold)}
+footer.gk-foot p{margin:0;max-width:820px;line-height:1.55}
+/* Grundtypografie überall gleich */
+main h1{font-family:Playfair,Georgia,serif;font-weight:700;letter-spacing:-.01em}
+main h2{font-family:Playfair,Georgia,serif;font-weight:700}
+.legal h1{font-family:Playfair,Georgia,serif!important;font-size:clamp(30px,4.6vw,42px)!important}
+main.wrap h1{font-size:clamp(30px,4.6vw,44px)}
+.eyebrow,.k{color:var(--gk-gold);letter-spacing:.14em;font-size:12px;text-transform:uppercase;font-weight:700}
+header.top.gk-chrome .gk-language{display:none!important}
+header.top.gk-chrome .wrap{flex-wrap:nowrap!important}header.top.gk-chrome nav{flex-basis:auto!important}header.top.gk-chrome nav a{white-space:nowrap!important}
