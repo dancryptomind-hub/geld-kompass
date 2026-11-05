@@ -48,5 +48,6 @@ jobs:
           node tests/layout-gaps.js
           node tests/recurring-scan.js
           node tests/tour.js
+          node tests/dividends-logic.js
           node tests/share-links.js
           node tests/app-share-links.js
