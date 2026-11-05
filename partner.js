@@ -11,6 +11,9 @@ window.GK_PARTNER = {
   versicherung: null, /* Festung: Turm „Versicherungen“ fehlt (BU-/Haftpflicht-Vergleich) */
   tagesgeld: null,   /* Festung: Turm „Notgroschen“ fehlt (Tagesgeld) */
   wallet: null,      /* Festung: Krypto liegt auf einer Börse (Hardware-Wallet) */
+  internet: null,   /* Abos/Ratgeber: Internetanschluss (DSL/Kabel/Glasfaser) */
+  kfz: null,        /* Abos/Ratgeber: Kfz-Versicherung (Stichtag 30.11.) */
+  girokonto: null,  /* Abos/Ratgeber: Girokonto ohne Gebühren */
   mobilfunk: null,  /* Abos: Spar-Check „Handy & Internet“ (Tarifvergleich) */
   energie: null,    /* Abos: Spar-Check „Strom & Gas“ (Energievergleich) */
   streaming: null,  /* Abos: Spar-Check „Abos & Streaming“ (z. B. Abo-Manager) */
