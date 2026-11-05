@@ -594,7 +594,7 @@ for lang, base, pages in (('de', 'rechner', PAGES), ('en', 'en/calculators', PAG
         os.makedirs(base + '/' + p['slug'], exist_ok=True)
         open('%s/%s/index.html' % (base, p['slug']), 'w').write(render(p))
     open(base + '/index.html', 'w').write(hub(lang))
-urls = [BASE, BASE + 'app/', BASE + 'start/', BASE + 'buchbegruessung/', BASE + 'arbeitsbuch/', BASE + 'rechner/', BASE + 'en/calculators/', BASE + 'dividenden-kalender/', BASE + 'en/dividend-calendar/', BASE + 'en/workbook/', BASE + 'einbinden/', BASE + 'en/embed/', BASE + 'werbung/', BASE + 'ratgeber/', BASE + 'ratgeber/handy-internet-sparen/', BASE + 'ratgeber/strom-gas-wechseln/', BASE + 'ratgeber/versicherungen-pruefen/'] + \
+urls = [BASE, BASE + 'app/', BASE + 'start/', BASE + 'buchbegruessung/', BASE + 'arbeitsbuch/', BASE + 'rechner/', BASE + 'en/calculators/', BASE + 'dividenden-kalender/', BASE + 'en/dividend-calendar/', BASE + 'en/workbook/', BASE + 'einbinden/', BASE + 'en/embed/', BASE + 'werbung/', BASE + 'ratgeber/', BASE + 'ratgeber/handy-internet-sparen/', BASE + 'ratgeber/strom-gas-wechseln/', BASE + 'ratgeber/versicherungen-pruefen/', BASE + 'auswandern-finanzen/', BASE + 'en/expat-money-app/'] + \
        [BASE + 'rechner/' + p['slug'] + '/' for p in PAGES] + [BASE + 'en/calculators/' + p['slug'] + '/' for p in PAGES_EN]
 open('sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     ''.join('<url><loc>%s</loc><lastmod>%s</lastmod></url>\n' % (u, TODAY) for u in urls) + '</urlset>\n')
