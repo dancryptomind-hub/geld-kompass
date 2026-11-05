@@ -488,7 +488,8 @@ details.more{margin-top:12px;border:1px solid var(--line);border-radius:14px;pad
 <script src="/konto/admin-access.js" defer></script>
 <script src="/i18n.js"></script>
 <script src="/partner.js" defer></script>
-<link rel=stylesheet href=/visuals.css?v20261104a><script src=/visuals.js?v20261104a></script></head>
+<link rel=stylesheet href=/visuals.css?v20261104a><script src=/visuals.js?v20261104a></script><script src="/chart-interactions.js?v20261105a"></script>
+</head>
 <body>
 <div class="app">
 <aside class="side" id="side" aria-label="Navigation">
@@ -1905,7 +1906,7 @@ function chartSelection(input){var box=input.closest('.wealth-chart'),d=JSON.par
  box.querySelectorAll('[data-chart-value]').forEach(function(e){var j=+e.getAttribute('data-chart-value');e.textContent=E(d.series[j].d[Math.min(i,d.series[j].d.length-1)]||0);});
  box.querySelectorAll('[data-chart-cursor]').forEach(function(e){e.setAttribute('x1',x);e.setAttribute('x2',x);});
  box.querySelectorAll('[data-chart-dot]').forEach(function(e){var j=+e.getAttribute('data-chart-dot'),a=d.series[j].d,v=a[Math.min(i,a.length-1)]||0;e.setAttribute('cx',x);e.setAttribute('cy',e.hasAttribute('data-chart-after')?8+64*(1-Math.max(0,v)/d.afterMax):d.pt+(d.h-d.pt-d.pb)*(1-Math.max(0,v)/d.max));});}
-function chartPointer(e){if(e.type==='pointermove'&&e.pointerType!=='mouse')return;var svg=e.target.closest('.wealth-plot');if(!svg)return;var box=svg.closest('.wealth-chart'),d=JSON.parse(box.getAttribute('data-chart')),r=svg.getBoundingClientRect(),x=(e.clientX-r.left)*d.w/r.width,input=box.querySelector('.wealth-scrub');input.value=Math.max(0,Math.min(d.n,Math.round((x-d.pl)*d.n/(d.w-d.pl-d.pr))));chartSelection(input);}
+function chartPointer(e){var svg=e.target.closest('.wealth-plot');if(!svg)return;if(e.type==='pointermove'&&e.pointerType!=='mouse'&&!svg.hasPointerCapture(e.pointerId))return;if(e.type==='pointerdown'&&e.pointerType!=='mouse')svg.setPointerCapture(e.pointerId);var box=svg.closest('.wealth-chart'),d=JSON.parse(box.getAttribute('data-chart')),r=svg.getBoundingClientRect(),x=(e.clientX-r.left)*d.w/r.width,input=box.querySelector('.wealth-scrub');input.value=Math.max(0,Math.min(d.n,Math.round((x-d.pl)*d.n/(d.w-d.pl-d.pr))));chartSelection(input);}
 function lineChart(series,n,label,unit){
  n=Math.max(1,Math.round(n));unit=unit||'y';var en=window.GK_LANG==='en',mobile=window.innerWidth<600,W=mobile?360:760,H=mobile?250:290,pl=54,pr=22,pt=20,pb=40,id='wealth-'+(++chartSeq);
  var hasDebt=series.some(function(s){return /Restschuld/.test(s.l);}),afterIndex=hasDebt?series.findIndex(function(s){return /Danach angelegt/.test(s.l);}):-1;
@@ -2732,11 +2733,8 @@ function runPlans(){if(S.mode!=="own"||!S.own.hold)return;var now=ymNow(),change
   if(changed)save();}
 /* Depot-Verlauf: einmal am Tag der Depotwert (in Euro gespeichert, damit ein Währungswechsel den Verlauf nicht verfälscht) */
 function recordHist(depot){if(S.mode!=="own"||M.status!=="live"||!(depot>0))return;var h=S.own.hist||(S.own.hist={}),d=today(),v=Math.round(depot/fxr()*100)/100;if(h[d]!==v){h[d]=v;var ks=Object.keys(h).sort();while(ks.length>800)delete h[ks.shift()];save();}}
-function histHTML(){var h=S.own.hist||{},ks=Object.keys(h).sort();if(ks.length<2)return '<p class="desc">Der Verlauf füllt sich ab jetzt jeden Tag, an dem du den Geld-Kompass Pro öffnest.</p>';
-  ks=ks.slice(-365);var vs=ks.map(function(k){return h[k]*fxr();}),mn=Math.min.apply(null,vs),mx=Math.max.apply(null,vs),W=600,H=160,pad=6;if(mx===mn)mx=mn+1;
-  var pts=vs.map(function(v,i){return (pad+(W-2*pad)*i/(vs.length-1)).toFixed(1)+","+(pad+(H-2*pad)*(1-(v-mn)/(mx-mn))).toFixed(1);}).join(" ");var up=vs[vs.length-1]>=vs[0];
-  return GKVisuals.historyPlot(vs,[fdate(ks[0]),fdate(ks[ks.length-1])],E,window.GK_LANG==="en")+
-    '<div class="row" style="justify-content:space-between"><small class="desc">'+fdate(ks[0])+': '+E(vs[0])+'</small><small class="desc">'+fdate(ks[ks.length-1])+': <b class="'+(up?"pos":"neg")+'">'+E(vs[vs.length-1])+'</b> ('+(up?"+":"")+pct(vs[vs.length-1]/vs[0]-1)+')</small></div>';}
+function histHTML(){var h=S.own.hist||{},data=Object.keys(h).sort().map(function(k){return {time:k,value:Number(h[k])*fxr()};});if(!data.length)return '<p class="desc">'+LG("Der Verlauf beginnt mit deinem ersten gespeicherten Depotstand.","The history starts with your first recorded portfolio value.")+'</p>';var known=(D().hold||[]).map(holdInfo).filter(function(x){return x.pl!=null;});return GKCharts.historyHTML(data,{currency:CUR,en:window.GK_LANG==="en",summary:known.length?{gain:known.reduce(function(n,x){return n+x.pl;},0)}:null});}
+
 /* Grobe Steuerschätzung Deutschland: Abgeltungsteuer + Soli 26,375 %, Sparerpauschbetrag 1.000 €, Teilfreistellung Aktien-ETF 30 %. Krypto ausgenommen (nach 1 Jahr steuerfrei). */
 function taxEst(hs){var g=0;hs.forEach(function(x){if(x.pl==null||x.t==="Krypto"||x.t==="Edelmetall")return;g+=x.t==="ETF"?x.pl*0.7:x.pl;});var free=1000*fxr(),base=Math.max(0,g-free);return {gain:g,tax:base*0.26375};}
 function realizedHTML(){var r=S.own.realized||[];if(!r.length)return "";var sum=r.reduce(function(s,x){return s+toDisp(x.pl,x.cur);},0);
