@@ -3,7 +3,7 @@ const { chromium } = require('playwright');
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1280, height: 900 } }); const errs = [];
   p.on('pageerror', e => errs.push(e.message));
-  await p.goto('http://localhost:8765/app/?lang=de#recurring'); await p.waitForTimeout(1500);
+  await p.goto((process.env.BASE||'http://localhost:8765')+'/app/?lang=de#recurring'); await p.waitForTimeout(1500);
   await p.evaluate(() => {
     const S = JSON.parse(localStorage.getItem('geldkompass.v3') || '{}'); const ym = k => { const d = new Date(); d.setDate(15); d.setMonth(d.getMonth() - k); return d.toISOString().slice(0, 10); };
     const e = []; let i = 0; const add = (t, a, type, cat, k) => e.push({ id: 'x' + (i++), title: t, amount: a, type, cat, freq: 'once', date: ym(k) });

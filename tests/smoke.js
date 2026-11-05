@@ -11,7 +11,7 @@ for(const d of fs.readdirSync('en/calculators',{withFileTypes:true}))if(d.isDire
 const GER=/[äöüßÄÖÜ]|\b(und|nicht|deine?n?|oder|wird|sind|Monat|Jahre|Schulden|Ausgaben|Einnahmen)\b/;
 (async()=>{const b=await chromium.launch();let fail=[],warn=new Set();
  for(const lang of ['de','en']){const c=await b.newContext({locale:lang==='en'?'en-US':'de-DE',serviceWorkers:'block'});
-  await c.route(/^https?:\/\/(?!localhost)/,r=>r.abort());/* keine Netzanfragen nach außen: Test bleibt stabil */
+  await c.route('**/*',r=>new URL(r.request().url()).origin===new URL(BASE).origin?r.continue():r.abort());/* keine Netzanfragen nach außen: Test bleibt stabil */
   const p=await c.newPage();let cur='';p.on('pageerror',e=>fail.push(lang+' '+cur+': '+e.message));
   const list=PAGES.concat(['/app/?lang='+lang]);
   for(const u of list){cur=u;await p.goto(BASE+u+(u.includes('?')?'':'?lang='+lang),{waitUntil:'load'});await p.waitForTimeout(500);

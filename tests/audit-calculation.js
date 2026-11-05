@@ -3,9 +3,9 @@ const fs=require('fs'),vm=require('vm'),assert=require('node:assert/strict');
 const html=fs.readFileSync('app/index.html','utf8');
 function extract(name){const start=html.indexOf('function '+name+'(');assert.ok(start>=0,name+' vorhanden');let end=html.indexOf('\nfunction ',start+1);if(end<0)end=html.length;return html.slice(start,end);}
 const holdings=[{s:'BTC',name:'Bitcoin',qty:31,price:1000,t:'Krypto',src:'Wallet'},{s:'BTC',name:'Bitcoin',qty:20.2,price:1000,t:'Krypto',src:'Broker'},{s:'WORLD',name:'Weltfonds',qty:48.8,price:1000,t:'ETF'}];
-const ctx={D:()=>({hold:holdings}),holdInfo:h=>({name:h.name,t:h.t,value:h.qty*h.price,price:h.price,cost:null,pl:null}),S:{mode:'own',own:{realized:[]}},IMAP:{},num:x=>Number(x)||0,LG:(de,en)=>de,esc:x=>x,pct:x=>(x*100).toFixed(1)+' %',E:x=>x.toFixed(2),nf1:{format:String},priceOf:()=>0,fdate:x=>x};vm.createContext(ctx);
+const ctx={GKAudit:require('../audit-engine.js'),GKVisuals:{icon:()=>''},D:()=>({hold:holdings}),holdInfo:h=>({name:h.name,t:h.t,value:h.qty*h.price,price:h.price,cost:null,pl:null}),S:{mode:'own',calc:{},own:{realized:[]}},IMAP:{},num:x=>Number(x)||0,LG:(de,en)=>de,esc:x=>x,pct:x=>(x*100).toFixed(1)+' %',E:x=>x.toFixed(2),nf1:{format:String},priceOf:()=>0,fdate:x=>x};vm.createContext(ctx);
 if(html.includes('function portfolioGroups('))vm.runInContext(extract('portfolioGroups'),ctx);
-vm.runInContext(extract('auditCalc'),ctx);let a=ctx.auditCalc();
+vm.runInContext(extract('auditFinding'),ctx);vm.runInContext(extract('auditCalc'),ctx);let a=ctx.auditCalc();
 assert.equal(a.tot,100000);assert.ok(Math.abs(a.topSh-.512)<1e-12,'Bitcoin gesamt: 51,2 %, nicht nur eine Wallet');
 let finding=a.F.find(x=>x.t==='Klumpenrisiko');assert.ok(finding.d.includes('51.2 %'));assert.ok(finding.d.includes('25600.00'),'50 % Verlust auf ALLE Bitcoin-Bestände');
 holdings.splice(0,holdings.length,{s:'BTC',name:'Bitcoin',qty:100,price:10,t:'Krypto'});a=ctx.auditCalc();assert.equal(a.topSh,1);assert.ok(a.F.some(x=>x.t==='Klumpenrisiko'),'Einzelposition mit 100 % nicht übersehen');

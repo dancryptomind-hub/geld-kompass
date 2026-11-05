@@ -4,7 +4,7 @@ const { chromium } = require('playwright');
   const b = await chromium.launch(); const bad = [];
   for (const w of [1024, 1440]) for (const lang of ['de', 'en']) {
     const p = await b.newPage({ viewport: { width: w, height: 900 } });
-    await p.goto('http://localhost:8765/app/?lang=' + lang + '#overview'); await p.waitForTimeout(2000);
+    await p.goto((process.env.BASE||'http://localhost:8765')+'/app/?lang=' + lang + '#overview'); await p.waitForTimeout(2000);
     const pages = await p.evaluate(() => [...document.querySelectorAll('section.page')].map(s => s.id.slice(2)));
     for (const pg of pages) {
       await p.evaluate(x => { location.hash = x; }, pg); await p.waitForTimeout(500);

@@ -4,7 +4,7 @@ const { chromium } = require('playwright');
   const b = await chromium.launch(); const bad = []; const errs = [];
   for (const [lang, w] of [['de', 1280], ['en', 390]]) {
     const c = await b.newContext({ viewport: { width: w, height: 850 } }); const p = await c.newPage(); p.on('pageerror', e => errs.push(e.message));
-    await p.goto('http://localhost:8765/app/?tour=1&lang=' + lang + '#overview'); await p.waitForTimeout(2600);
+    await p.goto((process.env.BASE||'http://localhost:8765')+'/app/?tour=1&lang=' + lang + '#overview'); await p.waitForTimeout(2600);
     if (!await p.evaluate(() => document.getElementById('gkTour').classList.contains('on'))) bad.push(lang + ': kein Autostart');
     await p.click('[data-gt="next"]'); await p.waitForTimeout(700); await p.click('[data-gt="next"]'); await p.waitForTimeout(700);
     await p.click('[data-gt="x"]'); await p.waitForTimeout(300);
