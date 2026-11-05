@@ -14,7 +14,7 @@ const { chromium } = require('playwright');
   await p.reload(); await p.waitForTimeout(2000);
   const inc = await p.evaluate(() => document.querySelector('#kpis').innerText);
   const syn = await p.evaluate(() => { const S = JSON.parse(localStorage.getItem('geldkompass.v3')); return S.own.entries.filter(e => /Dividende/.test(e.title)).map(e => e.amount + '|' + (e.divKey ? 'auto' : 'manuell')); });
-  const buyHint = /300\s€ Depot-Käufe/.test(inc);
+  const buyHint = /300\s€ Käufe\/Einzahlungen diesen Monat/.test(inc);
   await p.click('[data-depbook]', { force: true }); await p.waitForTimeout(800);
   const inc2 = await p.evaluate(() => document.querySelector('#kpis').innerText);
   await p.reload(); await p.waitForTimeout(1500);
