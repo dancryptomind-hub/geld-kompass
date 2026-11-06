@@ -34,7 +34,7 @@ const { chromium } = require('playwright');
   if (st.auto !== 'expense:100,expense:150,expense:50,income:25,income:900') bad.push('Automatische Buchungen falsch: ' + st.auto);
   if (!/Miete 900\s€ · Kosten 300\s€ · netto 600\s€/.test(bal)) bad.push('Bilanz zeigt Miete/Kosten nicht: ' + f(bal).slice(0, 300));
   if (!/Einnahmen\s*925/.test(k1)) bad.push('Einnahmen sollten Miete + Zinsen = 925 € sein: ' + f(k1));
-  if (!/nur passive Einnahmen/.test(k1)) bad.push('Ohne Gehalt wird das Leben von passiven Einnahmen nicht erkannt: ' + f(k1));
+  if (!/davon passiv 925\s€ \(100\s%\)/.test(k1)) bad.push('Passive Einnahmen werden nicht gekennzeichnet: ' + f(k1));
   if (!/Ausgaben\s*900/.test(k1)) bad.push('Ausgaben sollten 600 + 300 Immobilienkosten = 900 € sein: ' + f(k1));
   if (!/Passives Einkommen/.test(k1) || !/Miete 900/.test(k1)) bad.push('Passives Einkommen ohne Miete: ' + f(k1));
   if (bad.length || errs.length) { console.error('Konten-Verlauf FEHLER', bad, errs); process.exit(1); }

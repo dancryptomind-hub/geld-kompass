@@ -2,10 +2,13 @@
 (function(){'use strict';
  var KEY='geld-kompass-lang',lang='de',saved=null;
  try{saved=localStorage.getItem(KEY);}catch(e){}
- /* Reihenfolge: Sprache aus geteiltem Link (?lang=de/en) > gespeicherte Wahl > Browsersprache */
+ /* Reihenfolge: eigene Wahl (Sprachknopf) > Sprache aus Link (?lang=de/en, nur solange noch nichts gewählt ist) > Browsersprache.
+    Links und der Startlink der installierten App überschreiben eine gewählte Sprache nie mehr. */
  var q=null;try{q=new URLSearchParams(location.search).get('lang');}catch(e){}
- if(q==='de'||q==='en'){saved=q;try{localStorage.setItem(KEY,q);}catch(e){}}
+ if(saved!=='de'&&saved!=='en'&&(q==='de'||q==='en')){saved=q;try{localStorage.setItem(KEY,q);}catch(e){}}
  lang=saved==='en'||saved==='de'?saved:((navigator.language||'de').toLowerCase().indexOf('en')===0?'en':'de');
+ /* Sprachlinks (?lang=…) mit data-setlang oder class=langsw speichern die Wahl beim Anklicken */
+ document.addEventListener('click',function(ev){var a=ev.target.closest&&ev.target.closest('a.langsw,a[data-setlang],a[hreflang]');if(!a||!a.href)return;var m=/[?&]lang=(de|en)\b/.exec(a.href)||[null,a.getAttribute('hreflang')];if(m[1]==='de'||m[1]==='en'){try{localStorage.setItem(KEY,m[1]);}catch(e){}}},true);
  /* Seiten mit fester Sprache (z. B. /arbeitsbuch/ und /en/workbook/): ohne eigene Wahl gilt die Seitensprache, mit Wahl geht es zur passenden Sprachversion */
  var pageLang=document.documentElement.getAttribute('data-page-lang');
  if(pageLang&&!q&&saved!=='de'&&saved!=='en')lang=pageLang;

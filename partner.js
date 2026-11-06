@@ -17,6 +17,8 @@ window.GK_PARTNER = {
   mobilfunk: null,  /* Abos: Spar-Check „Handy & Internet“ (Tarifvergleich) */
   energie: null,    /* Abos: Spar-Check „Strom & Gas“ (Energievergleich) */
   streaming: null,  /* Abos: Spar-Check „Abos & Streaming“ (z. B. Abo-Manager) */
+  ruhestand: null,  /* Stresstest/Entnahmeplan: „Du lebst vom Vermögen“ (Honorarberatung / Ruhestandsplanung, Termin-Lead) */
+  broker2: null,    /* Entnahmeplan: Konto für Topf 1/2 (Tagesgeld/Festgeld mit hohem Zins) */
   newsletter: null   /* App „Zum Buch“ und Rechnerseiten: Arbeitsbuch-PDF gegen E-Mail */
 };
 (function(){

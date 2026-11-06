@@ -25,7 +25,7 @@ const { chromium } = require('playwright');
   await b.close();
   const bad = [];
   if (!/2\.020/.test(inc)) bad.push('Einnahmen sollten 2.000 + 12,50 gebuchte + 7,50 nur in der Historie = 2.020 € sein: ' + inc.replace(/\n/g, ' | ').slice(0, 120));
-  if (!/davon 20\s€ Dividenden/.test(inc)) bad.push('Übersicht nennt den Dividenden-Anteil der Einnahmen nicht: ' + inc.replace(/\n/g, ' | ').slice(0, 200));
+  if (!/davon passiv 20\s€/.test(inc)) bad.push('Übersicht nennt den Dividenden-Anteil der Einnahmen nicht: ' + inc.replace(/\n/g, ' | ').slice(0, 200));
   if (!buyHint) bad.push('Depot-Kauf dieses Monats wird bei Investiert nicht angezeigt: ' + inc.replace(/\n/g, ' | ').slice(0, 260));
   if (!/Investiert\s*300\s€/.test(inc2) || /data-depbook|als Anlage buchen/.test(inc2)) bad.push('Depot-Kauf nicht als Anlage gebucht: ' + inc2.replace(/\n/g, ' | ').slice(0, 260));
   if (!/Passives Einkommen/.test(inc)) bad.push('KPI Passives Einkommen fehlt');

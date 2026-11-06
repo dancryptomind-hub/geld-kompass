@@ -57,5 +57,6 @@ jobs:
           node tests/assets-history.js
           node tests/audit-phases.js
           node tests/wealth-cases.js
+          node tests/ux-mode-lang.js
           node tests/share-links.js
           node tests/app-share-links.js

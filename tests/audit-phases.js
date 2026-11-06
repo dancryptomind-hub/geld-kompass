@@ -12,8 +12,12 @@ assert.ok(full >= 95, 'All-World + Gold + Bitcoin + Anleihen nahe 100: ' + full)
 assert.ok(run([h('EUNL.DE', 'ETF', 100000)]).findings.some(f => f.code === 'us-heavy'), 'MSCI World: USA-Schwerpunkt wird erklärt');
 assert.ok(run([h('AAPL', 'Aktie', 100000)]).scores.div < 20, 'Eine Einzelaktie ist keine Streuung');
 const ctx = (o) => ({ hasSpending: true, hasLiquid: true, liquid: 50000, ...o });
-const rentier = run([h('VHYL.DE', 'ETF', 900000)], ctx({ income: 4200, passive: 4200, activeIncome: 0, hasIncome: true, spend: 3500 }));
-assert.equal(rentier.persona, 'rentier'); assert.ok(rentier.known.calm && rentier.scores.calm >= 85 && rentier.known.disc);
+const rentier = run([h('VHYL.DE', 'ETF', 900000)], ctx({ income: 4200, passive: 4200, activeIncome: 0, hasIncome: true, spend: 3500, investMonths: [], dataMonths: 6 }));
+const worker = run([h('VHYL.DE', 'ETF', 900000)], ctx({ income: 4200, passive: 0, activeIncome: 4200, hasIncome: true, spend: 3500, investMonths: [], dataMonths: 6 }));
+assert.equal(rentier.persona, 'rentier'); assert.ok(rentier.known.calm && rentier.known.disc);
+assert.equal(rentier.scores.calm, worker.scores.calm, 'Einnahme ist Einnahme: gleiche Finanzbasis bei Dividende oder Gehalt');
+assert.equal(rentier.scores.disc, worker.scores.disc, 'Einnahme ist Einnahme: gleiche Regelmäßigkeit');
+assert.equal(rentier.context.phase, worker.context.phase);
 assert.ok(rentier.findings.some(f => f.code === 'passive-covers'));
 const retiree = run([h('VWCE.DE', 'ETF', 400000)], ctx({ income: 0, activeIncome: 0, hasIncome: false, spend: 3000 }));
 assert.equal(retiree.context.phase, 'withdrawal'); assert.ok(retiree.known.calm && retiree.known.disc, 'Ruhestand ohne Einnahmen hat trotzdem Finanzbasis und Entnahme-Bewertung');
