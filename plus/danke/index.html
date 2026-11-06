@@ -21,7 +21,8 @@
 <p class="big" aria-hidden="true">🧭</p>
 <h1 id="thxH">Danke für deinen Kauf</h1>
 <div class="state" id="thxState" aria-live="polite"><span class="spin"></span>Wir bestätigen gerade deine Zahlung …</div>
-<p><a class="btn pri" href="/app/">Zur App</a></p>
+<p><a class="btn pri" href="/app/">Zur App</a> <a class="btn" id="thxWa" href="/go/whatsapp/" target="_blank" rel="noopener">WhatsApp-Kanal folgen</a></p>
+<p class="desc" id="thxWaT">Im Kanal: jeden Sonntag eine Zahl, die dein Geld verändert, und neue Arbeitsblätter zuerst.</p>
 <p class="desc">Fragen zu deinem Kauf? Schreib uns über die Kontaktangaben im <a href="/impressum/">Impressum</a>. Rechnungen und Abo-Verwaltung findest du in der App unter Daten.</p>
 </main>
 <footer class="gk-foot"><div class="wrap"><nav><a href="/rechner/">Rechner</a><a href="/ratgeber/">Ratgeber</a><a href="/einbinden/">Einbinden</a><a href="/auswandern-finanzen/">Auswandern</a><a href="/arbeitsbuch/">Arbeitsbuch</a><a href="/impressum/">Impressum</a><a href="/datenschutz/">Datenschutz</a><a href="/werbung/">Werbung</a><a href="https://geld-kompass.com/go/whatsapp/" target="_blank" rel="noopener">WhatsApp</a></nav><p>Geld-Kompass Pro · © FreedomByDan · Begleiter zum Buch „Der einfache Weg zur Finanziellen Freiheit“ · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung. Alle Berechnungen sind Modellrechnungen.</p></div></footer>
@@ -29,7 +30,7 @@
 (function(){
   var en=document.documentElement.lang==='en',T=function(d,e){return en?e:d;},box=document.getElementById('thxState');
   var id=new URLSearchParams(location.search).get('session_id')||'',tries=0;
-  if(en){document.getElementById('thxH').textContent='Thank you for your purchase';}
+  if(en){document.getElementById('thxH').textContent='Thank you for your purchase';document.getElementById('thxWa').textContent='Follow the WhatsApp channel';document.getElementById('thxWaT').textContent='In the channel: one number every Sunday that changes your money, and new worksheets first.';}
   function show(h){box.innerHTML=h;}
   function trialOffer(){try{localStorage.setItem('gk-trial',id);}catch(e){}var lg=en?'en':'de';
     return '<div class="trialoffer"><b>'+T('Dein Dankeschön: Plus 30 Tage kostenlos','Your thank-you: 30 days of Plus for free')+'</b><p>'+T('Entnahmeplan, Dividendenkalender, Steuer- und Nomaden-Modus und deine eigene Schnellleiste. In den 30 Tagen zahlst du nichts, vorher kommt eine Erinnerung per E-Mail und du kannst jederzeit kündigen.','Withdrawal plan, dividend calendar, tax and nomad mode and your own quick bar. You pay nothing for 30 days, get a reminder email beforehand and can cancel anytime.')+'</p><a class="btn pri" id="trialGo" href="/app/?lang='+lg+'&trial='+encodeURIComponent(id)+'#plus">'+T('30 Tage Plus starten','Start 30 days of Plus')+'</a></div>';}

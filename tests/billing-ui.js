@@ -34,6 +34,8 @@ const fs = require('fs');
   await p.goto('http://localhost:8765/arbeitsbuch/'); await p.waitForTimeout(600);
   if (await p.evaluate(() => document.getElementById('abBuy').hidden)) bad.push('Eingeschaltet: Arbeitsbuch-Kaufknopf fehlt');
   else { await p.click('#abBuy'); await p.waitForURL('https://checkout.stripe.com/**', { timeout: 5000 }).catch(() => bad.push('Keine Weiterleitung zu Stripe Checkout')); if (!p.calls.some(c => /billing-checkout .*"item":"workbook"/.test(c))) bad.push('Arbeitsbuch-Checkout falsch aufgerufen: ' + p.calls); }
+  await p.goto('http://localhost:8765/arbeitsbuch/'); await p.waitForTimeout(600);
+  if (!/WhatsApp-Kanal/.test(await p.evaluate(() => (document.querySelector('.abcode') || {}).innerText || ''))) bad.push('Arbeitsbuch ohne Kanal-Hinweis zum Rabattcode');
   // Aktionslink ?code=KOMPASS20 → Preis 7,99 € angezeigt und Code an den Server übergeben
   p = await page(true);
   await p.goto('http://localhost:8765/arbeitsbuch/?code=kompass20'); await p.waitForTimeout(600);
