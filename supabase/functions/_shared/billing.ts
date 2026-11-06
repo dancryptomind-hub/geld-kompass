@@ -69,13 +69,13 @@ export function handle(fn: (req: Request) => Promise<Response>) {
 export const PRODUCTS: Record<string, { name: string; description: string; tax_code?: string }> = {
   gk_plus: { name: "Geld-Kompass Plus", description: "Alle Plus-Funktionen: Entnahmeplan, Dividendenkalender, Steuer- und Nomaden-Modus, Kursalarme, eigene Schnellleiste.", tax_code: "txcd_10103000" },
   gk_workbook_de: { name: "Arbeitsbuch „Der einfache Weg zur Finanziellen Freiheit“ (PDF)", description: "69 Seiten Übungen zu allen 16 Kapiteln, digital zum Ausdrucken oder Beschriften.", tax_code: "txcd_10302000" },
-  gk_freedom_report: { name: "Freiheits-Report (PDF)", description: "Dein persönlicher Report aus deinen Geld-Kompass-Zahlen." },
+  gk_freedom_report: { name: "Freiheits-Report (PDF)", description: "Dein persönlicher Report aus deinen Geld-Kompass-Zahlen, erstellt auf deinem Gerät.", tax_code: "txcd_10701411" },
 };
 export const CATALOG: Record<string, { lookup: string; product: string; amount: number; interval?: "month" | "year"; mode: "subscription" | "payment"; needsUser: boolean; enabledEnv?: string }> = {
   plus_monthly: { lookup: "gk_plus_monthly_eur", product: "gk_plus", amount: 499, interval: "month", mode: "subscription", needsUser: true },
   plus_yearly: { lookup: "gk_plus_yearly_eur", product: "gk_plus", amount: 3900, interval: "year", mode: "subscription", needsUser: true },
   workbook: { lookup: "gk_workbook_de_eur", product: "gk_workbook_de", amount: 999, mode: "payment", needsUser: false },
-  report: { lookup: "gk_freedom_report_eur", product: "gk_freedom_report", amount: 1499, mode: "payment", needsUser: false, enabledEnv: "REPORT_ENABLED" },
+  report: { lookup: "gk_freedom_report_eur", product: "gk_freedom_report", amount: 1499, mode: "payment", needsUser: false },
 };
 
 export async function ensurePrice(item: keyof typeof CATALOG): Promise<string> {

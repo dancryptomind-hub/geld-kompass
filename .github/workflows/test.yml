@@ -60,5 +60,6 @@ jobs:
           node tests/ux-mode-lang.js
           node tests/mobile-ux.js
           node tests/billing-ui.js
+          node tests/freedom-report.js
           node tests/share-links.js
           node tests/app-share-links.js
