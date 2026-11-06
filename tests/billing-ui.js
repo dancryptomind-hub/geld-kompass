@@ -49,7 +49,19 @@ const fs = require('fs');
   p = await page(true, { kind: 'plus', status: 'active' });
   await p.goto('http://localhost:8765/plus/danke/?lang=de&session_id=cs_test_' + 'b'.repeat(30)); await p.waitForTimeout(1500);
   if (!/Plus ist aktiv/.test(await p.evaluate(() => document.getElementById('thxState').innerText))) bad.push('Danke-Seite: Plus nicht bestätigt');
+  // Dankeschön: nach dem Arbeitsbuch-Kauf 30 Tage Plus gratis → Link in die App, Plus-Fenster zeigt das Angebot
+  p = await page(true, { kind: 'gk_workbook_de', status: 'paid', download: 'https://example.com/arbeitsbuch.pdf?token=x' });
+  const sid = 'cs_test_' + 'c'.repeat(30);
+  await p.goto('http://localhost:8765/plus/danke/?lang=de&session_id=' + sid); await p.waitForTimeout(1500);
+  const tg = await p.evaluate(() => { const a = document.getElementById('trialGo'); return a ? a.getAttribute('href') : ''; });
+  if (!tg.includes('trial=' + sid) || !/30 Tage kostenlos/.test(await p.evaluate(() => document.getElementById('thxState').innerText))) bad.push('Danke-Seite ohne 30-Tage-Angebot: ' + tg);
+  else { await p.goto('http://localhost:8765' + tg); await p.waitForTimeout(1500);
+    const td = await p.evaluate(() => { const x = document.getElementById('plusDlg'); return x ? x.querySelector('#plusGo').innerText + ' | ' + ((x.querySelector('.plustrial') || {}).innerText || '') : 'kein Dialog'; });
+    if (!/30 Tage kostenlos starten/.test(td) || !/ersten 30 Tage sind kostenlos/.test(td)) bad.push('Plus-Fenster zeigt das Gratis-Angebot nicht: ' + td); }
+  p = await page(true, { kind: 'plus', status: 'trialing' });
+  await p.goto('http://localhost:8765/plus/danke/?lang=de&session_id=' + 'cs_test_' + 'd'.repeat(30)); await p.waitForTimeout(1500);
+  if (!/30 Tage Plus laufen/.test(await p.evaluate(() => document.getElementById('thxState').innerText))) bad.push('Danke-Seite: Testphase nicht bestätigt');
   await b.close();
   if (bad.length) { console.error('Bezahlweg FEHLER', bad); process.exit(1); }
-  console.log('Bezahlweg: ausgeschaltet ohne Kaufknöpfe, Plus-Fenster (Jahr vorausgewählt, 39 € / 4,99 €), Anmeldung nötig, Arbeitsbuch-Checkout, Danke-Seite mit Download und Plus-Bestätigung');
+  console.log('Bezahlweg: ausgeschaltet ohne Kaufknöpfe, Plus-Fenster (Jahr vorausgewählt, 39 € / 4,99 €), Anmeldung nötig, Arbeitsbuch-Checkout, Danke-Seite mit Download und Plus-Bestätigung, 30 Tage Plus gratis für Arbeitsbuch-Käufer');
 })();
