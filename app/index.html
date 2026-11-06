@@ -306,7 +306,7 @@ dl.gloss dd{margin:0;color:var(--muted)}
   .mtop b{font-family:var(--font-display);font-size:1.1rem}
   .mtop b span{color:var(--gold)}
   .title{font-size:1.5rem}
-  .mnav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(5,1fr);background:var(--surface);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
+  .mnav{position:fixed;left:0;right:0;bottom:0;z-index:40;display:grid;grid-template-columns:repeat(5,1fr);transform:translate3d(0,0,0);-webkit-transform:translate3d(0,0,0);will-change:transform;backface-visibility:hidden;contain:layout paint;touch-action:manipulation;background:var(--surface);border-top:1px solid var(--line);padding:6px 4px calc(6px + env(safe-area-inset-bottom,0px))}
   .mnav button{appearance:none;border:0;background:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:2px;font-size:.66rem;font-weight:700;padding:5px 2px;border-radius:9px}
   .mnav button svg{width:20px;height:20px}
   .mnav button[aria-current="page"]{color:var(--gold);background:var(--surface-2)}
@@ -567,6 +567,37 @@ details.more{margin-top:12px;border:1px solid var(--line);border-radius:14px;pad
 .gk-nodemo [data-go="examples"],.gk-nodemo #startInvite{display:none!important}
 
 .wdplan{margin:16px 0;padding:16px;border:1px solid var(--line,rgba(227,181,90,.3));border-radius:16px;background:rgba(255,255,255,.02)}.wdplan h3{margin:14px 0 8px;font-size:16px}.wdrates,.wdwhen{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}.wdrates>div,.wdwhen>div{padding:10px 12px;border-radius:12px;background:rgba(255,255,255,.04);display:grid;gap:2px}.wdrates b,.wdwhen b{font-size:20px}.wdrates .ok{outline:1px solid rgba(90,200,150,.5)}.wdrates .over{opacity:.7}.wdpots{display:grid;gap:10px}.wdpots>div{display:grid;gap:4px}.wdbar{height:8px;border-radius:6px;background:rgba(255,255,255,.08);overflow:hidden}.wdbar i{display:block;height:100%;background:var(--c1,#e3b55a)}.wdlock{padding:14px;border:1px dashed var(--line,rgba(227,181,90,.4));border-radius:12px}
+
+@media(max-width:640px){
+ .mcards{overflow:visible}.mcards table,.mcards tbody{display:block;width:100%;min-width:0}.mcards thead{display:none}
+ .mcards tr{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2px 8px;padding:9px 11px;margin:0 0 7px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.03)}
+ .mcards td,.mcards tr.on td,.mcards tr.best td{background:none!important;box-shadow:none!important}
+ .mcards td:first-child{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px}.mcards td:first-child small.desc{display:inline!important;margin:0}
+ .mcards td b{font-size:14px}.mcards td{font-size:13.5px!important;line-height:1.3}
+ .mcards tr.on,.mcards tr.best{border-color:var(--c1,#e3b55a);background:rgba(227,181,90,.08)}
+ .mcards td{display:block;padding:0!important;border:0!important;text-align:left!important;min-width:0;font-size:14px}
+ .mcards td:first-child{grid-column:1/-1;margin-bottom:2px}
+ .mcards td[data-l]::before{content:attr(data-l);display:block;font-size:10.5px;color:var(--muted);margin-bottom:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ .mcards td small.desc{font-size:11px}
+ #p-debts .form{grid-template-columns:1fr 1fr}
+}
+
+/* iOS: schnelles Wischen soll weder Seite noch Leiste federn lassen */
+html,body{overscroll-behavior-y:none}
+@media(max-width:900px){html{height:100%}body{min-height:100%}}
+.mnavset{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:10px}
+
+html.gk-modal,html.gk-modal body{overflow:hidden!important;overscroll-behavior:none}
+.editdlg{overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+.editdlg .edhead .btn.ghost{min-width:40px;min-height:40px;border-radius:999px;font-size:18px;display:inline-flex;align-items:center;justify-content:center;border:1px solid var(--line);background:var(--surface-2)}
+@media(max-width:640px){
+ .editdlg{width:100%;max-width:100%;height:100dvh;max-height:100dvh;margin:0;border-radius:0;border:0;padding:0 16px calc(16px + env(safe-area-inset-bottom,0px));inset:0}
+ .editdlg .edhead{position:sticky;top:0;z-index:2;background:var(--surface);margin:0 -16px 12px;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 10px;border-bottom:1px solid var(--line)}
+ .editdlg .edhead h2{font-size:18px;line-height:1.25}
+ .editdlg .edfoot{position:sticky;bottom:0;background:var(--surface);margin:12px -16px 0;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));border-top:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr;gap:8px}
+ .editdlg .edform{grid-template-columns:1fr!important}
+ .editdlg::backdrop{background:var(--surface)}
+}
 </style>
 <link rel="stylesheet" href="/arbeitsbuch/hinweise.css">
 <link rel="stylesheet" href="/app/visuals.css">
@@ -679,7 +710,7 @@ details.more{margin-top:12px;border:1px solid var(--line);border-radius:14px;pad
     <aside class="workbook-note" aria-label="Passende Übung im Arbeitsbuch"><h3>Aus der Übersicht wird dein Schuldenplan.</h3><p>Im Arbeitsbuch sammelst du Forderungen, hältst tragbare Raten fest und vergleichst deine nächsten Schritte. So bleibt neben der Rechnung auch deine Entscheidung sichtbar.</p><a href="/arbeitsbuch/#schulden">Schulden-Übung ansehen</a></aside>
     <div class="card"><div class="chead"><div><h2>Tilgen oder investieren?</h2><p class="desc">Was bringt dir nach ein paar Jahren mehr: zuerst alles in die Schulden oder schon parallel anlegen? Gleiches Geld, vier Wege.</p></div></div>
       <div class="form"><label class="f">Vergleich über (Jahre)<input id="dpYears" type="number" min="1" max="40" step="1" inputmode="numeric"></label><label class="f">Erwartete Rendite beim Anlegen (% p. a.)<input id="dpRet" type="number" min="0" max="15" step="0.5" inputmode="decimal"></label></div>
-      <div class="tbl" id="dpCompare"></div><div id="dpAdvice" class="bars"></div></div>
+      <div class="tbl mcards" id="dpCompare"></div><div id="dpAdvice" class="bars"></div></div>
     <div class="card hide" id="refiCard"><div class="chead"><div><h2>Umschulden prüfen</h2><p class="desc">Teure Schulden (Kreditkarte, Dispo, Ratenkauf) in einen günstigeren Ratenkredit packen</p></div></div><div id="refiOut"></div><div data-partner="kredit" hidden></div></div>
   </section>
 
@@ -857,6 +888,7 @@ details.more{margin-top:12px;border:1px solid var(--line);border-radius:14px;pad
   <!-- DATEN -->
   <section class="page" id="p-data">
     <div class="card"><h2>Beispiele</h2><p class="desc">Beim Öffnen zeigt der Geld-Kompass eine wechselnde Beispielperson, solange du keine eigenen Zahlen nutzt. Du kannst die Beispiele komplett ausblenden.</p><label class="chk"><input type="checkbox" id="noDemoChk"> Beispiele ausblenden</label></div>
+    <div class="card"><h2>Schnellleiste <span class="tag invest">Plus</span></h2><p class="desc">Die Leiste unten auf dem Handy: Wähle die vier Bereiche, die du am meisten nutzt. „Mehr“ bleibt immer rechts.</p><div id="mnavSet"></div></div>
     <div class="g2">
       <div class="card"><h2>Sicherung und Gerätewechsel</h2><p class="desc">Deine Eingaben liegen nur in diesem Browser. Sichere sie ab und zu, besonders vor einem Browser- oder Gerätewechsel.</p>
         <div class="row"><button class="btn pri" id="bkCopy" type="button">Sicherung kopieren</button><button class="btn" id="bkFile" type="button">Als Datei speichern</button><label class="btn">Datei einlesen<input type="file" id="bkImport" accept=".json,application/json" class="hide"></label></div>
@@ -2460,8 +2492,17 @@ function initAdminPreview(){
  document.addEventListener("visibilitychange",function(){if(!document.hidden)ADMIN_ACCESS.refresh();});
 }
 if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initAdminPreview);else setTimeout(initAdminPreview,0);
+/* Untere Schnellleiste: 4 Plätze + „Mehr“. Plus-Mitglieder wählen die Plätze selbst (S.mnav). */
+var MNAV_L={overview:"Start",bookings:"Buchen",debts:"Schulden",assets:"Depot",plan:"Ziele",stress:"Stresstest",recurring:"Abos",calc:"Rechner",nomad:"Nomaden",examples:"Beispiele",lexikon:"Lexikon",book:"Buch",data:"Daten"},MNAV_DEF=["overview","bookings","debts","assets"];
+function mnavSlots(){var a=plusAllowed()&&Array.isArray(S.mnav)?S.mnav.filter(function(k){return MNAV_L[k]&&PAGES[k]&&(k!=="nomad"||plusAllowed())&&!(k==="examples"&&S.noDemo);}):[];var seen={};a=a.filter(function(k){if(seen[k])return false;seen[k]=1;return true;});MNAV_DEF.forEach(function(k){if(a.length<4&&!seen[k]){a.push(k);seen[k]=1;}});return a.slice(0,4);}
+function mnavSettingsHTML(){var cur=mnavSlots(),opts=Object.keys(MNAV_L).filter(function(k){return PAGES[k]&&(k!=="nomad"||plusAllowed())&&!(k==="examples"&&S.noDemo);});
+  if(!plusAllowed())return '<p class="desc">'+LG("Mit Plus legst du selbst fest, welche vier Bereiche unten in der Schnellleiste stehen.","With Plus you choose which four areas sit in the bottom quick bar.")+'</p>';
+  return '<div class="mnavset">'+cur.map(function(k,i){return '<label class="f"><span>'+LG("Platz ","Slot ")+(i+1)+'</span><select data-mnav="'+i+'">'+opts.map(function(o){return '<option value="'+o+'"'+(o===k?' selected':'')+'>'+esc(GKT(PAGES[o][1]))+'</option>';}).join("")+'</select></label>';}).join("")+'</div><button type="button" class="btn sm" data-mnav-reset="1">'+LG("Standard wiederherstellen","Restore default")+'</button>';}
+function renderMnavSettings(){var b=$("mnavSet");if(b)b.innerHTML=mnavSettingsHTML();}
+document.addEventListener("change",function(ev){var el=ev.target.closest&&ev.target.closest("[data-mnav]");if(!el||!plusAllowed())return;var a=mnavSlots(),i=+el.getAttribute("data-mnav"),v=el.value,j=a.indexOf(v);if(j>-1&&j!==i)a[j]=a[i];a[i]=v;S.mnav=a;save();buildNav();renderMnavSettings();toast(LG("Schnellleiste angepasst","Quick bar updated"));});
+document.addEventListener("click",function(ev){if(!(ev.target.closest&&ev.target.closest("[data-mnav-reset]")))return;delete S.mnav;save();buildNav();renderMnavSettings();});
 function buildNav(){$("navGroups").innerHTML=GROUPS.map(function(g){return '<div class="navgroup"><div class="navlabel">'+g[0]+'</div>'+g[1].filter(function(p){return (p!=="nomad"||plusAllowed())&&!(p==="examples"&&S.noDemo);}).map(function(p){return '<button class="nav" type="button" data-page="'+p+'">'+ico(p)+PAGES[p][1]+'</button>';}).join("")+(g[0]==="Einstellungen"?'<a class="nav" href="/konto/?lang='+(window.GK_LANG==="en"?"en":"de")+'">'+ico("account")+(window.GK_LANG==="en"?"Account":"Konto")+'</a>':"")+'</div>';}).join("")+'<p id="gkAdminBadge" class="tag income"'+(isAdminPreview()?'':' hidden')+'>'+(window.GK_LANG==="en"?'Admin · All features':'Admin · Alle Funktionen')+'</p>';
-  $("mnav").innerHTML=[["overview","Start"],["bookings","Buchen"],["debts","Schulden"],["assets","Depot"],["more","Mehr"]].map(function(x){return '<button type="button" '+(x[0]==="more"?'data-menu="1"':'data-page="'+x[0]+'"')+'>'+ico(x[0])+x[1]+'</button>';}).join("");}
+  $("mnav").innerHTML=mnavSlots().map(function(k){return [k,MNAV_L[k]?MNAV_L[k]:k];}).concat([["more","Mehr"]]).map(function(x){return '<button type="button" '+(x[0]==="more"?'data-menu="1"':'data-page="'+x[0]+'"')+'>'+ico(x[0])+x[1]+'</button>';}).join("");}
 function show(page,anchor){if(!PAGES[page]||(page==="nomad"&&!plusAllowed())){page="overview";anchor=null;}
   document.querySelectorAll(".page").forEach(function(s){s.classList.toggle("on",s.id==="p-"+page);});
   document.querySelectorAll("[data-page]").forEach(function(b){if(b.getAttribute("data-page")===page)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
@@ -2673,7 +2714,7 @@ function roadmap(t,plan,extra){var L=[],emerg=1000*fxr();var costly=t.debts.filt
 function renderCompare(ds,t,extra,H,ret){var Y=H/12;var ways=[["compass","Kompass-Weg","Teure Schulden zuerst, günstige nur Mindestrate, Rest anlegen"],["avalanche","Lawine","Alles in die Schulden, höchster Zins zuerst"],["snowball","Schneeball","Alles in die Schulden, kleinste zuerst"],["invest","Nur Mindestraten, alles Extra anlegen","Schulden laufen nach Vertrag, Extra-Geld in den Sparplan"]];
   var res=ways.map(function(w){var s=simulate(ds,{extra:extra,method:w[0],roll:true,ret:ret,horizon:H});return {w:w,s:s,wealth:s.wealth(H)};});
   var best=res.slice().sort(function(a,b){return b.wealth-a.wealth;})[0];
-  $("dpCompare").innerHTML='<table><thead><tr><th>Weg</th><th class="n">Schuldenfrei</th><th class="n">Zinsen gesamt</th><th class="n">Vermögen nach '+Y+' J.</th></tr></thead><tbody>'+res.map(function(r){return '<tr class="'+(r===best?"best":"")+'"><td><b>'+r.w[1]+'</b>'+(r===best?' <span class="tag rec">bestes Ergebnis</span>':'')+'<small class="desc" style="display:block">'+r.w[2]+'</small></td><td class="n">'+inMonths(r.s.free)+'</td><td class="n">'+E(r.s.interest)+'</td><td class="n '+(r.wealth<0?"neg":"pos")+'">'+E(r.wealth)+'</td></tr>';}).join("")+'</tbody></table>';
+  $("dpCompare").innerHTML='<table><thead><tr><th>Weg</th><th class="n">Schuldenfrei</th><th class="n">Zinsen gesamt</th><th class="n">Vermögen nach '+Y+' J.</th></tr></thead><tbody>'+res.map(function(r){return '<tr class="'+(r===best?"best":"")+'"><td><b>'+r.w[1]+'</b>'+(r===best?' <span class="tag rec">bestes Ergebnis</span>':'')+'<small class="desc" style="display:block">'+r.w[2]+'</small></td><td class="n" data-l="'+LG("Schuldenfrei","Debt-free")+'">'+inMonths(r.s.free)+'</td><td class="n" data-l="'+LG("Zinsen gesamt","Total interest")+'">'+E(r.s.interest)+'</td><td class="n '+(r.wealth<0?"neg":"pos")+'" data-l="'+LG("Nach "+Y+" Jahren","After "+Y+" years")+'">'+E(r.wealth)+'</td></tr>';}).join("")+'</tbody></table>';
   var costly=ds.filter(function(x){return num(x.rate)>=10;}),cheap=ds.filter(function(x){return num(x.rate)<CHEAP;}),mid=ds.filter(function(x){return num(x.rate)>=CHEAP&&num(x.rate)<10;});
   var A=[];
   if(costly.length)A.push(insight("!","Hohe Kreditzinsen: Tilgung bewusst prüfen.",'<span class="nm">'+costly.map(function(x){return esc(GKT(x.name))+" ("+P(x.rate)+")";}).join(", ")+".</span> <span>Zusätzliche Tilgung kann künftige Zinsen sparen. Prüfe vorher die erreichbare Reserve, notwendige Ausgaben sowie mögliche Kosten und Grenzen für Sondertilgungen.</span>","bad"));
@@ -3243,8 +3284,8 @@ function openEdit(kind,id){tourPauseForDialog();var list={entry:S.own.entries,de
   if(kind==="entry"){$("edType").onchange=function(){$("edCat").innerHTML=(CATS[this.value]||[]).map(function(c){return '<option value="'+esc(c)+'">'+esc(c)+'</option>';}).join("");};
     $("edFreq").onchange=function(){var once=this.value==="once";document.querySelectorAll(".edEndW").forEach(function(n){n.classList.toggle("hide",once);});$("edDateL").textContent=once?"Datum":"Läuft seit";};}
   if(kind==="item"&&$("edCls")){$("edCls").onchange=function(){var b=$("edReBox");if(b){b.hidden=this.value!=="Immobilie";if(!b.hidden)b.open=true;}};}
-  if(dlg.showModal)dlg.showModal();else dlg.setAttribute("open","");setTimeout(function(){var f=dlg.querySelector("input:not([disabled])");if(f)f.focus();},30);}
-function closeEdit(){var d=$("editDlg");if(d.close)d.close();else d.removeAttribute("open");EDIT=null;}
+  if(dlg.showModal)dlg.showModal();else dlg.setAttribute("open","");gkModalSync();if(window.matchMedia&&matchMedia("(pointer:fine)").matches)setTimeout(function(){var f=dlg.querySelector("input:not([disabled])");if(f)f.focus();},30);}
+function closeEdit(){var d=$("editDlg");if(d.close)d.close();else d.removeAttribute("open");EDIT=null;gkModalSync();}
 function saveEdit(){if(!EDIT)return;var k=EDIT.kind,list={entry:S.own.entries,debt:S.own.debts,hold:S.own.hold,item:S.own.items}[k],x=list.find(function(y){return y.id===EDIT.id;});if(!x){closeEdit();return;}
   function v(id){return $(id)?$(id).value.trim():"";}
   if(k==="entry"){var a=num(v("edAmt"));if(!v("edTitle")){toast("Bitte eine Bezeichnung eintragen.");return;}if(!(a>0)){toast("Der Betrag muss größer als 0 sein.");return;}
@@ -3402,7 +3443,7 @@ function icsReminder(){var en=window.GK_LANG==="en",d=new Date();d.setMonth(d.ge
 document.addEventListener("click",function(ev){if(ev.target.closest("[data-ics]"))icsReminder();});
 /* Einstieg mit fünf Fragen: füllt Einnahmen, Wohnen, Fixkosten, Schulden und Erspartes in einem Schritt */
 function tourPauseForDialog(){if(typeof TOUR!=="undefined"&&TOUR.on){try{tourEnd(false);}catch(e){}}document.documentElement.classList.remove("gt-lock");}
-function openOnboard(){var d=$("onbDlg");if(!d)return;tourPauseForDialog();$("onbCur").innerHTML=curOptions(CUR,true);if(d.showModal)d.showModal();else d.setAttribute("open","");setTimeout(function(){$("onbInc").focus();},30);try{onbLive();}catch(e){}}
+function openOnboard(){var d=$("onbDlg");if(!d)return;tourPauseForDialog();$("onbCur").innerHTML=curOptions(CUR,true);if(d.showModal)d.showModal();else d.setAttribute("open","");gkModalSync();if(window.matchMedia&&matchMedia("(pointer:fine)").matches)setTimeout(function(){$("onbInc").focus();},30);try{onbLive();}catch(e){}}
 /* 60-Sekunden-Start: Live-Ergebnis schon beim Tippen (der Aha-Moment), danach Begrüßung mit nächsten Schritten und Arbeitsbuch */
 function onbLive(){var o=$("onbLive");if(!o)return;var g=function(id){return posNum(($(id)||{}).value);},inc=g("onbInc"),sp=g("onbRent")+g("onbFix")+g("onbLife")+g("onbDebtPay"),sav=g("onbSave"),db=g("onbDebt"),net=sav-db;
   if(!(sp>0)){o.innerHTML='<span class="desc">'+LG("Sobald du Ausgaben einträgst, siehst du hier deine Freiheitstage.","As soon as you enter spending, your freedom days appear here.")+'</span>';return;}
@@ -3415,7 +3456,11 @@ function startInviteHTML(){if(S.mode==="own"&&S.onbWelcome)return '<div class="s
 setTimeout(function(){try{if(new URLSearchParams(location.search).get('start')==='1'&&S.mode==='demo'&&ownCount()===0){S.mode='own';save();renderAll();openOnboard();onbLive();}}catch(e){}},700);
 function renderStartInvite(){var o=$("startInvite");if(!o)return;var h=startInviteHTML();o.innerHTML=h;o.hidden=!h;}
 document.addEventListener("click",function(ev){var b=ev.target.closest&&ev.target.closest("[data-stinv-go],[data-stinv-x]");if(!b)return;if(b.hasAttribute("data-stinv-x")){S.onbWelcome=0;save();renderStartInvite();return;}S.mode="own";save();renderAll();openOnboard();onbLive();});
-function closeOnboard(){var d=$("onbDlg");if(d.close)d.close();else d.removeAttribute("open");}
+function closeOnboard(){var d=$("onbDlg");if(d.close)d.close();else d.removeAttribute("open");gkModalSync();}
+/* Offene Fenster sperren den Hintergrund (kein Mitscrollen auf dem Handy), Fenster selbst scrollt */
+function gkModalSync(){var on=!!document.querySelector("dialog.editdlg[open]"),h=document.documentElement;if(on&&!h.classList.contains("gk-modal")){h.style.setProperty("--gk-sy",window.scrollY+"px");h.dataset.sy=String(window.scrollY);h.classList.add("gk-modal");}else if(!on&&h.classList.contains("gk-modal")){var y=+h.dataset.sy||0;h.classList.remove("gk-modal");window.scrollTo(0,y);}}
+document.addEventListener("close",function(ev){if(ev.target&&ev.target.classList&&ev.target.classList.contains("editdlg"))setTimeout(gkModalSync,0);},true);
+document.addEventListener("click",function(ev){var d=ev.target;if(d&&d.tagName==="DIALOG"&&d.classList.contains("editdlg")&&d.open){var r=d.getBoundingClientRect();if(ev.clientX<r.left||ev.clientX>r.right||ev.clientY<r.top||ev.clientY>r.bottom){d.close();}}});
 function saveOnboard(){var c=$("onbCur").value,inc=posNum($("onbInc").value),rent=posNum($("onbRent").value),fix=posNum($("onbFix").value),db=posNum($("onbDebt").value),dp=posNum($("onbDebtPay").value),sav=posNum($("onbSave").value),st=ymNow()+"-01";
   function cur(o){if(c&&c!==CUR)o.cur=c;return o;}ensureOwn();
   if(inc>0)S.own.entries.push(cur({id:uid(),title:GKT("Nettoeinkommen"),amount:inc,type:"income",cat:"Gehalt",freq:"monthly",date:st}));
@@ -3870,7 +3915,7 @@ function debtCostHTML(){var en=window.GK_LANG==="en",c=S.calc.dc||{},df=dcDefaul
   function pad(p){if(!p)return A.map(function(){return NaN;});var o=[];for(var k=0;k<=horizon;k++)o.push(k<p.length?p[k]:0);return o;}
   var series=[{l:LG("Nicht zahlen: Schuld wächst","Not paying: debt grows"),d:A,c:"var(--bad)",w:2.5},{l:LG("Rate zahlen: Restschuld","Paying: remaining balance"),d:pad(B.path),c:"var(--c1)",fill:"var(--gold-soft)"},{l:LG("+"+more+" % Rate: Restschuld","+"+more+"% payment: remaining balance"),d:pad(C.path),c:"var(--good)",w:2}];
   function split(lbl,pr,it,cls){var tot=pr+it;return '<div class="dcsplit"><div class="row" style="justify-content:space-between"><b>'+lbl+'</b><span>'+E(tot)+' '+LG("gezahlt","paid")+'</span></div><div class="dcbar"><i class="pr" style="width:'+(pr/tot*100).toFixed(1)+'%"></i><i class="in '+cls+'" style="width:'+(it/tot*100).toFixed(1)+'%"></i></div><small class="desc">'+E(pr)+' '+LG("Schuld","debt")+' · <b class="neg">'+E(it)+' '+LG("Zinsen","interest")+'</b> ('+pct(it/pr)+LG(" obendrauf"," on top")+')</small></div>';}
-  var steps=[10,25,50,100].map(function(p){var S2=dcSim(bal,rate,pay*(1+p/100));return '<tr class="dcrow'+(p===more?' on':'')+'" data-dcmore="'+p+'"><td><b>+'+p+' %</b><small class="desc" style="display:block">'+E(pay*(1+p/100))+LG(" pro Monat"," per month")+'</small></td><td class="n">'+dcDur(S2.m,en)+'</td><td class="n">'+E(S2.int)+'</td><td class="n pos">'+(isFinite(B.int)?'−'+E(B.int-S2.int):'–')+'<small class="desc" style="display:block">'+(isFinite(B.m)?LG(dcDur(B.m-S2.m,false)+" früher",dcDur(B.m-S2.m,true)+" sooner"):"")+'</small></td></tr>';}).join("");
+  var steps=[10,25,50,100].map(function(p){var S2=dcSim(bal,rate,pay*(1+p/100));return '<tr class="dcrow'+(p===more?' on':'')+'" data-dcmore="'+p+'"><td><b>+'+p+' %</b><small class="desc" style="display:block">'+E(pay*(1+p/100))+LG(" pro Monat"," per month")+'</small></td><td class="n" data-l="'+LG("Schuldenfrei in","Debt-free in")+'">'+dcDur(S2.m,en)+'</td><td class="n" data-l="'+LG("Zinsen","Interest")+'">'+E(S2.int)+'</td><td class="n pos" data-l="'+LG("Ersparnis","Saving")+'">'+(isFinite(B.int)?'−'+E(B.int-S2.int):'–')+'<small class="desc" style="display:block">'+(isFinite(B.m)?LG(dcDur(B.m-S2.m,false)+" früher",dcDur(B.m-S2.m,true)+" sooner"):"")+'</small></td></tr>';}).join("");
   var form='<div class="form dcform"><label class="f">'+LG("Schuld","Debt")+' ('+esc(CURS[CUR]||CUR)+')<input type="number" id="dcBal" min="0" step="100" inputmode="decimal" value="'+bal+'"></label><label class="f">'+LG("Zins pro Jahr (%)","Interest per year (%)")+'<input type="number" id="dcRate" min="0" max="60" step="0.1" inputmode="decimal" value="'+rate+'"></label><label class="f">'+LG("Rate pro Monat","Payment per month")+'<input type="number" id="dcPay" min="0" step="10" inputmode="decimal" value="'+pay+'"></label><label class="f">'+LG("Zeitraum ohne Zahlung (Jahre)","Period without paying (years)")+'<input type="number" id="dcYrs" min="1" max="30" step="1" value="'+yrs+'"></label>'+
     '<label class="f span2">'+LG("Mehr zahlen: ","Pay more: ")+'<b id="dcMoreL">+'+more+' % = '+E(pay2)+'</b><input type="range" id="dcMore" min="0" max="200" step="5" value="'+more+'"></label></div>'+(df.src&&c.bal==null?'<p class="desc">'+LG("Vorbelegt mit deinen eingetragenen Schulden. Du kannst jeden Wert ändern.","Prefilled with your entered debts. You can change any value.")+'</p>':'');
   var res='<div class="dcgrid"><div class="dccard bad"><small>'+LG("Wenn du nicht zahlst","If you don’t pay")+'</small><b>'+E(grow)+'</b><span>'+LG("nach "+yrs+" Jahren, davon "+E(grow-bal)+" Zinsen auf Zinsen","after "+yrs+" years, of which "+E(grow-bal)+" interest on interest")+'</span><span>'+(isFinite(dbl)?LG("Die Schuld verdoppelt sich alle "+nf1.format(dbl)+" Jahre.","The debt doubles every "+nf1.format(dbl)+" years."):"")+'</span></div>'+
@@ -3879,7 +3924,7 @@ function debtCostHTML(){var en=window.GK_LANG==="en",c=S.calc.dc||{},df=dcDefaul
   var vis=(isFinite(B.m)?split(LG("Mit deiner Rate","With your payment"),bal,B.int,""):"")+(isFinite(C.m)?split(LG("Mit +"+more+" %","With +"+more+"%"),bal,C.int,"lo"):"");
   return '<div class="chead"><div><h2>'+LG("Was deine Schulden wirklich kosten","What your debt really costs")+'</h2><p class="desc">'+LG("Zinseszins arbeitet auch gegen dich. Sieh, was passiert, wenn du nicht zahlst, wenn du deine Rate zahlst und wenn du etwas mehr zahlst.","Compound interest works against you too. See what happens if you don’t pay, if you pay your instalment and if you pay a bit more.")+'</p></div><span class="tag">'+lexLink("compound-interest",LG("Was ist Zinseszins?","What is compound interest?"))+'</span></div>'+
     form+res+lineChart(series,horizon,LG("Schuld über die Zeit","Debt over time"),"m")+vis+
-    '<h3 style="font-size:1rem;margin:16px 0 6px">'+LG("Was jeder Prozent mehr ausmacht","What every extra percent does")+'</h3><div class="tbl"><table><thead><tr><th>'+LG("Rate","Payment")+'</th><th class="n">'+LG("Schuldenfrei in","Debt-free in")+'</th><th class="n">'+LG("Zinsen","Interest")+'</th><th class="n">'+LG("Ersparnis","Saving")+'</th></tr></thead><tbody>'+steps+'</tbody></table></div>'+
+    '<h3 style="font-size:1rem;margin:16px 0 6px">'+LG("Was jeder Prozent mehr ausmacht","What every extra percent does")+'</h3><div class="tbl mcards"><table><thead><tr><th>'+LG("Rate","Payment")+'</th><th class="n">'+LG("Schuldenfrei in","Debt-free in")+'</th><th class="n">'+LG("Zinsen","Interest")+'</th><th class="n">'+LG("Ersparnis","Saving")+'</th></tr></thead><tbody>'+steps+'</tbody></table></div>'+
     '<p class="desc">'+LG("Vereinfachte Rechnung mit festem Zins und monatlicher Verzinsung. Bei Zahlungsverzug kommen oft Mahngebühren, Verzugszinsen und Inkassokosten dazu, dann wächst die Schuld noch schneller. Keine Finanzberatung.","Simplified calculation with a fixed rate and monthly compounding. Late payment often adds fees, default interest and collection costs, so the debt grows even faster. Not financial advice.")+'</p>';}
 function renderDebtCost(){var b=$("debtHelp");if(!b)return;b.className="card";b.innerHTML=debtCostHTML();}
 document.addEventListener("change",function(ev){var id=ev.target.id,m={dcBal:"bal",dcRate:"rate",dcPay:"pay",dcYrs:"yrs"};if(!m[id])return;S.calc.dc=S.calc.dc||{};var df=dcDefaults(),c=S.calc.dc;["bal","rate","pay"].forEach(function(k){if(c[k]==null)c[k]=df[k];});c[m[id]]=Math.max(0,num(ev.target.value));save();renderDebtCost();});
@@ -4371,7 +4416,7 @@ document.querySelectorAll("[data-plus]").forEach(function(el){el.hidden=!plusAll
 /* Beim Öffnen wechselt das Beispiel (nicht in automatischen Tests, außer ?rotate=1). Beispiele lassen sich komplett ausblenden. */
 if(!GK_SHARED){try{if(S.noDemo&&S.mode==="demo"){S.mode="own";save();}else if(S.mode==="demo"&&(!navigator.webdriver||/[?&]rotate=1/.test(location.search))){var pk=Object.keys(PROFILES),ri=(+localStorage.getItem("gk-demo-rot")||0)%pk.length;if(pk[ri]===S.profile)ri=(ri+1)%pk.length;S.profile=pk[ri];localStorage.setItem("gk-demo-rot",String((ri+1)%pk.length));save();}}catch(e){}}
 document.documentElement.classList.toggle("gk-nodemo",!!S.noDemo);
-if($("noDemoChk")){$("noDemoChk").checked=!!S.noDemo;$("noDemoChk").addEventListener("change",function(){GK_setNoDemo(this.checked);});}
+renderMnavSettings();if($("noDemoChk")){$("noDemoChk").checked=!!S.noDemo;$("noDemoChk").addEventListener("change",function(){GK_setNoDemo(this.checked);});}
 applyTheme();buildNav();bind();renderReset(false);renderAll();
 var h0=(location.hash||"").slice(1).split("&")[0];if(h0)goTo(h0);else show("overview");
 document.addEventListener('change',function(ev){var id=ev.target.id;if(id!=='nmIncomeRate'&&id!=='nmCapitalRate')return;if(!plusAllowed())return;var raw=ev.target.value,value=raw===''?null:Number(raw);if(value!=null&&(!isFinite(value)||value<0||value>100))return;ensureOwn();var t=S.own.tax||(S.own.tax={});if(id==='nmIncomeRate')t.incomeRate=value;else t.rate=value;taxRemember();save();renderNomad();renderTax();renderAssets();});
