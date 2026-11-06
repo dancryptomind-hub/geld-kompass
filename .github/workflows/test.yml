@@ -49,6 +49,10 @@ jobs:
           node tests/recurring-scan.js
           node tests/tour.js
           node tests/guide-wanderer.js
+          node tests/guide-presence.js
+          node tests/guide-menu.js
+          node tests/guide-assistant.js
+          node tests/guide-assistant-ui.js
           node tests/dividends-logic.js
           node tests/assets-history.js
           node tests/audit-phases.js

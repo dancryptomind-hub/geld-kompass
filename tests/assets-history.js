@@ -2,7 +2,7 @@
 const { chromium } = require('playwright');
 (async () => {
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1280, height: 900 } }); const errs = []; p.on('pageerror', e => errs.push(e.message));
-  await p.goto('http://localhost:8765/app/?lang=de#overview'); await p.waitForTimeout(1200);
+  await p.goto((process.env.BASE||'http://localhost:8765')+'/app/?lang=de#overview'); await p.waitForTimeout(1200);
   await p.evaluate(() => {
     const S = JSON.parse(localStorage.getItem('geldkompass.v3') || '{}'); S.mode = 'own'; S.onboarded = 1; S.own = S.own || {};
     S.own.entries = [{ id: 'm', title: 'Lebensmittel', amount: 600, type: 'expense', cat: 'Lebensmittel', freq: 'monthly', date: '2026-01-01' }];

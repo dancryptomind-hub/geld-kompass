@@ -32,6 +32,7 @@ const BASE = process.env.BASE || 'http://localhost:8765';
       await page.mouse.down(); await page.mouse.move(Math.max(50,box.x-120),200,{steps:12}); await page.mouse.up();
       assert.ok(await page.evaluate(()=>localStorage.getItem('gk-guide-pos')),'dragged position saved');
       await page.waitForTimeout(450); await button.click();
+      await page.locator('.gg-options summary').click();
       await page.locator('[data-gt="hide"]').click();
       await page.locator('.gg-tab').waitFor({state:'visible'});
       assert.equal(await button.isVisible(),false);
