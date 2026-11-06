@@ -598,6 +598,11 @@ html.gk-modal,html.gk-modal body{overflow:hidden!important;overscroll-behavior:n
  .editdlg .edform{grid-template-columns:1fr!important}
  .editdlg::backdrop{background:var(--surface)}
 }
+
+.mnudge{position:fixed;left:10px;right:10px;bottom:calc(70px + env(safe-area-inset-bottom,0px));z-index:45;background:var(--surface-2,#1b2c57);border:1px solid var(--c1,#e3b55a);border-radius:14px;padding:12px 14px;box-shadow:0 12px 30px rgba(0,0,0,.35);animation:gkNudge .35s ease-out}
+.mnudge p{margin:0 0 8px;font-size:14px}.mnudge>div{display:flex;gap:8px;flex-wrap:wrap}
+@keyframes gkNudge{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
+@media(min-width:901px){.mnudge{display:none}}
 </style>
 <link rel="stylesheet" href="/arbeitsbuch/hinweise.css">
 <link rel="stylesheet" href="/app/visuals.css">
@@ -2498,12 +2503,23 @@ function mnavSlots(){var a=plusAllowed()&&Array.isArray(S.mnav)?S.mnav.filter(fu
 function mnavSettingsHTML(){var cur=mnavSlots(),opts=Object.keys(MNAV_L).filter(function(k){return PAGES[k]&&(k!=="nomad"||plusAllowed())&&!(k==="examples"&&S.noDemo);});
   if(!plusAllowed())return '<p class="desc">'+LG("Mit Plus legst du selbst fest, welche vier Bereiche unten in der Schnellleiste stehen.","With Plus you choose which four areas sit in the bottom quick bar.")+'</p>';
   return '<div class="mnavset">'+cur.map(function(k,i){return '<label class="f"><span>'+LG("Platz ","Slot ")+(i+1)+'</span><select data-mnav="'+i+'">'+opts.map(function(o){return '<option value="'+o+'"'+(o===k?' selected':'')+'>'+esc(GKT(PAGES[o][1]))+'</option>';}).join("")+'</select></label>';}).join("")+'</div><button type="button" class="btn sm" data-mnav-reset="1">'+LG("Standard wiederherstellen","Restore default")+'</button>';}
+/* Profit-Hebel: Wer einen Bereich oft über „Mehr“ öffnet, bekommt den Vorschlag, ihn in die Schnellleiste zu legen (Plus). */
+function mnavWeek(){var d=new Date(),j=new Date(d.getFullYear(),0,1);return d.getFullYear()+"-"+Math.ceil(((d-j)/864e5+j.getDay()+1)/7);}
+function mnavNudgeCount(page){var bar=$("mnav");if(!bar||getComputedStyle(bar).display==="none"||page==="overview"||mnavSlots().indexOf(page)>-1||!MNAV_L[page])return;var st={};try{st=JSON.parse(localStorage.getItem("gk-mnav-use")||"{}")||{};}catch(e){}var w=mnavWeek();if(st.w!==w)st={w:w,c:{},off:st.off||{}};st.c[page]=(st.c[page]||0)+1;try{localStorage.setItem("gk-mnav-use",JSON.stringify(st));}catch(e){}if(st.c[page]>=3&&!st.off[page]&&!st.shown)setTimeout(function(){mnavNudge(page);},600);}
+function mnavNudge(page){var old=$("mnavNudge");if(old)old.remove();var st={};try{st=JSON.parse(localStorage.getItem("gk-mnav-use")||"{}")||{};}catch(e){}st.shown=1;try{localStorage.setItem("gk-mnav-use",JSON.stringify(st));}catch(e){}
+  var plus=plusAllowed(),nm=GKT(MNAV_L[page]),el=document.createElement("div");el.id="mnavNudge";el.className="mnudge";el.setAttribute("role","status");
+  el.innerHTML='<p>'+LG("Du öffnest <b>"+esc(nm)+"</b> oft über „Mehr“. Leg es direkt in deine Leiste.","You often open <b>"+esc(nm)+"</b> via “More”. Put it straight into your bar.")+'</p><div>'+(plus?'<button type="button" class="btn pri sm" data-nudge-add="'+page+'">'+LG("In die Leiste","Add to bar")+'</button>':'<a class="btn pri sm" href="/konto/?plus=leiste">'+LG("Mit Plus freischalten","Unlock with Plus")+'</a>')+'<button type="button" class="btn sm" data-nudge-off="'+page+'">'+LG("Nein danke","No thanks")+'</button></div>';
+  document.body.appendChild(el);}
+document.addEventListener("click",function(ev){var a=ev.target.closest&&ev.target.closest("[data-nudge-add],[data-nudge-off]");if(!a)return;var page=a.getAttribute("data-nudge-add")||a.getAttribute("data-nudge-off"),st={};try{st=JSON.parse(localStorage.getItem("gk-mnav-use")||"{}")||{};}catch(e){}
+  if(a.hasAttribute("data-nudge-add")&&plusAllowed()){var cur=mnavSlots(),c=st.c||{},rep=cur.slice(1).sort(function(x,y){return (c[x]||0)-(c[y]||0);})[0]||cur[3];cur[cur.indexOf(rep)]=page;S.mnav=cur;save();buildNav();renderMnavSettings();toast(LG(GKT(MNAV_L[page])+" liegt jetzt in deiner Leiste. Ändern kannst du das unter Daten.",GKT(MNAV_L[page])+" is now in your bar. Change it under Data."));}
+  else{st.off=st.off||{};st.off[page]=1;try{localStorage.setItem("gk-mnav-use",JSON.stringify(st));}catch(e){}}
+  var n=$("mnavNudge");if(n)n.remove();});
 function renderMnavSettings(){var b=$("mnavSet");if(b)b.innerHTML=mnavSettingsHTML();}
 document.addEventListener("change",function(ev){var el=ev.target.closest&&ev.target.closest("[data-mnav]");if(!el||!plusAllowed())return;var a=mnavSlots(),i=+el.getAttribute("data-mnav"),v=el.value,j=a.indexOf(v);if(j>-1&&j!==i)a[j]=a[i];a[i]=v;S.mnav=a;save();buildNav();renderMnavSettings();toast(LG("Schnellleiste angepasst","Quick bar updated"));});
 document.addEventListener("click",function(ev){if(!(ev.target.closest&&ev.target.closest("[data-mnav-reset]")))return;delete S.mnav;save();buildNav();renderMnavSettings();});
 function buildNav(){$("navGroups").innerHTML=GROUPS.map(function(g){return '<div class="navgroup"><div class="navlabel">'+g[0]+'</div>'+g[1].filter(function(p){return (p!=="nomad"||plusAllowed())&&!(p==="examples"&&S.noDemo);}).map(function(p){return '<button class="nav" type="button" data-page="'+p+'">'+ico(p)+PAGES[p][1]+'</button>';}).join("")+(g[0]==="Einstellungen"?'<a class="nav" href="/konto/?lang='+(window.GK_LANG==="en"?"en":"de")+'">'+ico("account")+(window.GK_LANG==="en"?"Account":"Konto")+'</a>':"")+'</div>';}).join("")+'<p id="gkAdminBadge" class="tag income"'+(isAdminPreview()?'':' hidden')+'>'+(window.GK_LANG==="en"?'Admin · All features':'Admin · Alle Funktionen')+'</p>';
   $("mnav").innerHTML=mnavSlots().map(function(k){return [k,MNAV_L[k]?MNAV_L[k]:k];}).concat([["more","Mehr"]]).map(function(x){return '<button type="button" '+(x[0]==="more"?'data-menu="1"':'data-page="'+x[0]+'"')+'>'+ico(x[0])+x[1]+'</button>';}).join("");}
-function show(page,anchor){if(!PAGES[page]||(page==="nomad"&&!plusAllowed())){page="overview";anchor=null;}
+function show(page,anchor){if(!PAGES[page]||(page==="nomad"&&!plusAllowed())){page="overview";anchor=null;}try{mnavNudgeCount(page);}catch(e){}
   document.querySelectorAll(".page").forEach(function(s){s.classList.toggle("on",s.id==="p-"+page);});
   document.querySelectorAll("[data-page]").forEach(function(b){if(b.getAttribute("data-page")===page)b.setAttribute("aria-current","page");else b.removeAttribute("aria-current");});
   var P=PAGES[page];$("pEye").textContent=P[0]+(P[0]!==P[1]?" · "+P[1]:"");$("pTitle").textContent=P[2];$("pSub").textContent=P[3];

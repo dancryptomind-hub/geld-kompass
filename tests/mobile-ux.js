@@ -25,6 +25,12 @@ const { chromium, devices } = require('playwright');
   await p.reload(); await p.waitForTimeout(1000);
   const nav = await p.evaluate(() => document.getElementById('mnav').innerText.replace(/\n/g, '|'));
   if (nav !== 'Start|Stresstest|Schulden|Depot|Mehr') bad.push('Schnellleiste nicht anpassbar: ' + nav);
+  // Profit-Hebel: dreimal „Abos“ über das Menü → Vorschlag für die Leiste
+  for (let i = 0; i < 3; i++) { await p.tap('[data-menu]'); await p.waitForTimeout(250); await p.click('#navGroups [data-page="recurring"]', { force: true }); await p.waitForTimeout(400); await p.click('#navGroups [data-page="overview"]', { force: true }).catch(() => {}); await p.waitForTimeout(200); }
+  await p.waitForTimeout(800);
+  const nudge = await p.evaluate(() => { const n = document.getElementById('mnavNudge'); return n ? n.innerText : ''; });
+  if (!/Abos/.test(nudge)) bad.push('Kein Leisten-Vorschlag nach dreimal „Abos“: ' + nudge);
+  else { await p.tap('[data-nudge-add]'); await p.waitForTimeout(400); const nav2 = await p.evaluate(() => document.getElementById('mnav').innerText.replace(/\n/g, '|')); if (!/Abos/.test(nav2)) bad.push('Vorschlag hat Abos nicht in die Leiste gelegt: ' + nav2); }
   await b.close();
   if (bad.length || errs.length) { console.error('Handy FEHLER', bad, errs); process.exit(1); }
   console.log('Handy: kompakte Schulden-Tabellen, 60-Sekunden-Fenster als Vollbild mit Sperre und Schließen, feste Leiste, Plus-Schnellleiste');
