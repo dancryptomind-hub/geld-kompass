@@ -1,6 +1,6 @@
 // POST {item: "plus_monthly"|"plus_yearly"|"workbook"|"report", lang?: "de"|"en"} → {url} zur Stripe-Checkout-Seite.
 // Plus braucht ein angemeldetes Konto (Freischaltung hängt am Konto). Arbeitsbuch geht auch als Gast.
-import { handle, json, HttpError, CATALOG, ensurePrice, customerFor, stripe, sql, userFrom, SITE } from "../_shared/billing.ts";
+import { handle, json, HttpError, CATALOG, ensurePrice, ensurePromo, managedPayments, customerFor, stripe, sql, userFrom, SITE } from "../_shared/billing.ts";
 
 Deno.serve(handle(async (req) => {
   if (req.method !== "POST") throw new HttpError(405, "method_not_allowed");
@@ -19,6 +19,9 @@ Deno.serve(handle(async (req) => {
   }
   const price = await ensurePrice(item);
   const customer = user ? await customerFor(user) : undefined;
+  const promo = item === "workbook" && typeof body.code === "string" && /^[A-Za-z0-9]{3,20}$/.test(body.code) ? await ensurePromo(body.code) : null;
+  if (!promo && item === "workbook") await ensurePromo("KOMPASS20").catch(() => null); // Code existiert dann auch für manuelle Eingabe
+  const mp = managedPayments();
   const back = c.mode === "subscription" ? `${SITE}/app/?lang=${lang}#plus` : `${SITE}/arbeitsbuch/`;
   const session = await stripe().checkout.sessions.create({
     mode: c.mode,
@@ -28,10 +31,10 @@ Deno.serve(handle(async (req) => {
     success_url: `${SITE}/plus/danke/?session_id={CHECKOUT_SESSION_ID}&lang=${lang}`,
     cancel_url: back,
     locale: lang,
-    allow_promotion_codes: true,
-    billing_address_collection: "auto",
+    ...(promo ? { discounts: [{ promotion_code: promo }] } : { allow_promotion_codes: true }),
+    ...(mp ? { managed_payments: { enabled: true } } : { billing_address_collection: "auto" as const }),
     integration_identifier: "gk_app_checkout_QWMRTZKB",
-    ...(c.mode === "subscription" ? { subscription_data: { metadata: { gk_user: user!.id, gk_item: item } } } : { payment_intent_data: { metadata: { gk_item: item } } }),
+    ...(c.mode === "subscription" ? { subscription_data: { metadata: { gk_user: user!.id, gk_item: item } } } : mp ? {} : { payment_intent_data: { metadata: { gk_item: item } } }),
     ...(Deno.env.get("TOS_CONSENT") === "1" ? { consent_collection: { terms_of_service: "required" } } : {}),
     custom_text: { submit: { message: lang === "en"
       ? (c.mode === "payment" ? "Digital content: access starts right after payment. By paying you agree that your right of withdrawal ends once the download starts." : "You can cancel anytime in your account. Plus stays active until the end of the paid period.")

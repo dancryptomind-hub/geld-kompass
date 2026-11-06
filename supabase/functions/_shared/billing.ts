@@ -64,9 +64,11 @@ export function handle(fn: (req: Request) => Promise<Response>) {
 }
 
 /* Katalog: eine Product-ID je Angebot, Preisvarianten (Monat/Jahr) am selben Produkt. Preise brutto (inklusive Steuer). */
-export const PRODUCTS: Record<string, { name: string; description: string }> = {
-  gk_plus: { name: "Geld-Kompass Plus", description: "Alle Plus-Funktionen: Entnahmeplan, Dividendenkalender, Steuer- und Nomaden-Modus, Kursalarme, eigene Schnellleiste." },
-  gk_workbook_de: { name: "Arbeitsbuch „Der einfache Weg zur Finanziellen Freiheit“ (PDF)", description: "69 Seiten Übungen zu allen 16 Kapiteln, digital zum Ausdrucken oder Beschriften." },
+/* tax_code laut Stripe-Steuercode-Liste (geprüft per Tax Codes API): Plus = SaaS privat, Arbeitsbuch = Digitales Buch mit dauerhaftem Zugriff.
+   Beide Kategorien sind für Managed Payments (Stripe als Verkäufer, übernimmt EU-Umsatzsteuer) zulässig. */
+export const PRODUCTS: Record<string, { name: string; description: string; tax_code?: string }> = {
+  gk_plus: { name: "Geld-Kompass Plus", description: "Alle Plus-Funktionen: Entnahmeplan, Dividendenkalender, Steuer- und Nomaden-Modus, Kursalarme, eigene Schnellleiste.", tax_code: "txcd_10103000" },
+  gk_workbook_de: { name: "Arbeitsbuch „Der einfache Weg zur Finanziellen Freiheit“ (PDF)", description: "69 Seiten Übungen zu allen 16 Kapiteln, digital zum Ausdrucken oder Beschriften.", tax_code: "txcd_10302000" },
   gk_freedom_report: { name: "Freiheits-Report (PDF)", description: "Dein persönlicher Report aus deinen Geld-Kompass-Zahlen." },
 };
 export const CATALOG: Record<string, { lookup: string; product: string; amount: number; interval?: "month" | "year"; mode: "subscription" | "payment"; needsUser: boolean; enabledEnv?: string }> = {
@@ -80,14 +82,42 @@ export async function ensurePrice(item: keyof typeof CATALOG): Promise<string> {
   const c = CATALOG[item], s = stripe();
   const found = await s.prices.list({ lookup_keys: [c.lookup], active: true, limit: 1 });
   if (found.data[0]) return found.data[0].id;
-  try { await s.products.retrieve(c.product); }
-  catch { await s.products.create({ id: c.product, name: PRODUCTS[c.product].name, description: PRODUCTS[c.product].description }, { idempotencyKey: "prod_" + c.product }); }
+  await ensureProduct(c.product);
   const p = await s.prices.create({
     product: c.product, currency: "eur", unit_amount: c.amount, lookup_key: c.lookup, tax_behavior: "inclusive",
     ...(c.interval ? { recurring: { interval: c.interval } } : {}),
   }, { idempotencyKey: "price_" + c.lookup });
   return p.id;
 }
+
+export async function ensureProduct(id: string) {
+  const s = stripe(), P = PRODUCTS[id];
+  try {
+    const prod = await s.products.retrieve(id);
+    const tc = typeof prod.tax_code === "string" ? prod.tax_code : prod.tax_code?.id;
+    if (P.tax_code && tc !== P.tax_code) await s.products.update(id, { tax_code: P.tax_code });
+  } catch {
+    await s.products.create({ id, name: P.name, description: P.description, ...(P.tax_code ? { tax_code: P.tax_code } : {}) }, { idempotencyKey: "prod_" + id + "_v2" });
+  }
+}
+
+/* Aktionscodes: werden beim ersten Bedarf in Stripe angelegt (Gutschein + Kundencode). KOMPASS20 = -20 % einmalig aufs Arbeitsbuch, einmal pro Kunde. */
+export const PROMOS: Record<string, { coupon: string; percent_off: number; products: string[]; name: string }> = {
+  KOMPASS20: { coupon: "gk_kompass20", percent_off: 20, products: ["gk_workbook_de"], name: "Kompass -20 %" },
+};
+export async function ensurePromo(code: string): Promise<string | null> {
+  const P = PROMOS[code.toUpperCase()];
+  if (!P) return null;
+  const s = stripe();
+  const found = await s.promotionCodes.list({ code: code.toUpperCase(), active: true, limit: 1 });
+  if (found.data[0]) return found.data[0].id;
+  for (const pid of P.products) await ensureProduct(pid);
+  try { await s.coupons.retrieve(P.coupon); }
+  catch { await s.coupons.create({ id: P.coupon, name: P.name, percent_off: P.percent_off, duration: "once", applies_to: { products: P.products } }, { idempotencyKey: "coupon_" + P.coupon }); }
+  const pc = await s.promotionCodes.create({ promotion: { type: "coupon", coupon: P.coupon }, code: code.toUpperCase(), restrictions: { first_time_transaction: true } }, { idempotencyKey: "promo_" + code.toUpperCase() + "_v1" });
+  return pc.id;
+}
+export const managedPayments = () => Deno.env.get("MANAGED_PAYMENTS") === "1";
 
 export async function customerFor(user: User): Promise<string> {
   const db = sql();

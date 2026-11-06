@@ -34,6 +34,13 @@ const fs = require('fs');
   await p.goto('http://localhost:8765/arbeitsbuch/'); await p.waitForTimeout(600);
   if (await p.evaluate(() => document.getElementById('abBuy').hidden)) bad.push('Eingeschaltet: Arbeitsbuch-Kaufknopf fehlt');
   else { await p.click('#abBuy'); await p.waitForURL('https://checkout.stripe.com/**', { timeout: 5000 }).catch(() => bad.push('Keine Weiterleitung zu Stripe Checkout')); if (!p.calls.some(c => /billing-checkout .*"item":"workbook"/.test(c))) bad.push('Arbeitsbuch-Checkout falsch aufgerufen: ' + p.calls); }
+  // Aktionslink ?code=KOMPASS20 → Preis 7,99 € angezeigt und Code an den Server übergeben
+  p = await page(true);
+  await p.goto('http://localhost:8765/arbeitsbuch/?code=kompass20'); await p.waitForTimeout(600);
+  const pr = await p.evaluate(() => document.getElementById('abBuy').innerText + ' | ' + (document.querySelector('.abcode') || {}).innerText);
+  if (!/7,99/.test(pr) || !/KOMPASS20/.test(pr)) bad.push('Aktionslink zeigt keinen Rabatt: ' + pr);
+  await p.click('#abBuy'); await p.waitForURL('https://checkout.stripe.com/**', { timeout: 5000 }).catch(() => {});
+  if (!p.calls.some(c => /"code":"KOMPASS20"/.test(c))) bad.push('Aktionscode nicht an Checkout übergeben: ' + p.calls);
   // 3) Danke-Seite
   p = await page(true, { kind: 'gk_workbook_de', status: 'paid', download: 'https://example.com/arbeitsbuch.pdf?token=x' });
   await p.goto('http://localhost:8765/plus/danke/?lang=de&session_id=cs_test_' + 'a'.repeat(30)); await p.waitForTimeout(1500);
