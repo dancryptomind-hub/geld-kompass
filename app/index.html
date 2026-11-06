@@ -603,6 +603,15 @@ html.gk-modal,html.gk-modal body{overflow:hidden!important;overscroll-behavior:n
 .mnudge p{margin:0 0 8px;font-size:14px}.mnudge>div{display:flex;gap:8px;flex-wrap:wrap}
 @keyframes gkNudge{from{transform:translateY(12px);opacity:0}to{transform:none;opacity:1}}
 @media(min-width:901px){.mnudge{display:none}}
+
+.plusfeat{margin:0 0 12px;padding-left:20px;display:grid;gap:4px}
+.plusplans{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 0}
+.plusplan{position:relative;display:grid;gap:2px;padding:14px 12px 12px;border:1px solid var(--line);border-radius:14px;cursor:pointer;background:rgba(255,255,255,.03)}
+.plusplan input{position:absolute;opacity:0;pointer-events:none}
+.plusplan.on{border-color:var(--c1,#e3b55a);background:rgba(227,181,90,.10);box-shadow:0 0 0 1px var(--c1,#e3b55a) inset}
+.plusplan b{font-size:18px}.plusplan small{color:var(--muted)}
+.pp-badge{position:absolute;top:-10px;left:10px;font-size:11px;font-weight:800;background:var(--c1,#e3b55a);color:#1a1405;border-radius:999px;padding:2px 8px}
+@media(max-width:420px){.plusplans{grid-template-columns:1fr}}
 </style>
 <link rel="stylesheet" href="/arbeitsbuch/hinweise.css">
 <link rel="stylesheet" href="/app/visuals.css">
@@ -610,7 +619,7 @@ html.gk-modal,html.gk-modal body{overflow:hidden!important;overscroll-behavior:n
 <script src="/share-state.js"></script>
 <script src="/app/booking-icons.js"></script>
 <script src="/app/transaction-presets.js"></script>
-<script src="/assets/supabase-2.118.0.js" defer></script>
+<script src="/assets/supabase-2.118.0.js" defer></script><script src="/billing-config.js?v20261106a"></script>
 <script src="/app/guide-presence.js?v=1" defer></script>
 <script src="/app/guide-assistant.js?v=1" defer></script>
 <script src="/konto/config.js"></script>
@@ -893,6 +902,7 @@ html.gk-modal,html.gk-modal body{overflow:hidden!important;overscroll-behavior:n
   <!-- DATEN -->
   <section class="page" id="p-data">
     <div class="card"><h2>Beispiele</h2><p class="desc">Beim Öffnen zeigt der Geld-Kompass eine wechselnde Beispielperson, solange du keine eigenen Zahlen nutzt. Du kannst die Beispiele komplett ausblenden.</p><label class="chk"><input type="checkbox" id="noDemoChk"> Beispiele ausblenden</label></div>
+    <div class="card" id="plusCard"></div>
     <div class="card"><h2>Schnellleiste <span class="tag invest">Plus</span></h2><p class="desc">Die Leiste unten auf dem Handy: Wähle die vier Bereiche, die du am meisten nutzt. „Mehr“ bleibt immer rechts.</p><div id="mnavSet"></div></div>
     <div class="g2">
       <div class="card"><h2>Sicherung und Gerätewechsel</h2><p class="desc">Deine Eingaben liegen nur in diesem Browser. Sichere sie ab und zu, besonders vor einem Browser- oder Gerätewechsel.</p>
@@ -2477,7 +2487,10 @@ var GROUPS=[["Dashboard",["overview","bookings","debts","assets","plan","stress"
 var ADMIN_ACCESS=null,ADMIN_CLIENT=null,ADMIN_ROUTE=(location.hash||"").slice(1).split("&")[0];
 var PUBLIC_BUILD_PREVIEW=!!(window.GK_ACCOUNT_CONFIG&&window.GK_ACCOUNT_CONFIG.previewOpen===true);
 function isAdminPreview(){return !!ADMIN_ACCESS&&ADMIN_ACCESS.allowed();}
-function plusAllowed(){return PUBLIC_BUILD_PREVIEW||isAdminPreview();}
+var PLUS_MEMBER=null;/* {active,until,status,interval,cancel_at_period_end} aus app_metadata.gk_plus, nur vom Server (Stripe-Webhook) beschreibbar */
+function plusMember(){return !!(PLUS_MEMBER&&PLUS_MEMBER.active&&+PLUS_MEMBER.until>Date.now());}
+function plusFromUser(r){var u=r&&r.data&&r.data.user,g=u&&!u.is_anonymous&&u.app_metadata&&u.app_metadata.gk_plus||null,before=plusMember();PLUS_MEMBER=g;window.GK_USER_EMAIL=u&&u.email||"";if(before!==plusMember())setTimeout(function(){try{applyAdminPreview();}catch(e){}},0);try{renderPlusCard();}catch(e){}}
+function plusAllowed(){return PUBLIC_BUILD_PREVIEW||isAdminPreview()||plusMember();}
 function applyAdminPreview(){
  var allowed=plusAllowed();
  document.querySelectorAll("[data-plus]").forEach(function(el){el.hidden=!allowed;});
@@ -2490,7 +2503,7 @@ function initAdminPreview(){
  var cfg=window.GK_ACCOUNT_CONFIG;
  if(!window.supabase||!window.GKAdminGate||!cfg||!cfg.url||!cfg.key){document.documentElement.dataset.gkAdminChecked="true";return;}
  ADMIN_CLIENT=window.supabase.createClient(cfg.url,cfg.key,{auth:{storageKey:"gk.account.v1",persistSession:true,autoRefreshToken:true,detectSessionInUrl:false,flowType:"pkce"}});
- ADMIN_ACCESS=window.GKAdminGate.create({getUser:function(){return ADMIN_CLIENT.auth.getUser();},onChange:applyAdminPreview,onChecked:function(){document.documentElement.dataset.gkAdminChecked="true";}});
+ ADMIN_ACCESS=window.GKAdminGate.create({getUser:function(){return ADMIN_CLIENT.auth.getUser().then(function(r){try{plusFromUser(r);}catch(e){}return r;});},onChange:applyAdminPreview,onChecked:function(){document.documentElement.dataset.gkAdminChecked="true";}});
  ADMIN_CLIENT.auth.onAuthStateChange(function(event){if(event==="SIGNED_OUT")ADMIN_ACCESS.revoke();else setTimeout(function(){ADMIN_ACCESS.refresh();},0);});
  ADMIN_ACCESS.refresh();setInterval(function(){if(!document.hidden)ADMIN_ACCESS.refresh();},30000);
  window.addEventListener("offline",function(){ADMIN_ACCESS.revoke();});window.addEventListener("online",function(){ADMIN_ACCESS.refresh();});
@@ -2508,12 +2521,43 @@ function mnavWeek(){var d=new Date(),j=new Date(d.getFullYear(),0,1);return d.ge
 function mnavNudgeCount(page){var bar=$("mnav");if(!bar||getComputedStyle(bar).display==="none"||page==="overview"||mnavSlots().indexOf(page)>-1||!MNAV_L[page])return;var st={};try{st=JSON.parse(localStorage.getItem("gk-mnav-use")||"{}")||{};}catch(e){}var w=mnavWeek();if(st.w!==w)st={w:w,c:{},off:st.off||{}};st.c[page]=(st.c[page]||0)+1;try{localStorage.setItem("gk-mnav-use",JSON.stringify(st));}catch(e){}if(st.c[page]>=3&&!st.off[page]&&!st.shown)setTimeout(function(){mnavNudge(page);},600);}
 function mnavNudge(page){var old=$("mnavNudge");if(old)old.remove();var st={};try{st=JSON.parse(localStorage.getItem("gk-mnav-use")||"{}")||{};}catch(e){}st.shown=1;try{localStorage.setItem("gk-mnav-use",JSON.stringify(st));}catch(e){}
   var plus=plusAllowed(),nm=GKT(MNAV_L[page]),el=document.createElement("div");el.id="mnavNudge";el.className="mnudge";el.setAttribute("role","status");
-  el.innerHTML='<p>'+LG("Du öffnest <b>"+esc(nm)+"</b> oft über „Mehr“. Leg es direkt in deine Leiste.","You often open <b>"+esc(nm)+"</b> via “More”. Put it straight into your bar.")+'</p><div>'+(plus?'<button type="button" class="btn pri sm" data-nudge-add="'+page+'">'+LG("In die Leiste","Add to bar")+'</button>':'<a class="btn pri sm" href="/konto/?plus=leiste">'+LG("Mit Plus freischalten","Unlock with Plus")+'</a>')+'<button type="button" class="btn sm" data-nudge-off="'+page+'">'+LG("Nein danke","No thanks")+'</button></div>';
+  el.innerHTML='<p>'+LG("Du öffnest <b>"+esc(nm)+"</b> oft über „Mehr“. Leg es direkt in deine Leiste.","You often open <b>"+esc(nm)+"</b> via “More”. Put it straight into your bar.")+'</p><div>'+(plus?'<button type="button" class="btn pri sm" data-nudge-add="'+page+'">'+LG("In die Leiste","Add to bar")+'</button>':'<button type="button" class="btn pri sm" data-plus-buy="leiste">'+LG("Mit Plus freischalten","Unlock with Plus")+'</button>')+'<button type="button" class="btn sm" data-nudge-off="'+page+'">'+LG("Nein danke","No thanks")+'</button></div>';
   document.body.appendChild(el);}
 document.addEventListener("click",function(ev){var a=ev.target.closest&&ev.target.closest("[data-nudge-add],[data-nudge-off]");if(!a)return;var page=a.getAttribute("data-nudge-add")||a.getAttribute("data-nudge-off"),st={};try{st=JSON.parse(localStorage.getItem("gk-mnav-use")||"{}")||{};}catch(e){}
   if(a.hasAttribute("data-nudge-add")&&plusAllowed()){var cur=mnavSlots(),c=st.c||{},rep=cur.slice(1).sort(function(x,y){return (c[x]||0)-(c[y]||0);})[0]||cur[3];cur[cur.indexOf(rep)]=page;S.mnav=cur;save();buildNav();renderMnavSettings();toast(LG(GKT(MNAV_L[page])+" liegt jetzt in deiner Leiste. Ändern kannst du das unter Daten.",GKT(MNAV_L[page])+" is now in your bar. Change it under Data."));}
   else{st.off=st.off||{};st.off[page]=1;try{localStorage.setItem("gk-mnav-use",JSON.stringify(st));}catch(e){}}
   var n=$("mnavNudge");if(n)n.remove();});
+/* ===== Plus kaufen (Stripe Checkout über Supabase Edge Functions) ===== */
+function billingOn(){return !!(window.GK_BILLING&&window.GK_BILLING.enabled);}
+function plusToken(){if(!ADMIN_CLIENT)return Promise.resolve(null);return ADMIN_CLIENT.auth.getSession().then(function(r){return r&&r.data&&r.data.session?r.data.session.access_token:null;}).catch(function(){return null;});}
+function plusDlgHTML(){var B=window.GK_BILLING||{prices:{}},P=B.prices||{},y=P.plus_yearly||39,m=P.plus_monthly||4.99,save=Math.round((1-y/(m*12))*100),fmt=function(v){return v.toLocaleString(window.GK_LOCALE||"de-DE",{style:"currency",currency:"EUR"});};
+  return '<form method="dialog" id="plusForm"><div class="edhead"><h2>'+LG("Geld-Kompass Plus","Money Compass Plus")+'</h2><button class="btn ghost sm" type="button" data-plus-close aria-label="'+LG("Schließen","Close")+'">✕</button></div>'+
+  '<p class="desc">'+LG("Alles aus dem kostenlosen Kompass, dazu die Werkzeuge für dein großes Bild.","Everything in the free Compass plus the tools for your big picture.")+'</p>'+
+  '<ul class="plusfeat"><li>'+LG("Entnahmeplan: wie viel du dir sicher auszahlen kannst","Withdrawal plan: how much you can safely pay yourself")+'</li><li>'+LG("Dividendenkalender und Cashflow aus Depot und Mieten","Dividend calendar and cash flow from portfolio and rent")+'</li><li>'+LG("Steuer- und Nomaden-Modus","Tax and nomad mode")+'</li><li>'+LG("Kursalarme für deine Positionen","Price alerts for your holdings")+'</li><li>'+LG("Eigene Schnellleiste auf dem Handy","Your own quick bar on mobile")+'</li></ul>'+
+  '<div class="plusplans" role="radiogroup"><label class="plusplan on"><input type="radio" name="plusPlan" value="plus_yearly" checked><span class="pp-badge">'+LG("Beliebteste Wahl · spart "+save+" %","Most popular · save "+save+"%")+'</span><b>'+fmt(y)+LG(" pro Jahr"," per year")+'</b><small>'+LG("entspricht "+fmt(y/12)+" im Monat","equals "+fmt(y/12)+" a month")+'</small></label>'+
+  '<label class="plusplan"><input type="radio" name="plusPlan" value="plus_monthly"><b>'+fmt(m)+LG(" pro Monat"," per month")+'</b><small>'+LG("monatlich kündbar","cancel monthly")+'</small></label></div>'+
+  '<p class="desc" id="plusMsg" aria-live="polite"></p>'+
+  '<div class="row edfoot"><button class="btn pri" type="submit" id="plusGo">'+LG("Weiter zur sicheren Zahlung","Continue to secure payment")+'</button><button class="btn" type="button" data-plus-close>'+LG("Später","Later")+'</button></div>'+
+  '<p class="desc">'+LG("Bezahlung über Stripe. Jederzeit kündbar, Plus bleibt bis zum Ende des bezahlten Zeitraums aktiv. Deine Finanzdaten bleiben auf deinem Gerät, Stripe sieht nur die Zahlung.","Payment via Stripe. Cancel anytime; Plus stays active until the end of the paid period. Your financial data stays on your device; Stripe only sees the payment.")+'</p></form>';}
+function openPlus(src){var d=$("plusDlg");if(!d){d=document.createElement("dialog");d.id="plusDlg";d.className="editdlg";document.body.appendChild(d);}
+  d.innerHTML=plusDlgHTML();try{tourPauseForDialog();}catch(e){}
+  if(!billingOn()){var m=d.querySelector("#plusMsg");m.textContent=LG("Der Bezahlweg wird gerade eingerichtet. Bis dahin sind alle Plus-Funktionen in der Vorschau offen.","Payments are being set up. Until then all Plus features are open in preview.");d.querySelector("#plusGo").disabled=true;}
+  if(d.showModal)d.showModal();else d.setAttribute("open","");gkModalSync();}
+function closePlus(){var d=$("plusDlg");if(d&&d.open){d.close();}gkModalSync();}
+document.addEventListener("change",function(ev){if(ev.target.name==="plusPlan")document.querySelectorAll(".plusplan").forEach(function(l){l.classList.toggle("on",l.contains(ev.target));});});
+document.addEventListener("click",function(ev){var t=ev.target.closest&&ev.target.closest("[data-plus-buy],[data-plus-close],[data-plus-portal]");if(!t)return;ev.preventDefault();
+  if(t.hasAttribute("data-plus-close"))return closePlus();
+  if(t.hasAttribute("data-plus-portal"))return plusPortal(t);
+  openPlus(t.getAttribute("data-plus-buy"));});
+document.addEventListener("submit",function(ev){if(!ev.target||ev.target.id!=="plusForm")return;ev.preventDefault();var item=(ev.target.querySelector("input[name=plusPlan]:checked")||{}).value||"plus_yearly",msg=$("plusMsg"),btn=$("plusGo");if(!billingOn())return;
+  btn.disabled=true;msg.textContent=LG("Einen Moment …","One moment …");
+  plusToken().then(function(tok){if(!tok){msg.innerHTML=LG("Plus hängt an deinem Konto, damit es auf allen Geräten gilt. Bitte melde dich zuerst an.","Plus belongs to your account so it works on all devices. Please sign in first.")+' <a class="btn sm" href="/konto/?lang='+(window.GK_LANG==="en"?"en":"de")+'&next=plus">'+LG("Anmelden","Sign in")+'</a>';btn.disabled=false;return;}
+    return GK_billingCall("billing-checkout",{token:tok,body:{item:item,lang:window.GK_LANG==="en"?"en":"de"}}).then(function(j){if(j.url){location.href=j.url;return;}if(j.already){msg.textContent=LG("Plus ist bei dir schon aktiv.","Plus is already active for you.");btn.disabled=false;return;}msg.textContent=j.error==="login_required"?LG("Bitte bestätige zuerst deine E-Mail-Adresse.","Please confirm your email address first."):LG("Das hat nicht geklappt. Bitte versuch es gleich noch einmal.","That did not work. Please try again in a moment.");btn.disabled=false;});
+  }).catch(function(){msg.textContent=LG("Keine Verbindung. Bitte später erneut versuchen.","No connection. Please try again later.");btn.disabled=false;});});
+function plusPortal(btn){btn.disabled=true;plusToken().then(function(tok){if(!tok){location.href="/konto/";return;}return GK_billingCall("billing-portal",{token:tok,body:{lang:window.GK_LANG==="en"?"en":"de"}}).then(function(j){if(j.url)location.href=j.url;else{toast(LG("Abo-Verwaltung gerade nicht erreichbar.","Subscription management unavailable right now."));btn.disabled=false;}});});}
+function renderPlusCard(){var b=$("plusCard");if(!b)return;var m=PLUS_MEMBER,act=plusMember(),until=m&&m.until?new Date(+m.until-3*864e5).toLocaleDateString(window.GK_LOCALE||"de-DE"):"";
+  b.innerHTML='<h2>'+LG("Dein Plus","Your Plus")+' <span class="tag invest">Plus</span></h2>'+(act?'<p class="desc">'+LG("Plus ist aktiv ("+(m.interval==="year"?"Jahresabo":"Monatsabo")+"). "+(m.cancel_at_period_end?"Endet am ":"Verlängert sich am ")+until+".","Plus is active ("+(m.interval==="year"?"yearly":"monthly")+"). "+(m.cancel_at_period_end?"Ends on ":"Renews on ")+until+".")+'</p><button type="button" class="btn" data-plus-portal>'+LG("Abo verwalten oder kündigen","Manage or cancel")+'</button>':
+   '<p class="desc">'+(PUBLIC_BUILD_PREVIEW?LG("Gerade sind alle Plus-Funktionen in der Vorschau offen. ","All Plus features are open in preview right now. "):"")+LG("Mit Plus bekommst du Entnahmeplan, Dividendenkalender, Steuer- und Nomaden-Modus, Kursalarme und deine eigene Schnellleiste.","Plus adds the withdrawal plan, dividend calendar, tax and nomad mode, price alerts and your own quick bar.")+'</p>'+(billingOn()?'<button type="button" class="btn pri" data-plus-buy="data">'+LG("Plus holen · ab 3,25 € im Monat","Get Plus · from €3.25 a month")+'</button>':''));}
 function renderMnavSettings(){var b=$("mnavSet");if(b)b.innerHTML=mnavSettingsHTML();}
 document.addEventListener("change",function(ev){var el=ev.target.closest&&ev.target.closest("[data-mnav]");if(!el||!plusAllowed())return;var a=mnavSlots(),i=+el.getAttribute("data-mnav"),v=el.value,j=a.indexOf(v);if(j>-1&&j!==i)a[j]=a[i];a[i]=v;S.mnav=a;save();buildNav();renderMnavSettings();toast(LG("Schnellleiste angepasst","Quick bar updated"));});
 document.addEventListener("click",function(ev){if(!(ev.target.closest&&ev.target.closest("[data-mnav-reset]")))return;delete S.mnav;save();buildNav();renderMnavSettings();});
@@ -2526,7 +2570,7 @@ function show(page,anchor){if(!PAGES[page]||(page==="nomad"&&!plusAllowed())){pa
   $("side").classList.remove("open");
   try{history.replaceState(null,"","#"+(anchor||page)+(GK_SHARED?"&gk="+encodeURIComponent(JSON.stringify(GK_SHARED)):""));}catch(e){}
   if(anchor){var el=$(anchor);if(GK_SHARED&&$("gkSharedNote"))el=$("gkSharedNote");if(el){if(el.tagName==="DETAILS")el.open=true;setTimeout(function(){el.scrollIntoView({behavior:"smooth",block:"start"});},40);}}else window.scrollTo(0,0);}
-function goTo(id){var target=$(id);if(target&&target.closest("[data-plus]")&&!plusAllowed())return show("overview");if(PAGES[id])return show(id);var el=$(id);if(!el)return show("overview");var pg=el.closest(".page");show(pg.id.slice(2),id);}
+function goTo(id){if(id==="plus"){show("overview");setTimeout(function(){openPlus("link");},300);return;}var target=$(id);if(target&&target.closest("[data-plus]")&&!plusAllowed())return show("overview");if(PAGES[id])return show(id);var el=$(id);if(!el)return show("overview");var pg=el.closest(".page");show(pg.id.slice(2),id);}
 
 /* ================= BUCHUNGSFORMULAR ================= */
 function formHTML(px){return '<form class="form" id="'+px+'Form" autocomplete="off">'+
@@ -4049,7 +4093,7 @@ function wdPlanHTML(B){var d=D(),t=B.t,W=Math.max(0,t.spend-B.incSm),P=investabl
    '<p class="desc">'+LG("Entnimm laufend aus Topf 1. Fällt die Börse, wartest du mit Verkäufen aus Topf 3 und lebst von Topf 1 und 2. So musst du im Crash nicht billig verkaufen.","Withdraw from pot 1. If markets fall, pause sales from pot 3 and live on pots 1 and 2, so you do not have to sell cheaply in a crash.")+'</p>'+
    (need>0?'<h3>'+LG("Wann wird es eng?","When does it get tight?")+'</h3><div class="wdwhen">'+[[LG("ohne Rendite","without returns"),capRunway(P,need,0)],[LG("2 % über Inflation","2% above inflation"),capRunway(P,need,.02)],[LG("Crash −30 % im ersten Jahr, danach 2 %","−30% crash in year one, then 2%"),capRunway(P*.82,need,.02)]].map(function(x){return '<div><small>'+x[0]+'</small><b>'+yr(x[1])+'</b><span>'+(isFinite(x[1])?LG("≈ "+nf1.format(x[1])+" Jahre","≈ "+nf1.format(x[1])+" years"):LG("Vermögen bleibt erhalten","capital is preserved"))+'</span></div>';}).join("")+'</div>':'')+
    '<div data-partner="ruhestand" hidden></div><div data-partner="broker2" hidden></div><p class="desc">'+LG("Modellrechnung mit vereinfachten Annahmen, ohne Steuern. Keine Anlage- oder Steuerberatung.","Model calculation with simplified assumptions, before tax. Not investment or tax advice.")+'</p>';
-  return '<div class="wdplan"><div class="chead"><div><h2>'+LG("Dein Entnahmeplan","Your withdrawal plan")+' <span class="tag invest">Plus</span></h2><p class="desc">'+LG("Wie viel kannst du dir jeden Monat auszahlen, aus welchem Topf zuerst, und wann wird es eng?","How much can you pay yourself each month, from which pot first, and when does it get tight?")+'</p></div></div>'+(lock?'<div class="wdlock"><p>'+LG("Der Entnahmeplan ist Teil von Geld-Kompass Plus.","The withdrawal plan is part of Money Compass Plus.")+'</p></div>':body)+'</div>';}
+  return '<div class="wdplan"><div class="chead"><div><h2>'+LG("Dein Entnahmeplan","Your withdrawal plan")+' <span class="tag invest">Plus</span></h2><p class="desc">'+LG("Wie viel kannst du dir jeden Monat auszahlen, aus welchem Topf zuerst, und wann wird es eng?","How much can you pay yourself each month, from which pot first, and when does it get tight?")+'</p></div></div>'+(lock?'<div class="wdlock"><p>'+LG("Der Entnahmeplan ist Teil von Geld-Kompass Plus.","The withdrawal plan is part of Money Compass Plus.")+'</p>'+(billingOn()?'<button type="button" class="btn pri sm" data-plus-buy="entnahmeplan">'+LG("Plus ansehen","See Plus")+'</button>':'')+'</div>':body)+'</div>';}
 function stMonthsTxt(m){return isFinite(m)?(m>=120?LG("über 10 Jahre","over 10 years"):m<1?LG("unter 1 Monat","under 1 month"):nf1.format(m)+LG(" Monate"," months")):LG("unbegrenzt","indefinitely");}
 function stSlider(id,lab,v,min,max,step,suf,ico,hint){var p=(v-min)/(max-min)*100;return '<div class="stsl"><div class="stsl-h"><span class="stsl-i">'+ico+'</span><span class="stsl-l">'+lab+(hint?'<small>'+hint+'</small>':'')+'</span><output id="'+id+'L">'+(id==="stOnce"?E(v):v+suf)+'</output></div><input type="range" class="strange" id="'+id+'" min="'+min+'" max="'+max+'" step="'+step+'" value="'+v+'" style="--p:'+p.toFixed(1)+'%" data-suf="'+suf+'"></div>';}
 function stToggle(id,lab,on,ico){return '<button type="button" class="sttog'+(on?' on':'')+'" id="'+id+'" aria-pressed="'+(on?"true":"false")+'"><span class="stsl-i">'+ico+'</span><span>'+lab+'</span><i aria-hidden="true"></i></button>';}
@@ -4432,7 +4476,7 @@ document.querySelectorAll("[data-plus]").forEach(function(el){el.hidden=!plusAll
 /* Beim Öffnen wechselt das Beispiel (nicht in automatischen Tests, außer ?rotate=1). Beispiele lassen sich komplett ausblenden. */
 if(!GK_SHARED){try{if(S.noDemo&&S.mode==="demo"){S.mode="own";save();}else if(S.mode==="demo"&&(!navigator.webdriver||/[?&]rotate=1/.test(location.search))){var pk=Object.keys(PROFILES),ri=(+localStorage.getItem("gk-demo-rot")||0)%pk.length;if(pk[ri]===S.profile)ri=(ri+1)%pk.length;S.profile=pk[ri];localStorage.setItem("gk-demo-rot",String((ri+1)%pk.length));save();}}catch(e){}}
 document.documentElement.classList.toggle("gk-nodemo",!!S.noDemo);
-renderMnavSettings();if($("noDemoChk")){$("noDemoChk").checked=!!S.noDemo;$("noDemoChk").addEventListener("change",function(){GK_setNoDemo(this.checked);});}
+renderMnavSettings();renderPlusCard();if($("noDemoChk")){$("noDemoChk").checked=!!S.noDemo;$("noDemoChk").addEventListener("change",function(){GK_setNoDemo(this.checked);});}
 applyTheme();buildNav();bind();renderReset(false);renderAll();
 var h0=(location.hash||"").slice(1).split("&")[0];if(h0)goTo(h0);else show("overview");
 document.addEventListener('change',function(ev){var id=ev.target.id;if(id!=='nmIncomeRate'&&id!=='nmCapitalRate')return;if(!plusAllowed())return;var raw=ev.target.value,value=raw===''?null:Number(raw);if(value!=null&&(!isFinite(value)||value<0||value>100))return;ensureOwn();var t=S.own.tax||(S.own.tax={});if(id==='nmIncomeRate')t.incomeRate=value;else t.rate=value;taxRemember();save();renderNomad();renderTax();renderAssets();});
