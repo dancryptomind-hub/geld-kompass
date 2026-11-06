@@ -26,6 +26,11 @@ const { chromium } = require('playwright');
     const r = await p.evaluate(() => { const t = document.getElementById('kpis').innerText, n = s => +((t.match(new RegExp(s + '\\s*(-?[\\d.]+)\\s€')) || [0, 'NaN'])[1].replace(/\./g, '')); return { inc: n('Einnahmen'), sp: n('Ausgaben'), gap: /Monatslücke/.test(document.getElementById('hero').innerText) }; });
     if (r.inc >= r.sp && r.gap) bad.push(k + ': Lücke obwohl Einnahmen ' + r.inc + ' ≥ Ausgaben ' + r.sp);
   }
+  // 6) Viktor: Dividenden im Monatsschnitt zählen als Einnahme (KPI, Geldfluss Rein/Raus, kein Minus)
+  await p.evaluate(() => { const S = JSON.parse(localStorage.getItem('geldkompass.v3')); S.mode = 'demo'; S.profile = 'viktor'; localStorage.setItem('geldkompass.v3', JSON.stringify(S)); });
+  await p.goto('http://localhost:8765/app/?lang=de&p=vk#overview'); await p.waitForTimeout(1200);
+  const vk = await p.evaluate(() => document.getElementById('kpis').innerText + ' || ' + document.getElementById('flow').innerText);
+  if (!/Einnahmen\s*3\.900\s€/.test(vk) || !/Rein/.test(vk) || !/Raus/.test(vk) || !/Übrig/.test(vk) || /Kommt aus dem Vermögen/.test(vk)) bad.push('Viktor: passive Einnahmen nicht als Einnahme gezählt: ' + vk.replace(/\n/g, ' | ').slice(0, 300));
   if (errs.length) bad.push('JS-Fehler: ' + errs.join(' | '));
   await b.close();
   if (bad.length) { console.error('Monatslücke FEHLER', bad); process.exit(1); }
