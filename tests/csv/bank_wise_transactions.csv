@@ -1,0 +1,6 @@
+ID,Status,Direction,"Created on","Finished on","Source fee amount","Source fee currency","Target fee amount","Target fee currency","Source name","Source amount (after fees)","Source currency","Target name","Target amount (after fees)","Target currency","Exchange rate",Reference,Batch,"Created by",Category,Note
+TRANSFER-1,COMPLETED,OUT,"2026-10-28 14:02:11","2026-10-28 14:02:12",0,USD,,,"FreedomByDan LLC",12.50,USD,"Grab Bangkok",12.50,USD,1,,,"FreedomByDan LLC",Transport,
+TRANSFER-2,COMPLETED,IN,"2026-10-25 09:15:00","2026-10-25 09:15:01",,,0,USD,"Stripe Payments",2500.00,USD,"FreedomByDan LLC",2500.00,USD,1,,,,,
+TRANSFER-3,COMPLETED,NEUTRAL,"2026-10-22 10:00:00","2026-10-22 10:00:01",0.50,USD,,,"FreedomByDan LLC",100.00,USD,"FreedomByDan LLC",3250.00,THB,32.5,,,,,
+TRANSFER-4,CANCELLED,OUT,"2026-10-20 10:00:00",,0,USD,,,"FreedomByDan LLC",300.00,USD,"Someone",300.00,USD,1,,,,,
+TRANSFER-5,COMPLETED,OUT,"2026-10-03 08:00:00","2026-10-03 08:01:00",1.20,USD,,,"FreedomByDan LLC",950.00,USD,"Condo Owner",33250.00,THB,35,RENT OCT,,,Housing,

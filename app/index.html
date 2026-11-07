@@ -2,7 +2,7 @@
 <html lang="de" data-theme="dark">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" data-gk-csp content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://s3.tradingview.com 'sha256-/iOPVmdAmJDmUlUykXGPMRj/+zDMLWyrKD17URqBipY=' 'sha256-7o8ONCmAMvRYtbP8yQwVFrbWaEPufoa/hiIQy8DUTzw=' 'sha256-WfuizxZzimXxDa/RnHHQdRcjM0K5wKT3pUNdul2dY4Q='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://cwznthfefbeglamnwyry.supabase.co https://cloudflareinsights.com https://api.coingecko.com https://proxy.cors.dev https://api.frankfurter.app https://mempool.space https://eth.blockscout.com https://solana-rpc.publicnode.com https://xrplcluster.com https://ec.europa.eu; frame-src 'self' https://geld-kompass.com https://*.tradingview.com https://*.tradingview-widget.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" data-gk-csp content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://s3.tradingview.com 'sha256-/iOPVmdAmJDmUlUykXGPMRj/+zDMLWyrKD17URqBipY=' 'sha256-7o8ONCmAMvRYtbP8yQwVFrbWaEPufoa/hiIQy8DUTzw=' 'sha256-EGMwrRr26aHX6Tw15rYlTFeCsYEOBg3yyrokFutLCaA='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://cwznthfefbeglamnwyry.supabase.co https://cloudflareinsights.com https://api.coingecko.com https://proxy.cors.dev https://api.frankfurter.app https://mempool.space https://eth.blockscout.com https://solana-rpc.publicnode.com https://xrplcluster.com https://ec.europa.eu; frame-src 'self' https://geld-kompass.com https://*.tradingview.com https://*.tradingview-widget.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Geld-Kompass Pro App – Budget, Schulden-Plan, Depot</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -3485,36 +3485,52 @@ document.addEventListener("click",function(ev){var b=ev.target.closest("[data-sa
 var BANK=null;
 function bankDecode(buf){try{return new TextDecoder("utf-8",{fatal:true}).decode(buf);}catch(e){return new TextDecoder("windows-1252").decode(buf);}}
 function bankSplit(l,del){var out=[],cur="",q=false;for(var i=0;i<l.length;i++){var c=l[i];if(c==='"'){if(q&&l[i+1]==='"'){cur+='"';i++;}else q=!q;}else if(c===del&&!q){out.push(cur);cur="";}else cur+=c;}out.push(cur);return out.map(function(s){return s.trim();});}
-function bankDate(s){s=String(s||"").trim();var m;
-  if((m=s.match(/^(\d{4})-(\d{2})-(\d{2})/)))return m[1]+"-"+m[2]+"-"+m[3];
-  if((m=s.match(/^(\d{1,2})\.(\d{1,2})\.(\d{2,4})/)))return (m[3].length===2?"20"+m[3]:m[3])+"-"+("0"+m[2]).slice(-2)+"-"+("0"+m[1]).slice(-2);
-  if((m=s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/)))return m[3]+"-"+("0"+m[1]).slice(-2)+"-"+("0"+m[2]).slice(-2);
+var BANK_MON={jan:1,feb:2,"fév":2,fev:2,mar:3,"mär":3,maer:3,apr:4,avr:4,may:5,mai:5,jun:6,juin:6,jul:7,juil:7,aug:8,"aoû":8,aou:8,sep:9,oct:10,okt:10,nov:11,dec:12,dez:12,"déc":12};
+function bankDate(s,mdy){s=String(s||"").trim().replace(/^"|"$/g,"");var m,y,mo,d,p=function(n){return ("0"+n).slice(-2);},ok=function(){y=+y;if(y<100)y+=2000;mo=+mo;d=+d;return (mo>=1&&mo<=12&&d>=1&&d<=31&&y>1970&&y<2200)?y+"-"+p(mo)+"-"+p(d):"";};
+  if((m=s.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/))){y=m[1];mo=m[2];d=m[3];return ok();}
+  if((m=s.match(/^(\d{4})(\d{2})(\d{2})(?:\D|$)/))){y=m[1];mo=m[2];d=m[3];return ok();}
+  if((m=s.match(/^(\d{1,2})([-\/.])(\d{1,2})\2(\d{2,4})/))){var A=+m[1],B=+m[3];y=m[4];if(m[2]==="/"&&mdy&&B<=31&&A<=12||A<=12&&B>12){mo=A;d=B;}else{d=A;mo=B;}return ok();}
+  if((m=s.match(/^(\d{1,2})\.?[\s-]+([A-Za-zÄÖÜäöüéû]{3,})\.?[\s-]+(\d{2,4})/))&&BANK_MON[m[2].slice(0,3).toLowerCase()]){d=m[1];mo=BANK_MON[m[2].slice(0,3).toLowerCase()];y=m[3];return ok();}
+  if((m=s.match(/^([A-Za-zÄÖÜäöüéû]{3,})\.?\s+(\d{1,2}),?\s+(\d{4})/))&&BANK_MON[m[1].slice(0,3).toLowerCase()]){mo=BANK_MON[m[1].slice(0,3).toLowerCase()];d=m[2];y=m[3];return ok();}
   return "";}
-function bankAmt(s,de){s=String(s||"").replace(/[^\d,.\-+−]/g,"").replace("−","-");if(!s)return NaN;if(de)s=s.replace(/\./g,"").replace(",",".");else s=s.replace(/,/g,"");var n=parseFloat(s);return isFinite(n)?n:NaN;}
+function bankAmt(s,de){var t=String(s||"").replace(/−/g,"-").replace(/[^\d,.\-+()]/g,"");if(!/\d/.test(t))return NaN;var neg=/^\(.*\)$/.test(t)||/\d-$/.test(t)||/^-/.test(t);t=t.replace(/[^\d,.]/g,"");
+  var lc=t.lastIndexOf(","),ld=t.lastIndexOf(".");
+  if(lc>-1&&ld>-1)t=lc>ld?t.replace(/\./g,"").replace(",","."):t.replace(/,/g,"");
+  else if(lc>-1)t=(!de&&/^\d{1,3}(,\d{3})+$/.test(t))?t.replace(/,/g,""):t.replace(/,(?=[^,]*$)/,".").replace(/,/g,"");
+  else if(ld>-1&&de&&/^\d{1,3}(\.\d{3})+$/.test(t))t=t.replace(/\./g,"");
+  var n=parseFloat(t);if(!isFinite(n))return NaN;return neg?-n:n;}
 function bankParse(txt){var lines=txt.replace(/^﻿/,"").split(/\r?\n/).filter(function(l){return l.trim();});if(lines.length<2)return {err:"Die Datei enthält keine Umsätze."};
   var hi=-1,del=";",head=[];
   for(var i=0;i<Math.min(40,lines.length);i++){var l=lines[i];var d=[";",",","\t"].sort(function(a,b){return l.split(b).length-l.split(a).length;})[0];var h=bankSplit(l,d).map(function(x){return x.toLowerCase().replace(/"/g,"");});
-    if(h.length>=3&&h.some(function(x){return /datum|date|buchung|booking|valuta/.test(x);})&&h.some(function(x){return /betrag|umsatz|amount/.test(x);})){hi=i;del=d;head=h;break;}}
+    if(h.length>=3&&h.some(function(x){return /datum|date|buchung|booking|valuta|created on|finished on|completed on|^time$|zeitpunkt/.test(x);})&&h.some(function(x){return /betrag|umsatz|amount|^soll|^haben|debit|credit|paid in|paid out|money in|money out|eingang|ausgang|^value$|^wert$|^brutto$|^gross$/.test(x);})){hi=i;del=d;head=h;break;}}
   if(hi<0)return {err:"Spalten nicht erkannt. Benötigt werden mindestens Datum und Betrag."};
   function col(res,not){for(var r=0;r<res.length;r++)for(var k=0;k<head.length;k++)if(res[r].test(head[k])&&!(not&&not.test(head[k])))return k;return -1;}
-  var c={date:col([/^buchungstag$/,/^buchungsdatum$/,/^buchung$/,/^booking date/,/^completed date/,/^datum$/,/^date$/,/^started date/,/datum|date/],/valuta|wertstellung/),
-    amt:col([/^betrag$/,/^betrag \(/,/^amount$/,/^amount \(/,/^umsatz/,/betrag|amount/],/saldo|balance|fee|gebühr|original|fremdw/),
-    payee:col([/beg(ü|ue)nstigter|zahlungsempf|empf(ä|ae)nger|zahlungspflichtig|auftraggeber|^payee|payee name|counterparty|merchant|^name$/],/iban|konto|account|bic/),
+  var c={date:col([/^buchungstag$/,/^buchungsdatum$/,/^buchung$/,/^booking date/,/^completed date/,/^datum$/,/^date$/,/^finished on/,/^completed on/,/^created on/,/^started date/,/datum|date/,/^time$|zeitpunkt/],/valuta|wertstellung|date time/),
+    amt:col([/^betrag$/,/^betrag \(/,/^amount$/,/^amount \(/,/^umsatz/,/^source amount/,/betrag|amount/,/^brutto$|^gross$/,/^value$|^wert$/],/saldo|balance|fee amount|fee currency|^fees?\b|total fees|^gebühr|original|fremdw|running|exchange to|target amount/),
+    tamt:col([/^target amount/]),dir:col([/^direction$|^richtung$/]),
+    deb:col([/^soll|^debit|paid out|money out|^ausgang|^belastung/],/datum|date/),cred:col([/^haben|^credit|paid in|money in|^eingang|^gutschrift/],/datum|date/),
+    payee:col([/zahlungsempf|^empf(ä|ae)nger/,/beg(ü|ue)nstigter|empf(ä|ae)nger|zahlungspflichtig|auftraggeber|^payee|payee name|counterparty|partner name|merchant|^name$/],/iban|konto|account|bic/),payer:col([/^payer name|^payer$|^zahlungspflichtige/]),merch:col([/^merchant$|^h(ä|ae)ndler$/]),sname:col([/^source name/]),tname:col([/^target name/]),
     purpose:col([/verwendungszweck/,/payment reference/,/^description$/,/beschreibung/,/^reference/,/buchungstext/,/^vorgang/,/umsatztyp/,/transaction type/]),
-    cur:col([/^w(ä|ae)hrung$|^currency$/]),state:col([/^state$|^status$/])};
-  if(c.date<0||c.amt<0)return {err:"Spalten nicht erkannt. Benötigt werden mindestens Datum und Betrag."};
+    cur:col([/^w(ä|ae)hrung$|^currency$/,/^source currency/]),tcur:col([/^target currency/]),state:col([/^state$|^status$/])};
+  if(c.amt<0&&(c.deb>-1||c.cred>-1))c.amt=-2;
+  if(c.date<0||c.amt===-1)return {err:"Spalten nicht erkannt. Benötigt werden mindestens Datum und Betrag."};
   var raw=lines.slice(hi+1).map(function(l){return bankSplit(l,del);}).filter(function(r){return r.length>=Math.min(head.length,3);});
-  var de=raw.some(function(r){return /,\d{1,2}$/.test(String(r[c.amt]||"").replace(/[^\d,.\-]/g,""));});
+  var acs=[c.amt,c.tamt,c.deb,c.cred].filter(function(k){return k>-1;}),de=raw.some(function(r){return acs.some(function(k){return /,\d{1,2}$/.test(String(r[k]||"").replace(/[^\d,.\-]/g,""));});});
+  var mdy=!raw.some(function(r){var m=String(r[c.date]||"").match(/^(\d{1,2})\/(\d{1,2})\//);return m&&+m[1]>12;})&&raw.some(function(r){var m=String(r[c.date]||"").match(/^(\d{1,2})\/(\d{1,2})\//);return m&&+m[2]>12;});
   var have={};S.own.entries.forEach(function(e){if(e.imp)have[e.imp]=1;});
-  var rows=[];raw.forEach(function(r){var dt=bankDate(r[c.date]),a=bankAmt(r[c.amt],de);if(!dt||!isFinite(a)||a===0)return;
-    if(c.state>-1&&/pending|reverted|declined|failed|abgelehnt|vorgemerkt/i.test(r[c.state]||""))return;
-    var payee=c.payee>-1?r[c.payee]:"",purp=c.purpose>-1?r[c.purpose]:"";var title=(payee||purp||"Umsatz").replace(/\s+/g," ").trim().slice(0,60);
+  var rows=[];raw.forEach(function(r){var dt=bankDate(r[c.date],mdy),a,rc=c.cur>-1?r[c.cur]:"";
+    if(c.amt===-2){var db=c.deb>-1?bankAmt(r[c.deb],de):NaN,cr=c.cred>-1?bankAmt(r[c.cred],de):NaN;a=(isFinite(cr)&&cr!==0)?Math.abs(cr):(isFinite(db)&&db!==0)?-Math.abs(db):NaN;}
+    else a=bankAmt(r[c.amt],de);
+    if(c.dir>-1){var dv=String(r[c.dir]||"").toUpperCase();if(/NEUTRAL/.test(dv))return;if(/^IN|EIN/.test(dv)){var ta=c.tamt>-1?bankAmt(r[c.tamt],de):NaN;a=Math.abs(isFinite(ta)&&ta?ta:a);if(c.tcur>-1&&r[c.tcur])rc=r[c.tcur];}else if(/^OUT|AUS/.test(dv))a=-Math.abs(a);}
+    if(!dt||!isFinite(a)||a===0)return;
+    if(c.state>-1&&/pending|reverted|declined|failed|cancel|refunded|abgelehnt|vorgemerkt|storniert/i.test(r[c.state]||""))return;
+    var payee=(a>0?(c.payer>-1&&r[c.payer])||(c.sname>-1&&r[c.sname]):(c.tname>-1&&r[c.tname]))||(c.payee>-1?r[c.payee]:"")||(c.merch>-1?r[c.merch]:"")||"",purp=c.purpose>-1?r[c.purpose]:"";var title=(payee||purp||"Umsatz").replace(/\s+/g," ").trim().slice(0,60);
     var txt=(payee+" "+purp),d=detect(txt),type,cat;
     if(a>0){type="income";cat=/gehalt|lohn|bezüge|salary|payroll/i.test(txt)?"Gehalt":/zins|dividend|ertrag|interest/i.test(txt)?"Zinsen & Dividenden":/kindergeld|familienkasse|arbeitsagentur|jobcenter/i.test(txt)?"Kindergeld & Leistungen":/erstattung|gutschrift|refund|rückzahlung/i.test(txt)?"Rückerstattung":d.type==="income"?d.cat:"Sonstige Einnahmen";}
     else{type=d.hit&&d.type!=="income"?d.type:"expense";cat=d.hit&&d.type!=="income"?d.cat:"Sonstiges";if(/sparplan|\bdepot|wertpapier|trade republic|scalable|\betf\b/i.test(txt)){type="invest";cat="ETF & Aktien";}}
     var key=dt+"|"+Math.abs(a).toFixed(2)+"|"+title.toLowerCase();
-    rows.push({date:dt,title:title,amount:Math.round(Math.abs(a)*100)/100,type:type,cat:cat,cur:c.cur>-1?(r[c.cur]||"").toUpperCase().slice(0,3):"",key:key,dup:!!have[key],on:!have[key]});});
-  if(!rows.length)return {err:"Keine Umsätze mit Datum und Betrag gefunden."};
+    rows.push({date:dt,title:title,amount:Math.round(Math.abs(a)*100)/100,type:type,cat:cat,cur:String(rc||"").toUpperCase().slice(0,3),key:key,dup:!!have[key],on:!have[key]});});
+  if(!rows.length)return {err:raw.length?"Keine Umsätze mit Datum und Betrag gefunden. Erkannte Spalten: Datum „"+head[c.date]+"“, Betrag „"+(c.amt>-1?head[c.amt]:"Soll/Haben")+"“. Erste Zeile: "+raw[0].slice(0,6).join(" | ").slice(0,140):"Keine Umsätze mit Datum und Betrag gefunden."};
   rows.sort(function(a,b){return b.date.localeCompare(a.date);});return {rows:rows};}
 function bankRender(){var box=$("bankOut");if(!box)return;if(!BANK){box.innerHTML="";return;}if(BANK.err){box.innerHTML='<p class="neg">'+esc(BANK.err)+'</p>';return;}
   var on=BANK.rows.filter(function(r){return r.on;}).length,dups=BANK.rows.filter(function(r){return r.dup;}).length;
