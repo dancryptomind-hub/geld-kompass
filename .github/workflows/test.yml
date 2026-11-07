@@ -70,6 +70,7 @@ jobs:
           node tests/persona-numbers.js
           node tests/bank-import.js
           node tests/history-report.js
+          node tests/focus.js
           node tests/share-links.js
           node tests/app-share-links.js
           node tests/csp.js
