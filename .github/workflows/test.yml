@@ -62,5 +62,6 @@ jobs:
           node tests/billing-ui.js
           node tests/freedom-report.js
           node tests/month-gap.js
+          node tests/persona-numbers.js
           node tests/share-links.js
           node tests/app-share-links.js
