@@ -7,23 +7,29 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   logos:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.12"
-      - run: pip install yfinance requests pillow
+      - run: pip install yfinance==1.8.0 requests==2.34.2 pillow==13.0.0
       - run: python scripts/logos.py
       - name: Logos speichern und veröffentlichen
+        id: save
         run: |
           git config user.name "geld-kompass-bot"
           git config user.email "actions@users.noreply.github.com"
           git add logos data/logos.json data/logos_missing.json
-          git diff --cached --quiet || git commit -m "Logos aktualisiert"
+          if ! git diff --cached --quiet; then git commit -m "Logos aktualisiert"; echo "changed=1" >> "$GITHUB_OUTPUT"; fi
           git pull --rebase origin main
           git push origin HEAD:main
-          git push --force origin HEAD:gh-pages
+      - name: Tests starten (Veröffentlichung nur bei grünen Tests über „Webseite aktualisieren“)
+        if: always() && steps.save.outputs.changed == '1' && github.ref_name == 'main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run test.yml --ref main

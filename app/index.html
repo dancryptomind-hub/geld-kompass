@@ -2,6 +2,7 @@
 <html lang="de" data-theme="dark">
 <head>
 <meta charset="utf-8">
+<meta http-equiv="Content-Security-Policy" data-gk-csp content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://s3.tradingview.com 'sha256-/iOPVmdAmJDmUlUykXGPMRj/+zDMLWyrKD17URqBipY=' 'sha256-7o8ONCmAMvRYtbP8yQwVFrbWaEPufoa/hiIQy8DUTzw=' 'sha256-WfuizxZzimXxDa/RnHHQdRcjM0K5wKT3pUNdul2dY4Q='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://cwznthfefbeglamnwyry.supabase.co https://cloudflareinsights.com https://api.coingecko.com https://proxy.cors.dev https://api.frankfurter.app https://mempool.space https://eth.blockscout.com https://solana-rpc.publicnode.com https://xrplcluster.com https://ec.europa.eu; frame-src 'self' https://geld-kompass.com https://*.tradingview.com https://*.tradingview-widget.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Geld-Kompass Pro App – Budget, Schulden-Plan, Depot</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -3606,9 +3607,11 @@ function saveOnboard(){var c=$("onbCur").value,inc=posNum($("onbInc").value),ren
 var LOGOS={};
 function sugLogo(sym){return LOGOS[sym]?'<img class="suglogo" src="/'+LOGOS[sym]+'" alt="" loading="lazy">':'';}
 function holdIcon(sym,t){if(isMetal(sym)||(t==="Rohstoff"&&!LOGOS[sym]))return '<i class="lg bar">'+barSVG(isMetal(sym)?sym:"GOLD-G")+'</i>';var bg=t==="Krypto"?"var(--c1)":t==="ETF"?"var(--c3)":t==="Edelmetall"?"var(--warn)":"var(--c2)",let_=t==="Krypto"?"₿":t==="ETF"?"E":t==="Edelmetall"?"Au":"A";
-  if(LOGOS[sym])return '<i class="lg"><img src="/'+LOGOS[sym]+'" alt="" loading="lazy" onerror="this.parentNode.textContent=\''+let_+'\';this.parentNode.className=\'\'"></i>';
+  if(LOGOS[sym])return '<i class="lg"><img src="/'+LOGOS[sym]+'" alt="" loading="lazy" data-fb="'+let_+'"></i>';
   return '<i style="background:'+bg+'">'+let_+'</i>';}
 getJSON("/data/logos.json",8000).then(function(d){LOGOS=d||{};try{renderAssets();}catch(e){}}).catch(function(){});
+/* Ersatz-Symbol, wenn ein Logo nicht lädt (ohne Inline-Handler, damit die CSP keine unsafe-inline braucht) */
+document.addEventListener("error",function(e){var t=e.target;if(t&&t.tagName==="IMG"&&t.hasAttribute("data-fb")&&t.parentNode){var p=t.parentNode;p.textContent=t.getAttribute("data-fb");p.className="";}},true);
 
 /* ================= EDELMETALL-EINHEITEN, BARREN-SYMBOLE, HISTORIE ================= */
 var MUNITS=[["1g","1 g",1],["5g","5 g",5],["10g","10 g",10],["20g","20 g",20],["50g","50 g",50],["100g","100 g",100],["250g","250 g",250],["500g","500 g",500],["1kg","1 kg",1000],["oz10","1/10 oz",3.1103477],["oz4","1/4 oz",7.7758692],["oz2","1/2 oz",15.5517384],["oz1","1 oz",31.1034768],["g","Gramm (frei)",1]];

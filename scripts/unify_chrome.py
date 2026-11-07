@@ -86,6 +86,10 @@ def run():
         dn[:] = [d for d in dn if not d.startswith('.') and d != 'node_modules']
         if 'index.html' in fn and process(os.path.join(dp, 'index.html')):
             n += 1
+    # Sicherheit: danach CSP-Tag (mit Hashes der Inline-Skripte) in allen Seiten neu setzen, siehe scripts/csp.py
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    import csp
+    csp.update(quiet=True)
     return n
 
 if __name__ == '__main__':

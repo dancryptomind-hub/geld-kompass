@@ -6,7 +6,7 @@ import { createClient, type User } from "npm:@supabase/supabase-js@2.49.4";
 
 export const API_VERSION = "2026-10-28.endive";
 export const SITE = "https://geld-kompass.com";
-const ORIGINS = [SITE, "https://www.geld-kompass.com", "http://localhost:8765"];
+const ORIGINS = [SITE, "https://www.geld-kompass.com"];
 
 export class HttpError extends Error {
   constructor(public status: number, public code: string) { super(code); }
@@ -37,6 +37,38 @@ export async function userFrom(req: Request): Promise<User | null> {
   const { data, error } = await admin().auth.getUser(token);
   if (error || !data?.user || data.user.is_anonymous) return null;
   return data.user;
+}
+
+/* Eingaben begrenzen: JSON-Körper höchstens 8 KB, sonst 413. */
+export async function readJson(req: Request): Promise<Record<string, unknown>> {
+  const len = Number(req.headers.get("content-length") || 0);
+  if (len > 8192) throw new HttpError(413, "too_large");
+  const raw = await req.text();
+  if (raw.length > 8192) throw new HttpError(413, "too_large");
+  try { const j = JSON.parse(raw || "{}"); return j && typeof j === "object" && !Array.isArray(j) ? j : {}; } catch { return {}; }
+}
+export function catalogItem(name: unknown) {
+  const k = typeof name === "string" ? name : "";
+  return Object.prototype.hasOwnProperty.call(CATALOG, k) ? { key: k as keyof typeof CATALOG, c: CATALOG[k] } : null;
+}
+
+/* Rate-Limit je IP und Zeitfenster (Tabelle billing.rate_limits). IP wird nur als HMAC-Hash gespeichert (keine Klar-IP). */
+async function ipHash(req: Request): Promise<string> {
+  const ip = (req.headers.get("x-forwarded-for") || "").split(",")[0].trim() || req.headers.get("cf-connecting-ip") || "unknown";
+  const key = await crypto.subtle.importKey("raw", new TextEncoder().encode(Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") || "gk"), { name: "HMAC", hash: "SHA-256" }, false, ["sign"]);
+  const sig = new Uint8Array(await crypto.subtle.sign("HMAC", key, new TextEncoder().encode(ip)));
+  return Array.from(sig.slice(0, 16), (b) => b.toString(16).padStart(2, "0")).join("");
+}
+export async function rateLimit(req: Request, name: string, max: number, windowSec: number, extra = "") {
+  const db = sql();
+  const key = name + ":" + (extra || await ipHash(req));
+  let hits = 0;
+  try {
+    const rows = await db`select billing.hit(${key}, ${windowSec}) as hits`;
+    hits = Number(rows[0]?.hits) || 0;
+    if (Math.random() < 0.02) await db`delete from billing.rate_limits where bucket < now() - interval '1 day'`;
+  } catch (e) { console.warn("rate limit unavailable", (e as Error)?.message); return; } // fehlt die Migration, bleibt der Kauf möglich
+  if (hits > max) throw new HttpError(429, "rate_limited");
 }
 
 export function cors(req: Request): Record<string, string> {

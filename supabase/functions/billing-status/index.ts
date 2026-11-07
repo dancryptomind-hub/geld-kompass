@@ -1,10 +1,12 @@
 // GET ?session_id=cs_… → Kaufstatus für die Danke-Seite. Freischaltung passiert NUR im Webhook; hier wird nur gelesen.
 // Bezahltes Arbeitsbuch: zeitlich begrenzter Download-Link aus dem privaten Speicher „downloads“.
-import { handle, json, HttpError, sql, admin, stripe } from "../_shared/billing.ts";
+import { handle, json, HttpError, rateLimit, sql, admin, stripe } from "../_shared/billing.ts";
 
 const FILES: Record<string, string> = { gk_workbook_de: "arbeitsbuch-de.pdf" };
 
 Deno.serve(handle(async (req) => {
+  if (req.method !== "GET") throw new HttpError(405, "method_not_allowed");
+  await rateLimit(req, "status", 60, 600);
   const id = new URL(req.url).searchParams.get("session_id") || "";
   if (!/^cs_(test|live)_[A-Za-z0-9]{20,}$/.test(id)) throw new HttpError(400, "bad_session");
   const rows = await sql()`select product, status from billing.purchases where checkout_session_id = ${id}`;

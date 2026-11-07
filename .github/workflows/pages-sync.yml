@@ -12,13 +12,23 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: false
+
 jobs:
   sync:
     if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
         with:
           fetch-depth: 0
           ref: ${{ github.event_name == 'workflow_run' && github.event.workflow_run.head_sha || github.ref }}
-      - run: git push --force origin HEAD:gh-pages
+      - name: Nur den neuesten getesteten Stand veröffentlichen
+        run: |
+          git fetch origin main
+          if [ "${{ github.event_name }}" = "workflow_run" ] && [ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]; then
+            echo "Getesteter Stand ist nicht mehr der neueste auf main – der neuere wird nach seinen Tests veröffentlicht."; exit 0
+          fi
+          git push --force origin HEAD:gh-pages

@@ -1,17 +1,19 @@
 // POST {item: "plus_monthly"|"plus_yearly"|"workbook"|"report", lang?: "de"|"en", code?: Aktionscode (Arbeitsbuch), trial?: Checkout-ID eines bezahlten Arbeitsbuch-Kaufs} → {url} zur Stripe-Checkout-Seite.
 // Plus braucht ein angemeldetes Konto (Freischaltung hängt am Konto). Arbeitsbuch geht auch als Gast.
-import { handle, json, HttpError, CATALOG, ensurePrice, ensurePromo, managedPayments, customerFor, stripe, sql, userFrom, SITE } from "../_shared/billing.ts";
+import { handle, json, HttpError, CATALOG, catalogItem, readJson, rateLimit, ensurePrice, ensurePromo, managedPayments, customerFor, stripe, sql, userFrom, SITE } from "../_shared/billing.ts";
 
 Deno.serve(handle(async (req) => {
   if (req.method !== "POST") throw new HttpError(405, "method_not_allowed");
-  const body = await req.json().catch(() => ({}));
-  const item = String(body.item || "") as keyof typeof CATALOG;
-  const c = CATALOG[item];
-  if (!c) throw new HttpError(400, "unknown_item");
+  await rateLimit(req, "checkout", 10, 600);
+  const body = await readJson(req);
+  const found = catalogItem(body.item);
+  if (!found) throw new HttpError(400, "unknown_item");
+  const item = found.key, c = found.c;
   if (c.enabledEnv && Deno.env.get(c.enabledEnv) !== "1") throw new HttpError(404, "not_available");
   const lang = body.lang === "en" ? "en" : "de";
   const user = await userFrom(req);
   if (c.needsUser && (!user || !user.email_confirmed_at)) throw new HttpError(401, "login_required");
+  if (user) await rateLimit(req, "checkout_user", 20, 3600, user.id);
 
   if (c.mode === "subscription" && user) {
     const live = await sql()`select 1 from billing.subscriptions where user_id = ${user.id} and status in ('active','trialing','past_due') limit 1`;
@@ -21,10 +23,11 @@ Deno.serve(handle(async (req) => {
   let trialDays = 0;
   if (c.mode === "subscription" && typeof body.trial === "string" && body.trial) {
     if (!/^cs_(test|live)_[A-Za-z0-9]{20,}$/.test(body.trial)) throw new HttpError(400, "trial_invalid");
-    const ok = await sql()`select 1 from billing.purchases where checkout_session_id = ${body.trial} and product = 'gk_workbook_de' and status = 'paid' and (trial_user_id is null or trial_user_id = ${user!.id})`;
     const before = await sql()`select 1 from billing.subscriptions where user_id = ${user!.id} limit 1`;
-    if (!ok.length || before.length) throw new HttpError(409, "trial_invalid");
-    await sql()`update billing.purchases set trial_user_id = ${user!.id} where checkout_session_id = ${body.trial}`;
+    if (before.length) throw new HttpError(409, "trial_invalid");
+    // Atomar beanspruchen: gleichzeitige Anfragen zweier Konten können denselben Kauf nicht doppelt nutzen.
+    const ok = await sql()`update billing.purchases set trial_user_id = ${user!.id} where checkout_session_id = ${body.trial} and product = 'gk_workbook_de' and status = 'paid' and (trial_user_id is null or trial_user_id = ${user!.id}) returning 1`;
+    if (!ok.length) throw new HttpError(409, "trial_invalid");
     trialDays = 30;
   }
   const price = await ensurePrice(item);

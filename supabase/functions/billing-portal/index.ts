@@ -1,5 +1,5 @@
 // POST → {url} zum Stripe-Kundenportal (Abo kündigen, Zahlungsart, Rechnungen). Nur für angemeldete Konten.
-import { handle, json, HttpError, stripe, sql, userFrom, SITE } from "../_shared/billing.ts";
+import { handle, json, HttpError, readJson, rateLimit, stripe, sql, userFrom, SITE } from "../_shared/billing.ts";
 
 async function portalConfig(): Promise<string | undefined> {
   const s = stripe();
@@ -19,9 +19,10 @@ async function portalConfig(): Promise<string | undefined> {
 
 Deno.serve(handle(async (req) => {
   if (req.method !== "POST") throw new HttpError(405, "method_not_allowed");
+  await rateLimit(req, "portal", 10, 600);
   const user = await userFrom(req);
   if (!user) throw new HttpError(401, "login_required");
-  const body = await req.json().catch(() => ({}));
+  const body = await readJson(req);
   const lang = body.lang === "en" ? "en" : "de";
   const rows = await sql()`select stripe_customer_id from billing.customers where user_id = ${user.id}`;
   if (!rows[0]) throw new HttpError(404, "no_customer");

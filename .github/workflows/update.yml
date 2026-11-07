@@ -7,25 +7,31 @@ on:
 
 permissions:
   contents: write
+  actions: write
 
 jobs:
   update:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.12"
-      - run: pip install yfinance requests
+      - run: pip install yfinance==1.8.0 requests==2.34.2
       - run: python scripts/update_data.py
       - run: python scripts/hicp_annual.py || true
       - run: python scripts/world_data.py || true
       - name: Änderungen speichern
+        id: save
         if: always()
         run: |
           git config user.name "geld-kompass-bot"
           git config user.email "actions@users.noreply.github.com"
           git add data/markets.json data/hicp_annual.json
-          git diff --cached --quiet || git commit -m "Kurse und Inflation aktualisiert"
+          if ! git diff --cached --quiet; then git commit -m "Kurse und Inflation aktualisiert"; echo "changed=1" >> "$GITHUB_OUTPUT"; fi
           git push
-          if [ "$GITHUB_REF_NAME" = "main" ]; then git push --force origin HEAD:gh-pages; fi
+      - name: Tests starten (Veröffentlichung nur bei grünen Tests über „Webseite aktualisieren“)
+        if: always() && steps.save.outputs.changed == '1' && github.ref_name == 'main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run test.yml --ref main
