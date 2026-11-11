@@ -155,6 +155,10 @@ def main():
         "inflation": inflation,
         "instruments": instruments,
     }
+    # Wechselkurse und Edelmetalle ergänzt scripts/world_data.py; bis dahin den letzten Stand behalten, damit nie eine Datei ohne sie veröffentlicht wird.
+    for k in ("fx", "metals"):
+        if k in old:
+            data[k] = old[k]
     OUT.parent.mkdir(parents=True, exist_ok=True)
     OUT.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"{fresh}/{len(instruments)} Kurse aktuell, Inflation: {list(inflation)}")

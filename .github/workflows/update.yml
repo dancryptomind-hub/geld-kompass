@@ -18,12 +18,14 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install yfinance==1.8.0 requests==2.34.2
-      - run: python scripts/update_data.py
+      - id: upd
+        run: python scripts/update_data.py
       - run: python scripts/hicp_annual.py || true
       - run: python scripts/world_data.py || true
       - name: Änderungen speichern
         id: save
-        if: always()
+        # Nur speichern, wenn die Kurse vollständig aktualisiert wurden (sonst bleibt der letzte gute Stand online).
+        if: steps.upd.outcome == 'success'
         run: |
           git config user.name "geld-kompass-bot"
           git config user.email "actions@users.noreply.github.com"

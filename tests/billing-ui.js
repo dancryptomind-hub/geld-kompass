@@ -19,6 +19,8 @@ const fs = require('fs');
   await p.goto('http://localhost:8765/app/?lang=de#plus'); await p.waitForTimeout(1500);
   let d = await p.evaluate(() => { const x = document.getElementById('plusDlg'); return x ? { open: x.open, dis: x.querySelector('#plusGo').disabled, msg: x.querySelector('#plusMsg').innerText } : null; });
   if (!d || !d.open || !d.dis || !/eingerichtet/.test(d.msg)) bad.push('Ausgeschaltet: Plus-Fenster falsch: ' + JSON.stringify(d));
+  const tr = await p.evaluate(() => { const x = document.querySelector('#plusDlg .plustrust'); return x ? x.innerText : ''; });
+  if (!/alle zwei Stunden/.test(tr) || !/Eurostat/.test(tr) || !/auf deinem Gerät/.test(tr)) bad.push('Plus-Fenster: Vertrauensblock fehlt: ' + tr.slice(0, 120));
   await p.goto('http://localhost:8765/arbeitsbuch/'); await p.waitForTimeout(600);
   if (!(await p.evaluate(() => document.getElementById('abBuy').hidden))) bad.push('Ausgeschaltet: Arbeitsbuch-Kaufknopf sichtbar');
   // 2) eingeschaltet, ohne Konto
