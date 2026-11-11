@@ -10,6 +10,7 @@ const cases = [
   ['bank_fr.csv', 2, [['2026-10-28', 45.3, 'expense', /CARREFOUR/], ['2026-10-25', 2500, 'income', /SALAIRE/]]],
   ['bank_ohne_kopf.csv', 3, [['2026-10-28', 23.4, 'expense', /Edeka/], ['2026-10-25', 2500, 'income', /Gehalt/], ['2026-10-03', 900, 'expense', /Miete/]]],
   ['bank_excel_utf16.csv', 2, [['2026-10-28', 45.3, 'expense', /REWE/], ['2026-10-25', 2850, 'income', /Gehalt/]]],
+  ['bank_sparkasse.csv', 2, [['2026-10-30', 56.78, 'expense', /EDEKA/], ['2026-10-28', 3100, 'income', /Firma/]]],
   ['bank_dkb.csv', 2, [['2026-10-30', 45.3, 'expense', /REWE/], ['2026-10-28', 2850, 'income', /Firma/]]],
   ['bank_paypal.csv', 1, [['2026-10-29', 9.99, 'expense', /Spotify/]]],
   ['bank_soll_haben.csv', 2, [['2026-10-29', 23.4, 'expense', /TESCO/], ['2026-10-15', 2100, 'income', /SALARY/]]],
