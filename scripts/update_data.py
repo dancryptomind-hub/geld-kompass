@@ -159,7 +159,12 @@ def main():
     OUT.write_text(json.dumps(data, ensure_ascii=False, indent=1), encoding="utf-8")
     print(f"{fresh}/{len(instruments)} Kurse aktuell, Inflation: {list(inflation)}")
     if inflation_errors:
-        raise RuntimeError("Inflationsaktualisierung fehlgeschlagen: " + ", ".join(inflation_errors))
+        # Kurzer Ausfall der Quelle: Kurse trotzdem veröffentlichen, solange der letzte Inflationswert höchstens zwei Monate alt ist.
+        limit = (dt.date.today().replace(day=1) - dt.timedelta(days=62)).strftime("%Y-%m")
+        stale = [g for g in inflation_errors if not (inflation.get(g) or {}).get("period") or inflation[g]["period"] < limit]
+        print("Warnung: Inflationsquelle nicht erreichbar für " + ", ".join(inflation_errors) + " – letzter Wert bleibt")
+        if stale:
+            raise RuntimeError("Inflationsaktualisierung fehlgeschlagen und Daten veraltet: " + ", ".join(stale))
 
 
 if __name__ == "__main__":
