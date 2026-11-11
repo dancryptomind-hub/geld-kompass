@@ -30,7 +30,9 @@ const { chromium } = require('playwright');
   await p.evaluate(() => { const S = JSON.parse(localStorage.getItem('geldkompass.v3')); S.mode = 'demo'; S.profile = 'viktor'; localStorage.setItem('geldkompass.v3', JSON.stringify(S)); });
   await p.goto('http://localhost:8765/app/?lang=de&p=vk#overview'); await p.waitForTimeout(1200);
   const vk = await p.evaluate(() => document.getElementById('kpis').innerText + ' || ' + document.getElementById('flow').innerText);
-  if (!/Einnahmen\s*3\.900\s€/.test(vk) || !/Rein/.test(vk) || !/Raus/.test(vk) || !/Übrig/.test(vk) || /Kommt aus dem Vermögen/.test(vk)) bad.push('Viktor: passive Einnahmen nicht als Einnahme gezählt: ' + vk.replace(/\n/g, ' | ').slice(0, 300));
+  const num = re => +(((vk.match(re) || [0, 'NaN'])[1]) + '').replace(/\./g, ''); const vInc = num(/Einnahmen\s*([\d.]+)\s€/), vBooked = num(/gebucht\s*([\d.]+)\s€/), vSp = num(/Ausgaben\s*([\d.]+)\s€/);
+  // Betrag hängt an den wöchentlich aktualisierten Dividendendaten, daher Logik statt fester Summe prüfen
+  if (!(vInc > vBooked) || !(vInc >= vSp) || !/passiv/.test(vk) || !/Rein/.test(vk) || !/Raus/.test(vk) || !/Übrig/.test(vk) || /Kommt aus dem Vermögen/.test(vk)) bad.push('Viktor: passive Einnahmen nicht als Einnahme gezählt: ' + vk.replace(/\n/g, ' | ').slice(0, 300));
   if (errs.length) bad.push('JS-Fehler: ' + errs.join(' | '));
   await b.close();
   if (bad.length) { console.error('Monatslücke FEHLER', bad); process.exit(1); }

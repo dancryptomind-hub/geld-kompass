@@ -75,3 +75,4 @@ jobs:
           node tests/app-share-links.js
           node tests/csp.js
           node tests/security-xss.js
+          node tests/frame-guard.js
