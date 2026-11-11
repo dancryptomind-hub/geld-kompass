@@ -14,6 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0   # für die Änderungsdaten in sitemap.xml
       - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5.6.0
         with:
           python-version: "3.12"
@@ -22,6 +24,7 @@ jobs:
         run: python scripts/update_data.py
       - run: python scripts/hicp_annual.py || true
       - run: python scripts/world_data.py || true
+      - run: python scripts/sitemap_lastmod.py || true
       - name: Änderungen speichern
         id: save
         # Nur speichern, wenn die Kurse vollständig aktualisiert wurden (sonst bleibt der letzte gute Stand online).
@@ -29,7 +32,7 @@ jobs:
         run: |
           git config user.name "geld-kompass-bot"
           git config user.email "actions@users.noreply.github.com"
-          git add data/markets.json data/hicp_annual.json
+          git add data/markets.json data/hicp_annual.json sitemap.xml
           if ! git diff --cached --quiet; then git commit -m "Kurse und Inflation aktualisiert"; echo "changed=1" >> "$GITHUB_OUTPUT"; fi
           git push
       - name: Tests starten (Veröffentlichung nur bei grünen Tests über „Webseite aktualisieren“)

@@ -1,23 +1,40 @@
 name: Suchmaschinen benachrichtigen (IndexNow)
 
 on:
-  push:
+  # Erst melden, wenn die neue Fassung wirklich online ist (nach „Webseite aktualisieren“).
+  workflow_run:
+    workflows: ["Webseite aktualisieren"]
+    types: [completed]
     branches: [main]
-    paths: ["sitemap.xml", "rechner/**", "start/**", "index.html"]
   workflow_dispatch:
 
 jobs:
   ping:
+    if: github.event_name == 'workflow_dispatch' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+        with:
+          fetch-depth: 0
       - name: Warten, bis GitHub Pages die neue Fassung ausliefert
-        run: sleep 90
+        run: sleep 120
       - name: URLs aus der Sitemap an IndexNow melden (Bing, Yandex, Seznam, Naver …)
         run: |
           python3 - <<'PY'
           import json, re, urllib.request
+          import datetime, os, subprocess
           urls = re.findall(r"<loc>(.*?)</loc>", open("sitemap.xml").read())
+          # Nach normalen Deploys (auch Kurs-Updates alle 2 Std.) nur Seiten melden, die in den letzten 2 Tagen geändert wurden;
+          # manueller Start meldet alle.
+          if os.environ.get("GITHUB_EVENT_NAME") != "workflow_dispatch":
+              since = (datetime.date.today() - datetime.timedelta(days=2)).isoformat()
+              def changed(u):
+                  path = u.replace("https://geld-kompass.com/", "") + "index.html"
+                  d = subprocess.run(["git", "log", "-1", "--format=%cs", "--", path], capture_output=True, text=True).stdout.strip()
+                  return d >= since
+              urls = [u for u in urls if changed(u)]
+          if not urls:
+              print("Keine geänderten Seiten"); raise SystemExit(0)
           body = {"host": "geld-kompass.com", "key": "fe9f544f2a40ba1a4240c07bbde1ab53",
                   "keyLocation": "https://geld-kompass.com/fe9f544f2a40ba1a4240c07bbde1ab53.txt", "urlList": urls}
           req = urllib.request.Request("https://api.indexnow.org/indexnow", data=json.dumps(body).encode(),
