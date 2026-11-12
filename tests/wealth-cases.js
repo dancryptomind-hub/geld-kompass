@@ -2,7 +2,7 @@
    kein leerer Audit-Bereich bei allen Beispielpersonen und unveränderte Arbeitsbuch-Werte von Luisa (2.300 € / 2.503 €). */
 const { chromium } = require('playwright');
 (async () => {
-  const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1280, height: 900 } }); const errs = []; p.on('pageerror', e => errs.push(e.message));
+  const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1280, height: 900 } });await require('./plus-preview')(p); const errs = []; p.on('pageerror', e => errs.push(e.message));
   const bad = [], f = x => String(x).replace(/\n/g, ' | ').slice(0, 300);
   await p.goto('http://localhost:8765/app/?lang=de'); await p.waitForTimeout(800);
   const setDemo = k => p.evaluate(k => { const S = JSON.parse(localStorage.getItem('geldkompass.v3') || '{}'); S.mode = 'demo'; S.profile = k; S.onboarded = 1; localStorage.setItem('geldkompass.v3', JSON.stringify(S)); localStorage.setItem('gk-tour', JSON.stringify({ off: 1, done: 1 })); }, k);

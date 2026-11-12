@@ -2,7 +2,7 @@
    Zinsen und Dividenden decken einen Teil davon und werden nicht doppelt abgezogen. Helga: 2.580 − 1.250 Rente = 1.330 €. */
 const { chromium } = require('playwright');
 (async () => {
-  const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1280, height: 900 } }); const errs = []; p.on('pageerror', e => errs.push(e.message)); const bad = [];
+  const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1280, height: 900 } });await require('./plus-preview')(p); const errs = []; p.on('pageerror', e => errs.push(e.message)); const bad = [];
   await p.goto('http://localhost:8765/app/?lang=de'); await p.waitForTimeout(500);
   await p.evaluate(() => { const S = JSON.parse(localStorage.getItem('geldkompass.v3') || '{}'); S.mode = 'demo'; S.profile = 'helga'; localStorage.setItem('geldkompass.v3', JSON.stringify(S)); localStorage.setItem('geld-kompass-currency', 'EUR'); localStorage.setItem('gk-tour', JSON.stringify({ off: 1, done: 1 })); });
   await p.goto('http://localhost:8765/app/?lang=de&s=1#stress'); await p.waitForTimeout(2500);
