@@ -4,7 +4,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 (async () => {
   const b = await chromium.launch(); const bad = [];
-  const c = await b.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block', locale: 'de-DE' });await require('./plus-preview')(c);
+  const c = await b.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block', locale: 'de-DE' });if(!(await require('./plus-preview')(c))){console.log('übersprungen: Plus-Code nur in der CI des privaten Repos');process.exit(0);}
   const p = await c.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message));
   await p.addInitScript(() => { try { localStorage.setItem('gk-tour', JSON.stringify({ off: 1, done: 1 })); } catch (e) {} });
   await p.goto('http://localhost:8765/app/?lang=de#data'); await p.waitForTimeout(1500);

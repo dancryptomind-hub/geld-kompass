@@ -2,7 +2,7 @@
    feste untere Leiste ohne Federn, Plus-Schnellleiste anpassbar. */
 const { chromium, devices } = require('playwright');
 (async () => {
-  const b = await chromium.launch(); const c = await b.newContext({ ...devices['iPhone 13'] });await require('./plus-preview')(c); const p = await c.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message)); const bad = [];
+  const b = await chromium.launch(); const c = await b.newContext({ ...devices['iPhone 13'] });if(!(await require('./plus-preview')(c))){console.log('übersprungen: Plus-Code nur in der CI des privaten Repos');process.exit(0);} const p = await c.newPage(); const errs = []; p.on('pageerror', e => errs.push(e.message)); const bad = [];
   await p.goto('http://localhost:8765/app/?lang=de'); await p.waitForTimeout(600);
   await p.evaluate(() => { const S = JSON.parse(localStorage.getItem('geldkompass.v3') || '{}'); S.mode = 'demo'; S.profile = 'rob'; S.onboarded = 1; localStorage.setItem('geldkompass.v3', JSON.stringify(S)); localStorage.setItem('gk-tour', JSON.stringify({ off: 1, done: 1 })); });
   await p.goto('http://localhost:8765/app/?lang=de&m=1#debts'); await p.waitForTimeout(1500);
