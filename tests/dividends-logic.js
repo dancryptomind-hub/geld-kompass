@@ -1,7 +1,7 @@
 /* Dividenden-Logik: erhaltene Dividenden aus der Depot-Historie erscheinen in Einnahmen (ohne Doppelzählung), Depot-Kennzahlen und Bilanz. */
 const { chromium } = require('playwright');
 (async () => {
-  const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1280, height: 900 } }); const errs = []; p.on('pageerror', e => errs.push(e.message));
+  const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1280, height: 900 } }); await require('./plus-preview')(p); const errs = []; p.on('pageerror', e => errs.push(e.message));
   await p.goto((process.env.BASE||'http://localhost:8765')+'/app/?lang=de#overview'); await p.waitForTimeout(1500);
   const ym = await p.evaluate(() => { const d = new Date(); return d.toISOString().slice(0, 7); });
   await p.evaluate((ym) => {
@@ -30,7 +30,7 @@ const { chromium } = require('playwright');
   if (!/Investiert\s*300\s€/.test(inc2) || /data-depbook|als Anlage buchen/.test(inc2)) bad.push('Depot-Kauf nicht als Anlage gebucht: ' + inc2.replace(/\n/g, ' | ').slice(0, 260));
   if (!/Passives Einkommen/.test(inc)) bad.push('KPI Passives Einkommen fehlt');
   if (syn.join(',') !== '12.5|manuell,7.5|auto' || syn2 !== 2) bad.push('Dividende nicht genau einmal als Buchung angelegt: ' + syn.join(',') + ' / ' + syn2);
-  if (!/Dividenden: /.test(aud)) bad.push('Verhaltens-Audit kennt die Dividenden nicht: ' + aud);
+  if (process.env.PLUS_BUNDLE && !/Dividenden: /.test(aud)) bad.push('Verhaltens-Audit kennt die Dividenden nicht: ' + aud);
   if (!/Dividenden/.test(kp)) bad.push('Depot-Kennzahl Dividenden fehlt');
   if (!/Dividenden: /.test(bal)) bad.push('Bilanz zeigt keine Dividenden je Position');
   if (!/\+20\s€ Dividenden/.test(dep)) bad.push('Depot-Tabelle zeigt erhaltene Dividenden nicht: ' + dep.replace(/\n/g, ' | ').slice(0, 200));

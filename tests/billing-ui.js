@@ -32,7 +32,7 @@ const fs = require('fs');
   if (!d.yearly || !/39,00\s€ pro Jahr/.test(d.text) || !/4,99\s€ pro Monat/.test(d.text) || !/3,25\s€ im Monat/.test(d.text)) bad.push('Plus-Fenster Preise/Vorauswahl falsch: ' + d.text.replace(/\n/g, ' | ').slice(0, 300));
   await p.click('#plusGo'); await p.waitForTimeout(800);
   const login = await p.evaluate(() => document.getElementById('plusMsg').innerText);
-  if (!/melde dich zuerst an/.test(login)) bad.push('Ohne Konto kein Anmelde-Hinweis: ' + login);
+  if (!/kostenlosen Konto/.test(login) || !/Kostenlos registrieren/.test(login)) bad.push('Ohne Konto kein Anmelde-Hinweis: ' + login);
   if (p.calls.some(c => /billing-checkout/.test(c))) bad.push('Plus-Checkout ohne Konto aufgerufen');
   // Arbeitsbuch als Gast → Stripe Checkout
   await p.goto('http://localhost:8765/arbeitsbuch/'); await p.waitForTimeout(600);
