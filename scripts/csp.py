@@ -24,6 +24,8 @@ CONNECT = ["'self'", "https://cwznthfefbeglamnwyry.supabase.co", "https://cloudf
 FRAME = ["'self'", "https://geld-kompass.com", "https://*.tradingview.com", "https://*.tradingview-widget.com"]
 # Skripte, die zur Laufzeit in neue Fenster geschrieben werden (erben die CSP der App)
 EXTRA = {"app/index.html": ["window.onload=function(){window.print();}"]}
+# Nur die App lädt den Plus-Code (vom Server nach Prüfung des Kontos) als blob:-Skript.
+SCRIPT_EXTRA = {"app/index.html": ["blob:"]}
 
 TAG_RE = re.compile(r'[ \t]*<meta http-equiv="Content-Security-Policy" data-gk-csp[^>]*>\n?')
 SCRIPT_RE = re.compile(r"<script(\s[^>]*)?>(.*?)</script>", re.S | re.I)
@@ -47,11 +49,11 @@ def inline_hashes(html):
     return out
 
 
-def policy(hashes):
+def policy(hashes, rel=""):
     h = sorted(set(hashes))
     parts = [
         "default-src 'self'",
-        "script-src " + " ".join(SCRIPT + h),
+        "script-src " + " ".join(SCRIPT + SCRIPT_EXTRA.get(rel, []) + h),
         "style-src 'self' 'unsafe-inline'",
         "img-src 'self' data: blob: https:",
         "font-src 'self' data:",
@@ -69,7 +71,7 @@ def policy(hashes):
 def build(rel, html):
     clean = TAG_RE.sub("", html)
     hashes = inline_hashes(clean) + [sha(x) for x in EXTRA.get(rel, [])]
-    tag = '<meta http-equiv="Content-Security-Policy" data-gk-csp content="' + policy(hashes) + '">'
+    tag = '<meta http-equiv="Content-Security-Policy" data-gk-csp content="' + policy(hashes, rel) + '">'
     m = re.search(r"<meta charset=[^>]*>\n?", clean, re.I) or re.search(r"<head[^>]*>\n?", clean, re.I)
     if not m:
         return None
