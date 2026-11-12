@@ -1,4 +1,4 @@
-/* Kostenloses Konto: Schulden-Plan, Abos & Gewohnheiten und Ziele nur mit Konto (eigener Modus). Startseite zeigt den klaren Weg: erst Konto, dann Plus. */
+/* Kostenloses Konto: Schulden-Plan, Abos & Gewohnheiten, Ziele, Double-FF- und Zinseszins-Rechner nur mit Konto (eigener Modus). Startseite zeigt den klaren Weg: erst Konto, dann Plus. */
 const { chromium } = require('playwright'); const BASE = 'http://localhost:8765';
 (async () => {
   const b = await chromium.launch(); const bad = [];
@@ -13,13 +13,19 @@ const { chromium } = require('playwright'); const BASE = 'http://localhost:8765'
     await p.goto(BASE + '/app/?lang=de#debts'); await p.waitForTimeout(2500);
     const r = await p.evaluate(() => ({ gate: !!document.querySelector('#p-debts > .accgate'), plan: (() => { const x = document.getElementById('planCard'); return x ? getComputedStyle(x).display !== 'none' : null; })(), href: (document.querySelector('#p-debts .accgate a.btn.pri') || {}).getAttribute ? document.querySelector('#p-debts .accgate a.btn.pri').getAttribute('href') : '' }));
     await p.goto(BASE + '/app/?lang=de&x=1#overview'); await p.waitForTimeout(2000);
+    await p.goto(BASE + '/app/?lang=de&x=2#calc'); await p.waitForTimeout(1500);
+    const cg = await p.evaluate(() => ['r-freiheit', 'r-zeit', 'r-fx', 'r-einkommen'].map(id => { const x = document.getElementById(id); x.open = true; const g = x.querySelector(':scope > .accgate'); const inner = x.querySelector(':scope > div.in:not(.accgate)'); return { id, gate: !!g, inner: inner ? getComputedStyle(inner).display !== 'none' : null, href: g && g.querySelector('a.btn.pri') ? g.querySelector('a.btn.pri').getAttribute('href') : '' }; }));
+    const title = await p.evaluate(() => document.querySelector('#r-zeit h3').textContent);
+    if (title !== 'Zinseszins gegen Inflation') bad.push('Rechner nicht umbenannt: ' + title);
     const cta = await p.evaluate(() => (document.getElementById('gkCta') || {}).innerText || '');
     if (kind === 'gast') {
       if (!r.gate || r.plan) bad.push('Gast: Schulden-Plan nicht gesperrt ' + JSON.stringify(r));
       if (!/action=signup&next=debts/.test(r.href)) bad.push('Gast: Registrieren-Link falsch: ' + r.href);
+      for (const x of cg) { const locked = x.id === 'r-freiheit' || x.id === 'r-zeit'; if (locked && (!x.gate || x.inner || !/action=signup&next=calc/.test(x.href))) bad.push('Gast: Rechner ' + x.id + ' nicht gesperrt ' + JSON.stringify(x)); if (!locked && (x.gate || x.inner === false)) bad.push('Gast: Rechner ' + x.id + ' fälschlich gesperrt'); }
       if (!/Kostenloses Konto/.test(cta)) bad.push('Gast: Startseite ohne Konto-Hinweis: ' + cta.slice(0, 80));
     } else {
       if (r.gate || r.plan === false) bad.push('Konto: Schulden-Plan gesperrt ' + JSON.stringify(r));
+      for (const x of cg) if (x.gate || x.inner === false) bad.push('Konto: Rechner ' + x.id + ' gesperrt');
       if (!/7 Tage kostenlos/.test(cta)) bad.push('Konto: Startseite ohne Plus-Hinweis: ' + cta.slice(0, 80));
     }
     if (errs.length) bad.push(kind + ' JS-Fehler: ' + errs.join(' | '));

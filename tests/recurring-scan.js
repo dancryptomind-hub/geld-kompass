@@ -18,7 +18,7 @@ const { chromium } = require('playwright');
   const ok1 = rows.length === 2 && rows.some(r => /NETFLIX/.test(r)) && rows.some(r => /Miete/.test(r));
   await p.click('[data-rsgo]'); await p.waitForTimeout(500);
   const st = await p.evaluate(() => { const S = JSON.parse(localStorage.getItem('geldkompass.v3')); return S.own.entries.filter(e => e.freq === 'monthly').map(e => e.title + '|' + e.amount + '|' + e.date.slice(0, 7)); });
-  const next = await p.evaluate(() => { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() + 1); return d.toISOString().slice(0, 7); });
+  const next = await p.evaluate(() => { const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() + 1); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0'); });
   const ok2 = st.length === 2 && st.every(x => x.endsWith('|' + next));
   const hidden = await p.$eval('#recScan', e => e.hidden);
   await b.close();
