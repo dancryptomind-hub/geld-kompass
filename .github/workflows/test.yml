@@ -76,6 +76,8 @@ jobs:
           node tests/income-sources.js
           node tests/plus-nav.js
           node tests/tax-pages.js
+          node tests/workbook-launch.js
+          GK_TEST_BASE=http://localhost:8765 node tests/workbook-delivery.js
           node tests/share-links.js
           node tests/app-share-links.js
           node tests/csp.js
