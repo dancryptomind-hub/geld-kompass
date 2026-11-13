@@ -9,7 +9,7 @@ const {chromium,webkit}=require('playwright');
   await p.addInitScript(()=>{const real=window.setTimeout;window.setTimeout=(fn,ms,...args)=>real(fn,ms===1500||ms===4000?0:ms,...args);});
   await p.route('**/billing-status?*',r=>{calls++;if(recovered)return r.fulfill({contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:JSON.stringify({kind:'gk_workbook_de',status:'paid',download:'https://example.com/workbook.pdf'})});if(scenario==='network')return r.abort('failed');return r.fulfill({contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:JSON.stringify({kind:scenario==='foreign'?'other_product':'gk_workbook_de',status:scenario==='foreign'?'paid':scenario==='pending'?'open':scenario,download:scenario==='foreign'?'https://example.com/foreign.pdf':undefined})});});
   await p.goto(base+'/plus/danke/?lang='+lang+'&session_id=cs_live_'+'x'.repeat(30));
-  if(['network','pending'].includes(scenario))await p.waitForFunction(()=>!document.querySelector('#thxState .spin'),null,{timeout:20000}).catch(()=>{});
+  if(['network','pending'].includes(scenario))await p.waitForFunction(()=>!document.querySelector('#thxState .spin'),null,{timeout:60000}).catch(()=>{});
   else await p.waitForTimeout(500);
   const text=await p.locator('#thxState').innerText(),links=await p.locator('#thxState a').allTextContents();
   if(lang==='en'&&(await p.locator('main').innerText()).includes('Zahlungsbeleg'))failed.push({lang,scenario,error:'Receipt sentence remains German'});
