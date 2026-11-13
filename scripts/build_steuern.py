@@ -57,7 +57,7 @@ def calc_html(en, c='', cmp=''):
          'Country figures for orientation: top income tax rate and reference rate for capital income. Your personal situation, allowances, treaties and special rules decide. Not tax advice.'))
 
 CSS = ('<style>.txgrid{display:grid;gap:14px;margin-top:14px}.txgrid.two{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}.txc{border:1px solid var(--line);border-radius:14px;padding:14px;background:var(--card2,rgba(255,255,255,.03))}.txc h3{margin:0 0 8px}'
-       '.txc .res{margin:8px 0}.txtab{width:100%;border-collapse:collapse;font-size:.92rem}.txtab th,.txtab td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}.txtab td.n{white-space:nowrap}.txreg{margin-top:22px}</style>')
+       '.txc .res{margin:8px 0}.txtab{width:100%;border-collapse:collapse;font-size:.92rem}.txtab th,.txtab td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}.txtab td.n{white-space:nowrap}.txtab{table-layout:fixed;overflow-wrap:anywhere}@media(max-width:480px){.txtab{font-size:.8rem}.txtab td.n{white-space:normal}.txtab th,.txtab td{padding:6px 3px}}.txreg{margin-top:22px}</style>')
 
 def table(d, en, codes, base):
     L = 1 if en else 0
