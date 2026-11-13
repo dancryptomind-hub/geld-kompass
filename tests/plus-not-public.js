@@ -6,6 +6,7 @@ function walk(d) { for (const f of fs.readdirSync(d)) { if (['.git', 'node_modul
   if (st.isDirectory()) walk(p); else if (/\.(html|js)$/.test(f)) { const s = fs.readFileSync(p, 'utf8'); forbidden.forEach(n => { if (new RegExp('function\\s+' + n + '\\s*\\(').test(s)) bad.push(path.relative('.', p) + ': ' + n); }); } } }
 walk('.');
 if (fs.existsSync('tax-guide.js')) bad.push('tax-guide.js liegt wieder öffentlich');
+for (const l of ['de', 'en']) { const f = 'app/plus-demo.' + l + '.html'; if (!fs.existsSync(f)) bad.push(f + ' fehlt'); else { const h = fs.readFileSync(f, 'utf8'); if (/<script/i.test(h) || /\son[a-z]+="/i.test(h)) bad.push(f + ': enthält Skript'); if (!/noindex/.test(h)) bad.push(f + ': noindex fehlt'); } }
 const app = fs.readFileSync('app/index.html', 'utf8');
 if (!/function plusLoad\(/.test(app) || !/plus-code/.test(app)) bad.push('Plus-Lader fehlt');
 if (/previewOpen:true/.test(fs.readFileSync('konto/config.js', 'utf8'))) bad.push('Vorschau ist offen');

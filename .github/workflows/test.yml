@@ -74,6 +74,8 @@ jobs:
           node tests/plus-not-public.js
           node tests/account-gate.js
           node tests/income-sources.js
+          node tests/plus-nav.js
+          node tests/tax-pages.js
           node tests/share-links.js
           node tests/app-share-links.js
           node tests/csp.js

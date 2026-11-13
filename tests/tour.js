@@ -15,10 +15,9 @@ const { chromium } = require('playwright');
     const pages = new Set(); for (let i = 2; i < N; i++) { pages.add(await p.evaluate(() => document.querySelector('.page.on').id)); const h = await p.$eval('.gt-bub h3', e => e.textContent); if (!h) bad.push(lang + ' Station ' + i); await p.click('[data-gt="next"]'); await p.waitForTimeout(650); }
     if (pages.size < 10) bad.push(lang + ': Tour zeigt nur ' + pages.size + ' Seiten'); const st2 = await p.evaluate(() => JSON.parse(localStorage.getItem('gk-tour'))); if (!st2.done) bad.push(lang + ': nicht als fertig gespeichert');
     await p.reload(); await p.waitForTimeout(2400); if (await p.evaluate(() => document.getElementById('gkTour') && document.getElementById('gkTour').classList.contains('on'))) bad.push(lang + ': startet nach Abschluss erneut');
-    await p.click('#gkGuideBtn', { force: true }); await p.click('#gkGuideMenu [data-gt="plus"]', { force: true }); await p.waitForTimeout(800);
-    const pn = await p.evaluate(() => +document.querySelector('#gkTour .gt-prog small').textContent.split('/')[1]); const ppages = new Set();
-    for (let i = 0; i < pn; i++) { ppages.add(await p.evaluate(() => document.querySelector('.page.on').id)); if (i > 0 && !(await p.$('#gkTour .gt-extra [data-plus-buy]'))) bad.push(lang + ': Plus-Tour Station ' + i + ' ohne Testen-Knopf'); await p.click('[data-gt="next"]'); await p.waitForTimeout(650); }
-    if (pn < 8 || !ppages.has('p-stress') || !ppages.has('p-assets')) bad.push(lang + ': Plus-Tour unvollständig ' + pn + ' ' + [...ppages]);
+    await p.click('#gkGuideBtn', { force: true }); await p.click('#gkGuideMenu [data-gt="plus"]', { force: true }); await p.waitForTimeout(900);
+    const pd = await p.evaluate(() => { const d = document.getElementById('pdDlg'); return { open: !!(d && d.open), tabs: d ? d.querySelectorAll('.pdtabs button').length : 0, cta: !!(d && d.querySelector('[data-plus-buy]')) }; });
+    if (!pd.open || pd.tabs < 8 || !pd.cta) bad.push(lang + ': „Plus kennenlernen“ ohne Plus öffnet keine Vorschau ' + JSON.stringify(pd));
     await c.close();
   }
   await b.close();

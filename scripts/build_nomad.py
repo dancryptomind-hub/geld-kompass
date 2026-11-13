@@ -22,7 +22,7 @@ T = {
        ('Welche Währungen gehen?', 'Über 50 Währungen mit Tageskursen, dazu Bitcoin. Deine Hauptwährung wählst du selbst.'),
        ('Brauche ich ein Bankkonto oder eine Anmeldung?', 'Nein. Der Geld-Kompass Pro läuft im Browser und als App auf dem Handy, ohne Konto und ohne Bankzugang.'),
        ('Kostet das etwas?', 'Freiheitstage, Budget, Schulden-Plan und Währungsrechner sind kostenlos. Der Nomaden-Modus gehört zu Plus, dem kommenden Abo. Bis zum Start kannst du ihn in der Vorschau kostenlos testen.')],
-  faqh='Häufige Fragen', fx='Geld zwischen Ländern senden? Rechne vorher im <a href="/rechner/waehrungsrechner/">Währungsrechner</a> mit Live-Kursen.',
+  faqh='Häufige Fragen', fx='Geld zwischen Ländern senden? Rechne vorher im <a href="/rechner/waehrungsrechner/">Währungsrechner</a> mit Live-Kursen. Wo zahlst du wie viel Steuern? <a href="/rechner/steuern-nach-wohnsitz/">Steuern nach Wohnsitz in 91 Ländern vergleichen</a>, zum Beispiel <a href="/rechner/steuern-nach-wohnsitz/thailand/">Thailand</a>, <a href="/rechner/steuern-nach-wohnsitz/portugal/">Portugal</a>, <a href="/rechner/steuern-nach-wohnsitz/vereinigte-arabische-emirate/">Dubai</a> oder <a href="/rechner/steuern-nach-wohnsitz/georgien/">Georgien</a>.',
   foot='<a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a> · <a href="/werbung/">Werbung</a> · Geld-Kompass Pro · © FreedomByDan · Allgemeine Finanzbildung, keine Steuer-, Rechts- oder Anlageberatung.',
   logo='Geld-<span>Kompass</span> <span class="pro">Pro</span>'),
 'en': dict(url=EN_URL, other=DE_URL, sw='Deutsch', swurl='/auswandern-finanzen/?lang=de', home='/?lang=en', app='/app/?lang=en',
@@ -39,7 +39,7 @@ T = {
        ('Which currencies work?', '50+ currencies with daily rates, plus bitcoin. You choose your main currency.'),
        ('Do I need a bank account or an account?', 'No. Money Compass Pro runs in the browser and as an app on your phone, without an account and without bank access.'),
        ('Does it cost anything?', 'Freedom days, budget, debt plan and currency converter are free. Nomad mode is part of Plus, the upcoming subscription. Until launch you can try it for free in the preview.')],
-  faqh='Frequently asked questions', fx='Sending money between countries? Check first in the <a href="/en/calculators/currency-converter/">currency converter</a> with live rates.',
+  faqh='Frequently asked questions', fx='Sending money between countries? Check first in the <a href="/en/calculators/currency-converter/">currency converter</a> with live rates. Where do you pay how much tax? <a href="/en/calculators/taxes-by-residence/">Compare taxes by residence in 91 countries</a>, for example <a href="/en/calculators/taxes-by-residence/thailand/">Thailand</a>, <a href="/en/calculators/taxes-by-residence/portugal/">Portugal</a>, <a href="/en/calculators/taxes-by-residence/united-arab-emirates/">Dubai</a> or <a href="/en/calculators/taxes-by-residence/georgia/">Georgia</a>.',
   foot='<a href="/impressum/?lang=en">Legal notice</a> · <a href="/datenschutz/?lang=en">Privacy</a> · <a href="/werbung/?lang=en">Advertising</a> · Money Compass Pro · © FreedomByDan · General financial education, not tax, legal or investment advice.',
   logo='Money <span>Compass</span> <span class="pro">Pro</span>'),
 }

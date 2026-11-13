@@ -16,6 +16,7 @@ CALC = [
     ('inflationsrechner', 'Inflationsrechner', 'inflation-calculator', 'Inflation calculator', 700),
     ('abo-als-aktie', 'Konsument oder Eigentümer?', 'subscription-as-investment', 'Consumer or owner?', 760),
     ('waehrungsrechner', 'Währungsrechner', 'currency-converter', 'Currency converter', 640),
+    ('steuern-nach-wohnsitz', 'Steuern nach Wohnsitz', 'taxes-by-residence', 'Taxes by residence', 980),
 ]
 T = {
  'de': dict(title='Finanzrechner kostenlos auf deiner Website einbinden | Geld-Kompass Pro',

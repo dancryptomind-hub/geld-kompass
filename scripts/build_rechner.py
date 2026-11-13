@@ -578,7 +578,7 @@ def hub(lang='de'):
 <div class="eyebrow">{txt['eb']}</div>
 <h1>{txt['h1']}</h1>
 <p class="lead">{txt['lead']}</p>
-<div class="more">{cards}{('<a href="/en/dividend-calendar/">Dividend calendar<small>Who pays when: months, yield, Dividend Kings</small></a>' if en else '<a href="/dividenden-kalender/">Dividenden-Kalender<small>Wer zahlt wann: Monate, Rendite, Dividenden-Könige</small></a>')}</div>
+<div class="more">{cards}{('<a href="/en/dividend-calendar/">Dividend calendar<small>Who pays when: months, yield, Dividend Kings</small></a><a href="/en/calculators/taxes-by-residence/">Taxes by residence<small>Income and capital gains tax in 91 countries compared</small></a>' if en else '<a href="/dividenden-kalender/">Dividenden-Kalender<small>Wer zahlt wann: Monate, Rendite, Dividenden-Könige</small></a><a href="/rechner/steuern-nach-wohnsitz/">Steuern nach Wohnsitz<small>Einkommensteuer und Kapitalerträge in 91 Ländern vergleichen</small></a>')}</div>
 <h2>{txt['cur']}</h2>
 <div class="more">{pcards}</div>
 {('<h2>Calculators for your website</h2>\n<div class="more"><a href="/en/embed/">Embed a calculator for free<small>For blogs, clubs and finance sites: copy the code, done</small></a></div>\n' if en else '<h2>Ratgeber: laufende Kosten senken</h2>\n<div class="more"><a href="/ratgeber/handy-internet-sparen/">Handy & Internet günstiger<small>Was dich dein Tarif in Arbeitszeit kostet</small></a><a href="/ratgeber/strom-gas-wechseln/">Strom & Gas wechseln<small>Grundversorgung, Bonusfallen, Sparpotenzial</small></a><a href="/ratgeber/versicherungen-pruefen/">Versicherungen prüfen<small>Was du wirklich brauchst</small></a><a href="/ratgeber/internet-anschluss-guenstiger/">Internetanschluss günstiger<small>DSL, Kabel oder Glasfaser</small></a><a href="/ratgeber/kfz-versicherung-wechseln/">Kfz-Versicherung wechseln<small>Stichtag 30. November</small></a><a href="/ratgeber/girokonto-gebuehren-sparen/">Kontogebühren sparen<small>Girokonto einfach wechseln</small></a></div>\n<h2>Rechner für deine Website</h2>\n<div class="more"><a href="/einbinden/">Rechner kostenlos einbinden<small>Für Blogs, Vereine und Finanz-Seiten: Code kopieren, fertig</small></a></div>\n')}{txt['cta']}
@@ -596,6 +596,8 @@ for lang, base, pages in (('de', 'rechner', PAGES), ('en', 'en/calculators', PAG
     open(base + '/index.html', 'w').write(hub(lang))
 urls = [BASE, BASE + 'app/', BASE + 'start/', BASE + 'buchbegruessung/', BASE + 'arbeitsbuch/', BASE + 'rechner/', BASE + 'en/calculators/', BASE + 'dividenden-kalender/', BASE + 'en/dividend-calendar/', BASE + 'en/workbook/', BASE + 'einbinden/', BASE + 'en/embed/', BASE + 'werbung/', BASE + 'ratgeber/', BASE + 'ratgeber/handy-internet-sparen/', BASE + 'ratgeber/strom-gas-wechseln/', BASE + 'ratgeber/versicherungen-pruefen/', BASE + 'ratgeber/internet-anschluss-guenstiger/', BASE + 'ratgeber/kfz-versicherung-wechseln/', BASE + 'ratgeber/girokonto-gebuehren-sparen/', BASE + 'auswandern-finanzen/', BASE + 'en/expat-money-app/'] + \
        [BASE + 'rechner/' + p['slug'] + '/' for p in PAGES] + [BASE + 'en/calculators/' + p['slug'] + '/' for p in PAGES_EN]
+import build_steuern as _bs
+urls += _bs.urls()
 open('sitemap.xml', 'w').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n' +
     ''.join('<url><loc>%s</loc><lastmod>%s</lastmod></url>\n' % (u, TODAY) for u in urls) + '</urlset>\n')
 print('ok', len(PAGES), 'Seiten je Sprache')
