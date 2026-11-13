@@ -9,6 +9,7 @@ const {chromium,webkit}=require('playwright');
   await p.addInitScript(()=>{const real=window.setTimeout;window.setTimeout=(fn,ms,...args)=>real(fn,ms===1500||ms===4000?0:ms,...args);});
   await p.route('**/billing-status?*',r=>{calls++;if(recovered)return r.fulfill({contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:JSON.stringify({kind:'gk_workbook_de',status:'paid',download:'https://example.com/workbook.pdf'})});if(scenario==='network')return r.abort('failed');return r.fulfill({contentType:'application/json',headers:{'access-control-allow-origin':'*'},body:JSON.stringify({kind:scenario==='foreign'?'other_product':'gk_workbook_de',status:scenario==='foreign'?'paid':scenario==='pending'?'open':scenario,download:scenario==='foreign'?'https://example.com/foreign.pdf':undefined})});});
   await p.goto(base+'/plus/danke/?lang='+lang+'&session_id=cs_live_'+'x'.repeat(30));
+  console.log('DIAG-start',lang,scenario);
   if(['network','pending'].includes(scenario))await p.waitForFunction(()=>!document.querySelector('#thxState .spin'),null,{timeout:20000}).catch(()=>{});
   else await p.waitForTimeout(500);
   const text=await p.locator('#thxState').innerText(),links=await p.locator('#thxState a').allTextContents();
@@ -17,6 +18,7 @@ const {chromium,webkit}=require('playwright');
   if(!patterns[scenario].test(text)||await p.locator('#thxState .spin').count()||await p.locator('#thxState a[href*="foreign.pdf"]').count())failed.push({lang,scenario,text,calls,links});
   else console.log('PASS',lang,scenario);
   if(['network','pending'].includes(scenario)){
+   console.log('DIAG',lang,scenario,'calls='+calls,'html='+JSON.stringify((await p.locator('#thxState').innerHTML()).slice(0,400)));
    recovered=true;await p.locator('#thxRetry').click();await p.locator('#thxState a[href*="workbook.pdf"]').waitFor({timeout:5000});console.log('PASS',lang,scenario,'recovery to paid download');
    await p.screenshot({path:'/tmp/gk-delivery-'+lang+'-paid.png',fullPage:true});
   }else if(scenario==='disputed')await p.screenshot({path:'/tmp/gk-delivery-'+lang+'-disputed.png',fullPage:true});

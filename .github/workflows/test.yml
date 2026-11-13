@@ -25,5 +25,4 @@ jobs:
       - run: |
           python3 -m http.server 8765 >/dev/null 2>&1 &
           sleep 2
-          node tests/diag-delivery.js
-          GK_TEST_BASE=http://localhost:8765 node tests/workbook-delivery.js || true
+          GK_TEST_BASE=http://localhost:8765 timeout 120 node tests/workbook-delivery.js || true
