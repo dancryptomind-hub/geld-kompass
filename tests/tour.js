@@ -16,7 +16,7 @@ const { chromium } = require('playwright');
     if (pages.size < 10) bad.push(lang + ': Tour zeigt nur ' + pages.size + ' Seiten'); const st2 = await p.evaluate(() => JSON.parse(localStorage.getItem('gk-tour'))); if (!st2.done) bad.push(lang + ': nicht als fertig gespeichert');
     await p.reload(); await p.waitForTimeout(2400); if (await p.evaluate(() => document.getElementById('gkTour') && document.getElementById('gkTour').classList.contains('on'))) bad.push(lang + ': startet nach Abschluss erneut');
     await p.click('#gkGuideBtn', { force: true }); await p.click('#gkGuideMenu [data-gt="plus"]', { force: true }); await p.waitForTimeout(900);
-    const pd = await p.evaluate(() => { const d = document.getElementById('pdDlg'); return { open: !!(d && d.open), tabs: d ? d.querySelectorAll('.pdtabs button').length : 0, cta: !!(d && d.querySelector('[data-plus-buy]')) }; });
+    const pd = await p.evaluate(() => { const d = document.getElementById('pdDlg'); return { open: !!(d && d.open), tabs: d ? d.querySelectorAll('.pdnav .pdst').length : 0, cta: !!(d && d.querySelector('[data-plus-buy]')) }; });
     if (!pd.open || pd.tabs < 8 || !pd.cta) bad.push(lang + ': „Plus kennenlernen“ ohne Plus öffnet keine Vorschau ' + JSON.stringify(pd));
     await c.close();
   }

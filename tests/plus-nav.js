@@ -13,7 +13,7 @@ const { chromium } = require('playwright'); const plusPreview = require('./plus-
     if (nav.labels.join('|') !== 'Mein Geld|Planen|Plus|Lernen|Einstellungen') bad.push(w + ': Gruppen ' + nav.labels.join('|'));
     if (w === 1280) {
       await p.click('#navGroups [data-plus-demo]'); await p.waitForTimeout(900);
-      const d = await p.evaluate(() => { const g = document.getElementById('pdDlg'); return { open: !!(g && g.open), tabs: g ? g.querySelectorAll('.pdtabs button').length : 0, src: g && g.querySelector('iframe') ? g.querySelector('iframe').getAttribute('src') : '', cta: !!(g && g.querySelector('[data-plus-buy="demo"]')), who: g ? (g.querySelector('.pdwho') || {}).textContent : '' }; });
+      const d = await p.evaluate(() => { const g = document.getElementById('pdDlg'); return { open: !!(g && g.open), tabs: g ? g.querySelectorAll('.pdnav .pdst').length : 0, src: g && g.querySelector('iframe') ? g.querySelector('iframe').getAttribute('src') : '', cta: !!(g && g.querySelector('[data-plus-buy="demo"]')), who: g ? (g.querySelector('.pdwho') || {}).textContent : '' }; });
       if (!d.open || d.tabs !== 8 || !/plus-demo\.de\.html#stress$/.test(d.src) || !d.cta || !/Leon/.test(d.who)) bad.push('Vorschau: ' + JSON.stringify(d));
       for (let i = 1; i < 8; i++) { await p.click('#pdDlg [data-pd="next"]').catch(() => {}); await p.waitForTimeout(250); }
       const last = await p.evaluate(() => document.querySelector('#pdDlg iframe').getAttribute('src'));
