@@ -100,7 +100,7 @@ export function handle(fn: (req: Request) => Promise<Response>) {
    Beide Kategorien sind für Managed Payments (Stripe als Verkäufer, übernimmt EU-Umsatzsteuer) zulässig. */
 export const PRODUCTS: Record<string, { name: string; description: string; tax_code?: string }> = {
   gk_plus: { name: "Geld-Kompass Plus", description: "Alle Plus-Funktionen: Entnahmeplan, Dividendenkalender, Steuer- und Nomaden-Modus, Kursalarme, eigene Schnellleiste.", tax_code: "txcd_10103000" },
-  gk_workbook_de: { name: "Arbeitsbuch „Der einfache Weg zur Finanziellen Freiheit“ (PDF)", description: "69 Seiten Übungen zu allen 16 Kapiteln, digital zum Ausdrucken oder Beschriften.", tax_code: "txcd_10302000" },
+  gk_workbook_de: { name: "Arbeitsbuch „Der einfache Weg zur Finanziellen Freiheit“ (PDF)", description: "71 Seiten Übungen zu allen 16 Kapiteln, digital zum Ausdrucken oder Beschriften.", tax_code: "txcd_10302000" },
   gk_freedom_report: { name: "Freiheits-Report (PDF)", description: "Dein persönlicher Report aus deinen Geld-Kompass-Zahlen, erstellt auf deinem Gerät.", tax_code: "txcd_10701411" },
 };
 export const CATALOG: Record<string, { lookup: string; product: string; amount: number; interval?: "month" | "year"; mode: "subscription" | "payment"; needsUser: boolean; enabledEnv?: string }> = {
@@ -110,10 +110,17 @@ export const CATALOG: Record<string, { lookup: string; product: string; amount: 
   report: { lookup: "gk_freedom_report_eur", product: "gk_freedom_report", amount: 1499, mode: "payment", needsUser: false },
 };
 
-export async function ensurePrice(item: keyof typeof CATALOG): Promise<string> {
-  const c = CATALOG[item], s = stripe();
+export async function ensurePrice(item: keyof typeof CATALOG, s: Stripe = stripe()): Promise<string> {
+  const c = CATALOG[item];
   const found = await s.prices.list({ lookup_keys: [c.lookup], active: true, limit: 1 });
-  if (found.data[0]) return found.data[0].id;
+  if (found.data[0]) {
+    const p = found.data[0];
+    if (p.currency !== "eur" || p.unit_amount !== c.amount || p.tax_behavior !== "inclusive" ||
+        (c.interval ? p.recurring?.interval !== c.interval || p.recurring.interval_count !== 1 : !!p.recurring)) {
+      throw new HttpError(503, "price_configuration_mismatch");
+    }
+    return p.id;
+  }
   await ensureProduct(c.product);
   const p = await s.prices.create({
     product: c.product, currency: "eur", unit_amount: c.amount, lookup_key: c.lookup, tax_behavior: "inclusive",
@@ -137,16 +144,32 @@ export async function ensureProduct(id: string) {
 export const PROMOS: Record<string, { coupon: string; percent_off: number; products: string[]; name: string }> = {
   KOMPASS20: { coupon: "gk_kompass20", percent_off: 20, products: ["gk_workbook_de"], name: "Kompass -20 %" },
 };
-export async function ensurePromo(code: string): Promise<string | null> {
+export async function ensurePromo(code: string, s: Stripe = stripe()): Promise<string | null> {
   const P = PROMOS[code.toUpperCase()];
   if (!P) return null;
-  const s = stripe();
+  // Dashboard-Produkte besitzen prod_…-IDs. Interne Katalognamen sind keine Stripe-Produkt-IDs.
+  const products: string[] = [];
+  for (const logical of P.products) {
+    const c = Object.values(CATALOG).find((entry) => entry.product === logical);
+    if (!c) throw new HttpError(503, "promo_product_missing");
+    const prices = await s.prices.list({ lookup_keys: [c.lookup], active: true, limit: 1 });
+    const product = prices.data[0]?.product;
+    if (!product) throw new HttpError(503, "promo_price_missing");
+    products.push(typeof product === "string" ? product : product.id);
+  }
+  const digest = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(products.slice().sort().join("|"))));
+  const suffix = Array.from(digest.slice(0, 8), (b) => b.toString(16).padStart(2, "0")).join("");
+  const couponId = P.coupon + "_" + suffix;
   const found = await s.promotionCodes.list({ code: code.toUpperCase(), active: true, limit: 1 });
-  if (found.data[0]) return found.data[0].id;
-  for (const pid of P.products) await ensureProduct(pid);
-  try { await s.coupons.retrieve(P.coupon); }
-  catch { await s.coupons.create({ id: P.coupon, name: P.name, percent_off: P.percent_off, duration: "once", applies_to: { products: P.products } }, { idempotencyKey: "coupon_" + P.coupon }); }
-  const pc = await s.promotionCodes.create({ promotion: { type: "coupon", coupon: P.coupon }, code: code.toUpperCase(), restrictions: { first_time_transaction: true } }, { idempotencyKey: "promo_" + code.toUpperCase() + "_v1" });
+  if (found.data[0]) {
+    const coupon = found.data[0].promotion?.coupon;
+    if ((typeof coupon === "string" ? coupon : coupon?.id) === couponId) return found.data[0].id;
+    // Alten Code mit falscher Produktbindung nicht weiter an Käufer ausgeben.
+    await s.promotionCodes.update(found.data[0].id, { active: false });
+  }
+  try { await s.coupons.retrieve(couponId); }
+  catch { await s.coupons.create({ id: couponId, name: P.name, percent_off: P.percent_off, duration: "once", applies_to: { products } }, { idempotencyKey: "coupon_" + couponId }); }
+  const pc = await s.promotionCodes.create({ promotion: { type: "coupon", coupon: couponId }, code: code.toUpperCase(), restrictions: { first_time_transaction: true } }, { idempotencyKey: "promo_" + code.toUpperCase() + "_" + suffix });
   return pc.id;
 }
 export const managedPayments = () => Deno.env.get("MANAGED_PAYMENTS") === "1";
@@ -185,4 +208,9 @@ export async function refreshEntitlement(userId: string) {
   const { data } = await admin().auth.admin.getUserById(userId);
   const meta = { ...(data?.user?.app_metadata || {}), gk_plus };
   await admin().auth.admin.updateUserById(userId, { app_metadata: meta });
+}
+
+// Managed Payments controls the purchase text; custom_text is rejected by Stripe.
+export function checkoutText(managed: boolean, message: string) {
+ return managed ? {} : { custom_text: { submit: { message } } };
 }

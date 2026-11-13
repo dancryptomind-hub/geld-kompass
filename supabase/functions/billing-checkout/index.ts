@@ -1,14 +1,18 @@
 // POST {item: "plus_monthly"|"plus_yearly"|"workbook"|"report", lang?: "de"|"en", code?: Aktionscode (Arbeitsbuch), trial?: Checkout-ID eines bezahlten Arbeitsbuch-Kaufs} → {url} zur Stripe-Checkout-Seite.
 // Plus braucht ein angemeldetes Konto (Freischaltung hängt am Konto). Arbeitsbuch geht auch als Gast.
-import { handle, json, HttpError, CATALOG, catalogItem, readJson, rateLimit, ensurePrice, ensurePromo, managedPayments, customerFor, stripe, sql, userFrom, SITE } from "../_shared/billing.ts";
+import { handle, json, HttpError, CATALOG, catalogItem, readJson, rateLimit, ensurePrice, ensurePromo, managedPayments, checkoutText, customerFor, stripe, sql, userFrom, SITE } from "../_shared/billing.ts";
+
+import { releaseError } from "../_shared/release-policy.ts";
 
 Deno.serve(handle(async (req) => {
   if (req.method !== "POST") throw new HttpError(405, "method_not_allowed");
-  await rateLimit(req, "checkout", 10, 600);
   const body = await readJson(req);
   const found = catalogItem(body.item);
   if (!found) throw new HttpError(400, "unknown_item");
   const item = found.key, c = found.c;
+  const release = releaseError(item, { WORKBOOK_ENABLED: Deno.env.get("WORKBOOK_ENABLED"), PLUS_ENABLED: Deno.env.get("PLUS_ENABLED"), REPORT_ENABLED: Deno.env.get("REPORT_ENABLED"), MANAGED_PAYMENTS: Deno.env.get("MANAGED_PAYMENTS"), TOS_CONSENT: Deno.env.get("TOS_CONSENT") });
+  if (release) throw new HttpError(503, release);
+  await rateLimit(req, "checkout", 10, 600);
   if (c.enabledEnv && Deno.env.get(c.enabledEnv) !== "1") throw new HttpError(404, "not_available");
   const lang = body.lang === "en" ? "en" : "de";
   const user = await userFrom(req);
@@ -49,9 +53,9 @@ Deno.serve(handle(async (req) => {
     integration_identifier: "gk_app_checkout_QWMRTZKB",
     ...(c.mode === "subscription" ? { subscription_data: { metadata: { gk_user: user!.id, gk_item: item }, ...(trialDays ? { trial_period_days: trialDays, trial_settings: { end_behavior: { missing_payment_method: "cancel" as const } } } : {}) } } : mp ? {} : { payment_intent_data: { metadata: { gk_item: item } } }),
     ...(Deno.env.get("TOS_CONSENT") === "1" ? { consent_collection: { terms_of_service: "required" } } : {}),
-    custom_text: { submit: { message: lang === "en"
-      ? (c.mode === "payment" ? "Digital content: access starts right after payment. By paying you agree that your right of withdrawal ends once the download starts." : (trialDays ? "30 days free, then the price shown. You get a reminder email before the first charge and can cancel anytime in your account." : "You can cancel anytime in your account. Plus stays active until the end of the paid period."))
-      : (c.mode === "payment" ? "Digitaler Inhalt: Der Zugang startet direkt nach der Zahlung. Mit dem Kauf stimmst du zu, dass dein Widerrufsrecht mit Beginn des Downloads erlischt." : (trialDays ? "30 Tage kostenlos, danach der angezeigte Preis. Vor der ersten Abbuchung bekommst du eine Erinnerung per E-Mail und kannst jederzeit im Konto kündigen." : "Jederzeit kündbar im Konto. Plus bleibt bis zum Ende des bezahlten Zeitraums aktiv.")) } },
+    ...checkoutText(mp, lang === "en"
+      ? (c.mode === "payment" ? "PDF access starts after your payment has been confirmed." : (trialDays ? "30 days free, then the price shown. You get a reminder email before the first charge and can cancel anytime in your account." : "You can cancel anytime in your account. Plus stays active until the end of the paid period."))
+      : (c.mode === "payment" ? "Die PDF steht nach bestätigter Zahlung bereit." : (trialDays ? "30 Tage kostenlos, danach der angezeigte Preis. Vor der ersten Abbuchung bekommst du eine Erinnerung per E-Mail und kannst jederzeit im Konto kündigen." : "Jederzeit kündbar im Konto. Plus bleibt bis zum Ende des bezahlten Zeitraums aktiv."))),
     metadata: { gk_item: item },
   });
   if (c.mode === "payment") {

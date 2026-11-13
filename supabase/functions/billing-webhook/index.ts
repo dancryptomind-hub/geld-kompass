@@ -1,21 +1,20 @@
 // Stripe-Webhook: einzige Quelle der Wahrheit für Freischaltung, Verlängerung, Kündigung, Erstattung, Streitfall und Betrugswarnung.
 // Signatur wird geprüft, jedes Ereignis nur einmal verarbeitet (billing.webhook_events).
 import type Stripe from "npm:stripe@23.1.0";
+import { purchaseProduct } from "../_shared/fulfillment-policy.ts";
 import { stripe, cryptoProvider, sql, syncSubscription } from "../_shared/billing.ts";
 
 async function setPurchase(pi: string | null | undefined, status: string) {
   if (!pi) return;
-  await sql()`update billing.purchases set status = ${status} where payment_intent_id = ${pi}`;
+  await sql()`select billing.block_payment(${pi}, ${status})`;
 }
 async function fulfill(s: Stripe.Checkout.Session) {
   if (s.mode === "subscription") { const sub = typeof s.subscription === "string" ? s.subscription : s.subscription?.id; if (sub) await syncSubscription(sub); return; }
-  if (s.payment_status === "unpaid") return; // verzögerte Zahlungsarten: erst bei async_payment_succeeded
+  const product = purchaseProduct(s);
+  if (!product) return; // Keine Freigabe für unbezahlte oder fremde Checkout-Sitzungen.
   const pi = typeof s.payment_intent === "string" ? s.payment_intent : s.payment_intent?.id || null;
   const email = s.customer_details?.email || null;
-  await sql()`insert into billing.purchases (checkout_session_id, email, product, amount_total, currency, status, payment_intent_id, fulfilled_at)
-    values (${s.id}, ${email}, ${String(s.metadata?.gk_item === "report" ? "gk_freedom_report" : "gk_workbook_de")}, ${s.amount_total}, ${s.currency}, 'paid', ${pi}, now())
-    on conflict (checkout_session_id) do update set status = 'paid', amount_total = excluded.amount_total, currency = excluded.currency,
-      payment_intent_id = excluded.payment_intent_id, email = coalesce(billing.purchases.email, excluded.email), fulfilled_at = coalesce(billing.purchases.fulfilled_at, now())`;
+  await sql()`select billing.fulfill_purchase(${s.id}, ${pi}, ${email}, ${product}, ${s.amount_total}, ${s.currency})`;
 }
 function subFromInvoice(inv: Stripe.Invoice): string | null {
   const d = inv.parent?.subscription_details?.subscription;
@@ -42,7 +41,7 @@ Deno.serve(async (req) => {
       case "checkout.session.async_payment_succeeded":
         await fulfill(o as Stripe.Checkout.Session); break;
       case "checkout.session.async_payment_failed":
-        await db`update billing.purchases set status = 'failed' where checkout_session_id = ${(o as Stripe.Checkout.Session).id}`; break;
+        await db`update billing.purchases set status = 'failed' where checkout_session_id = ${(o as Stripe.Checkout.Session).id} and status = 'open'`; break;
       case "customer.subscription.created":
       case "customer.subscription.updated":
       case "customer.subscription.deleted":

@@ -8,7 +8,7 @@ Deno.serve(handle(async (req) => {
   if (req.method !== "GET") throw new HttpError(405, "method_not_allowed");
   await rateLimit(req, "status", 60, 600);
   const id = new URL(req.url).searchParams.get("session_id") || "";
-  if (!/^cs_(test|live)_[A-Za-z0-9]{20,}$/.test(id)) throw new HttpError(400, "bad_session");
+  if (!/^cs_live_[A-Za-z0-9]{20,}$/.test(id)) throw new HttpError(400, "bad_session");
   const rows = await sql()`select product, status from billing.purchases where checkout_session_id = ${id}`;
   if (!rows[0]) {
     const s = await stripe().checkout.sessions.retrieve(id);
