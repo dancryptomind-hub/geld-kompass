@@ -2,10 +2,10 @@
    Erst auf true stellen, wenn STRIPE_SECRET_KEY und STRIPE_WEBHOOK_SECRET in Supabase gesetzt sind und ein Testkauf geklappt hat.
    Keine geheimen Schlüssel in diese Datei: der öffentliche Stripe-Schlüssel wird für Checkout nicht gebraucht. */
 window.GK_BILLING = Object.freeze({
-  enabled: false,
+  enabled: true,
   plusEnabled: false,
   reportEnabled: false,
-  mode: "test",
+  mode: "live",
   functions: "https://cwznthfefbeglamnwyry.supabase.co/functions/v1/",
   apikey: "sb_publishable_OAzhy63__bAdBHq7H7NqUA_RqxB_qhc",
   prices: { plus_monthly: 4.99, plus_yearly: 39, workbook: 9.99, report: 14.99 }

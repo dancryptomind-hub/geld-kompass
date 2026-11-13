@@ -1,5 +1,15 @@
 const {webkit,chromium}=require('playwright');
 const fs=require('fs');
+// Exercise the actual checkout consent expression for both payment paths.
+const rule=fs.readFileSync('supabase/functions/billing-checkout/index.ts','utf8').split('\n').find(l=>l.includes('consent_collection:'));
+if(!rule)throw Error('Checkout consent rule missing');
+const consent=new Function('mp','Deno','return '+rule.trim().replace(/^\.\.\./,'').replace(/,$/,''));
+for(const requested of ['1','0',undefined])for(const managed of [true,false]){
+ const actual=consent(managed,{env:{get:()=>requested}});
+ const expected=!managed&&requested==='1'?{consent_collection:{terms_of_service:'required'}}:{};
+ if(JSON.stringify(actual)!==JSON.stringify(expected))throw Error('Checkout consent differs for managed='+managed+', requested='+requested);
+}
+
 (async()=>{const b=await (process.env.GK_TEST_BROWSER==='webkit'?webkit:chromium).launch();try{
 const base=process.env.GK_TEST_BASE||'http://localhost:8765',cfg=fs.readFileSync('billing-config.js','utf8').replace('enabled: false','enabled: true');
 for(const lang of ['de','en'])for(const width of [390,1440]){

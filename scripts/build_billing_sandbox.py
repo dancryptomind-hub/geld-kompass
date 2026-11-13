@@ -23,7 +23,7 @@ for endpoint,label in [('billing-checkout','checkoutHandler'),('billing-status',
         lines=[x for x in lines if 'const release = releaseError(' not in x and 'if (release) throw' not in x]
         text='\n'.join(lines)
         text=once(text,'success_url: `${SITE}/plus/danke/?session_id={CHECKOUT_SESSION_ID}&lang=${lang}`,','success_url: `${SITE}/konto/?sandbox_session={CHECKOUT_SESSION_ID}&lang=${lang}`,')
-        text=once(text,'...(Deno.env.get("TOS_CONSENT") === "1" ? { consent_collection: { terms_of_service: "required" } } : {}),','// Sandbox examines standard Link payment terms; no unverified waiver text.')
+        text=once(text,'...(!mp && Deno.env.get("TOS_CONSENT") === "1" ? { consent_collection: { terms_of_service: "required" } } : {}),','// Sandbox examines standard Link payment terms; no unverified waiver text.')
         text=text.replace('Digital content: access starts right after payment. By paying you agree that your right of withdrawal ends once the download starts.','PDF access starts after your payment has been confirmed.')
         text=text.replace('Digitaler Inhalt: Der Zugang startet direkt nach der Zahlung. Mit dem Kauf stimmst du zu, dass dein Widerrufsrecht mit Beginn des Downloads erlischt.','Die PDF steht nach bestätigter Zahlung bereit.')
     if endpoint=='billing-status':

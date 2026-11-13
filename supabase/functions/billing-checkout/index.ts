@@ -52,7 +52,7 @@ Deno.serve(handle(async (req) => {
     ...(mp ? { managed_payments: { enabled: true } } : { billing_address_collection: "auto" as const }),
     integration_identifier: "gk_app_checkout_QWMRTZKB",
     ...(c.mode === "subscription" ? { subscription_data: { metadata: { gk_user: user!.id, gk_item: item }, ...(trialDays ? { trial_period_days: trialDays, trial_settings: { end_behavior: { missing_payment_method: "cancel" as const } } } : {}) } } : mp ? {} : { payment_intent_data: { metadata: { gk_item: item } } }),
-    ...(Deno.env.get("TOS_CONSENT") === "1" ? { consent_collection: { terms_of_service: "required" } } : {}),
+    ...(!mp && Deno.env.get("TOS_CONSENT") === "1" ? { consent_collection: { terms_of_service: "required" } } : {}),
     ...checkoutText(mp, lang === "en"
       ? (c.mode === "payment" ? "PDF access starts after your payment has been confirmed." : (trialDays ? "30 days free, then the price shown. You get a reminder email before the first charge and can cancel anytime in your account." : "You can cancel anytime in your account. Plus stays active until the end of the paid period."))
       : (c.mode === "payment" ? "Die PDF steht nach bestätigter Zahlung bereit." : (trialDays ? "30 Tage kostenlos, danach der angezeigte Preis. Vor der ersten Abbuchung bekommst du eine Erinnerung per E-Mail und kannst jederzeit im Konto kündigen." : "Jederzeit kündbar im Konto. Plus bleibt bis zum Ende des bezahlten Zeitraums aktiv."))),
