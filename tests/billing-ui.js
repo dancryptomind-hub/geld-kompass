@@ -6,14 +6,25 @@ const fs = require('fs');
 (async () => {
   const engine=process.env.GK_TEST_BROWSER==='webkit'?require('playwright').webkit:chromium; const base=process.env.GK_TEST_BASE||'http://localhost:8765'; const b = await engine.launch(); const bad = [];
   const cfg = fs.readFileSync(__dirname + '/../billing-config.js', 'utf8');
-  async function page(enabled, statusBody) {
+  async function page(enabled, statusBody, plusEnabled = enabled) {
     const c = await b.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block', locale: 'de-DE' }); const p = await c.newPage(); p.errs = []; p.on('pageerror', e => p.errs.push(e.message));
-    await p.route('**/billing-config.js*', r => r.fulfill({ contentType: 'text/javascript', body: enabled ? cfg.replace('enabled: false', 'enabled: true').replace('plusEnabled: false', 'plusEnabled: true') : cfg }));
+    await p.route('**/billing-config.js*', r => r.fulfill({ contentType: 'text/javascript', body: cfg.replace(/enabled: (true|false)/, 'enabled: '+enabled).replace(/plusEnabled: (true|false)/, 'plusEnabled: '+plusEnabled) }));
     p.calls = [];
     await p.route('https://cwznthfefbeglamnwyry.supabase.co/functions/v1/**', r => { const u = r.request().url(); p.calls.push(u.split('/v1/')[1] + ' ' + (r.request().postData() || '')); if (/billing-checkout/.test(u)) return r.fulfill({ contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ url: 'https://checkout.stripe.com/c/pay/cs_test_mock' }) }); if (/billing-status/.test(u)) return r.fulfill({ contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(statusBody || {}) }); return r.fulfill({ status: 404, body: '{}' }); });
     await p.route('https://checkout.stripe.com/**', r => r.fulfill({ contentType: 'text/html', body: '<h1>Stripe Checkout (Test)</h1>' }));
     return p;
   }
+  // Arbeitsbuch-Verkauf allein darf Plus und Reports nicht öffnen.
+  let workbookOnly = await page(true, {}, false);
+  await workbookOnly.goto(base + '/app/?lang=de#plus');
+  await workbookOnly.locator('#plusGo').waitFor();
+  if (!(await workbookOnly.locator('#plusGo').isDisabled())) bad.push('Arbeitsbuch-Freigabe öffnet Plus');
+  await workbookOnly.evaluate(() => { const st=JSON.parse(localStorage.getItem('geldkompass.v3')||'{}');st.mode='own';localStorage.setItem('geldkompass.v3',JSON.stringify(st)); });
+  await workbookOnly.goto(base + '/app/?lang=de&wb_check=own#data');
+  await workbookOnly.locator('#frCard').filter({hasText:'Dein Freiheits-Report'}).waitFor();
+  if (!(await workbookOnly.locator('#frCard').innerText()).includes('Bald erhältlich')) bad.push('Eigene Daten für Report-Sperrprüfung nicht geladen');
+  if (await workbookOnly.locator('[data-fr-buy]').count()) bad.push('Arbeitsbuch-Freigabe öffnet Reports');
+  await workbookOnly.context().close();
   // 1) ausgeschaltet
   let p = await page(false);
   await p.goto(base + '/app/?lang=de#plus'); await p.waitForTimeout(1500);

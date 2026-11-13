@@ -4,6 +4,7 @@
 window.GK_BILLING = Object.freeze({
   enabled: false,
   plusEnabled: false,
+  reportEnabled: false,
   mode: "test",
   functions: "https://cwznthfefbeglamnwyry.supabase.co/functions/v1/",
   apikey: "sb_publishable_OAzhy63__bAdBHq7H7NqUA_RqxB_qhc",

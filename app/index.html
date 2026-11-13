@@ -2,7 +2,7 @@
 <html lang="de" data-theme="dark">
 <head>
 <meta charset="utf-8">
-<meta http-equiv="Content-Security-Policy" data-gk-csp content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://s3.tradingview.com blob: 'sha256-/iOPVmdAmJDmUlUykXGPMRj/+zDMLWyrKD17URqBipY=' 'sha256-7o8ONCmAMvRYtbP8yQwVFrbWaEPufoa/hiIQy8DUTzw=' 'sha256-tX2SizMa57Kb6/AQzydgi7q97Wf9ookAoVLXIguf4Eo='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://cwznthfefbeglamnwyry.supabase.co https://cloudflareinsights.com https://api.coingecko.com https://proxy.cors.dev https://api.frankfurter.app https://mempool.space https://eth.blockscout.com https://solana-rpc.publicnode.com https://xrplcluster.com https://ec.europa.eu; frame-src 'self' https://geld-kompass.com https://*.tradingview.com https://*.tradingview-widget.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" data-gk-csp content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com https://s3.tradingview.com blob: 'sha256-+7yvlO7UWp4QZRdorID+W1aMLYQ/d7HFyFXQR7pDqxM=' 'sha256-/iOPVmdAmJDmUlUykXGPMRj/+zDMLWyrKD17URqBipY=' 'sha256-7o8ONCmAMvRYtbP8yQwVFrbWaEPufoa/hiIQy8DUTzw='; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data:; connect-src 'self' https://cwznthfefbeglamnwyry.supabase.co https://cloudflareinsights.com https://api.coingecko.com https://proxy.cors.dev https://api.frankfurter.app https://mempool.space https://eth.blockscout.com https://solana-rpc.publicnode.com https://xrplcluster.com https://ec.europa.eu; frame-src 'self' https://geld-kompass.com https://*.tradingview.com https://*.tradingview-widget.com; worker-src 'self'; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'">
 <script src="/frame-guard.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Geld-Kompass Pro App – Budget, Schulden-Plan, Depot</title>
@@ -636,7 +636,7 @@ html.gk-modal,html.gk-modal body{overflow:hidden!important;overscroll-behavior:n
 <script src="/share-state.js"></script>
 <script src="/app/booking-icons.js"></script>
 <script src="/app/transaction-presets.js"></script>
-<script src="/assets/supabase-2.118.0.js" defer></script><script src="/billing-config.js?v20261112a"></script>
+<script src="/assets/supabase-2.118.0.js" defer></script><script src="/billing-config.js?v20261113shop"></script>
 <script src="/app/guide-presence.js?v=1" defer></script>
 <script src="/app/guide-assistant.js?v=1" defer></script>
 <script src="/konto/config.js"></script>
@@ -2554,7 +2554,7 @@ document.addEventListener("click",function(ev){var a=ev.target.closest&&ev.targe
   else{st.off=st.off||{};st.off[page]=1;try{localStorage.setItem("gk-mnav-use",JSON.stringify(st));}catch(e){}}
   var n=$("mnavNudge");if(n)n.remove();});
 /* ===== Plus kaufen (Stripe Checkout über Supabase Edge Functions) ===== */
-function billingOn(){return !!(window.GK_BILLING&&window.GK_BILLING.enabled);}
+function billingOn(kind){var b=window.GK_BILLING;return !!(b&&b.enabled&&(kind==="report"?b.reportEnabled:b.plusEnabled));}
 function plusToken(){if(!ADMIN_CLIENT)return Promise.resolve(null);return ADMIN_CLIENT.auth.getSession().then(function(r){return r&&r.data&&r.data.session?r.data.session.access_token:null;}).catch(function(){return null;});}
 function trialRef(){try{var q=new URLSearchParams(location.search).get("trial");if(q&&/^cs_(test|live)_[A-Za-z0-9]{20,}$/.test(q))localStorage.setItem("gk-trial",q);var v=localStorage.getItem("gk-trial");return v&&/^cs_(test|live)_[A-Za-z0-9]{20,}$/.test(v)?v:"";}catch(e){return "";}}
 function trialDrop(){try{localStorage.removeItem("gk-trial");}catch(e){}}
@@ -2665,10 +2665,11 @@ function renderFrCard(){var b=$("frCard");if(!b)return;var own=S.mode==="own",P=
   (!own?'<button type="button" class="btn" data-fr-open>'+LG("Beispiel-Report ansehen","View sample report")+'</button>':'')+
   (own&&frAllowed()?'<button type="button" class="btn pri" data-fr-open>'+LG("Report erstellen","Create report")+'</button>':'')+
   (own&&!frAllowed()&&frRef()?'<button type="button" class="btn pri" data-fr-open>'+LG("Gekauften Report erstellen","Create purchased report")+'</button>':'')+
-  (own&&!frAllowed()&&!frRef()&&billingOn()?'<button type="button" class="btn pri" data-fr-buy>'+LG("Report kaufen · "+fmt(rp),"Buy report · "+fmt(rp))+'</button><button type="button" class="btn" data-plus-buy="report">'+LG("In Plus enthalten","Included in Plus")+'</button>':'')+
-  '</div>'+(own&&!frAllowed()&&!billingOn()?'<p class="desc">'+LG("Bald erhältlich. Wechsle zu „Beispiel ansehen“, um einen Beispiel-Report zu sehen.","Coming soon. Switch to the example to see a sample report.")+'</p>':'')+'<p class="desc" id="frMsg" aria-live="polite"></p>';}
+  (own&&!frAllowed()&&!frRef()&&billingOn("report")?'<button type="button" class="btn pri" data-fr-buy>'+LG("Report kaufen · "+fmt(rp),"Buy report · "+fmt(rp))+'</button><button type="button" class="btn" data-plus-buy="report">'+LG("In Plus enthalten","Included in Plus")+'</button>':'')+
+  '</div>'+(own&&!frAllowed()&&!billingOn("report")?'<p class="desc">'+LG("Bald erhältlich. Wechsle zu „Beispiel ansehen“, um einen Beispiel-Report zu sehen.","Coming soon. Switch to the example to see a sample report.")+'</p>':'')+'<p class="desc" id="frMsg" aria-live="polite"></p>';}
 document.addEventListener("click",function(ev){var t=ev.target.closest&&ev.target.closest("[data-fr-open],[data-fr-print],[data-fr-close],[data-fr-buy]");if(!t)return;ev.preventDefault();
   if(t.hasAttribute("data-fr-open"))return openReport();if(t.hasAttribute("data-fr-print"))return window.print();if(t.hasAttribute("data-fr-close"))return closeReport();
+  if(!billingOn("report"))return;
   var msg=$("frMsg");t.disabled=true;if(msg)msg.textContent=LG("Einen Moment …","One moment …");
   plusToken().then(function(tok){return GK_billingCall("billing-checkout",{token:tok||undefined,body:{item:"report",lang:window.GK_LANG==="en"?"en":"de"}});}).then(function(j){if(j&&j.url){location.href=j.url;return;}t.disabled=false;if(msg)msg.textContent=LG("Das hat nicht geklappt. Bitte versuch es gleich noch einmal.","That did not work. Please try again in a moment.");}).catch(function(){t.disabled=false;if(msg)msg.textContent=LG("Keine Verbindung. Bitte später erneut versuchen.","No connection. Please try again later.");});});
 document.addEventListener("keydown",function(ev){if(ev.key==="Escape"&&$("frDlg")&&!$("frDlg").hidden)closeReport();});
