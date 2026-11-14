@@ -23,9 +23,11 @@ assert.equal(A.answer('Muss ich 4% entnehmen, obwohl meine Dividenden reichen?',
 assert.ok(A.answer('Dividenden',{...base,hasDividendForecast:false}).metrics.some(x=>x.value==='–'),'missing forecasts are not zero');
 assert.equal(A.answer('Monatsbericht',{...base,canReport:false}).metrics.length,0,'assistant does not bypass report access');
 assert.equal(A.answer('Depot',{...base,canAudit:false}).actions[0].anchor,null,'locked audit is not opened through assistant');
-let term=A.answer('Was ist Zinseszins?',{...base,topics:[{title:'Zinseszins',description:'Im Lexikon erklärt.',keywords:'compound interest zinseszins',page:'lexikon',anchor:'lx-compound'}]});assert.equal(term.intent,'help');assert.equal(term.actions[0].anchor,'lx-compound');
-assert.equal(A.answer('Was ist das Wetter?',{...base,topics:[{title:'Dividenden-Aristokrat',keywords:'aristokrat',description:'Term',page:'lexikon'}]}).intent,'unknown','short common words do not match inside unrelated terms');
+let term=A.answer('Was ist Zinseszins?',{...base,topics:[{title:'Zinseszins',description:'Im Lexikon erklärt.',keywords:'compound interest zinseszins',page:'lexikon',anchor:'lx-compound'}]});assert.equal(term.intent,'knowledge');assert.ok(term.sources.some(x=>x.id==='GK-W11'));
+assert.equal(A.answer('Was ist das Wetter?',{...base,topics:[{title:'Dividenden-Aristokrat',keywords:'aristokrat',description:'Term',page:'lexikon'}]}).intent,'knowledge_missing','short common words do not match inside unrelated terms');
 assert.ok(A.answer('Budget',{...base,passiveOnly:true,passiveAverage:1200,smoothSurplus:300}).metrics.some(x=>/Ø|Average/.test(x.label)),'show smoothing separately');
 assert.ok(/Durchschnitt/.test(A.answer('Was ist mein nächster Schritt?',{...base,surplus:-100,passiveOnly:true,smoothSurplus:200}).paragraphs.join(' ')),'do not confuse lumpy income with monthly average');
 assert.equal(A.answer('Gold',{...base,audit:{total:100,groups:[],exposure:{}}}).metrics.find(x=>x.label.includes('Edelmetall')).value,'–','unknown metal exposure is not zero');
 console.log('Local assistant: real budget arithmetic, gap, 51.2% grouping, dividends, withdrawal model, missing/zero data, ambiguity, privacy, English/currency, help routing and no mutation/network');
+
+require('./guide-knowledge.js');

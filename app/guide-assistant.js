@@ -1,5 +1,5 @@
 /* Persönliche Erklärungen aus übergebenen App-Werten. Keine Änderungen an Datensätzen. */
-(function(root,factory){var api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.GKGuideAssistant=api;})(typeof window==='object'?window:globalThis,function(){'use strict';
+(function(root,factory){var api=factory(typeof module==='object'&&module.exports?require('./guide-knowledge.js'):root.GKGuideKnowledge);if(typeof module==='object'&&module.exports)module.exports=api;else root.GKGuideAssistant=api;})(typeof window==='object'?window:globalThis,function(K){'use strict';
 var LABELS={overview:['Mein Überblick','My overview'],budget:['Mein Monatsbudget','My monthly budget'],debts:['Meine Schulden','My debts'],reserve:['Meine Rücklagen','My reserves'],portfolio:['Mein Depot','My portfolio'],dividends:['Meine Dividenden','My dividends'],freedom:['Meine Freiheitstage','My freedom days'],report:['Mein Monatsbericht','My monthly report'],next:['Mein nächster Schritt','My next step']};
 function normal(s){return String(s||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/ß/g,'ss');}
 function n(x){return Number.isFinite(Number(x))?Number(x):0;}
@@ -8,6 +8,20 @@ function answer(question,c,selected){c=c||{};var en=c.lang==='en',L=function(a,b
  function pct(v){return v==null||!Number.isFinite(Number(v))?'–':new Intl.NumberFormat(en?'en-US':'de-DE',{style:'percent',maximumFractionDigits:1}).format(Number(v));}
  function number(v){return new Intl.NumberFormat(en?'en-US':'de-DE',{maximumFractionDigits:1}).format(v);}
  var r={intent:'unknown',title:'',paragraphs:[],metrics:[],actions:[],choices:[]};
+ var social=q.replace(/[?!.,’']/g,'').replace(/\s+/g,' ').trim(),socialText=null;
+ if(!selected){
+ if(/^(hallo|hi|hey|guten morgen|guten tag|guten abend|hello|good morning|good evening)$/.test(social))socialText=L('Hallo! Ich bin dein Kompass-Guide. Ich helfe dir mit Geld-Kompass, deinen erfassten Zahlen und dem hinterlegten Finanzwissen.','Hello! I am your Compass Guide. I can help with Geld-Kompass, your recorded figures and the included financial knowledge.');
+ else if(/^(wie geht( es|s)? dir|wie geht es ihnen|how are you|how are you doing)$/.test(social))socialText=L('Danke der Nachfrage! Ich habe keine eigenen Gefühle. Ich bin bereit, dir mit Geld-Kompass und dem hinterlegten Finanzwissen zu helfen.','Thank you for asking! I do not have feelings. I am ready to help with Geld-Kompass and the included financial knowledge.');
+ else if(/^(danke|danke dir|vielen dank|dankeschon|thanks|thank you|thank you very much)$/.test(social))socialText=L('Gern! Wenn du möchtest, schauen wir uns als Nächstes eine Frage zu deinem Geld oder zur App an.','You are welcome! If you like, we can look at a question about your money or the app next.');
+ else if(/^(wer bist du|was bist du|who are you|what are you|was kannst du|what can you do)$/.test(social))socialText=L('Ich bin dein Kompass-Guide, ein örtlicher Assistent mit hinterlegten Antworten. Ich erkläre Geld-Kompass, deine erfassten Zahlen und ausgewählte Finanzbegriffe. Ich bin kein Mensch und gebe keine persönliche Anlageempfehlung.','I am your Compass Guide, a local assistant with included answers. I explain Geld-Kompass, your recorded figures and selected financial concepts. I am not a person and do not give personal investment recommendations.');
+ else if(/^(hast du (internet|internetzugang)|kannst du (im internet suchen|googeln)|do you have internet( access)?|can you (browse|search the internet))$/.test(social))socialText=L('Ich habe keinen Zugang zu externen Internetergebnissen. Ich verwende nur das hinterlegte Geld-Kompass-Wissen und die für diese Erklärung verfügbaren App-Daten. Was darin nicht belegt ist, kann ich nicht verlässlich beantworten.','I have no access to external internet results. I only use the included Geld-Kompass knowledge and the app data available for this explanation. I cannot reliably answer what those sources do not support.');
+ if(socialText){r.intent='social';r.title=L('Dein Kompass-Guide','Your Compass Guide');r.paragraphs=[socialText];return r;}}
+ var accountQuestion=/passwort|password|login|anmeld/.test(q);
+ var knowledgeQuestion=/was ist|was sind|was bedeutet|erklare|what is|what are|explain|how does/.test(q)&&!/mein|\bmy\b/.test(q)&&!accountQuestion;
+ var restricted=/systemprompt|ignoriere|ignore|70\s*[/ :]\s*30|personliche.*strategie|zeig.*passwort|show.*password/.test(q)||/bitcoin|aktie|stocks|krypto|crypto/.test(q)&&/heute|aktuell|today|current|latest/.test(q);
+ var known=!accountQuestion&&!/mein|\bmy\b/.test(q)&&K&&K.has(question)&&!/^(budget|monatsbudget|monthly budget|rucklagen|reserves)$/.test(q);
+ if(!selected&&(knowledgeQuestion||restricted||known)&&K)return K.answer(question,c.lang);
+
  function metric(label,value){r.metrics.push({label:label,value:value});}
  function action(page,label,anchor){r.actions.push({page:page,label:label,anchor:anchor||null});}
  function choices(ids){r.choices=ids.map(function(id){return {id:id,label:LABELS[id][en?1:0]};});}
