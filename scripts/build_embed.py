@@ -57,7 +57,8 @@ CSS = """.eb-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4f
 .eb-prev iframe{display:block;width:100%;border:0;min-height:400px;border-radius:10px}
 .eb-steps{counter-reset:s;list-style:none;padding:0}.eb-steps li{counter-increment:s;padding:6px 0 6px 38px;position:relative}
 .eb-steps li:before{content:counter(s);position:absolute;left:0;top:4px;width:26px;height:26px;border-radius:50%;background:#c99227;color:#1a1405;font-weight:800;display:grid;place-items:center;font-size:.85rem}
-.eb-lic{margin-top:14px;padding:14px 16px;border-radius:14px;border:1px solid rgba(227,181,90,.45);background:linear-gradient(135deg,rgba(227,181,90,.12),rgba(227,181,90,.03))}"""
+.eb-lic{margin-top:14px;padding:14px 16px;border-radius:14px;border:1px solid rgba(227,181,90,.45);background:linear-gradient(135deg,rgba(227,181,90,.12),rgba(227,181,90,.03))}
+.eb-tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:12px;margin:16px 0 22px}.eb-tiers div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}.eb-tiers div.pro{border-color:rgba(227,181,90,.65);background:linear-gradient(135deg,rgba(227,181,90,.12),rgba(227,181,90,.02))}.eb-tiers h3{margin:0 0 6px;font-size:1.05rem;color:var(--gold)}.eb-tiers ul{margin:8px 0 12px;padding-left:18px;color:var(--muted);font-size:.9rem}.eb-tiers a{font-weight:700;color:var(--gold)}"""
 
 def page(lang):
     t = T[lang]; en = lang == 'en'
@@ -78,6 +79,18 @@ def page(lang):
   if(navigator.clipboard)navigator.clipboard.writeText(t.value).then(done,function(){t.select();document.execCommand('copy');done();});else{t.select();document.execCommand('copy');done();}});
  $('ebCode').addEventListener('focus',function(){this.select();});code();})();""" % (data, lang, t['copied'], t['copy'])
     og_img = BASE + ('screens/desktop-en.webp' if en else 'screens/desktop-de.webp')
+    tiers = (
+        '<h2>Licence options at a glance</h2><div class="eb-tiers">'
+        '<div><h3>Free Embed</h3><ul><li>All 11 calculators immediately</li><li>Automatic height &amp; mobile layout</li><li>Small “Powered by Geld-Kompass Pro” note</li></ul><a href="#ebCode">Copy code above ↑</a></div>'
+        '<div class="pro"><h3>White-Label Pro</h3><ul><li>Without “Powered by” badge</li><li>Your brand colours, logo &amp; fonts</li><li>All updates &amp; live exchange/market feeds</li></ul><a href="mailto:kontakt@geld-kompass.com?subject=White-Label%20Pro%20Calculator%20Licence">Request conditions →</a></div>'
+        '<div><h3>Enterprise &amp; Custom</h3><ul><li>Custom calculators for your product</li><li>Self-hosted bundle or SLA support</li><li>Ideal for advisers, banks &amp; publishers</li></ul><a href="mailto:kontakt@geld-kompass.com?subject=Enterprise%20Calculator%20Enquiry">Request quote →</a></div>'
+        '</div>' if en else
+        '<h2>Lizenz-Pakete im Überblick</h2><div class="eb-tiers">'
+        '<div><h3>Kostenlos (Standard)</h3><ul><li>Alle 11 Rechner sofort nutzbar</li><li>Automatische Höhe &amp; Handy-Layout</li><li>Dezenter Hinweis „Bereitgestellt von Geld-Kompass Pro“</li></ul><a href="#ebCode">Code oben kopieren ↑</a></div>'
+        '<div class="pro"><h3>White-Label Pro</h3><ul><li>Ohne Hinweis-Banner</li><li>In deinen Markenfarben, mit Logo &amp; Schrift</li><li>Alle Updates &amp; Live-Wechselkurse inklusive</li></ul><a href="mailto:kontakt@geld-kompass.com?subject=White-Label%20Pro%20Rechner-Lizenz">Konditionen anfragen →</a></div>'
+        '<div><h3>Individual &amp; Berater-Teams</h3><ul><li>Eigene Wunschrechner &amp; Parameter</li><li>Eigenes Hosting oder Service-Paket</li><li>Ideal für Finanzblogs, Steuerberater &amp; Makler</li></ul><a href="mailto:kontakt@geld-kompass.com?subject=Individual-Rechner%20Anfrage">Angebot anfragen →</a></div>'
+        '</div>'
+    )
     return f"""<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <script>(function(){{var K='geld-kompass-lang',q=new URLSearchParams(location.search).get('lang'),w=q;if(q==='de'||q==='en'){{try{{localStorage.setItem(K,q);}}catch(e){{}}}}else{{try{{w=localStorage.getItem(K);}}catch(e){{}}}}if((w==='de'||w==='en')&&w!=='{lang}')location.replace('{'/einbinden/' if en else '/en/embed/'}'+location.search+location.hash);}})();</script>
@@ -105,6 +118,7 @@ def page(lang):
 {lic}
 </div><div><h2 style="margin-top:0">{t['prev']}</h2><div class="eb-prev"><iframe data-gk id="ebFrame" title="{t['prev']}"></iframe></div></div></div></section>
 <h2>{t['how']}</h2><ol class="eb-steps">{''.join('<li>%s</li>' % s for s in t['steps'])}</ol>
+{tiers}
 <h2>{t['faqh']}</h2>{faq}
 </main>
 <footer><div class="wrap">{t['foot']}</div></footer>

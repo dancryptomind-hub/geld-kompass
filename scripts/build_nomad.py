@@ -22,7 +22,14 @@ T = {
        ('Welche Währungen gehen?', 'Über 50 Währungen mit Tageskursen, dazu Bitcoin. Deine Hauptwährung wählst du selbst.'),
        ('Brauche ich ein Bankkonto oder eine Anmeldung?', 'Nein. Der Geld-Kompass Pro läuft im Browser und als App auf dem Handy, ohne Konto und ohne Bankzugang.'),
        ('Kostet das etwas?', 'Freiheitstage, Budget, Schulden-Plan und Währungsrechner sind kostenlos. Der Nomaden-Modus gehört zu Plus, dem kommenden Abo. Bis zum Start kannst du ihn in der Vorschau kostenlos testen.')],
-  faqh='Häufige Fragen', fx='Geld zwischen Ländern senden? Rechne vorher im <a href="/rechner/waehrungsrechner/">Währungsrechner</a> mit Live-Kursen. Wo zahlst du wie viel Steuern? <a href="/rechner/steuern-nach-wohnsitz/">Steuern nach Wohnsitz in 91 Ländern vergleichen</a>, zum Beispiel <a href="/rechner/steuern-nach-wohnsitz/thailand/">Thailand</a>, <a href="/rechner/steuern-nach-wohnsitz/portugal/">Portugal</a>, <a href="/rechner/steuern-nach-wohnsitz/vereinigte-arabische-emirate/">Dubai</a> oder <a href="/rechner/steuern-nach-wohnsitz/georgien/">Georgien</a>.',
+  faqh='Häufige Fragen', cmp_h='Steuern & Auswandern im Direktvergleich', cmp_sub='Wähle zwei Länder und prüfe Spitzensteuersatz, Kapitalertragsteuer und Quellen direkt im kostenlosen Länder-Rechner:', cmps=[
+      ('Deutschland vs. Portugal', 'Einkommensteuer, Kapitalerträge & Alltagskosten vergleichen', '/rechner/steuern-nach-wohnsitz/?c=PT&vs=DE'),
+      ('Deutschland vs. Thailand', 'Territorial-/Remittance-Regeln & Lebenshaltungskosten prüfen', '/rechner/steuern-nach-wohnsitz/?c=TH&vs=DE'),
+      ('Deutschland vs. Dubai (VAE)', '0 % private Einkommen- & Kapitalertragsteuer einordnen', '/rechner/steuern-nach-wohnsitz/?c=AE&vs=DE'),
+      ('Deutschland vs. Schweiz', 'Kantonale Sätze, Quellensteuer & Kursgewinne vergleichen', '/rechner/steuern-nach-wohnsitz/?c=CH&vs=DE'),
+      ('Deutschland vs. Zypern', 'Non-Dom-Regelung & Dividendensteuer im Vergleich', '/rechner/steuern-nach-wohnsitz/?c=CY&vs=DE'),
+      ('Deutschland vs. Georgien', '1 %-Kleinunternehmer-Satz & Territorialbesteuerung ansehen', '/rechner/steuern-nach-wohnsitz/?c=GE&vs=DE'),
+  ], fx='Geld zwischen Ländern senden? Rechne vorher im <a href="/rechner/waehrungsrechner/">Währungsrechner</a> mit Live-Kursen. Alle 91 Länder im Überblick: <a href="/rechner/steuern-nach-wohnsitz/">Steuern nach Wohnsitz vergleichen</a>.',
   foot='<a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a> · <a href="/werbung/">Werbung</a> · Geld-Kompass Pro · © FreedomByDan · Allgemeine Finanzbildung, keine Steuer-, Rechts- oder Anlageberatung.',
   logo='Geld-<span>Kompass</span> <span class="pro">Pro</span>'),
 'en': dict(url=EN_URL, other=DE_URL, sw='Deutsch', swurl='/auswandern-finanzen/?lang=de', home='/?lang=en', app='/app/?lang=en',
@@ -39,14 +46,22 @@ T = {
        ('Which currencies work?', '50+ currencies with daily rates, plus bitcoin. You choose your main currency.'),
        ('Do I need a bank account or an account?', 'No. Money Compass Pro runs in the browser and as an app on your phone, without an account and without bank access.'),
        ('Does it cost anything?', 'Freedom days, budget, debt plan and currency converter are free. Nomad mode is part of Plus, the upcoming subscription. Until launch you can try it for free in the preview.')],
-  faqh='Frequently asked questions', fx='Sending money between countries? Check first in the <a href="/en/calculators/currency-converter/">currency converter</a> with live rates. Where do you pay how much tax? <a href="/en/calculators/taxes-by-residence/">Compare taxes by residence in 91 countries</a>, for example <a href="/en/calculators/taxes-by-residence/thailand/">Thailand</a>, <a href="/en/calculators/taxes-by-residence/portugal/">Portugal</a>, <a href="/en/calculators/taxes-by-residence/united-arab-emirates/">Dubai</a> or <a href="/en/calculators/taxes-by-residence/georgia/">Georgia</a>.',
+  faqh='Frequently asked questions', cmp_h='Direct country comparisons (taxes & cost of living)', cmp_sub='Open two countries side by side with official sources inside the free residence tax calculator:', cmps=[
+      ('Portugal vs. United States', 'Compare income, capital gains and euro living costs', '/en/calculators/taxes-by-residence/?c=PT&vs=US'),
+      ('Thailand vs. United Kingdom', 'Review remittance rules and monthly cost of living', '/en/calculators/taxes-by-residence/?c=TH&vs=GB'),
+      ('Dubai (UAE) vs. United Kingdom', 'Inspect 0% personal income & capital gains setup', '/en/calculators/taxes-by-residence/?c=AE&vs=GB'),
+      ('Switzerland vs. Germany', 'Compare top rates, private capital gains & allowances', '/en/calculators/taxes-by-residence/?c=CH&vs=DE'),
+      ('Cyprus vs. Germany', 'Check non-dom rules and dividend treatment', '/en/calculators/taxes-by-residence/?c=CY&vs=DE'),
+      ('Georgia vs. United States', 'Explore territorial rules & small-business tax regimes', '/en/calculators/taxes-by-residence/?c=GE&vs=US'),
+  ], fx='Sending money between countries? Check first in the <a href="/en/calculators/currency-converter/">currency converter</a> with live rates. All 91 countries: <a href="/en/calculators/taxes-by-residence/">compare taxes by residence</a>.',
   foot='<a href="/impressum/?lang=en">Legal notice</a> · <a href="/datenschutz/?lang=en">Privacy</a> · <a href="/werbung/?lang=en">Advertising</a> · Money Compass Pro · © FreedomByDan · General financial education, not tax, legal or investment advice.',
   logo='Money <span>Compass</span> <span class="pro">Pro</span>'),
 }
 CSS = """.nm-img{display:block;width:100%;height:auto;border-radius:16px;border:1px solid var(--line);margin:22px 0 6px;box-shadow:0 24px 60px -25px rgba(0,0,0,.6)}
 .nm-cta{display:flex;flex-wrap:wrap;gap:10px;margin:6px 0 10px}.nm-cta a{display:inline-block;padding:13px 20px;border-radius:12px;font-weight:800;text-decoration:none}.nm-cta .p{background:linear-gradient(135deg,#f0c56a,#c99227);color:#1a1405}.nm-cta .s{border:1px solid var(--gold);color:var(--gold)}
 .nm-plus{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:14px;margin:4px 0 0}.nm-plus span{background:linear-gradient(135deg,#f0c56a,#c99227);color:#1a1405;font-weight:800;font-size:11px;letter-spacing:.06em;text-transform:uppercase;padding:3px 9px;border-radius:99px}
-.nm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:26px}@media(max-width:720px){.nm-grid{grid-template-columns:1fr}}.nm-grid section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}.nm-grid h2{margin:0 0 6px;font-size:19px}.nm-grid p{margin:0;color:var(--muted)}"""
+.nm-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:26px}@media(max-width:720px){.nm-grid{grid-template-columns:1fr}}.nm-grid section{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}.nm-grid h2{margin:0 0 6px;font-size:19px}.nm-grid p{margin:0;color:var(--muted)}
+.nm-cmp{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:12px;margin:14px 0 18px}.nm-cmp a{display:block;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;text-decoration:none;color:inherit}.nm-cmp a:hover{border-color:var(--gold)}.nm-cmp b{display:block;color:var(--gold);margin-bottom:4px}.nm-cmp span{display:block;font-size:13.5px;color:var(--muted)}"""
 
 def page(lang):
     t = T[lang]
@@ -74,6 +89,7 @@ def page(lang):
 <p class="nm-plus"><span>Plus</span>{esc(t['plus'])}</p>
 <img class="nm-img" src="/screens/{t['img']}.webp" width="1100" height="805" alt="{esc(t['alt'])}">
 <div class="nm-grid">{secs}</div>
+<h2>{esc(t['cmp_h'])}</h2><p class="desc">{esc(t['cmp_sub'])}</p><div class="nm-cmp">{''.join('<a href="%s"><b>%s →</b><span>%s</span></a>' % (u, esc(n), esc(s)) for n, s, u in t['cmps'])}</div>
 <p class="note">{t['fx']}</p>
 <div data-partner="fx" hidden></div>
 <h2>{esc(t['faqh'])}</h2>{faq}
