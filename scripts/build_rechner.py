@@ -478,6 +478,11 @@ def render(p):
     app_ld = {'@context': 'https://schema.org', '@type': 'WebApplication', 'name': p['short'] + (' · Money Compass Pro' if en else ' · Geld-Kompass Pro'),
               'url': url, 'applicationCategory': 'FinanceApplication', 'operatingSystem': 'Web', 'inLanguage': 'en' if en else 'de',
               'offers': {'@type': 'Offer', 'price': '0', 'priceCurrency': 'EUR'}, 'description': p['desc']}
+    bc_ld = {'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
+        {'@type': 'ListItem', 'position': 1, 'name': 'Money Compass Pro' if en else 'Geld-Kompass Pro', 'item': BASE + ('?lang=en' if en else '')},
+        {'@type': 'ListItem', 'position': 2, 'name': 'Calculators' if en else 'Rechner', 'item': BASE + ('en/calculators/' if en else 'rechner/')},
+        {'@type': 'ListItem', 'position': 3, 'name': p['short'], 'item': url}]}
+    og_img = BASE + ('screens/desktop-en.webp' if en else 'screens/desktop-de.webp')
     faqs = ''.join('<details><summary>%s</summary><p>%s</p></details>' % (esc(q), esc(a)) for q, a in p['faqs'])
     pages = PAGES_EN if en else PAGES
     body = p['body'].replace('%PAIRLINKS%', links(pages, p['slug'], True))
@@ -506,6 +511,11 @@ def render(p):
 <meta property="og:description" content="{esc(p['desc'])}">
 <meta property="og:url" content="{url}">
 <meta property="og:locale" content="{'en_GB' if en else 'de_DE'}">
+<meta property="og:image" content="{og_img}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{esc(p['title'])}">
+<meta name="twitter:description" content="{esc(p['desc'])}">
+<meta name="twitter:image" content="{og_img}">
 <link rel="stylesheet" href="/rechner/rechner.css">
 <link rel="stylesheet" href="/arbeitsbuch/hinweise.css">
 <link rel="manifest" href="/manifest.webmanifest">
@@ -517,6 +527,7 @@ def render(p):
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <script type="application/ld+json">{json.dumps(app_ld, ensure_ascii=False)}</script>
 <script type="application/ld+json">{json.dumps(faq_ld, ensure_ascii=False)}</script>
+<script type="application/ld+json">{json.dumps(bc_ld, ensure_ascii=False)}</script>
 <link rel=stylesheet href=/visuals.css?v20261104a><script src=/visuals.js?v20261104a></script></head>
 <body>
 <header class="top"><div class="wrap"><a class="logo" href="{T['home']}">{LOGO}<b>{T['logo']}</b></a><nav><a href="../">{T['all']}</a><a class="hide-s" href="{T['appurl']}">{T['app']}</a> · <a class="langsw" href="{T['swurl'].replace(BASE, '/')}?lang={'de' if en else 'en'}" hreflang="{'de' if en else 'en'}">{T['sw']}</a></nav></div></header>
@@ -560,12 +571,21 @@ def hub(lang='de'):
         d = 'Kostenlose Finanzrechner ohne Anmeldung: Sparplan, Inflation, Schuldenfrei-Datum, Notgroschen, Freiheitstage, Abo als Aktie und Währungsrechner mit Live-Kursen.'
         txt = dict(eb='Kostenlose Rechner', h1='Finanzrechner, die in einer Minute Klarheit bringen', lead='Ohne Anmeldung, ohne Werbung. Alle Rechnungen laufen in deinem Browser. Wenn du mit deinen echten Zahlen weitermachen möchtest, nutze den vollständigen Geld-Kompass Pro.',
                    cur='Währungen umrechnen', app='Zum Geld-Kompass Pro', appurl='/app/', foot='<a href="/impressum/">Impressum</a> · <a href="/datenschutz/">Datenschutz</a> · Geld-Kompass Pro · © FreedomByDan · Allgemeine Finanzbildung, keine Anlage-, Steuer- oder Rechtsberatung.', sw='English', swurl=en_url, logo='Geld-<span>Kompass</span> <span class="pro">Pro</span>', home='/', cta=CTA)
+    hub_url = en_url if en else de_url
+    og_img = BASE + ('screens/desktop-en.webp' if en else 'screens/desktop-de.webp')
+    hub_bc = json.dumps({'@context': 'https://schema.org', '@type': 'BreadcrumbList', 'itemListElement': [
+        {'@type': 'ListItem', 'position': 1, 'name': 'Money Compass Pro' if en else 'Geld-Kompass Pro', 'item': BASE + ('?lang=en' if en else '')},
+        {'@type': 'ListItem', 'position': 2, 'name': 'Calculators' if en else 'Rechner', 'item': hub_url}]}, ensure_ascii=False)
+    extra = ('<h2>Calculators for your website</h2>\n<div class="more"><a href="/en/embed/">Embed a calculator for free<small>For blogs, clubs and finance sites: copy the code, done</small></a></div>\n' if en else '<h2>Ratgeber: laufende Kosten senken</h2>\n<div class="more"><a href="/ratgeber/handy-internet-sparen/">Handy & Internet günstiger<small>Was dich dein Tarif in Arbeitszeit kostet</small></a><a href="/ratgeber/strom-gas-wechseln/">Strom & Gas wechseln<small>Grundversorgung, Bonusfallen, Sparpotenzial</small></a><a href="/ratgeber/versicherungen-pruefen/">Versicherungen prüfen<small>Was du wirklich brauchst</small></a><a href="/ratgeber/internet-anschluss-guenstiger/">Internetanschluss günstiger<small>DSL, Kabel oder Glasfaser</small></a><a href="/ratgeber/kfz-versicherung-wechseln/">Kfz-Versicherung wechseln<small>Stichtag 30. November</small></a><a href="/ratgeber/girokonto-gebuehren-sparen/">Kontogebühren sparen<small>Girokonto einfach wechseln</small></a></div>\n<h2>Rechner für deine Website</h2>\n<div class="more"><a href="/einbinden/">Rechner kostenlos einbinden<small>Für Blogs, Vereine und Finanz-Seiten: Code kopieren, fertig</small></a></div>\n')
     return f"""<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 {lang_js(lang, de_url if en else en_url)}
-<title>{esc(t)}</title><meta name="description" content="{esc(d)}"><link rel="canonical" href="{en_url if en else de_url}">
+<title>{esc(t)}</title><meta name="description" content="{esc(d)}"><link rel="canonical" href="{hub_url}">
 <link rel="alternate" hreflang="de" href="{de_url}"><link rel="alternate" hreflang="en" href="{en_url}"><link rel="alternate" hreflang="x-default" href="{de_url}">
 <meta name="theme-color" content="#0E1730">
+<meta property="og:type" content="website"><meta property="og:title" content="{esc(t)}"><meta property="og:description" content="{esc(d)}"><meta property="og:url" content="{hub_url}"><meta property="og:image" content="{og_img}">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(t)}"><meta name="twitter:description" content="{esc(d)}"><meta name="twitter:image" content="{og_img}">
+<script type="application/ld+json">{hub_bc}</script>
 <link rel="stylesheet" href="/rechner/rechner.css">
 <link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=3">
@@ -581,7 +601,7 @@ def hub(lang='de'):
 <div class="more">{cards}{('<a href="/en/dividend-calendar/">Dividend calendar<small>Who pays when: months, yield, Dividend Kings</small></a><a href="/en/calculators/taxes-by-residence/">Taxes by residence<small>Income and capital gains tax in 91 countries compared</small></a>' if en else '<a href="/dividenden-kalender/">Dividenden-Kalender<small>Wer zahlt wann: Monate, Rendite, Dividenden-Könige</small></a><a href="/rechner/steuern-nach-wohnsitz/">Steuern nach Wohnsitz<small>Einkommensteuer und Kapitalerträge in 91 Ländern vergleichen</small></a>')}</div>
 <h2>{txt['cur']}</h2>
 <div class="more">{pcards}</div>
-{('<h2>Calculators for your website</h2>\n<div class="more"><a href="/en/embed/">Embed a calculator for free<small>For blogs, clubs and finance sites: copy the code, done</small></a></div>\n' if en else '<h2>Ratgeber: laufende Kosten senken</h2>\n<div class="more"><a href="/ratgeber/handy-internet-sparen/">Handy & Internet günstiger<small>Was dich dein Tarif in Arbeitszeit kostet</small></a><a href="/ratgeber/strom-gas-wechseln/">Strom & Gas wechseln<small>Grundversorgung, Bonusfallen, Sparpotenzial</small></a><a href="/ratgeber/versicherungen-pruefen/">Versicherungen prüfen<small>Was du wirklich brauchst</small></a><a href="/ratgeber/internet-anschluss-guenstiger/">Internetanschluss günstiger<small>DSL, Kabel oder Glasfaser</small></a><a href="/ratgeber/kfz-versicherung-wechseln/">Kfz-Versicherung wechseln<small>Stichtag 30. November</small></a><a href="/ratgeber/girokonto-gebuehren-sparen/">Kontogebühren sparen<small>Girokonto einfach wechseln</small></a></div>\n<h2>Rechner für deine Website</h2>\n<div class="more"><a href="/einbinden/">Rechner kostenlos einbinden<small>Für Blogs, Vereine und Finanz-Seiten: Code kopieren, fertig</small></a></div>\n')}{txt['cta']}
+{extra}{txt['cta']}
 </main>
 <footer><div class="wrap">{txt['foot']}</div></footer>
 <!-- Cloudflare Web Analytics (ohne Cookies, keine personenbezogenen Daten) --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{{"token": "d5b51a031e8c4e26b08ad199a6bfd2da"}}'></script>

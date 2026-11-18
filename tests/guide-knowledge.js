@@ -24,4 +24,21 @@ for (const [q,lang] of [['Wie geht es dir?','de'],["How are you?",'en'],['Hallo'
 assert.match(A.answer('Wie gehts dir?',{lang:'de'}).paragraphs.join(' '),/keine.*Gefühle/i);
 assert.match(A.answer('How are you?',{lang:'en'}).paragraphs.join(' '),/do not have feelings/i);
 assert.equal(A.answer('Hallo, was ist Zinseszins?',{lang:'de'}).intent,'knowledge');
+for (const [q,lang,re] of [
+  ['Was war der Nixon-Schock 1971?','de',/Goldstandard|Fiat-Geld/i],
+  ['What is M2 money supply?','en',/M0|M2|purchasing power/i],
+  ['Wie entsteht Giralgeld?','de',/Geschäftsbanken|Kredite/i],
+  ['Was bedeutet Gegenparteirisiko und Eigenverwahrung?','de',/Eigenverwahrung|Sondervermögen/i],
+  ['Was ist Freier Cashflow (FCF) in der GuV?','de',/Operativer Cashflow|ROIC|80 %/i],
+  ['Was ist die FCF Payout Ratio?','de',/60–75 %|Dividendenfalle/i],
+  ['Warum bewertet man REITs mit AFFO statt KGV?','de',/FFO|AFFO|Abschreibungen/i],
+  ['What is margin of safety and MA200?','en',/200-day moving average|tranches/i],
+  ['Was ist das 70/30 Kern-Satelliten-Modell?','de',/3 bis 5 Monatsausgaben|70 %|30 %/i],
+  ['Sind Luxusuhren als Sachwerte eine gute Anlage?','de',/Revision|Händlerspannen|Notfallreserve/i]
+]) {
+  const ans=A.answer(q,{lang});
+  assert.equal(ans.intent,'knowledge',q);
+  assert.match(ans.paragraphs.join(' '),re,q);
+  assert.ok(ans.sources.length,q);
+}
 console.log('Small talk: honest DE/EN greetings, feelings boundary and mixed financial question');

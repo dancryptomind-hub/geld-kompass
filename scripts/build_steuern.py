@@ -104,6 +104,11 @@ def shell(en, url, alt, title, desc, eyebrow, h1, lead, calc, body, faqs, crumbs
 <meta property="og:description" content="{esc(desc)}">
 <meta property="og:url" content="{url}">
 <meta property="og:locale" content="{'en_GB' if en else 'de_DE'}">
+<meta property="og:image" content="{BASE}screens/{'nomad-en.webp' if en else 'nomad-de.webp'}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{esc(title)}">
+<meta name="twitter:description" content="{esc(desc)}">
+<meta name="twitter:image" content="{BASE}screens/{'nomad-en.webp' if en else 'nomad-de.webp'}">
 <link rel="stylesheet" href="/rechner/rechner.css">
 <link rel="stylesheet" href="/arbeitsbuch/hinweise.css">
 <link rel="manifest" href="/manifest.webmanifest">

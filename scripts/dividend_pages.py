@@ -98,12 +98,17 @@ def page(lang):
     url_de, url_en = "https://geld-kompass.com/dividenden-kalender/", "https://geld-kompass.com/en/dividend-calendar/"
     other = '<a class="langsw" href="/en/dividend-calendar/?lang=en">English</a>' if de else '<a class="langsw" href="/dividenden-kalender/?lang=de">Deutsch</a>'
     app = "/app/#assets" if de else "/app/?lang=en#assets"
+    bc_ld = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Geld-Kompass Pro" if de else "Money Compass Pro", "item": "https://geld-kompass.com/" + ("" if de else "?lang=en")},
+        {"@type": "ListItem", "position": 2, "name": t["eyebrow"], "item": url_de if de else url_en}]}
     return f'''<!doctype html><html lang="{lang}" data-page-lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(t["title"])}</title><meta name="description" content="{esc(t["desc"])}">
 <link rel="canonical" href="{url_de if de else url_en}"><link rel="alternate" hreflang="de" href="{url_de}"><link rel="alternate" hreflang="en" href="{url_en}"><link rel="alternate" hreflang="x-default" href="{url_de}">
 <meta name="theme-color" content="#0E1730"><link rel="stylesheet" href="/rechner/rechner.css"><link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=3"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=3">
-<meta property="og:title" content="{esc(t["h1"])}"><meta property="og:description" content="{esc(t["desc"])}"><meta property="og:image" content="https://geld-kompass.com/pins/{"pin" if de else "en"}-div-king.jpg">
+<meta property="og:type" content="website"><meta property="og:url" content="{url_de if de else url_en}"><meta property="og:title" content="{esc(t["h1"])}"><meta property="og:description" content="{esc(t["desc"])}"><meta property="og:image" content="https://geld-kompass.com/pins/{"pin" if de else "en"}-div-king.jpg">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(t["h1"])}"><meta name="twitter:description" content="{esc(t["desc"])}"><meta name="twitter:image" content="https://geld-kompass.com/pins/{"pin" if de else "en"}-div-king.jpg">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
+<script type="application/ld+json">{json.dumps(bc_ld, ensure_ascii=False)}</script>
 <style>.mf{{display:flex;flex-wrap:wrap;gap:6px;margin:16px 0 10px}}.mf button{{all:unset;cursor:pointer;padding:6px 11px;border-radius:999px;border:1px solid rgba(219,227,250,.18);font-size:.85rem}}.mf button.on{{background:#e3b55a;color:#0e1730;border-color:#e3b55a;font-weight:700}}
 #dq{{width:100%;padding:10px 12px;border-radius:10px;border:1px solid rgba(219,227,250,.18);background:rgba(255,255,255,.04);color:inherit;font:inherit;margin-bottom:8px}}
 .dt{{width:100%;border-collapse:collapse}}.dt td,.dt th{{padding:10px 6px;border-bottom:1px solid rgba(219,227,250,.1);vertical-align:top;text-align:left}}.dt .n{{text-align:right;white-space:nowrap}}.dt th{{font-size:.75rem;text-transform:uppercase;letter-spacing:.04em;opacity:.7}}

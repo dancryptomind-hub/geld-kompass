@@ -45,7 +45,16 @@ function restore(ids){if(!SHARED)return;ids.forEach(function(id){var e=$(id),v=S
  if(e.tagName==='INPUT'&&e.inputMode&&v!==''&&!/^[+\-]?\d[\d., ]*(?:e[+\-]?\d+)?$/i.test(v))return;e.value=v;});}
 function sharedNote(){if(!SHARED||$('gkSharedNote'))return;var box=document.querySelector('.calc');if(!box)return;var p=document.createElement('p');p.id='gkSharedNote';p.className='note';p.textContent=EN?'Shared calculation: the sender’s inputs are loaded. Exchange rates and other current data may change.':'Geteilte Berechnung: Die Eingaben des Absenders sind geladen. Wechselkurse und andere aktuelle Daten können sich ändern.';box.prepend(p);}
 restore(Array.from(document.querySelectorAll('.calc input[id],.calc select[id]')).map(function(e){return e.id;}));
-function bind(ids,fn){restore(ids);sharedNote();RUNS.push(fn);ids.forEach(function(id){var e=$(id);if(e){e.addEventListener('input',fn);e.addEventListener('change',fn);}});fn();}
+function vizBar(){var res=$('res');if(!res||$('from')||$('geo')||$('tx'))return;var bs=res.querySelectorAll('.res div');if(bs.length<2)return;
+  var aTxt=(bs[0].querySelector('b')||{}).textContent||'',bTxt=(bs[1].querySelector('b')||{}).textContent||'';
+  if(!/[€$£]|CHF|CA\$|A\$/.test(aTxt)||!/[€$£]|CHF|CA\$|A\$/.test(bTxt))return;
+  var a=Math.abs(num(aTxt.replace(/[^0-9.,\-]/g,''))),b=Math.abs(num(bTxt.replace(/[^0-9.,\-]/g,'')));if(!(a>0&&b>0))return;
+  var l1=(bs[0].querySelector('span')||{}).textContent||'',l2=(bs[1].querySelector('span')||{}).textContent||'';
+  var p1=Math.max(4,Math.min(96,Math.round(a/(a+b)*100))),p2=100-p1,bar=$('gkrSplit');
+  if(!bar){bar=document.createElement('div');bar.id='gkrSplit';bar.className='gkr-split';res.parentNode.insertBefore(bar,res);}
+  var neg=bs[1].querySelector('b.neg')!=null;
+  bar.innerHTML='<div class="gkr-track"><i style="width:'+p1+'%"></i><em class="'+(neg?'neg':'')+'" style="width:'+p2+'%"></em></div><div class="gkr-leg"><span><i></i>'+esc(l1)+' ('+p1+' %)</span><span><em class="'+(neg?'neg':'')+'"></em>'+esc(l2)+' ('+p2+' %)</span></div>';}
+function bind(ids,fn){var w=function(){fn();try{vizBar();}catch(e){}};restore(ids);sharedNote();RUNS.push(w);ids.forEach(function(id){var e=$(id);if(e){e.addEventListener('input',w);e.addEventListener('change',w);}});w();}
 /* Währungsauswahl in jedem Rechner (nicht im Währungs- und Inflationsrechner, die haben eigene Währungen) */
 (function(){var box=document.querySelector('.calc');if(!box||$('from')||$('geo'))return;
   var NAMES=EN?{EUR:'Euro (€)',USD:'US dollar ($)',GBP:'British pound (£)',CHF:'Swiss franc (CHF)',CAD:'Canadian dollar (CA$)',AUD:'Australian dollar (A$)'}:{EUR:'Euro (€)',USD:'US-Dollar ($)',GBP:'Britisches Pfund (£)',CHF:'Schweizer Franken (CHF)',CAD:'Kanadischer Dollar (CA$)',AUD:'Australischer Dollar (A$)'};

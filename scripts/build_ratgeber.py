@@ -83,6 +83,10 @@ CSS = """.rg-calc .grid{grid-template-columns:1fr 1fr 1fr}@media(max-width:760px
 def page(p):
     url = BASE + 'ratgeber/' + p['slug'] + '/'
     faq_ld = {"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": q, "acceptedAnswer": {"@type": "Answer", "text": a}} for q, a in p['faq']]}
+    bc_ld = {"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Geld-Kompass Pro", "item": BASE},
+        {"@type": "ListItem", "position": 2, "name": "Ratgeber", "item": BASE + "ratgeber/"},
+        {"@type": "ListItem", "position": 3, "name": p['short'], "item": url}]}
     body = ''.join('<h2>%s</h2><p>%s</p>' % (esc(h), esc(t)) for h, t in p['body'])
     faq = ''.join('<details><summary>%s</summary><p>%s</p></details>' % (esc(q), esc(a)) for q, a in p['faq'])
     more = ''.join('<a href="/ratgeber/%s/">%s<small>%s</small></a>' % (o['slug'], esc(o['short']), esc(o['teaser'])) for o in PAGES if o is not p)
@@ -96,10 +100,12 @@ function run(){var m=v('rgM'),inc=v('rgInc'),sp=v('rgSp'),pc=v('rgP')/100,y=m*12
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{esc(p['title'])} | Geld-Kompass Pro</title><meta name="description" content="{esc(p['desc'])}">
 <link rel="canonical" href="{url}"><meta name="theme-color" content="#0E1730">
-<meta property="og:type" content="article"><meta property="og:title" content="{esc(p['title'])}"><meta property="og:description" content="{esc(p['desc'])}"><meta property="og:url" content="{url}"><meta property="og:locale" content="de_DE">
+<meta property="og:type" content="article"><meta property="og:title" content="{esc(p['title'])}"><meta property="og:description" content="{esc(p['desc'])}"><meta property="og:url" content="{url}"><meta property="og:locale" content="de_DE"><meta property="og:image" content="{BASE}screens/desktop-de.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(p['title'])}"><meta name="twitter:description" content="{esc(p['desc'])}"><meta name="twitter:image" content="{BASE}screens/desktop-de.webp">
 <link rel="stylesheet" href="/rechner/rechner.css"><link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=3"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=3">
 <script type="application/ld+json">{json.dumps(faq_ld, ensure_ascii=False)}</script>
+<script type="application/ld+json">{json.dumps(bc_ld, ensure_ascii=False)}</script>
 <style>{CSS}</style>
 {VIS}</head><body>
 <header class="top"><div class="wrap"><a class="logo" href="/">{LOGO}<b>Geld-<span>Kompass</span> <span class="pro">Pro</span></b></a><nav><a href="/ratgeber/">Alle Ratgeber</a><a class="hide-s" href="/app/"> · Zum Geld-Kompass Pro</a></nav></div></header>
@@ -134,11 +140,17 @@ function run(){var m=v('rgM'),inc=v('rgInc'),sp=v('rgSp'),pc=v('rgP')/100,y=m*12
 
 def hub():
     cards = ''.join('<a href="%s/">%s<small>%s</small></a>' % (p['slug'], esc(p['short']), esc(p['teaser'])) for p in PAGES)
+    hub_bc = json.dumps({"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [
+        {"@type": "ListItem", "position": 1, "name": "Geld-Kompass Pro", "item": BASE},
+        {"@type": "ListItem", "position": 2, "name": "Ratgeber", "item": BASE + "ratgeber/"}]}, ensure_ascii=False)
     return f"""<!doctype html>
 <html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Ratgeber: laufende Kosten senken, gerechnet in Freiheitstagen | Geld-Kompass Pro</title>
 <meta name="description" content="Kostenlose Ratgeber mit Rechner: Handy und Internet, Strom und Gas, Versicherungen. Sieh, was dich laufende Kosten an Lebenszeit kosten und wo du am leichtesten sparst.">
 <link rel="canonical" href="{BASE}ratgeber/"><meta name="theme-color" content="#0E1730">
+<meta property="og:type" content="website"><meta property="og:title" content="Ratgeber: laufende Kosten senken, gerechnet in Freiheitstagen | Geld-Kompass Pro"><meta property="og:description" content="Kostenlose Ratgeber mit Rechner: Handy und Internet, Strom und Gas, Versicherungen. Sieh, was dich laufende Kosten an Lebenszeit kosten und wo du am leichtesten sparst."><meta property="og:url" content="{BASE}ratgeber/"><meta property="og:image" content="{BASE}screens/desktop-de.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Ratgeber: laufende Kosten senken | Geld-Kompass Pro"><meta name="twitter:description" content="Kostenlose Ratgeber mit Rechner: Handy und Internet, Strom und Gas, Versicherungen."><meta name="twitter:image" content="{BASE}screens/desktop-de.webp">
+<script type="application/ld+json">{hub_bc}</script>
 <link rel="stylesheet" href="/rechner/rechner.css"><link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=3">
 {VIS}</head><body>
 <header class="top"><div class="wrap"><a class="logo" href="/">{LOGO}<b>Geld-<span>Kompass</span> <span class="pro">Pro</span></b></a><nav><a href="/rechner/">Rechner</a> · <a href="/app/">Zum Geld-Kompass Pro</a></nav></div></header>

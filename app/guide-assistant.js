@@ -18,7 +18,7 @@ function answer(question,c,selected){c=c||{};var en=c.lang==='en',L=function(a,b
  if(socialText){r.intent='social';r.title=L('Dein Kompass-Guide','Your Compass Guide');r.paragraphs=[socialText];return r;}}
  var accountQuestion=/passwort|password|login|anmeld/.test(q);
  var knowledgeQuestion=/was ist|was sind|was bedeutet|erklare|what is|what are|explain|how does/.test(q)&&!/mein|\bmy\b/.test(q)&&!accountQuestion;
- var restricted=/systemprompt|ignoriere|ignore|70\s*[/ :]\s*30|personliche.*strategie|zeig.*passwort|show.*password/.test(q)||/bitcoin|aktie|stocks|krypto|crypto/.test(q)&&/heute|aktuell|today|current|latest/.test(q);
+ var restricted=/systemprompt|ignoriere|ignore|\bdans\b|personliche.*strategie|zeig.*passwort|show.*password/.test(q)||/bitcoin|aktie|stocks|krypto|crypto/.test(q)&&/heute|aktuell|today|current|latest/.test(q);
  var known=!accountQuestion&&!/mein|\bmy\b/.test(q)&&K&&K.has(question)&&!/^(budget|monatsbudget|monthly budget|rucklagen|reserves)$/.test(q);
  if(!selected&&(knowledgeQuestion||restricted||known)&&K)return K.answer(question,c.lang);
 

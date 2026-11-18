@@ -21,8 +21,9 @@ header.top.gk-chrome nav a:hover{color:var(--gk-gold);background:rgba(227,181,90
 header.top.gk-chrome nav a.navapp{background:linear-gradient(135deg,#f0c56a,#c99227);color:#1a1405;padding:10px 14px;margin-left:4px}
 header.top.gk-chrome nav a.navapp:hover{filter:brightness(1.06);color:#1a1405}
 header.top.gk-chrome .navapp .s{display:none}
-@media(max-width:640px){header.top.gk-chrome nav a:not(.navapp):not(.langsw){display:none}header.top.gk-chrome .logo{font-size:17px;gap:8px}header.top.gk-chrome .logo img{width:30px;height:30px}header.top.gk-chrome nav a.langsw{padding:9px 6px;font-size:13px}header.top.gk-chrome .navapp .l{display:none}header.top.gk-chrome .navapp .s{display:inline}header.top.gk-chrome .wrap{gap:8px}}
-@media(max-width:380px){header.top.gk-chrome .logo .pro{display:none}}
+@media(max-width:640px){header.top.gk-chrome .logo{font-size:17px;gap:8px}header.top.gk-chrome .logo img{width:30px;height:30px}header.top.gk-chrome nav{gap:4px}header.top.gk-chrome nav a{padding:7px 7px;font-size:12.5px}header.top.gk-chrome nav a.langsw{padding:7px 6px;font-size:12.5px}header.top.gk-chrome .navapp{padding:7px 10px;margin-left:2px}header.top.gk-chrome .navapp .l{display:none}header.top.gk-chrome .navapp .s{display:inline}header.top.gk-chrome .wrap{gap:8px}}
+@media(max-width:520px){header.top.gk-chrome .wrap{flex-wrap:wrap!important;row-gap:6px;padding:10px 12px}header.top.gk-chrome nav{flex:1 0 100%!important;justify-content:space-between;border-top:1px solid rgba(227,181,90,.16);padding-top:6px}}
+@media(max-width:380px){header.top.gk-chrome .logo .pro{display:none}header.top.gk-chrome nav a{padding:6px 5px;font-size:12px}}
 /* Fuß */
 footer.gk-foot{margin:56px 0 0;border-top:1px solid var(--gk-line);padding:26px 0 calc(34px + env(safe-area-inset-bottom));font-size:13px;color:var(--gk-muted);background:rgba(10,17,36,.35)}
 footer.gk-foot .wrap{max-width:1120px;margin:0 auto;padding:0 16px}
@@ -37,3 +38,4 @@ main.wrap h1{font-size:clamp(30px,4.6vw,44px)}
 .eyebrow,.k{color:var(--gk-gold);letter-spacing:.14em;font-size:12px;text-transform:uppercase;font-weight:700}
 header.top.gk-chrome .gk-language{display:none!important}
 header.top.gk-chrome .wrap{flex-wrap:nowrap!important}header.top.gk-chrome nav{flex-basis:auto!important}header.top.gk-chrome nav a{white-space:nowrap!important}
+@media(max-width:520px){header.top.gk-chrome .wrap{flex-wrap:wrap!important;row-gap:6px;padding:10px 12px}header.top.gk-chrome nav{flex:1 0 100%!important;justify-content:space-between;border-top:1px solid rgba(227,181,90,.16);padding-top:6px}}

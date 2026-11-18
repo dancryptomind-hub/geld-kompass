@@ -60,6 +60,7 @@ def page(lang):
 <title>{esc(t['title'])} | {'Money' if lang=='en' else 'Geld'}-{'Compass' if lang=='en' else 'Kompass'} Pro</title><meta name="description" content="{esc(t['desc'])}">
 <link rel="canonical" href="{t['url']}"><link rel="alternate" hreflang="de" href="{DE_URL}"><link rel="alternate" hreflang="en" href="{EN_URL}"><link rel="alternate" hreflang="x-default" href="{EN_URL}">
 <meta name="theme-color" content="#0E1730"><meta property="og:type" content="website"><meta property="og:title" content="{esc(t['title'])}"><meta property="og:description" content="{esc(t['desc'])}"><meta property="og:url" content="{t['url']}"><meta property="og:image" content="{BASE}screens/{t['img']}.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{esc(t['title'])}"><meta name="twitter:description" content="{esc(t['desc'])}"><meta name="twitter:image" content="{BASE}screens/{t['img']}.webp">
 <link rel="stylesheet" href="/rechner/rechner.css"><link rel="manifest" href="/manifest.webmanifest"><link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=3"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=3">
 <script type="application/ld+json">{json.dumps(ld, ensure_ascii=False)}</script>
 <style>{CSS}</style>

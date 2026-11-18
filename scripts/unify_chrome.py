@@ -54,7 +54,7 @@ def process(path):
     for hl, href in re.findall(r'<link rel="alternate" hreflang="(de|en)" href="([^"]+)"', s):
         if hl != lang:
             other = href
-    bilingual = 'href="/site.css"' in s and not other  # Startseite, Impressum, Datenschutz, Werbung: eine Datei, Sprache per DICT
+    bilingual = 'href="/site.css"' in s  # Startseite, Impressum, Datenschutz, Werbung: eine Datei, Sprache per DICT
     header, footer = chrome(lang, other, bilingual)
     o = s
     if UI not in s:

@@ -36,6 +36,7 @@ p{margin:0 0 14px}
 .res span{display:block;font-size:13px;color:var(--muted)}
 .res b{display:block;font-size:22px;font-variant-numeric:tabular-nums;margin-top:2px}
 .res b.pos{color:var(--good)}.res b.neg{color:var(--bad)}.res b.gold{color:var(--gold)}
+.gkr-split{margin:16px 0 -4px}.gkr-track{display:flex;height:10px;border-radius:99px;overflow:hidden;background:var(--card2);gap:2px}.gkr-track i{background:var(--gold);display:block}.gkr-track em{background:var(--good);display:block}.gkr-track em.neg{background:var(--bad)}.gkr-leg{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-top:6px;font-size:12px;color:var(--muted)}.gkr-leg span{display:inline-flex;align-items:center;gap:5px}.gkr-leg i,.gkr-leg em{width:8px;height:8px;border-radius:50%;display:inline-block;background:var(--gold)}.gkr-leg em{background:var(--good)}.gkr-leg em.neg{background:var(--bad)}
 .big{font-family:Playfair,Georgia,serif;font-size:clamp(30px,8vw,46px);color:var(--gold);line-height:1.1;margin:18px 0 4px;font-variant-numeric:tabular-nums}
 .note{font-size:13px;color:var(--muted);margin-top:14px}
 .share{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}

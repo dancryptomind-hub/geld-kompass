@@ -77,12 +77,14 @@ def page(lang):
  $('ebCopy').addEventListener('click',function(){var t=$('ebCode'),b=this,done=function(){b.textContent='%s';setTimeout(function(){b.textContent='%s';},1800);};
   if(navigator.clipboard)navigator.clipboard.writeText(t.value).then(done,function(){t.select();document.execCommand('copy');done();});else{t.select();document.execCommand('copy');done();}});
  $('ebCode').addEventListener('focus',function(){this.select();});code();})();""" % (data, lang, t['copied'], t['copy'])
+    og_img = BASE + ('screens/desktop-en.webp' if en else 'screens/desktop-de.webp')
     return f"""<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <script>(function(){{var K='geld-kompass-lang',q=new URLSearchParams(location.search).get('lang'),w=q;if(q==='de'||q==='en'){{try{{localStorage.setItem(K,q);}}catch(e){{}}}}else{{try{{w=localStorage.getItem(K);}}catch(e){{}}}}if((w==='de'||w==='en')&&w!=='{lang}')location.replace('{'/einbinden/' if en else '/en/embed/'}'+location.search+location.hash);}})();</script>
 <title>{t['title']}</title><meta name="description" content="{t['desc']}">
 <link rel="canonical" href="{url}"><link rel="alternate" hreflang="de" href="{BASE}einbinden/"><link rel="alternate" hreflang="en" href="{BASE}en/embed/"><link rel="alternate" hreflang="x-default" href="{BASE}einbinden/">
-<meta name="theme-color" content="#0E1730"><meta property="og:type" content="website"><meta property="og:title" content="{t['title']}"><meta property="og:description" content="{t['desc']}"><meta property="og:url" content="{url}">
+<meta name="theme-color" content="#0E1730"><meta property="og:type" content="website"><meta property="og:title" content="{t['title']}"><meta property="og:description" content="{t['desc']}"><meta property="og:url" content="{url}"><meta property="og:image" content="{og_img}">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="{t['title']}"><meta name="twitter:description" content="{t['desc']}"><meta name="twitter:image" content="{og_img}">
 <link rel="stylesheet" href="/rechner/rechner.css"><link rel="manifest" href="/manifest.webmanifest">
 <link rel="icon" type="image/png" sizes="32x32" href="/icons/favicon-32.png?v=3"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png?v=3">
 <script type="application/ld+json">{ld}</script>
