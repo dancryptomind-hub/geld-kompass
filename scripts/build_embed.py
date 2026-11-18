@@ -64,8 +64,8 @@ def page(lang):
     url = BASE + ('en/embed/' if en else 'einbinden/')
     opts = ''.join('<option value="%d">%s</option>' % (i, c[3] if en else c[1]) for i, c in enumerate(CALC))
     data = json.dumps([[c[0], c[1], c[2], c[3], c[4]] for c in CALC], ensure_ascii=False)
-    lic = ('<div class="eb-lic"><b>Licensed version for companies</b><br>Without the note, in your colours, with your own calculators or your logo. Write to <a href="mailto:kontakt@geld-kompass.com?subject=Calculator%20licence">kontakt@geld-kompass.com</a>.</div>' if en else
-           '<div class="eb-lic"><b>Lizenz-Version für Unternehmen</b><br>Ohne Hinweis, in deinen Farben, mit eigenen Rechnern oder deinem Logo. Schreib an <a href="mailto:kontakt@geld-kompass.com?subject=Rechner-Lizenz">kontakt@geld-kompass.com</a>.</div>')
+    lic = ('<div class="eb-lic"><b>White-label &amp; adviser licence</b><br>For finance blogs, tax advisers, coaches and institutions: remove the “Powered by” badge, match your brand colours and logo, or request custom calculators. Enquire at <a href="mailto:kontakt@geld-kompass.com?subject=Calculator%20licence">kontakt@geld-kompass.com</a> · <a href="/en/calculators/">Overview of all calculators</a></div>' if en else
+           '<div class="eb-lic"><b>Lizenz-Version für Unternehmen &amp; Berater</b><br>Für Finanzblogs, Steuerberater, Coaching-Teams und Banken: ohne Hinweis-Banner, in deinen Markenfarben, mit eigenem Logo oder Wunschrechner. Konditionen anfragen unter <a href="mailto:kontakt@geld-kompass.com?subject=Rechner-Lizenz">kontakt@geld-kompass.com</a> · <a href="/rechner/">Alle Rechner im Überblick</a></div>')
     faq = ''.join('<details><summary>%s</summary><p>%s</p></details>' % q for q in t['faq'])
     ld = json.dumps({"@context": "https://schema.org", "@type": "WebPage", "name": t['h1'], "url": url, "inLanguage": lang, "description": t['desc']}, ensure_ascii=False)
     js = """(function(){var C=%s,L='%s';var $=function(i){return document.getElementById(i);};

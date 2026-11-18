@@ -126,6 +126,7 @@ function run(){var m=v('rgM'),inc=v('rgInc'),sp=v('rgSp'),pc=v('rgP')/100,y=m*12
 <div data-partner="{p['partner']}" hidden></div>
 </section>
 <div class="cta"><a href="/app/#recurring"><i>{LOGO}</i><div><b>Alle laufenden Kosten auf einmal prüfen</b><span>Der Spar-Check im Geld-Kompass Pro findet Abos und Fixkosten aus deinem Kontoauszug und zeigt deinen größten Hebel. Kostenlos, deine Daten bleiben auf deinem Gerät.</span></div></a></div>
+<p class="note"><b>Systematisch sparen mit Anleitung:</b> Das <a href="/arbeitsbuch/?ref=ratgeber-{p['slug']}">Arbeitsbuch zum Geld-Kompass Pro (9,99 €)</a> führt dich Schritt für Schritt durch Verträge, Rücklagen und dein erstes Investment.</p>
 <div class="rg-body">{body}</div>
 <h2>Häufige Fragen</h2>{faq}
 <h2>Weitere Ratgeber</h2><div class="more">{more}<a href="/rechner/">Alle Rechner<small>Sparplan, Schulden, Notgroschen und mehr</small></a></div>
