@@ -58,7 +58,8 @@ CSS = """.eb-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4f
 .eb-steps{counter-reset:s;list-style:none;padding:0}.eb-steps li{counter-increment:s;padding:6px 0 6px 38px;position:relative}
 .eb-steps li:before{content:counter(s);position:absolute;left:0;top:4px;width:26px;height:26px;border-radius:50%;background:#c99227;color:#1a1405;font-weight:800;display:grid;place-items:center;font-size:.85rem}
 .eb-lic{margin-top:14px;padding:14px 16px;border-radius:14px;border:1px solid rgba(227,181,90,.45);background:linear-gradient(135deg,rgba(227,181,90,.12),rgba(227,181,90,.03))}
-.eb-tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:12px;margin:16px 0 22px}.eb-tiers div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}.eb-tiers div.pro{border-color:rgba(227,181,90,.65);background:linear-gradient(135deg,rgba(227,181,90,.12),rgba(227,181,90,.02))}.eb-tiers h3{margin:0 0 6px;font-size:1.05rem;color:var(--gold)}.eb-tiers ul{margin:8px 0 12px;padding-left:18px;color:var(--muted);font-size:.9rem}.eb-tiers a{font-weight:700;color:var(--gold)}"""
+.eb-tiers{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr));gap:12px;margin:16px 0 22px}.eb-tiers div{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px}.eb-tiers div.pro{border-color:rgba(227,181,90,.65);background:linear-gradient(135deg,rgba(227,181,90,.12),rgba(227,181,90,.02))}.eb-tiers h3{margin:0 0 6px;font-size:1.05rem;color:var(--gold)}.eb-tiers ul{margin:8px 0 12px;padding-left:18px;color:var(--muted);font-size:.9rem}.eb-tiers a{font-weight:700;color:var(--gold)}
+.eb-mode{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 10px}.eb-mode button{border:1px solid var(--line);background:var(--card2);color:var(--muted);border-radius:999px;padding:6px 12px;font:inherit;font-size:.82rem;font-weight:700;cursor:pointer}.eb-mode button[aria-pressed=true]{border-color:var(--gold);color:var(--gold);background:rgba(227,181,90,.1)}.eb-wl{display:none;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:10px;margin-bottom:8px;background:linear-gradient(135deg,#1d4ed8,#0f766e);color:#fff;font-size:.85rem}.eb-prev.wl .eb-wl{display:flex}.eb-prev.wl{border-style:solid;border-color:rgba(56,189,248,.45)}.eb-prev.wl .eb-framebox{overflow:hidden;border-radius:10px}.eb-prev.wl iframe{margin-bottom:-46px}"""
 
 def page(lang):
     t = T[lang]; en = lang == 'en'
@@ -77,7 +78,7 @@ def page(lang):
  ['ebCalc','ebLang','ebCur','ebTheme'].forEach(function(i){$(i).addEventListener('change',code);});
  $('ebCopy').addEventListener('click',function(){var t=$('ebCode'),b=this,done=function(){b.textContent='%s';setTimeout(function(){b.textContent='%s';},1800);};
   if(navigator.clipboard)navigator.clipboard.writeText(t.value).then(done,function(){t.select();document.execCommand('copy');done();});else{t.select();document.execCommand('copy');done();}});
- $('ebCode').addEventListener('focus',function(){this.select();});code();})();""" % (data, lang, t['copied'], t['copy'])
+ $('ebCode').addEventListener('focus',function(){this.select();});document.querySelectorAll('[data-ebmode]').forEach(function(b){b.addEventListener('click',function(){var wl=b.getAttribute('data-ebmode')==='wl';document.querySelectorAll('[data-ebmode]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});var box=$('ebPrevBox');if(box)box.classList.toggle('wl',wl);});});code();})();""" % (data, lang, t['copied'], t['copy'])
     og_img = BASE + ('screens/desktop-en.webp' if en else 'screens/desktop-de.webp')
     tiers = (
         '<h2>Licence options at a glance</h2><div class="eb-tiers">'
@@ -116,7 +117,7 @@ def page(lang):
 <label>{t['code']}<textarea id="ebCode" class="eb-code" readonly spellcheck="false"></textarea></label>
 <button type="button" class="eb-btn" id="ebCopy">{t['copy']}</button>
 {lic}
-</div><div><h2 style="margin-top:0">{t['prev']}</h2><div class="eb-prev"><iframe data-gk id="ebFrame" title="{t['prev']}"></iframe></div></div></div></section>
+</div><div><h2 style="margin-top:0">{t['prev']}</h2><div class="eb-mode" role="group" aria-label="{'Preview style' if en else 'Vorschau-Ansicht'}"><button type="button" data-ebmode="std" aria-pressed="true">{'Free embed' if en else 'Kostenlos (Standard)'}</button><button type="button" data-ebmode="wl" aria-pressed="false">{'White-Label demo' if en else 'White-Label-Vorschau'}</button></div><div class="eb-prev" id="ebPrevBox"><div class="eb-wl"><b>{'Sample Advisory Ltd · Custom Brand' if en else 'Muster Finanzberatung · Dein Design'}</b><span>{'No badge · own colours' if en else 'Ohne Hinweis · eigene Farben'}</span></div><div class="eb-framebox"><iframe data-gk id="ebFrame" title="{t['prev']}"></iframe></div></div></div></div></section>
 <h2>{t['how']}</h2><ol class="eb-steps">{''.join('<li>%s</li>' % s for s in t['steps'])}</ol>
 {tiers}
 <h2>{t['faqh']}</h2>{faq}

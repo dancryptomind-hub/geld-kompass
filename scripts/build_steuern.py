@@ -35,9 +35,21 @@ def load():
     d['slugs_en'] = {c: slugify(x['name'][1]) for c, x in d['countries'].items()}
     return d
 
+PAIRS = [
+    ('DE', 'TH', 'deutschland-vs-thailand', 'germany-vs-thailand'),
+    ('DE', 'PT', 'deutschland-vs-portugal', 'germany-vs-portugal'),
+    ('DE', 'AE', 'deutschland-vs-dubai', 'germany-vs-dubai'),
+    ('DE', 'CH', 'deutschland-vs-schweiz', 'germany-vs-switzerland'),
+    ('DE', 'CY', 'deutschland-vs-zypern', 'germany-vs-cyprus'),
+    ('DE', 'GE', 'deutschland-vs-georgien', 'germany-vs-georgia'),
+    ('DE', 'AT', 'deutschland-vs-oesterreich', 'germany-vs-austria'),
+    ('DE', 'ES', 'deutschland-vs-spanien', 'germany-vs-spain'),
+]
+
 def urls():
     d = load()
-    return ([BASE + DE_DIR + '/', BASE + EN_DIR + '/'] + [BASE + DE_DIR + '/' + s + '/' for s in d['slugs'].values()] + [BASE + EN_DIR + '/' + s + '/' for s in d['slugs_en'].values()])
+    return ([BASE + DE_DIR + '/', BASE + EN_DIR + '/'] + [BASE + DE_DIR + '/' + s + '/' for s in d['slugs'].values()] + [BASE + EN_DIR + '/' + s + '/' for s in d['slugs_en'].values()]
+            + [BASE + DE_DIR + '/' + sd + '/' for _, _, sd, _ in PAIRS] + [BASE + EN_DIR + '/' + se + '/' for _, _, _, se in PAIRS])
 
 SRC_EN = [('Einkommensteuergesetz', 'Income Tax Act'), ('Einkommensteuer', 'Income tax'), ('Private Kapitalgewinne', 'Private capital gains'), ('Kapitalgewinne', 'Capital gains'), ('Veräußerungsgewinne', 'Capital gains'), ('Finanzministerium', 'Ministry of Finance'), ('Tarife', 'Rates')]
 def src_label(s, en):
@@ -143,6 +155,15 @@ def shell(en, url, alt, title, desc, eyebrow, h1, lead, calc, body, faqs, crumbs
 </html>
 """
 
+def pair_links(en):
+    d = load()
+    L = 1 if en else 0
+    base = '/' + (EN_DIR if en else DE_DIR)
+    items = ''.join('<li><a href="%s/%s/">%s vs. %s</a></li>' % (
+        base, se if en else sd, esc(d['countries'][a]['name'][L]), esc(d['countries'][b]['name'][L])
+    ) for a, b, sd, se in PAIRS)
+    return '<h2>%s</h2><ul>%s</ul>' % ('Popular country comparisons' if en else 'Beliebte Ländervergleiche', items)
+
 def hub(d, en):
     L = 1 if en else 0
     n = len(d['countries'])
@@ -157,7 +178,7 @@ def hub(d, en):
         body = ('<h2>How to read the figures</h2><p>For every country you see two reference values: the top rate of income tax and a reference rate for capital income such as gains, dividends or interest. The calculator multiplies your amounts by these rates. That gives an upper estimate, not your actual tax: allowances, progressive brackets, social security, tax treaties and special regimes can change the result a lot.</p>'
                 '<h2>Residence, 183 days and double taxation</h2><p>Where you pay tax usually depends on your tax residence, not your passport. Many countries look at a permanent home, your centre of vital interests or around 183 days of presence, but the rules differ from country to country. Leaving one country does not automatically end your tax liability there. Double tax treaties decide which country may tax which income.</p>'
                 '<h2>For digital nomads</h2><p>If you move often, write down your days per country. Many tax questions start with: where did you spend how many days, and where is your home? Some countries only tax foreign income when it is brought into the country, others tax worldwide income from the first day of residence.</p>'
-                '<h2>All %d countries at a glance</h2>%s<p class="note">Data: public country summaries, mainly PwC Worldwide Tax Summaries and official tax authorities, checked %s. Orientation only, not tax advice.</p>') % (n, regs, chk)
+                '<h2>All %d countries at a glance</h2>%s%s<p class="note">Data: public country summaries, mainly PwC Worldwide Tax Summaries and official tax authorities, checked %s. Orientation only, not tax advice.</p>') % (n, pair_links(True), regs, chk)
         faqs = [('Where do I have to pay tax as a digital nomad?', 'Usually where you are tax resident. Many countries use criteria such as a permanent home, centre of vital interests or around 183 days of presence. Without a clear residence, several countries may claim taxes. Get advice for your situation.'),
                 ('Is the figure shown my actual tax?', 'No. The calculator uses the top income tax rate and a reference rate for capital income. Your actual tax is usually lower because of allowances and progressive brackets.'),
                 ('Which countries have low taxes on capital gains?', 'Several countries, for example some in the Gulf region or in Asia, tax private capital gains low or not at all. Use the table and the sources linked for each country, and check the rules for your income type.'),
@@ -170,7 +191,7 @@ def hub(d, en):
     body = ('<h2>So liest du die Werte</h2><p>Für jedes Land siehst du zwei Referenzwerte: den Spitzensatz der Einkommensteuer und einen Referenzsatz für Kapitalerträge wie Kursgewinne, Dividenden oder Zinsen. Der Rechner multipliziert deine Beträge mit diesen Sätzen. Das ergibt eine Obergrenze, nicht deine tatsächliche Steuer: Freibeträge, Stufentarif, Sozialabgaben, Doppelbesteuerungsabkommen und Sonderregeln können das Ergebnis stark verändern.</p>'
             '<h2>Wohnsitz, 183 Tage und Doppelbesteuerung</h2><p>Wo du Steuern zahlst, hängt meist von deinem steuerlichen Wohnsitz ab, nicht von deinem Pass. Viele Länder schauen auf eine ständige Wohnung, den Mittelpunkt deiner Lebensinteressen oder rund 183 Tage Aufenthalt, die Regeln unterscheiden sich aber von Land zu Land. Wer Deutschland verlässt, ist nicht automatisch dort steuerfrei. Doppelbesteuerungsabkommen regeln, welches Land welche Einkünfte besteuern darf.</p>'
             '<h2>Für digitale Nomaden</h2><p>Wer oft das Land wechselt, sollte seine Tage je Land festhalten. Viele Steuerfragen beginnen mit: Wo warst du wie viele Tage, und wo ist dein Zuhause? Manche Länder besteuern ausländische Einkünfte nur, wenn sie ins Land gebracht werden, andere ab dem ersten Tag des Wohnsitzes weltweit.</p>'
-            '<h2>Alle %d Länder im Überblick</h2>%s<p class="note">Daten: öffentliche Länderübersichten, vor allem PwC Worldwide Tax Summaries und offizielle Steuerbehörden, geprüft am %s. Orientierung, keine Steuerberatung.</p>') % (n, regs, chk)
+            '<h2>Alle %d Länder im Überblick</h2>%s%s<p class="note">Daten: öffentliche Länderübersichten, vor allem PwC Worldwide Tax Summaries und offizielle Steuerbehörden, geprüft am %s. Orientierung, keine Steuerberatung.</p>') % (n, pair_links(False), regs, chk)
     faqs = [('Wo muss ich als digitaler Nomade Steuern zahlen?', 'In der Regel dort, wo du steuerlich ansässig bist. Viele Länder nutzen Merkmale wie eine ständige Wohnung, den Lebensmittelpunkt oder rund 183 Tage Aufenthalt. Ohne klaren Wohnsitz können mehrere Länder Steuern verlangen. Lass dich für deine Lage beraten.'),
             ('Ist der angezeigte Betrag meine tatsächliche Steuer?', 'Nein. Der Rechner nutzt den Spitzensatz der Einkommensteuer und einen Referenzsatz für Kapitalerträge. Deine tatsächliche Steuer ist wegen Freibeträgen und Stufentarif meist niedriger.'),
             ('Welche Länder besteuern Kapitalerträge niedrig?', 'Mehrere Länder, etwa am Golf oder in Asien, besteuern private Kursgewinne niedrig oder gar nicht. Nutze die Tabelle und die verlinkten Quellen je Land und prüfe die Regeln für deine Ertragsart.'),
@@ -222,6 +243,48 @@ def country(d, c, en):
                  'Länderwerte für %s mit Quellen, ein Rechner für deine eigenen Beträge und der Vergleich mit anderen Ländern. Orientierung für Auswanderer und digitale Nomaden, keine Steuerberatung.' % name,
                  calc_html(False, c, cmp_default), body, faqs, [('Geld-Kompass Pro', BASE), ('Steuern nach Wohnsitz', BASE + DE_DIR + '/'), (name, url)])
 
+def pair_page(d, a, b, sd, se, en):
+    L = 1 if en else 0
+    xa, xb = d['countries'][a], d['countries'][b]
+    na, nb = xa['name'][L], xb['name'][L]
+    url = BASE + (EN_DIR + '/' + se if en else DE_DIR + '/' + sd) + '/'
+    alt = BASE + (DE_DIR + '/' + sd if en else EN_DIR + '/' + se) + '/'
+    base = '/' + (EN_DIR if en else DE_DIR)
+    lf = lambda v: v if re.search(r'\d', v) else v[:1].lower() + v[1:]
+    ia, ca = lf(xa['incomeDisplay'][L]), lf(xa['capitalDisplay'][L])
+    ib, cb = lf(xb['incomeDisplay'][L]), lf(xb['capitalDisplay'][L])
+    srcs_a = ', '.join('<a href="%s" target="_blank" rel="noopener nofollow">%s</a>' % (esc(s['url']), esc(src_label(s['label'], en))) for s in xa['sources'])
+    srcs_b = ', '.join('<a href="%s" target="_blank" rel="noopener nofollow">%s</a>' % (esc(s['url']), esc(src_label(s['label'], en))) for s in xb['sources'])
+    if en:
+        title = '%s vs. %s: Income Tax and Capital Gains Compared (%s) | Money Compass Pro' % (na, nb, xb['checked'][:4])
+        desc = 'Compare taxes in %s (%s / %s) and %s (%s / %s): calculate your own upper estimate, sources and links to both country profiles.' % (na, ia, ca, nb, ib, cb)
+        body = ('<h2>Side-by-side overview</h2>%s'
+                '<div class="txgrid two"><div class="txc"><h3>%s</h3><p>%s</p><p class="note">Sources: %s · Checked %s</p></div>'
+                '<div class="txc"><h3>%s</h3><p>%s</p><p class="note">Sources: %s · Checked %s</p></div></div>'
+                '<p><a href="%s/">All %d countries: taxes by residence</a> · <a href="/en/expat-money-app/">Money app for expats and nomads</a></p>') % (
+                    table(d, True, [a, b], base), na, esc(xa['note'][1]), srcs_a, esc(xa['checked']),
+                    nb, esc(xb['note'][1]), srcs_b, esc(xb['checked']), base, len(d['countries']))
+        faqs = [('Do you pay less tax in %s than in %s?' % (nb, na), '%s uses %s for income and %s for capital gains (reference rates), while %s sits at %s and %s. Allowances, local rules and double tax treaties still decide your personal bill.' % (nb, ib, cb, na, ia, ca)),
+                ('When does tax liability in %s actually end?' % na, 'Merely travelling abroad does not automatically end tax residence. A permanent home, vital interests or exit tax rules may still apply. Check a tax adviser before moving.')]
+        return shell(True, url, alt, title, desc, 'Tax comparison · %s vs. %s' % (na, nb),
+                     'Taxes: %s vs. %s compared' % (na, nb),
+                     'Compare top income tax rates and reference capital gains rates between %s and %s directly with your own figures.' % (na, nb),
+                     calc_html(True, b, a), body, faqs, [('Money Compass Pro', BASE + '?lang=en'), ('Taxes by residence', BASE + EN_DIR + '/'), ('%s vs. %s' % (na, nb), url)])
+    title = '%s vs. %s: Einkommensteuer und Kapitalerträge im Vergleich (%s) | Geld-Kompass Pro' % (na, nb, xb['checked'][:4])
+    desc = 'Steuervergleich %s (%s / %s) vs. %s (%s / %s): eigene Beträge sofort durchrechnen, Quellen prüfen und Länderregeln vergleichen.' % (na, ia, ca, nb, ib, cb)
+    body = ('<h2>Direktvergleich der Steuersätze</h2>%s'
+            '<div class="txgrid two"><div class="txc"><h3>%s</h3><p>%s</p><p class="note">Quellen: %s · Geprüft %s</p></div>'
+            '<div class="txc"><h3>%s</h3><p>%s</p><p class="note">Quellen: %s · Geprüft %s</p></div></div>'
+            '<p><a href="%s/">Alle %d Länder: Steuern nach Wohnsitz</a> · <a href="/auswandern-finanzen/">Finanz-App für Auswanderer</a></p>') % (
+                table(d, False, [a, b], base), na, esc(xa['note'][0]), srcs_a, esc(xa['checked']),
+                nb, esc(xb['note'][0]), srcs_b, esc(xb['checked']), base, len(d['countries']))
+    faqs = [('Zahlt man in %s weniger Steuern als in %s?' % (nb, na), 'Im Ländervergleich liegen die Referenzwerte von %s bei %s (Einkommen) bzw. %s (Kapitalerträge), gegenüber %s bzw. %s in %s. Freibeträge, Progression und Doppelbesteuerungsabkommen zählen immer individuell.' % (nb, ib, cb, ia, ca, na)),
+            ('Endet die Steuerpflicht in %s mit dem Umzug sofort?' % na, 'Nicht automatisch. Eine behaltene Wohnung in %s, Wegzugsbesteuerung oder wirtschaftliche Bindungen können die Steuerpflicht weiter begründen. Lass deinen Wegzug vorab steuerlich prüfen.' % na)]
+    return shell(False, url, alt, title, desc, 'Steuervergleich · %s vs. %s' % (na, nb),
+                 'Steuern: %s vs. %s im Vergleich' % (na, nb),
+                 'Vergleiche Spitzensatz der Einkommensteuer und Referenzsatz für Kapitalerträge zwischen %s und %s direkt mit deinen eigenen Beträgen.' % (na, nb),
+                 calc_html(False, b, a), body, faqs, [('Geld-Kompass Pro', BASE), ('Steuern nach Wohnsitz', BASE + DE_DIR + '/'), ('%s vs. %s' % (na, nb), url)])
+
 def main():
     d = load()
     pub = dict(d); json.dump(pub, open(os.path.join(ROOT, 'data/tax-residence.json'), 'w'), ensure_ascii=False, separators=(',', ':'))
@@ -232,6 +295,10 @@ def main():
         for c, s in slugs.items():
             os.makedirs(os.path.join(ROOT, base, s), exist_ok=True)
             open(os.path.join(ROOT, base, s, 'index.html'), 'w').write(country(d, c, en)); n += 1
+        for a, b, sd, se in PAIRS:
+            s = se if en else sd
+            os.makedirs(os.path.join(ROOT, base, s), exist_ok=True)
+            open(os.path.join(ROOT, base, s, 'index.html'), 'w').write(pair_page(d, a, b, sd, se, en)); n += 1
     print('ok', n, 'Seiten')
 
 if __name__ == '__main__':
