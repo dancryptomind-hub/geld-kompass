@@ -6,9 +6,9 @@ const fs = require('fs');
 (async () => {
   const engine=process.env.GK_TEST_BROWSER==='webkit'?require('playwright').webkit:chromium; const base=process.env.GK_TEST_BASE||'http://localhost:8765'; const b = await engine.launch(); const bad = [];
   const cfg = fs.readFileSync(__dirname + '/../billing-config.js', 'utf8');
-  async function page(enabled, statusBody, plusEnabled = enabled) {
+  async function page(enabled, statusBody, plusEnabled = enabled, reportEnabled = plusEnabled) {
     const c = await b.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block', locale: 'de-DE' }); const p = await c.newPage(); p.errs = []; p.on('pageerror', e => p.errs.push(e.message));
-    await p.route('**/billing-config.js*', r => r.fulfill({ contentType: 'text/javascript', body: cfg.replace(/enabled: (true|false)/, 'enabled: '+enabled).replace(/plusEnabled: (true|false)/, 'plusEnabled: '+plusEnabled) }));
+    await p.route('**/billing-config.js*', r => r.fulfill({ contentType: 'text/javascript', body: cfg.replace(/enabled: (true|false)/, 'enabled: '+enabled).replace(/plusEnabled: (true|false)/, 'plusEnabled: '+plusEnabled).replace(/reportEnabled: (true|false)/, 'reportEnabled: '+reportEnabled) }));
     p.calls = [];
     await p.route('https://cwznthfefbeglamnwyry.supabase.co/functions/v1/**', r => { const u = r.request().url(); p.calls.push(u.split('/v1/')[1] + ' ' + (r.request().postData() || '')); if (/billing-checkout/.test(u)) return r.fulfill({ contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ url: 'https://checkout.stripe.com/c/pay/cs_test_mock' }) }); if (/billing-status/.test(u)) return r.fulfill({ contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(statusBody || {}) }); return r.fulfill({ status: 404, body: '{}' }); });
     await p.route('https://checkout.stripe.com/**', r => r.fulfill({ contentType: 'text/html', body: '<h1>Stripe Checkout (Test)</h1>' }));
@@ -73,7 +73,7 @@ const fs = require('fs');
     if (!/30 Tage kostenlos starten/.test(td) || !/ersten 30 Tage sind kostenlos/.test(td)) bad.push('Plus-Fenster zeigt das Gratis-Angebot nicht: ' + td); }
   p = await page(true, { kind: 'plus', status: 'trialing' });
   await p.goto(base + '/plus/danke/?lang=de&session_id=' + 'cs_test_' + 'd'.repeat(30)); await p.waitForTimeout(1500);
-  if (!/30 Tage Plus laufen/.test(await p.evaluate(() => document.getElementById('thxState').innerText))) bad.push('Danke-Seite: Testphase nicht bestätigt');
+  if (!/kostenlose Plus-Testzeit läuft/.test(await p.evaluate(() => document.getElementById('thxState').innerText))) bad.push('Danke-Seite: Testphase nicht bestätigt');
   await b.close();
   if (bad.length) { console.error('Bezahlweg FEHLER', bad); process.exit(1); }
   console.log('Bezahlweg: ausgeschaltet ohne Kaufknöpfe, Plus-Fenster (Jahr vorausgewählt, 39 € / 4,99 €), Anmeldung nötig, Arbeitsbuch-Checkout, Danke-Seite mit Download und Plus-Bestätigung, 30 Tage Plus gratis für Arbeitsbuch-Käufer');

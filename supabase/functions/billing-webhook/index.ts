@@ -2,14 +2,39 @@
 // Signatur wird geprüft, jedes Ereignis nur einmal verarbeitet (billing.webhook_events).
 import type Stripe from "npm:stripe@23.1.0";
 import { purchaseProduct } from "../_shared/fulfillment-policy.ts";
-import { stripe, cryptoProvider, sql, syncSubscription } from "../_shared/billing.ts";
+import { stripe, cryptoProvider, sql, syncSubscription, refreshEntitlement } from "../_shared/billing.ts";
 
 async function setPurchase(pi: string | null | undefined, status: string) {
   if (!pi) return;
   await sql()`select billing.block_payment(${pi}, ${status})`;
+  const affected = await sql()`select user_id from billing.plus_checkouts where payment_intent_id = ${pi}`;
+  for (const r of affected) if (r.user_id) await refreshEntitlement(r.user_id as string);
 }
 async function fulfill(s: Stripe.Checkout.Session) {
-  if (s.mode === "subscription") { const sub = typeof s.subscription === "string" ? s.subscription : s.subscription?.id; if (sub) await syncSubscription(sub); return; }
+  const intent = s.metadata?.gk_intent || s.metadata?.gk_plus_intent || "";
+  if (s.mode === "subscription") {
+    const sub = typeof s.subscription === "string" ? s.subscription : s.subscription?.id;
+    if (sub) {
+      await syncSubscription(sub);
+      if (intent && /^[0-9a-f-]{36}$/.test(intent)) {
+        await sql()`update billing.plus_checkouts set state = 'complete', checkout_session_id = ${s.id} where id = ${intent}::uuid and item in ('plus_monthly','plus_yearly')`;
+      }
+    }
+    return;
+  }
+  if (s.mode === "payment" && intent && ["plus_5y", "plus_10y"].includes(s.metadata?.gk_item || "")) {
+    if (!["paid", "no_payment_required"].includes(s.payment_status)) return;
+    const pi = (typeof s.payment_intent === "string" ? s.payment_intent : s.payment_intent?.id) || s.id;
+    let paidAt = new Date((s.created || Math.floor(Date.now() / 1000)) * 1000);
+    if (pi.startsWith("pi_")) {
+      const payment = await stripe().paymentIntents.retrieve(pi, { expand: ["latest_charge"] }).catch(() => null);
+      const charge = payment?.latest_charge;
+      if (charge && typeof charge !== "string" && charge.paid && charge.created) paidAt = new Date(charge.created * 1000);
+    }
+    const rows = await sql()`select billing.fulfill_plus_checkout(${intent}::uuid, ${s.id}, ${pi}, ${paidAt}) as uid`;
+    if (rows[0]?.uid) await refreshEntitlement(rows[0].uid as string);
+    return;
+  }
   const product = purchaseProduct(s);
   if (!product) return; // Keine Freigabe für unbezahlte oder fremde Checkout-Sitzungen.
   const pi = typeof s.payment_intent === "string" ? s.payment_intent : s.payment_intent?.id || null;
@@ -40,8 +65,23 @@ Deno.serve(async (req) => {
       case "checkout.session.completed":
       case "checkout.session.async_payment_succeeded":
         await fulfill(o as Stripe.Checkout.Session); break;
-      case "checkout.session.async_payment_failed":
-        await db`update billing.purchases set status = 'failed' where checkout_session_id = ${(o as Stripe.Checkout.Session).id} and status = 'open'`; break;
+      case "checkout.session.expired": {
+        const sess = o as Stripe.Checkout.Session;
+        const intent = sess.metadata?.gk_intent || sess.metadata?.gk_plus_intent || "";
+        if (intent && /^[0-9a-f-]{36}$/.test(intent)) {
+          await db`update billing.plus_checkouts set state = 'expired' where id = ${intent}::uuid and (checkout_session_id is null or checkout_session_id = ${sess.id}) and state in ('reserved','pending')`;
+        }
+        break;
+      }
+      case "checkout.session.async_payment_failed": {
+        const sess = o as Stripe.Checkout.Session;
+        const intent = sess.metadata?.gk_intent || sess.metadata?.gk_plus_intent || "";
+        await db`update billing.purchases set status = 'failed' where checkout_session_id = ${sess.id} and status = 'open'`;
+        if (intent && /^[0-9a-f-]{36}$/.test(intent)) {
+          await db`update billing.plus_checkouts set state = 'failed' where id = ${intent}::uuid and state in ('reserved','pending')`;
+        }
+        break;
+      }
       case "customer.subscription.created":
       case "customer.subscription.updated":
       case "customer.subscription.deleted":

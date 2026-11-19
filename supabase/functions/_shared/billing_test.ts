@@ -6,6 +6,9 @@ function eq(a: unknown, b: unknown, msg: string) { if (JSON.stringify(a) !== JSO
 Deno.test("Katalog: nur eigene Einträge, keine Prototyp-Namen", () => {
   for (const bad of ["constructor", "__proto__", "toString", "hasOwnProperty", "", null, 5, {}]) eq(catalogItem(bad), null, "akzeptiert " + String(bad));
   eq(catalogItem("plus_monthly")?.c.amount, 499, "Preis Plus Monat");
+  eq(catalogItem("plus_yearly")?.c.amount, 3900, "Preis Plus Jahr");
+  eq(catalogItem("plus_5y")?.c.amount, 14900, "Preis Plus 5 Jahre");
+  eq(catalogItem("plus_10y")?.c.amount, 24900, "Preis Plus 10 Jahre");
   eq(catalogItem("workbook")?.c.amount, 999, "Preis Arbeitsbuch");
 });
 

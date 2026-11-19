@@ -11,11 +11,18 @@ Deno.serve(handle(async (req) => {
   if (!/^cs_live_[A-Za-z0-9]{20,}$/.test(id)) throw new HttpError(400, "bad_session");
   const rows = await sql()`select product, status from billing.purchases where checkout_session_id = ${id}`;
   if (!rows[0]) {
+    const pass = await sql()`select item, state, blocked_status, access_until, trial_days from billing.plus_checkouts where checkout_session_id = ${id}`;
+    if (pass[0]?.access_until) {
+      return json(req, { kind: "plus", status: pass[0].blocked_status ? pass[0].blocked_status : (new Date(pass[0].access_until as string).getTime() > Date.now() ? "active" : "expired") });
+    }
     const s = await stripe().checkout.sessions.retrieve(id);
     if (s.mode === "subscription") {
       const sub = typeof s.subscription === "string" ? s.subscription : s.subscription?.id;
       const live = sub ? await sql()`select status from billing.subscriptions where stripe_subscription_id = ${sub}` : [];
-      return json(req, { kind: "plus", status: live[0]?.status || (s.status === "complete" ? "processing" : s.status) });
+      return json(req, { kind: "plus", trialDays: Number(pass[0]?.trial_days) || 0, status: live[0]?.status || (s.status === "complete" ? "processing" : s.status) });
+    }
+    if (["plus_5y", "plus_10y"].includes(s.metadata?.gk_item || "")) {
+      return json(req, { kind: "plus", status: pass[0]?.blocked_status ? pass[0].blocked_status : (pass[0]?.state === "complete" ? "active" : (s.status === "complete" ? "processing" : s.status)) });
     }
     throw new HttpError(404, "not_found");
   }

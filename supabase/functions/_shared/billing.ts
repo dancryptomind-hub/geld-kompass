@@ -100,12 +100,15 @@ export function handle(fn: (req: Request) => Promise<Response>) {
    Beide Kategorien sind für Managed Payments (Stripe als Verkäufer, übernimmt EU-Umsatzsteuer) zulässig. */
 export const PRODUCTS: Record<string, { name: string; description: string; tax_code?: string }> = {
   gk_plus: { name: "Geld-Kompass Plus", description: "Alle Plus-Funktionen: Entnahmeplan, Dividendenkalender, Steuer- und Nomaden-Modus, Kursalarme, eigene Schnellleiste.", tax_code: "txcd_10103000" },
+  gk_plus_pass: { name: "Geld-Kompass Plus · Einmal-Pass", description: "Voller Zugang zu allen Plus-Funktionen für den gewählten Zeitraum ohne automatische Verlängerung.", tax_code: "txcd_10103000" },
   gk_workbook_de: { name: "Arbeitsbuch „Der einfache Weg zur Finanziellen Freiheit“ (PDF)", description: "71 Seiten Übungen zu allen 16 Kapiteln, digital zum Ausdrucken oder Beschriften.", tax_code: "txcd_10302000" },
   gk_freedom_report: { name: "Freiheits-Report (PDF)", description: "Dein persönlicher Report aus deinen Geld-Kompass-Zahlen, erstellt auf deinem Gerät.", tax_code: "txcd_10701411" },
 };
 export const CATALOG: Record<string, { lookup: string; product: string; amount: number; interval?: "month" | "year"; mode: "subscription" | "payment"; needsUser: boolean; enabledEnv?: string }> = {
   plus_monthly: { lookup: "gk_plus_monthly_eur", product: "gk_plus", amount: 499, interval: "month", mode: "subscription", needsUser: true },
   plus_yearly: { lookup: "gk_plus_yearly_eur", product: "gk_plus", amount: 3900, interval: "year", mode: "subscription", needsUser: true },
+  plus_5y: { lookup: "gk_plus_5y_eur", product: "gk_plus_pass", amount: 14900, mode: "payment", needsUser: true },
+  plus_10y: { lookup: "gk_plus_10y_eur", product: "gk_plus_pass", amount: 24900, mode: "payment", needsUser: true },
   workbook: { lookup: "gk_workbook_de_eur", product: "gk_workbook_de", amount: 999, mode: "payment", needsUser: false },
   report: { lookup: "gk_freedom_report_eur", product: "gk_freedom_report", amount: 1499, mode: "payment", needsUser: false },
 };
@@ -203,8 +206,17 @@ export async function syncSubscription(subId: string) {
 export async function refreshEntitlement(userId: string) {
   const rows = await sql()`select status, interval, current_period_end, cancel_at_period_end from billing.subscriptions where user_id = ${userId} order by current_period_end desc nulls last`;
   const live = rows.find((r) => ["active", "trialing", "past_due"].includes(r.status as string));
-  const until = live?.current_period_end ? new Date(live.current_period_end as Date).getTime() + 3 * 864e5 : 0; // 3 Tage Kulanz für Zahlungswiederholungen
-  const gk_plus = live ? { active: true, status: live.status, interval: live.interval, until, cancel_at_period_end: !!live.cancel_at_period_end } : { active: false, status: rows[0]?.status || "none", until: 0 };
+  const passes = await sql()`select item, access_until from billing.plus_checkouts where user_id = ${userId} and state = 'complete' and blocked_status is null and access_until > now() order by access_until desc limit 1`;
+  const pass = passes[0];
+  let gk_plus;
+  if (live) {
+    const until = live.current_period_end ? new Date(live.current_period_end as Date).getTime() + 3 * 864e5 : 0; // 3 Tage Kulanz für Zahlungswiederholungen
+    gk_plus = { active: true, status: live.status, interval: live.interval, until, cancel_at_period_end: !!live.cancel_at_period_end };
+  } else if (pass) {
+    gk_plus = { active: true, status: "active", interval: pass.item === "plus_10y" ? "10y" : "5y", until: new Date(pass.access_until as Date).getTime(), cancel_at_period_end: true };
+  } else {
+    gk_plus = { active: false, status: rows[0]?.status || "none", until: 0 };
+  }
   const { data } = await admin().auth.admin.getUserById(userId);
   const meta = { ...(data?.user?.app_metadata || {}), gk_plus };
   await admin().auth.admin.updateUserById(userId, { app_metadata: meta });
