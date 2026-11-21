@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-21T14:58:03+00:00",
+ "updated": "2026-11-21T16:55:03+00:00",
  "status": "live",
  "currency": "EUR",
  "inflation": {
@@ -9,7 +9,7 @@
    "source": "Eurostat · HVPI",
    "series": "prc_hicp_minr",
    "unit": "Veränderung zum Vorjahresmonat in %",
-   "checked": "2026-11-21T14:58:02+00:00",
+   "checked": "2026-11-21T16:55:01+00:00",
    "sourceUpdated": "2026-11-18T11:00:00+0100",
    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_minr?lang=DE&freq=M&unit=RCH_A&coicop18=TOTAL&geo=DE&lastTimePeriod=12"
   },
@@ -19,7 +19,7 @@
    "source": "Eurostat · HVPI",
    "series": "prc_hicp_minr",
    "unit": "Veränderung zum Vorjahresmonat in %",
-   "checked": "2026-11-21T14:58:03+00:00",
+   "checked": "2026-11-21T16:55:03+00:00",
    "sourceUpdated": "2026-11-18T11:00:00+0100",
    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_minr?lang=DE&freq=M&unit=RCH_A&coicop18=TOTAL&geo=EA&lastTimePeriod=12"
   },
@@ -29,7 +29,7 @@
    "source": "Eurostat · HVPI",
    "series": "prc_hicp_minr",
    "unit": "Veränderung zum Vorjahresmonat in %",
-   "checked": "2026-11-21T14:58:03+00:00",
+   "checked": "2026-11-21T16:55:02+00:00",
    "sourceUpdated": "2026-11-18T11:00:00+0100",
    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_minr?lang=DE&freq=M&unit=RCH_A&coicop18=TOTAL&geo=AT&lastTimePeriod=12"
   },
@@ -39,7 +39,7 @@
    "source": "U.S. Bureau of Labor Statistics · CPI-U (über FRED, CPIAUCNS)",
    "series": "US",
    "unit": "Veränderung zum Vorjahresmonat in %",
-   "checked": "2026-11-21T14:58:07+00:00",
+   "checked": "2026-11-21T16:55:10+00:00",
    "url": "https://fred.stlouisfed.org/series/CPIAUCNS"
   },
   "UK": {
@@ -48,7 +48,7 @@
    "source": "Office for National Statistics · CPI (D7BT, 2015 = 100)",
    "series": "UK",
    "unit": "Veränderung zum Vorjahresmonat in %",
-   "checked": "2026-11-21T14:58:07+00:00",
+   "checked": "2026-11-21T16:55:10+00:00",
    "url": "https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/d7bt/mm23"
   }
  },
@@ -925,7 +925,7 @@
    "t": "Krypto",
    "cg": "bitcoin",
    "a": "btc",
-   "p": 54939
+   "p": 54696
   },
   {
    "s": "ETH-EUR",
@@ -933,7 +933,7 @@
    "t": "Krypto",
    "cg": "ethereum",
    "a": "eth ether",
-   "p": 1537.61
+   "p": 1533.47
   },
   {
    "s": "SOL-EUR",
@@ -949,7 +949,7 @@
    "t": "Krypto",
    "cg": "ripple",
    "a": "ripple",
-   "p": 0.847476
+   "p": 0.846756
   },
   {
    "s": "BNB-EUR",
@@ -957,7 +957,7 @@
    "t": "Krypto",
    "cg": "binancecoin",
    "a": "binance",
-   "p": 498.55
+   "p": 498.08
   },
   {
    "s": "ADA-EUR",
@@ -965,7 +965,7 @@
    "t": "Krypto",
    "cg": "cardano",
    "a": "ada",
-   "p": 0.131913
+   "p": 0.131851
   },
   {
    "s": "DOGE-EUR",
@@ -973,7 +973,7 @@
    "t": "Krypto",
    "cg": "dogecoin",
    "a": "doge",
-   "p": 0.050455
+   "p": 0.050188
   },
   {
    "s": "LINK-EUR",
@@ -981,7 +981,7 @@
    "t": "Krypto",
    "cg": "chainlink",
    "a": "link",
-   "p": 7.89
+   "p": 7.84
   },
   {
    "s": "DOT-EUR",
@@ -989,7 +989,7 @@
    "t": "Krypto",
    "cg": "polkadot",
    "a": "dot",
-   "p": 0.604254
+   "p": 0.598769
   },
   {
    "s": "AVAX-EUR",
@@ -997,7 +997,7 @@
    "t": "Krypto",
    "cg": "avalanche-2",
    "a": "avax",
-   "p": 6.05
+   "p": 6.03
   },
   {
    "s": "LTC-EUR",
@@ -1005,7 +1005,7 @@
    "t": "Krypto",
    "cg": "litecoin",
    "a": "ltc",
-   "p": 36.71
+   "p": 36.31
   },
   {
    "s": "USDT-EUR",
@@ -1014,7 +1014,7 @@
    "i": "",
    "a": "tether usdt stablecoin dollar",
    "cg": "tether",
-   "p": 0.910622
+   "p": 0.91041
   },
   {
    "s": "PM",
@@ -2828,8 +2828,8 @@
    "CLP": 1079.05004883,
    "COP": 3560.10009766,
    "PEN": 3.63339996,
-   "BTC": 1.8186685e-05,
-   "ETH": 0.000648861882
+   "BTC": 1.8240526e-05,
+   "ETH": 0.000650512278
   },
   "change": {
    "USD": -0.02,
@@ -2881,8 +2881,8 @@
    "CLP": 0.96,
    "COP": 1.82,
    "PEN": 0.23,
-   "BTC": -2.54,
-   "ETH": -4.24
+   "BTC": -2.26,
+   "ETH": -3.99
   },
   "src": {
    "USD": "yahoo",
@@ -2941,28 +2941,28 @@
    "BTC": "yahoo",
    "ETH": "yahoo"
   },
-  "updated": "2026-11-21T14:58:07+00:00",
+  "updated": "2026-11-21T16:55:10+00:00",
   "source": "Yahoo Finance (yfinance): Forex-Paare EURxxx=X, Krypto XXX-EUR; Ergänzung: open.er-api.com"
  },
  "metals": {
   "GOLD-G": {
    "p": 103.0315,
-   "updated": "2026-11-21T14:58:07+00:00",
+   "updated": "2026-11-21T16:55:10+00:00",
    "source": "Yahoo Finance (GC=F), USD je Unze in EUR je Gramm"
   },
   "SILVER-G": {
    "p": 1.2027,
-   "updated": "2026-11-21T14:58:07+00:00",
+   "updated": "2026-11-21T16:55:10+00:00",
    "source": "Yahoo Finance (SI=F), USD je Unze in EUR je Gramm"
   },
   "PLATIN-G": {
    "p": 37.7905,
-   "updated": "2026-11-21T14:58:07+00:00",
+   "updated": "2026-11-21T16:55:10+00:00",
    "source": "Yahoo Finance (PL=F), USD je Unze in EUR je Gramm"
   },
   "PALLAD-G": {
    "p": 26.1345,
-   "updated": "2026-11-21T14:58:07+00:00",
+   "updated": "2026-11-21T16:55:10+00:00",
    "source": "Yahoo Finance (PA=F), USD je Unze in EUR je Gramm"
   }
  }
