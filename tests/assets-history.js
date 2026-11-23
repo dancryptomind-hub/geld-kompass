@@ -1,6 +1,11 @@
 /* Konten und Besitz: Buchungsverlauf (Zinsen zählen als Einnahme), Immobilie mit Miete und Kosten, passive Einnahmen ohne Gehalt, Investiert zeigt Bestand. */
 const { chromium } = require('playwright');
+const fs = require('fs');
+const path = require('path');
 (async () => {
+  const instruments = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'scripts', 'instruments.json'), 'utf8'));
+  const expectedInternational = ['MAIN','BATS.L','FTS.TO','BCE.TO','9432.T','8058.T','0941.HK','2330.TW'];
+  const listed = new Set(instruments.map(x => x.s));
   const b = await chromium.launch(); const p = await b.newPage({ viewport: { width: 1280, height: 900 } }); const errs = []; p.on('pageerror', e => errs.push(e.message));
   await p.goto((process.env.BASE||'http://localhost:8765')+'/app/?lang=de#overview'); await p.waitForTimeout(1200);
   await p.evaluate(() => {
@@ -28,6 +33,7 @@ const { chromium } = require('playwright');
   const k1 = await p.evaluate(() => document.querySelector('#kpis').innerText);
   await b.close();
   const bad = [], f = x => x.replace(/\n/g, ' | ');
+  expectedInternational.forEach(s => { if (!listed.has(s)) bad.push('Internationaler Dividendentitel fehlt: ' + s); });
   if (!/Investiert \(Bestand\)\s*6\.000/.test(k0)) bad.push('Investiert sollte den Depotbestand 6.000 € zeigen: ' + f(k0));
   if (st.val !== 10025 || !/open:10000,int:25/.test(st.tx)) bad.push('Tagesgeld-Verlauf falsch: ' + JSON.stringify(st));
   if (!reVisible) bad.push('Immobilien-Felder werden nicht angezeigt');

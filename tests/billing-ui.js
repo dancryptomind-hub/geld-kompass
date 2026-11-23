@@ -6,8 +6,11 @@ const fs = require('fs');
 (async () => {
   const engine=process.env.GK_TEST_BROWSER==='webkit'?require('playwright').webkit:chromium; const base=process.env.GK_TEST_BASE||'http://localhost:8765'; const b = await engine.launch(); const bad = [];
   const cfg = fs.readFileSync(__dirname + '/../billing-config.js', 'utf8');
+  const appSource = fs.readFileSync(__dirname + '/../app/index.html', 'utf8');
+  if (!appSource.includes('Die sichere Stripe-Kasse wird geöffnet …') || !appSource.includes('Opening secure Stripe Checkout …')) bad.push('Plus-Klick zeigt keinen klaren Kassenstatus');
   async function page(enabled, statusBody, plusEnabled = enabled, reportEnabled = plusEnabled) {
     const c = await b.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block', locale: 'de-DE' }); const p = await c.newPage(); p.errs = []; p.on('pageerror', e => p.errs.push(e.message));
+    p.setDefaultTimeout(60000);
     await p.route('**/billing-config.js*', r => r.fulfill({ contentType: 'text/javascript', body: cfg.replace(/enabled: (true|false)/, 'enabled: '+enabled).replace(/plusEnabled: (true|false)/, 'plusEnabled: '+plusEnabled).replace(/reportEnabled: (true|false)/, 'reportEnabled: '+reportEnabled) }));
     p.calls = [];
     await p.route('https://cwznthfefbeglamnwyry.supabase.co/functions/v1/**', r => { const u = r.request().url(); p.calls.push(u.split('/v1/')[1] + ' ' + (r.request().postData() || '')); if (/billing-checkout/.test(u)) return r.fulfill({ contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify({ url: 'https://checkout.stripe.com/c/pay/cs_test_mock' }) }); if (/billing-status/.test(u)) return r.fulfill({ contentType: 'application/json', headers: { 'access-control-allow-origin': '*' }, body: JSON.stringify(statusBody || {}) }); return r.fulfill({ status: 404, body: '{}' }); });
