@@ -40,9 +40,8 @@ const fs = require('fs');
   await p.goto(base + '/app/?lang=de#plus'); await p.waitForTimeout(1500);
   if (p.errs.length) console.log('ERRS', p.errs); d = await p.evaluate(() => { const x = document.getElementById('plusDlg'); if (!x) return { yearly: false, text: 'kein Dialog ' + location.hash + ' ' + !!window.GK_BILLING }; return { yearly: x.querySelector('input[value=plus_yearly]').checked, text: x.innerText }; });
   if (!d.yearly || !/39,00\s€ pro Jahr/.test(d.text) || !/4,99\s€ pro Monat/.test(d.text) || !/3,25\s€ im Monat/.test(d.text)) bad.push('Plus-Fenster Preise/Vorauswahl falsch: ' + d.text.replace(/\n/g, ' | ').slice(0, 300));
-  await p.click('#plusGo'); await p.waitForTimeout(800);
-  const login = await p.evaluate(() => document.getElementById('plusMsg').innerText);
-  if (!/melde dich zuerst an|Plus hängt an deinem kostenlosen Konto/.test(login)) bad.push('Ohne Konto kein Anmelde-Hinweis: ' + login);
+  await p.click('#plusGo');
+  await p.waitForURL(/\/konto\/?\?.*mode=signup/, { timeout: 5000 }).catch(() => bad.push('Ohne Konto keine direkte Weiterleitung zur Registrierung: ' + p.url()));
   if (p.calls.some(c => /billing-checkout/.test(c))) bad.push('Plus-Checkout ohne Konto aufgerufen');
   // Arbeitsbuch als Gast → Stripe Checkout
   await p.goto(base + '/arbeitsbuch/'); await p.waitForTimeout(600);
