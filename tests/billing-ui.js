@@ -1,5 +1,5 @@
 /* Bezahlweg (Stripe über Supabase Edge Functions), mit nachgestellten Server-Antworten:
-   ausgeschaltet keine Kaufknöpfe, eingeschaltet Plus-Fenster (Jahr vorausgewählt), Anmelde-Hinweis ohne Konto,
+   ausgeschaltet keine Kaufknöpfe, eingeschaltet Plus-Fenster (Jahr vorausgewählt), direkte Registrierung ohne Konto,
    Weiterleitung zur Stripe-Checkout-Seite, Danke-Seite für Plus und Arbeitsbuch-Download, Arbeitsbuch-Kaufknopf. */
 const { chromium } = require('playwright');
 const fs = require('fs');
@@ -7,7 +7,7 @@ const fs = require('fs');
   const engine=process.env.GK_TEST_BROWSER==='webkit'?require('playwright').webkit:chromium; const base=process.env.GK_TEST_BASE||'http://localhost:8765'; const b = await engine.launch(); const bad = [];
   const cfg = fs.readFileSync(__dirname + '/../billing-config.js', 'utf8');
   const appSource = fs.readFileSync(__dirname + '/../app/index.html', 'utf8');
-  if (!appSource.includes('Die sichere Stripe-Kasse wird geöffnet …') || !appSource.includes('Opening secure Stripe Checkout …')) bad.push('Plus-Klick zeigt keinen klaren Kassenstatus');
+  if (!appSource.includes('Stripe wird geöffnet …') || !appSource.includes('Opening Stripe …') || !appSource.includes('Dein gewählter Tarif wird sicher vorbereitet.')) bad.push('Plus-Klick zeigt keinen klaren Kassenstatus');
   async function page(enabled, statusBody, plusEnabled = enabled, reportEnabled = plusEnabled) {
     const c = await b.newContext({ viewport: { width: 1280, height: 900 }, serviceWorkers: 'block', locale: 'de-DE' }); const p = await c.newPage(); p.errs = []; p.on('pageerror', e => p.errs.push(e.message));
     p.setDefaultTimeout(60000);
@@ -41,7 +41,7 @@ const fs = require('fs');
   if (p.errs.length) console.log('ERRS', p.errs); d = await p.evaluate(() => { const x = document.getElementById('plusDlg'); if (!x) return { yearly: false, text: 'kein Dialog ' + location.hash + ' ' + !!window.GK_BILLING }; return { yearly: x.querySelector('input[value=plus_yearly]').checked, text: x.innerText }; });
   if (!d.yearly || !/39,00\s€ pro Jahr/.test(d.text) || !/4,99\s€ pro Monat/.test(d.text) || !/3,25\s€ im Monat/.test(d.text)) bad.push('Plus-Fenster Preise/Vorauswahl falsch: ' + d.text.replace(/\n/g, ' | ').slice(0, 300));
   await p.click('#plusGo');
-  await p.waitForURL(/\/konto\/?\?.*mode=signup/, { timeout: 5000 }).catch(() => bad.push('Ohne Konto keine direkte Weiterleitung zur Registrierung: ' + p.url()));
+  await p.waitForURL(/\/konto\/?\?.*(action|mode)=signup/, { timeout: 5000 }).catch(() => bad.push('Ohne Konto keine direkte Weiterleitung zur Registrierung: ' + p.url()));
   if (p.calls.some(c => /billing-checkout/.test(c))) bad.push('Plus-Checkout ohne Konto aufgerufen');
   // Arbeitsbuch als Gast → Stripe Checkout
   await p.goto(base + '/arbeitsbuch/'); await p.waitForTimeout(600);
@@ -72,7 +72,7 @@ const fs = require('fs');
   if (!tg.includes('trial=' + sid) || !/30 Tage kostenlos/.test(await p.evaluate(() => document.getElementById('thxState').innerText))) bad.push('Danke-Seite ohne 30-Tage-Angebot: ' + tg);
   else { await p.goto(base + '' + tg); await p.waitForTimeout(1500);
     const td = await p.evaluate(() => { const x = document.getElementById('plusDlg'); return x ? x.querySelector('#plusGo').innerText + ' | ' + ((x.querySelector('.plustrial') || {}).innerText || '') : 'kein Dialog'; });
-    if (!/30 Tage kostenlos starten/.test(td) || !/ersten 30 Tage sind kostenlos/.test(td)) bad.push('Plus-Fenster zeigt das Gratis-Angebot nicht: ' + td); }
+    if (!/Kostenloses Konto erstellen/.test(td) || !/ersten 30 Tage sind kostenlos/.test(td)) bad.push('Plus-Fenster führt Gast mit Gratis-Angebot nicht zuerst zum Konto: ' + td); }
   p = await page(true, { kind: 'plus', status: 'trialing' });
   await p.goto(base + '/plus/danke/?lang=de&session_id=' + 'cs_test_' + 'd'.repeat(30)); await p.waitForTimeout(1500);
   if (!/kostenlose Plus-Testzeit läuft/.test(await p.evaluate(() => document.getElementById('thxState').innerText))) bad.push('Danke-Seite: Testphase nicht bestätigt');
