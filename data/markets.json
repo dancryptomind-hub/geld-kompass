@@ -1,5 +1,5 @@
 {
- "updated": "2026-11-26T17:18:02+00:00",
+ "updated": "2026-11-26T19:10:38+00:00",
  "status": "live",
  "currency": "EUR",
  "inflation": {
@@ -9,7 +9,7 @@
    "source": "Eurostat · HVPI",
    "series": "prc_hicp_minr",
    "unit": "Veränderung zum Vorjahresmonat in %",
-   "checked": "2026-11-26T17:18:01+00:00",
+   "checked": "2026-11-26T19:10:37+00:00",
    "sourceUpdated": "2026-11-18T11:00:00+0100",
    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_minr?lang=DE&freq=M&unit=RCH_A&coicop18=TOTAL&geo=DE&lastTimePeriod=12"
   },
@@ -19,7 +19,7 @@
    "source": "Eurostat · HVPI",
    "series": "prc_hicp_minr",
    "unit": "Veränderung zum Vorjahresmonat in %",
-   "checked": "2026-11-26T17:18:02+00:00",
+   "checked": "2026-11-26T19:10:38+00:00",
    "sourceUpdated": "2026-11-18T11:00:00+0100",
    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_minr?lang=DE&freq=M&unit=RCH_A&coicop18=TOTAL&geo=EA&lastTimePeriod=12"
   },
@@ -29,7 +29,7 @@
    "source": "Eurostat · HVPI",
    "series": "prc_hicp_minr",
    "unit": "Veränderung zum Vorjahresmonat in %",
-   "checked": "2026-11-26T17:18:01+00:00",
+   "checked": "2026-11-26T19:10:37+00:00",
    "sourceUpdated": "2026-11-18T11:00:00+0100",
    "url": "https://ec.europa.eu/eurostat/api/dissemination/statistics/1.0/data/prc_hicp_minr?lang=DE&freq=M&unit=RCH_A&coicop18=TOTAL&geo=AT&lastTimePeriod=12"
   },
@@ -39,7 +39,7 @@
    "source": "U.S. Bureau of Labor Statistics · CPI-U (über FRED, CPIAUCNS)",
    "series": "US",
    "unit": "Veränderung zum Vorjahresmonat in %",
-   "checked": "2026-11-26T17:18:06+00:00",
+   "checked": "2026-11-26T19:10:42+00:00",
    "url": "https://fred.stlouisfed.org/series/CPIAUCNS"
   },
   "UK": {
@@ -48,7 +48,7 @@
    "source": "Office for National Statistics · CPI (D7BT, 2015 = 100)",
    "series": "UK",
    "unit": "Veränderung zum Vorjahresmonat in %",
-   "checked": "2026-11-26T17:18:06+00:00",
+   "checked": "2026-11-26T19:10:42+00:00",
    "url": "https://www.ons.gov.uk/economy/inflationandpriceindices/timeseries/d7bt/mm23"
   }
  },
@@ -904,7 +904,7 @@
    "i": "DK0062498333",
    "a": "pharma",
    "de": "NOV",
-   "p": 37.06,
+   "p": 37.0628,
    "r": 10.7,
    "ry": 9.9
   },
@@ -916,7 +916,7 @@
    "a": "nestle dividende",
    "r": 4.9,
    "de": "NESR",
-   "p": 95.7226,
+   "p": 95.7401,
    "ry": 9.9
   },
   {
@@ -925,7 +925,7 @@
    "t": "Krypto",
    "cg": "bitcoin",
    "a": "btc",
-   "p": 55130
+   "p": 55110
   },
   {
    "s": "ETH-EUR",
@@ -933,7 +933,7 @@
    "t": "Krypto",
    "cg": "ethereum",
    "a": "eth ether",
-   "p": 1542.59
+   "p": 1549.1
   },
   {
    "s": "SOL-EUR",
@@ -941,7 +941,7 @@
    "t": "Krypto",
    "cg": "solana",
    "a": "sol",
-   "p": 64.7
+   "p": 64.93
   },
   {
    "s": "XRP-EUR",
@@ -949,7 +949,7 @@
    "t": "Krypto",
    "cg": "ripple",
    "a": "ripple",
-   "p": 0.865736
+   "p": 0.868127
   },
   {
    "s": "BNB-EUR",
@@ -957,7 +957,7 @@
    "t": "Krypto",
    "cg": "binancecoin",
    "a": "binance",
-   "p": 502.64
+   "p": 504.25
   },
   {
    "s": "ADA-EUR",
@@ -965,7 +965,7 @@
    "t": "Krypto",
    "cg": "cardano",
    "a": "ada",
-   "p": 0.135582
+   "p": 0.137082
   },
   {
    "s": "DOGE-EUR",
@@ -973,7 +973,7 @@
    "t": "Krypto",
    "cg": "dogecoin",
    "a": "doge",
-   "p": 0.051626
+   "p": 0.051856
   },
   {
    "s": "LINK-EUR",
@@ -981,7 +981,7 @@
    "t": "Krypto",
    "cg": "chainlink",
    "a": "link",
-   "p": 8.37
+   "p": 8.45
   },
   {
    "s": "DOT-EUR",
@@ -989,7 +989,7 @@
    "t": "Krypto",
    "cg": "polkadot",
    "a": "dot",
-   "p": 0.609478
+   "p": 0.614041
   },
   {
    "s": "AVAX-EUR",
@@ -997,7 +997,7 @@
    "t": "Krypto",
    "cg": "avalanche-2",
    "a": "avax",
-   "p": 6.01
+   "p": 6.06
   },
   {
    "s": "LTC-EUR",
@@ -1005,7 +1005,7 @@
    "t": "Krypto",
    "cg": "litecoin",
    "a": "ltc",
-   "p": 39.56
+   "p": 39.53
   },
   {
    "s": "USDT-EUR",
@@ -1014,7 +1014,7 @@
    "i": "",
    "a": "tether usdt stablecoin dollar",
    "cg": "tether",
-   "p": 0.910685
+   "p": 0.910654
   },
   {
    "s": "PM",
@@ -1053,7 +1053,7 @@
    "a": "gauloises west davidoff tabak",
    "r": -0.2,
    "de": "ITB",
-   "p": 40.9815,
+   "p": 40.9849,
    "ry": 9.9
   },
   {
@@ -1063,7 +1063,7 @@
    "a": "camel winston tabak",
    "r": 9.5,
    "de": "JATA",
-   "p": 32.2052,
+   "p": 32.2125,
    "ry": 9.9
   },
   {
@@ -1092,7 +1092,7 @@
    "t": "Aktie",
    "a": "bier tuborg holsten",
    "r": 8.0,
-   "p": 134.9399,
+   "p": 134.95,
    "ry": 9.9
   },
   {
@@ -1102,7 +1102,7 @@
    "a": "johnnie walker smirnoff guinness baileys whisky",
    "r": -0.8,
    "de": "GUI",
-   "p": 23.2611,
+   "p": 23.263,
    "ry": 9.9
   },
   {
@@ -1240,7 +1240,7 @@
    "a": "switch",
    "r": 17.1,
    "de": "NTO",
-   "p": 51.3944,
+   "p": 51.4061,
    "ry": 9.9
   },
   {
@@ -1287,7 +1287,7 @@
    "t": "Aktie",
    "a": "mode kleidung",
    "r": 1.1,
-   "p": 16.3359,
+   "p": 16.347,
    "ry": 9.9
   },
   {
@@ -1512,7 +1512,7 @@
    "t": "ETF",
    "a": "ftse 100 uk großbritannien britische aktien",
    "i": "IE0005042456",
-   "p": 12.39,
+   "p": 12.391,
    "r": 4.1,
    "ry": 9.9
   },
@@ -1521,8 +1521,8 @@
    "n": "iShares S&P/TSX 60",
    "t": "ETF",
    "a": "kanada canada tsx kanadische aktien",
-   "p": 33.0021,
-   "r": 11.8,
+   "p": 33.0238,
+   "r": 11.9,
    "ry": 9.9
   },
   {
@@ -1702,8 +1702,8 @@
    "t": "Aktie",
    "a": "barrick gold bergbau mining kanada goldmine",
    "de": "ABR0",
-   "p": 31.7739,
-   "r": 11.0,
+   "p": 31.8727,
+   "r": 11.1,
    "ry": 9.9
   },
   {
@@ -1822,8 +1822,8 @@
    "t": "Aktie",
    "a": "first quantum kupfer copper bergbau kanada",
    "de": "IZ1",
-   "p": 16.4723,
-   "r": 7.0,
+   "p": 16.6206,
+   "r": 7.1,
    "ry": 9.9
   },
   {
@@ -1832,8 +1832,8 @@
    "t": "Aktie",
    "a": "ivanhoe kupfer copper bergbau kanada",
    "de": "IYAA",
-   "p": 3.9789,
-   "r": 9.5,
+   "p": 4.0672,
+   "r": 9.7,
    "ry": 9.9
   },
   {
@@ -1842,8 +1842,8 @@
    "t": "Aktie",
    "a": "lundin kupfer bergbau kanada",
    "de": "GXD",
-   "p": 15.0649,
-   "r": 16.9,
+   "p": 15.1593,
+   "r": 17.0,
    "ry": 9.9
   },
   {
@@ -1901,7 +1901,7 @@
    "t": "Aktie",
    "a": "bhp bergbau mining australien eisenerz kupfer",
    "de": "BHP1",
-   "p": 32.6208,
+   "p": 32.6262,
    "r": 17.0,
    "ry": 9.9
   },
@@ -1920,7 +1920,7 @@
    "n": "Royal Bank of Canada",
    "t": "Aktie",
    "a": "royal bank canada rbc bank kanada",
-   "p": 171.849,
+   "p": 171.629,
    "r": 15.8,
    "ry": 9.9
   },
@@ -1930,7 +1930,7 @@
    "t": "Aktie",
    "a": "td bank toronto dominion kanada",
    "de": "TDB",
-   "p": 106.0559,
+   "p": 105.9396,
    "r": 14.3,
    "ry": 9.9
   },
@@ -1939,8 +1939,8 @@
    "n": "Bank of Montreal",
    "t": "Aktie",
    "a": "bmo bank montreal kanada",
-   "p": 145.2759,
-   "r": 13.7,
+   "p": 144.9235,
+   "r": 13.6,
    "ry": 9.9
   },
   {
@@ -1948,8 +1948,8 @@
    "n": "Enbridge",
    "t": "Aktie",
    "a": "enbridge pipeline dividende kanada",
-   "p": 42.4825,
-   "r": 8.2,
+   "p": 42.5204,
+   "r": 8.3,
    "ry": 9.9
   },
   {
@@ -1958,8 +1958,8 @@
    "t": "Aktie",
    "a": "canadian natural resources öl oil kanada",
    "de": "CRC",
-   "p": 42.233,
-   "r": 17.7,
+   "p": 42.3285,
+   "r": 17.8,
    "ry": 9.9
   },
   {
@@ -1968,7 +1968,7 @@
    "t": "Aktie",
    "a": "suncor öl oil kanada",
    "de": "SM3",
-   "p": 59.7992,
+   "p": 59.8764,
    "r": 12.1,
    "ry": 9.9
   },
@@ -1978,7 +1978,7 @@
    "t": "Aktie",
    "a": "canadian national railway eisenbahn kanada",
    "de": "CY2",
-   "p": 115.4403,
+   "p": 115.2699,
    "r": 9.3,
    "ry": 9.9
   },
@@ -1988,8 +1988,8 @@
    "t": "Aktie",
    "a": "constellation software kanada",
    "de": "W9C",
-   "p": 1980.3192,
-   "r": 18.5,
+   "p": 1968.4579,
+   "r": 18.4,
    "ry": 9.9
   },
   {
@@ -1998,7 +1998,7 @@
    "t": "Aktie",
    "a": "couche tard circle k tankstelle kanada",
    "de": "CJA1",
-   "p": 55.2445,
+   "p": 55.272,
    "r": 11.7,
    "ry": 9.9
   },
@@ -2018,7 +2018,7 @@
    "t": "Aktie",
    "a": "astrazeneca pharma uk großbritannien",
    "de": "ZEG",
-   "p": 167.2934,
+   "p": 167.3074,
    "r": 12.3,
    "ry": 9.9
   },
@@ -2028,7 +2028,7 @@
    "t": "Aktie",
    "a": "hsbc bank uk großbritannien",
    "de": "HBC1",
-   "p": 14.8713,
+   "p": 14.8726,
    "r": 6.7,
    "ry": 9.9
   },
@@ -2038,7 +2038,7 @@
    "t": "Aktie",
    "a": "unilever dove ben jerrys knorr uk",
    "de": "UNVB",
-   "p": 60.4453,
+   "p": 60.4504,
    "r": 3.8,
    "ry": 9.9
   },
@@ -2048,7 +2048,7 @@
    "t": "Aktie",
    "a": "gsk glaxosmithkline pharma uk",
    "de": "GS71",
-   "p": 23.2252,
+   "p": 23.2272,
    "r": 2.2,
    "ry": 9.9
   },
@@ -2058,7 +2058,7 @@
    "t": "Aktie",
    "a": "rio tinto bergbau mining eisenerz uk",
    "de": "RIO1",
-   "p": 67.2278,
+   "p": 67.2335,
    "r": 6.1,
    "ry": 9.9
   },
@@ -2067,7 +2067,7 @@
    "n": "Glencore",
    "t": "Aktie",
    "a": "glencore bergbau rohstoffhandel kohle kupfer uk",
-   "p": 5.3346,
+   "p": 5.3351,
    "r": 5.0,
    "ry": 9.9
   },
@@ -2077,7 +2077,7 @@
    "t": "Aktie",
    "a": "anglo american bergbau mining uk",
    "de": "RPHA",
-   "p": 38.3306,
+   "p": 38.3338,
    "r": 11.1,
    "ry": 9.9
   },
@@ -2087,7 +2087,7 @@
    "t": "Aktie",
    "a": "antofagasta kupfer bergbau chile uk",
    "de": "FG1",
-   "p": 30.963,
+   "p": 30.9656,
    "r": 14.6,
    "ry": 9.9
   },
@@ -2097,7 +2097,7 @@
    "t": "Aktie",
    "a": "fresnillo silber bergbau mexiko uk",
    "de": "FNL",
-   "p": 26.1508,
+   "p": 26.153,
    "r": 6.1,
    "ry": 9.9
   },
@@ -2107,7 +2107,7 @@
    "t": "Aktie",
    "a": "endeavour mining gold westafrika uk",
    "de": "6E2",
-   "p": 39.6441,
+   "p": 39.6474,
    "r": 4.8,
    "ry": 8.7
   },
@@ -2116,7 +2116,7 @@
    "n": "Barclays",
    "t": "Aktie",
    "a": "barclays bank uk",
-   "p": 4.7943,
+   "p": 4.7947,
    "r": 6.1,
    "ry": 9.9
   },
@@ -2126,7 +2126,7 @@
    "t": "Aktie",
    "a": "lloyds bank uk",
    "de": "LLD",
-   "p": 1.1485,
+   "p": 1.1486,
    "r": 4.5,
    "ry": 9.9
   },
@@ -2136,7 +2136,7 @@
    "t": "Aktie",
    "a": "natwest bank uk",
    "de": "RYSD",
-   "p": 7.0595,
+   "p": 7.0601,
    "r": 9.5,
    "ry": 9.9
   },
@@ -2146,7 +2146,7 @@
    "t": "Aktie",
    "a": "rolls royce triebwerke uk",
    "de": "RRU",
-   "p": 15.4564,
+   "p": 15.4577,
    "r": 19.1,
    "ry": 9.9
   },
@@ -2156,7 +2156,7 @@
    "t": "Aktie",
    "a": "bae systems rüstung defence uk",
    "de": "BSP",
-   "p": 22.6401,
+   "p": 22.642,
    "r": 12.5,
    "ry": 9.9
   },
@@ -2166,7 +2166,7 @@
    "t": "Aktie",
    "a": "tesco supermarkt uk",
    "de": "TCO0",
-   "p": 6.5628,
+   "p": 6.5633,
    "r": 7.8,
    "ry": 9.9
   },
@@ -2176,7 +2176,7 @@
    "t": "Aktie",
    "a": "london stock exchange börse uk",
    "de": "LS4C",
-   "p": 123.1714,
+   "p": 123.1817,
    "r": 13.6,
    "ry": 9.9
   },
@@ -2186,7 +2186,7 @@
    "t": "Aktie",
    "a": "relx elsevier daten uk",
    "de": "RDEB",
-   "p": 37.0529,
+   "p": 37.056,
    "r": 8.0,
    "ry": 9.9
   },
@@ -2196,7 +2196,7 @@
    "t": "Aktie",
    "a": "national grid strom netz dividende uk",
    "de": "NNGF",
-   "p": 15.0277,
+   "p": 15.029,
    "r": 2.0,
    "ry": 9.9
   },
@@ -2205,7 +2205,7 @@
    "n": "Legal & General",
    "t": "Aktie",
    "a": "legal general versicherung dividende uk",
-   "p": 3.5345,
+   "p": 3.5348,
    "r": 1.9,
    "ry": 9.9
   },
@@ -2214,7 +2214,7 @@
    "n": "Prudential",
    "t": "Aktie",
    "a": "prudential versicherung asien uk",
-   "p": 11.332,
+   "p": 11.333,
    "r": -3.5,
    "ry": 9.9
   },
@@ -2225,7 +2225,7 @@
    "a": "compass group catering uk",
    "de": "XGR2",
    "p": 33.0346,
-   "r": 8.4,
+   "r": 8.9,
    "ry": 9.9
   },
   {
@@ -2630,7 +2630,7 @@
    "t": "Aktie",
    "a": "toyota auto japan",
    "de": "TOM",
-   "p": 19.4867,
+   "p": 19.4912,
    "r": 12.9,
    "ry": 9.9
   },
@@ -2640,7 +2640,7 @@
    "t": "Aktie",
    "a": "softbank japan",
    "de": "SFT",
-   "p": 15.4275,
+   "p": 15.431,
    "r": 12.3,
    "ry": 9.9
   },
@@ -2650,7 +2650,7 @@
    "t": "Aktie",
    "a": "keyence japan sensoren",
    "de": "KEE",
-   "p": 83.8457,
+   "p": 83.8647,
    "r": 14.2,
    "ry": 9.9
   },
@@ -2660,7 +2660,7 @@
    "t": "Aktie",
    "a": "mitsubishi ufj bank japan",
    "de": "MFZ",
-   "p": 17.8619,
+   "p": 17.866,
    "r": 20.3,
    "ry": 9.9
   },
@@ -2700,7 +2700,7 @@
    "t": "Aktie",
    "a": "reliance indien",
    "de": "RLI",
-   "p": 13.7484,
+   "p": 13.5384,
    "r": 19.6,
    "ry": 9.9
   },
@@ -2710,7 +2710,7 @@
    "t": "Aktie",
    "a": "dbs bank singapur",
    "de": "DEVL",
-   "p": 46.2026,
+   "p": 46.2033,
    "r": 21.6,
    "ry": 9.9
   },
@@ -2729,7 +2729,7 @@
    "t": "Aktie",
    "a": "bank central asia indonesien",
    "de": "BZG",
-   "p": 0.2895,
+   "p": 0.2897,
    "r": 9.2,
    "ry": 9.9
   },
@@ -2785,7 +2785,7 @@
    "t": "Aktie",
    "i": "GB0002875804",
    "a": "british american tobacco bat dividende dividend grossbritannien uk london",
-   "p": 54.1047,
+   "p": 54.1092,
    "r": -0.1,
    "ry": 9.9
   },
@@ -2794,8 +2794,8 @@
    "n": "Fortis",
    "t": "Aktie",
    "a": "fortis versorger utility dividende dividend kanada canada toronto",
-   "p": 53.9971,
-   "r": 11.6,
+   "p": 53.8459,
+   "r": 11.5,
    "ry": 9.9
   },
   {
@@ -2803,7 +2803,7 @@
    "n": "BCE",
    "t": "Aktie",
    "a": "bce bell canada telecom dividende dividend kanada toronto",
-   "p": 20.061,
+   "p": 20.0387,
    "r": -0.2,
    "ry": 9.9
   },
@@ -2812,7 +2812,7 @@
    "n": "NTT",
    "t": "Aktie",
    "a": "ntt nippon telegraph telephone dividende dividend japan tokio tokyo",
-   "p": 0.9612,
+   "p": 0.9614,
    "r": 9.2,
    "ry": 9.9
   },
@@ -2821,7 +2821,7 @@
    "n": "Mitsubishi Corporation",
    "t": "Aktie",
    "a": "mitsubishi corporation handelskonzern dividende dividend japan tokio tokyo",
-   "p": 28.8182,
+   "p": 28.8247,
    "r": 24.5,
    "ry": 9.9
   },
@@ -2839,7 +2839,7 @@
    "n": "TSMC",
    "t": "Aktie",
    "a": "tsmc taiwan semiconductor halbleiter dividende dividend taiwan asien asia",
-   "p": 59.3766,
+   "p": 59.3916,
    "r": 31.5,
    "ry": 9.9
   },
@@ -3010,7 +3010,7 @@
    "n": "Novartis",
    "t": "Aktie",
    "a": "pharma schweiz europa dividende vhyl vwrp",
-   "p": 140.0509,
+   "p": 140.0766,
    "r": 11.9,
    "ry": 9.9
   },
@@ -3026,7 +3026,7 @@
    "n": "Zurich Insurance",
    "t": "Aktie",
    "a": "versicherung schweiz europa dividende vhyl",
-   "p": 704.6229,
+   "p": 704.752,
    "r": 15.1,
    "ry": 9.9
   },
@@ -3035,7 +3035,7 @@
    "n": "Swiss Re",
    "t": "Aktie",
    "a": "rückversicherung schweiz europa dividende vhyl",
-   "p": 169.4939,
+   "p": 169.525,
    "r": 11.8,
    "ry": 9.9
   },
@@ -3044,7 +3044,7 @@
    "n": "ABB",
    "t": "Aktie",
    "a": "industrie automation schweiz europa vwrp",
-   "p": 71.2486,
+   "p": 71.2617,
    "r": 15.8,
    "ry": 9.9
   },
@@ -3053,7 +3053,7 @@
    "n": "UBS Group",
    "t": "Aktie",
    "a": "bank schweiz europa dividende vhyl vwrp",
-   "p": 40.9865,
+   "p": 40.994,
    "r": 12.8,
    "ry": 9.9
   },
@@ -3062,7 +3062,7 @@
    "n": "Danske Bank",
    "t": "Aktie",
    "a": "bank dänemark europa dividende vhyl",
-   "p": 48.2816,
+   "p": 48.2852,
    "r": 10.7,
    "ry": 9.9
   },
@@ -3071,7 +3071,7 @@
    "n": "A.P. Møller-Mærsk",
    "t": "Aktie",
    "a": "schifffahrt dänemark europa dividende vhyl vwrp",
-   "p": 2551.092,
+   "p": 2551.2828,
    "r": 15.1,
    "ry": 9.9
   },
@@ -3080,7 +3080,7 @@
    "n": "Equinor",
    "t": "Aktie",
    "a": "energie norwegen europa dividende vhyl vwrp",
-   "p": 35.8107,
+   "p": 35.8184,
    "r": 15.2,
    "ry": 9.9
   },
@@ -3089,7 +3089,7 @@
    "n": "DNB Bank",
    "t": "Aktie",
    "a": "bank norwegen europa dividende vhyl",
-   "p": 30.3976,
+   "p": 30.4041,
    "r": 16.3,
    "ry": 9.9
   },
@@ -3098,7 +3098,7 @@
    "n": "Telenor",
    "t": "Aktie",
    "a": "telecom norwegen europa dividende vhyl",
-   "p": 12.5809,
+   "p": 12.5836,
    "r": 7.7,
    "ry": 9.9
   },
@@ -3107,7 +3107,7 @@
    "n": "Volvo",
    "t": "Aktie",
    "a": "lkw industrie schweden europa dividende vhyl vwrp",
-   "p": 28.8928,
+   "p": 28.9124,
    "r": 18.3,
    "ry": 9.9
   },
@@ -3116,7 +3116,7 @@
    "n": "Investor AB",
    "t": "Aktie",
    "a": "beteiligungen schweden europa dividende vwrp",
-   "p": 37.032,
+   "p": 37.057,
    "r": 20.0,
    "ry": 9.9
   },
@@ -3125,7 +3125,7 @@
    "n": "Swedbank",
    "t": "Aktie",
    "a": "bank schweden europa dividende vhyl",
-   "p": 35.83,
+   "p": 35.8542,
    "r": 14.1,
    "ry": 9.9
   },
@@ -3134,7 +3134,7 @@
    "n": "SEB",
    "t": "Aktie",
    "a": "bank schweden europa dividende vhyl",
-   "p": 18.8864,
+   "p": 18.8991,
    "r": 15.0,
    "ry": 9.9
   },
@@ -3143,7 +3143,7 @@
    "n": "Telia Company",
    "t": "Aktie",
    "a": "telecom schweden europa dividende vhyl",
-   "p": 4.487,
+   "p": 4.49,
    "r": 9.5,
    "ry": 9.9
   },
@@ -3170,7 +3170,7 @@
    "n": "Shell",
    "t": "Aktie",
    "a": "energie öl großbritannien uk dividende vhyl vwrp",
-   "p": 43.2682,
+   "p": 43.2718,
    "r": 5.0,
    "ry": 9.9
   },
@@ -3179,7 +3179,7 @@
    "n": "Vodafone",
    "t": "Aktie",
    "a": "telecom großbritannien uk dividende vhyl",
-   "p": 1.2305,
+   "p": 1.2306,
    "r": -6.4,
    "ry": 9.9
   },
@@ -3188,7 +3188,7 @@
    "n": "BP",
    "t": "Aktie",
    "a": "energie öl großbritannien uk dividende vhyl vwrp",
-   "p": 6.5878,
+   "p": 6.5884,
    "r": 0.9,
    "ry": 9.9
   },
@@ -3197,7 +3197,7 @@
    "n": "Bank of Nova Scotia",
    "t": "Aktie",
    "a": "scotiabank kanada dividende vhyl",
-   "p": 76.8472,
+   "p": 76.772,
    "r": 10.4,
    "ry": 9.9
   },
@@ -3206,7 +3206,7 @@
    "n": "TC Energy",
    "t": "Aktie",
    "a": "pipeline energie kanada dividende vhyl",
-   "p": 57.4035,
+   "p": 57.3823,
    "r": 10.7,
    "ry": 9.9
   },
@@ -3215,7 +3215,7 @@
    "n": "Manulife Financial",
    "t": "Aktie",
    "a": "versicherung kanada dividende vhyl",
-   "p": 38.4396,
+   "p": 38.3444,
    "r": 14.8,
    "ry": 9.9
   },
@@ -3296,7 +3296,7 @@
    "n": "RioCan REIT",
    "t": "Aktie",
    "a": "reit immobilien kanada dividende",
-   "p": 14.1598,
+   "p": 14.1266,
    "r": 4.0,
    "ry": 9.9
   },
@@ -3305,8 +3305,8 @@
    "n": "Canadian Apartment Properties REIT",
    "t": "Aktie",
    "a": "capreit wohnungen immobilien kanada dividende",
-   "p": 20.1314,
-   "r": 3.6,
+   "p": 20.0291,
+   "r": 3.5,
    "ry": 9.9
   },
   {
@@ -3314,8 +3314,8 @@
    "n": "Granite REIT",
    "t": "Aktie",
    "a": "reit logistik immobilien kanada dividende",
-   "p": 19.6004,
-   "r": 12.4,
+   "p": 19.5239,
+   "r": 12.3,
    "ry": 9.9
   },
   {
@@ -3323,7 +3323,7 @@
    "n": "Takeda Pharmaceutical",
    "t": "Aktie",
    "a": "pharma japan dividende vhyl vwrp",
-   "p": 42.1374,
+   "p": 42.1469,
    "r": 8.7,
    "ry": 9.9
   },
@@ -3332,7 +3332,7 @@
    "n": "Honda Motor",
    "t": "Aktie",
    "a": "auto japan dividende vhyl vwrp",
-   "p": 10.0895,
+   "p": 10.0918,
    "r": 8.5,
    "ry": 9.9
   },
@@ -3341,7 +3341,7 @@
    "n": "Mizuho Financial",
    "t": "Aktie",
    "a": "bank japan dividende vhyl",
-   "p": 42.4807,
+   "p": 42.4903,
    "r": 18.3,
    "ry": 9.9
   },
@@ -3350,7 +3350,7 @@
    "n": "Sumitomo Mitsui Financial",
    "t": "Aktie",
    "a": "bank japan dividende vhyl vwrp",
-   "p": 17.1124,
+   "p": 17.1163,
    "r": 20.1,
    "ry": 9.9
   },
@@ -3359,7 +3359,7 @@
    "n": "Tokio Marine",
    "t": "Aktie",
    "a": "versicherung japan dividende vhyl vwrp",
-   "p": 3.419,
+   "p": 3.4198,
    "r": 23.3,
    "ry": 9.9
   },
@@ -3368,7 +3368,7 @@
    "n": "ORIX",
    "t": "Aktie",
    "a": "finanz leasing japan dividende vhyl",
-   "p": 30.6318,
+   "p": 30.6388,
    "r": 16.1,
    "ry": 9.9
   },
@@ -3377,7 +3377,7 @@
    "n": "Itochu",
    "t": "Aktie",
    "a": "handelskonzern japan dividende vhyl vwrp",
-   "p": 12.9759,
+   "p": 12.9789,
    "r": 26.1,
    "ry": 9.9
   },
@@ -3386,7 +3386,7 @@
    "n": "Marubeni",
    "t": "Aktie",
    "a": "handelskonzern japan dividende vhyl",
-   "p": 25.8202,
+   "p": 25.8261,
    "r": 26.3,
    "ry": 9.9
   },
@@ -3395,7 +3395,7 @@
    "n": "Mitsui & Co.",
    "t": "Aktie",
    "a": "handelskonzern japan dividende vhyl vwrp",
-   "p": 26.5583,
+   "p": 26.5643,
    "r": 23.6,
    "ry": 9.9
   },
@@ -3404,7 +3404,7 @@
    "n": "KDDI",
    "t": "Aktie",
    "a": "telecom japan dividende vhyl",
-   "p": 16.1169,
+   "p": 16.1206,
    "r": 10.3,
    "ry": 9.9
   },
@@ -3413,7 +3413,7 @@
    "n": "PTT",
    "t": "Aktie",
    "a": "energie thailand dividende set",
-   "p": 0.9861,
+   "p": 0.9857,
    "r": 5.3,
    "ry": 9.9
   },
@@ -3422,7 +3422,7 @@
    "n": "Advanced Info Service",
    "t": "Aktie",
    "a": "ais telecom thailand dividende",
-   "p": 8.8212,
+   "p": 8.8178,
    "r": 13.3,
    "ry": 9.9
   },
@@ -3431,7 +3431,7 @@
    "n": "CP All",
    "t": "Aktie",
    "a": "7 eleven einzelhandel thailand dividende",
-   "p": 1.3525,
+   "p": 1.352,
    "r": -0.4,
    "ry": 9.9
   },
@@ -3440,7 +3440,7 @@
    "n": "Kasikornbank",
    "t": "Aktie",
    "a": "bank thailand dividende",
-   "p": 6.5826,
+   "p": 6.5801,
    "r": 7.4,
    "ry": 9.9
   },
@@ -3449,7 +3449,7 @@
    "n": "SCB X",
    "t": "Aktie",
    "a": "siam commercial bank thailand dividende",
-   "p": 4.0508,
+   "p": 4.0493,
    "r": 15.2,
    "ry": 4.5
   },
@@ -3458,7 +3458,7 @@
    "n": "Siam Cement",
    "t": "Aktie",
    "a": "baustoffe thailand dividende",
-   "p": 5.943,
+   "p": 5.9407,
    "r": -4.7,
    "ry": 9.9
   },
@@ -3467,7 +3467,7 @@
    "n": "Bangkok Dusit Medical Services",
    "t": "Aktie",
    "a": "krankenhaus thailand dividende",
-   "p": 0.5517,
+   "p": 0.5514,
    "r": 1.3,
    "ry": 9.9
   },
@@ -3476,7 +3476,7 @@
    "n": "Airports of Thailand",
    "t": "Aktie",
    "a": "flughafen thailand dividende",
-   "p": 1.4991,
+   "p": 1.4985,
    "r": 4.1,
    "ry": 9.9
   },
@@ -3485,7 +3485,7 @@
    "n": "TISCO Financial Group",
    "t": "Aktie",
    "a": "bank finanz thailand hohe dividende",
-   "p": 3.3179,
+   "p": 3.3167,
    "r": 16.0,
    "ry": 9.9
   },
@@ -3494,7 +3494,7 @@
    "n": "PTT Exploration & Production",
    "t": "Aktie",
    "a": "energie öl gas thailand dividende",
-   "p": 3.731,
+   "p": 3.7296,
    "r": 9.6,
    "ry": 9.9
   },
@@ -3573,7 +3573,7 @@
    "n": "United Overseas Bank",
    "t": "Aktie",
    "a": "uob bank singapur dividende vhyl",
-   "p": 24.8523,
+   "p": 24.8526,
    "r": 10.8,
    "ry": 9.9
   },
@@ -3582,7 +3582,7 @@
    "n": "OCBC Bank",
    "t": "Aktie",
    "a": "bank singapur dividende vhyl",
-   "p": 18.6251,
+   "p": 18.6253,
    "r": 17.0,
    "ry": 9.9
   },
@@ -3627,7 +3627,7 @@
    "n": "Commonwealth Bank of Australia",
    "t": "Aktie",
    "a": "bank australien dividende vhyl vwrp",
-   "p": 102.708,
+   "p": 102.725,
    "r": 12.2,
    "ry": 9.9
   },
@@ -3636,7 +3636,7 @@
    "n": "Wesfarmers",
    "t": "Aktie",
    "a": "einzelhandel australien dividende vwrp",
-   "p": 46.9101,
+   "p": 46.9179,
    "r": 15.5,
    "ry": 9.9
   },
@@ -3645,7 +3645,7 @@
    "n": "Telstra",
    "t": "Aktie",
    "a": "telecom australien dividende vhyl",
-   "p": 3.16,
+   "p": 3.1605,
    "r": 5.4,
    "ry": 9.9
   },
@@ -3654,7 +3654,7 @@
    "n": "Macquarie Group",
    "t": "Aktie",
    "a": "bank australien dividende vwrp",
-   "p": 136.8211,
+   "p": 136.8437,
    "r": 14.4,
    "ry": 9.9
   },
@@ -3663,7 +3663,7 @@
    "n": "Goodman Group",
    "t": "Aktie",
    "a": "reit logistik immobilien australien dividende vwrp",
-   "p": 16.9357,
+   "p": 16.9385,
    "r": 16.7,
    "ry": 9.9
   },
@@ -3672,7 +3672,7 @@
    "n": "Scentre Group",
    "t": "Aktie",
    "a": "reit einkaufszentren australien dividende",
-   "p": 2.1751,
+   "p": 2.1755,
    "r": 2.5,
    "ry": 9.9
   },
@@ -3681,7 +3681,7 @@
    "n": "MediaTek",
    "t": "Aktie",
    "a": "halbleiter taiwan asien dividende vhyl vwrp",
-   "p": 100.664,
+   "p": 100.6895,
    "r": 39.5,
    "ry": 9.9
   },
@@ -3690,7 +3690,7 @@
    "n": "Hon Hai Precision",
    "t": "Aktie",
    "a": "foxconn elektronik taiwan asien dividende vhyl vwrp",
-   "p": 5.7029,
+   "p": 5.7044,
    "r": 11.8,
    "ry": 9.9
   },
@@ -3717,7 +3717,7 @@
    "n": "Tata Consultancy Services",
    "t": "Aktie",
    "a": "tcs it indien asien dividende vwrp",
-   "p": 25.999,
+   "p": 24.8055,
    "r": 11.1,
    "ry": 9.9
   },
@@ -3726,7 +3726,7 @@
    "n": "ITC",
    "t": "Aktie",
    "a": "konsum tabak indien asien dividende vhyl",
-   "p": 3.023,
+   "p": 3.0473,
    "r": 6.6,
    "ry": 9.9
   },
@@ -3735,7 +3735,7 @@
    "n": "Hindustan Unilever",
    "t": "Aktie",
    "a": "konsum indien asien dividende vwrp",
-   "p": 20.982,
+   "p": 21.1053,
    "r": 11.8,
    "ry": 9.9
   },
@@ -3744,7 +3744,7 @@
    "n": "State Bank of India",
    "t": "Aktie",
    "a": "sbi bank indien dividende vhyl",
-   "p": 11.1926,
+   "p": 11.2153,
    "r": 17.8,
    "ry": 9.9
   },
@@ -3843,7 +3843,7 @@
    "n": "Julius Bär",
    "t": "Aktie",
    "a": "privatbank schweiz europa dividende",
-   "p": 68.2344,
+   "p": 68.2469,
    "r": 7.2,
    "ry": 9.9
   },
@@ -3852,7 +3852,7 @@
    "n": "Standard Chartered",
    "t": "Aktie",
    "a": "bank großbritannien uk asien dividende",
-   "p": 22.5088,
+   "p": 22.5107,
    "r": 11.1,
    "ry": 9.9
   },
@@ -3861,7 +3861,7 @@
    "n": "Canadian Imperial Bank of Commerce",
    "t": "Aktie",
    "a": "cibc bank kanada dividende",
-   "p": 95.3153,
+   "p": 95.2919,
    "r": 16.0,
    "ry": 9.9
   },
@@ -3870,7 +3870,7 @@
    "n": "National Bank of Canada",
    "t": "Aktie",
    "a": "bank kanada dividende",
-   "p": 129.2706,
+   "p": 128.9936,
    "r": 18.5,
    "ry": 9.9
   },
@@ -3897,7 +3897,7 @@
    "n": "Grupo Financiero Banorte",
    "t": "Aktie",
    "a": "banorte bank mexiko lateinamerika dividende",
-   "p": 9.3746,
+   "p": 9.3507,
    "r": 14.0,
    "ry": 9.9
   },
@@ -3906,7 +3906,7 @@
    "n": "Nomura Holdings",
    "t": "Aktie",
    "a": "investmentbank japan asien dividende",
-   "p": 7.9412,
+   "p": 7.943,
    "r": 11.8,
    "ry": 9.9
   },
@@ -3915,7 +3915,7 @@
    "n": "Resona Holdings",
    "t": "Aktie",
    "a": "bank japan asien dividende",
-   "p": 11.3282,
+   "p": 11.3307,
    "r": 16.7,
    "ry": 9.9
   },
@@ -3969,7 +3969,7 @@
    "n": "Bangkok Bank",
    "t": "Aktie",
    "a": "bank thailand bangkok dividende",
-   "p": 4.7437,
+   "p": 4.7419,
    "r": 5.3,
    "ry": 9.9
   },
@@ -3978,7 +3978,7 @@
    "n": "Krung Thai Bank",
    "t": "Aktie",
    "a": "krungthai bank thailand dividende",
-   "p": 1.1113,
+   "p": 1.1109,
    "r": 14.5,
    "ry": 9.9
   },
@@ -3987,7 +3987,7 @@
    "n": "Bank of Ayudhya",
    "t": "Aktie",
    "a": "krungsri bank thailand dividende",
-   "p": 1.0127,
+   "p": 1.0123,
    "r": 2.1,
    "ry": 9.9
   },
@@ -3996,7 +3996,7 @@
    "n": "Bank Mandiri",
    "t": "Aktie",
    "a": "bank indonesien asien dividende",
-   "p": 0.1988,
+   "p": 0.199,
    "r": 8.9,
    "ry": 9.9
   },
@@ -4005,7 +4005,7 @@
    "n": "Bank Rakyat Indonesia",
    "t": "Aktie",
    "a": "bri bank indonesien asien dividende",
-   "p": 0.1526,
+   "p": 0.1527,
    "r": 9.2,
    "ry": 9.9
   },
@@ -4014,7 +4014,7 @@
    "n": "Bank Negara Indonesia",
    "t": "Aktie",
    "a": "bni bank indonesien asien dividende",
-   "p": 0.1779,
+   "p": 0.1781,
    "r": 6.8,
    "ry": 9.9
   },
@@ -4023,7 +4023,7 @@
    "n": "Malayan Banking",
    "t": "Aktie",
    "a": "maybank malaysia asien dividende",
-   "p": 2.2471,
+   "p": 2.2488,
    "r": 9.0,
    "ry": 9.9
   },
@@ -4032,7 +4032,7 @@
    "n": "CIMB Group",
    "t": "Aktie",
    "a": "cimb bank malaysia asien dividende",
-   "p": 1.5747,
+   "p": 1.5759,
    "r": 10.1,
    "ry": 9.9
   },
@@ -4041,7 +4041,7 @@
    "n": "Public Bank Berhad",
    "t": "Aktie",
    "a": "public bank malaysia asien dividende",
-   "p": 1.0063,
+   "p": 1.0071,
    "r": 5.6,
    "ry": 9.9
   },
@@ -4064,7 +4064,7 @@
    "n": "Westpac Banking",
    "t": "Aktie",
    "a": "bank australien dividende",
-   "p": 21.582,
+   "p": 21.5856,
    "r": 6.3,
    "ry": 9.9
   },
@@ -4073,7 +4073,7 @@
    "n": "National Australia Bank",
    "t": "Aktie",
    "a": "nab bank australien dividende",
-   "p": 21.8962,
+   "p": 21.8998,
    "r": 7.2,
    "ry": 9.9
   },
@@ -4082,7 +4082,7 @@
    "n": "ANZ Group",
    "t": "Aktie",
    "a": "bank australien neuseeland dividende",
-   "p": 23.449,
+   "p": 23.4529,
    "r": 8.2,
    "ry": 9.9
   },
@@ -4091,7 +4091,7 @@
    "n": "Kotak Mahindra Bank",
    "t": "Aktie",
    "a": "bank indien asien dividende",
-   "p": 5.0215,
+   "p": 5.0157,
    "r": 13.7,
    "ry": 9.9
   },
@@ -4100,7 +4100,7 @@
    "n": "Axis Bank",
    "t": "Aktie",
    "a": "bank indien asien dividende",
-   "p": 13.8646,
+   "p": 13.974,
    "r": 12.4,
    "ry": 9.9
   },
@@ -4204,114 +4204,114 @@
   "base": "EUR",
   "rates": {
    "EUR": 1.0,
-   "USD": 1.09745395,
-   "GBP": 0.83704001,
-   "CHF": 0.91523999,
-   "JPY": 174.77400208,
-   "CNY": 7.31020021,
-   "CAD": 1.56237996,
-   "AUD": 1.65453994,
-   "NZD": 2.00497007,
-   "SEK": 11.20769024,
-   "NOK": 10.70664978,
-   "DKK": 7.47370005,
+   "USD": 1.09733343,
+   "GBP": 0.83696997,
+   "CHF": 0.91496998,
+   "JPY": 174.71899414,
+   "CNY": 7.31090021,
+   "CAD": 1.56270003,
+   "AUD": 1.65410995,
+   "NZD": 2.00487995,
+   "SEK": 11.20100021,
+   "NOK": 10.70409966,
+   "DKK": 7.47359991,
    "ISK": 135.19999695,
-   "PLN": 4.47884989,
-   "CZK": 24.45809937,
-   "HUF": 371.46200562,
-   "RON": 5.3375001,
+   "PLN": 4.47882986,
+   "CZK": 24.45129967,
+   "HUF": 370.91000366,
+   "RON": 5.33780003,
    "BGN": 1.95582998,
    "RSD": 117.33599854,
-   "TRY": 55.71924973,
-   "UAH": 49.92750168,
-   "RUB": 90.14900208,
+   "TRY": 55.7177887,
+   "UAH": 49.89049911,
+   "RUB": 90.14700317,
    "GEL": 2.83969998,
    "AMD": 394.75,
    "AZN": 1.86329997,
-   "KZT": 501.05999756,
+   "KZT": 501.14001465,
    "AED": 4.02850008,
    "SAR": 4.11460018,
-   "QAR": 3.99539995,
-   "ILS": 3.63980007,
-   "EGP": 60.15710068,
-   "MAD": 10.98200035,
-   "ZAR": 19.24113083,
-   "NGN": 1494.65002441,
-   "KES": 142.8710022,
-   "INR": 101.50499725,
+   "QAR": 3.99250007,
+   "ILS": 3.63849998,
+   "EGP": 60.13769913,
+   "MAD": 10.9829998,
+   "ZAR": 19.23257065,
+   "NGN": 1491.90002441,
+   "KES": 142.76499939,
+   "INR": 101.42970276,
    "LKR": 365.12399292,
-   "THB": 37.29999924,
-   "VND": 28345.0,
-   "MYR": 4.51910019,
-   "SGD": 1.41554999,
-   "IDR": 20087.0,
-   "PHP": 69.93199921,
-   "KHR": 4474.79980469,
-   "LAK": 24639.18945312,
-   "HKD": 8.59689999,
-   "TWD": 36.19100189,
-   "KRW": 1473.30004883,
-   "BRL": 6.30170012,
-   "MXN": 21.62858963,
-   "ARS": 1756.97509766,
+   "THB": 37.30799866,
+   "VND": 28324.0,
+   "MYR": 4.5158,
+   "SGD": 1.41550004,
+   "IDR": 20072.0,
+   "PHP": 69.92199707,
+   "KHR": 4465.5,
+   "LAK": 24637.9609375,
+   "HKD": 8.59700012,
+   "TWD": 36.18099976,
+   "KRW": 1473.09997559,
+   "BRL": 6.29750013,
+   "MXN": 21.64641953,
+   "ARS": 1756.33850098,
    "CLP": 1137.11999512,
-   "COP": 3856.64990234,
-   "PEN": 3.80839992,
-   "BTC": 1.813182e-05,
-   "ETH": 0.000647857192
+   "COP": 3889.37011719,
+   "PEN": 3.80290008,
+   "BTC": 1.813672e-05,
+   "ETH": 0.000645415286
   },
   "change": {
-   "USD": 0.11,
-   "GBP": 0.12,
-   "CHF": -0.1,
-   "JPY": 0.11,
-   "CNY": 0.07,
-   "CAD": -0.14,
-   "AUD": 0.13,
+   "USD": 0.1,
+   "GBP": 0.11,
+   "CHF": -0.13,
+   "JPY": 0.08,
+   "CNY": 0.08,
+   "CAD": -0.12,
+   "AUD": 0.11,
    "NZD": 0.18,
-   "SEK": -0.2,
-   "NOK": -0.34,
+   "SEK": -0.26,
+   "NOK": -0.36,
    "DKK": -0.0,
    "ISK": -0.11,
-   "PLN": 0.45,
-   "CZK": 0.22,
-   "HUF": 0.71,
-   "RON": 0.02,
+   "PLN": 0.44,
+   "CZK": 0.19,
+   "HUF": 0.56,
+   "RON": 0.03,
    "RSD": -0.17,
-   "TRY": 0.32,
-   "UAH": 3.63,
+   "TRY": 0.31,
+   "UAH": 3.56,
    "RUB": 0.23,
-   "KZT": 2.95,
+   "KZT": 2.96,
    "AED": 0.13,
    "SAR": 3.34,
-   "QAR": 3.93,
-   "ILS": -0.92,
-   "EGP": 1.27,
-   "MAD": 3.45,
-   "ZAR": 0.11,
-   "NGN": 3.21,
-   "KES": 3.43,
-   "INR": -0.26,
+   "QAR": 3.86,
+   "ILS": -0.96,
+   "EGP": 1.23,
+   "MAD": 3.46,
+   "ZAR": 0.06,
+   "NGN": 3.02,
+   "KES": 3.36,
+   "INR": -0.33,
    "LKR": 3.32,
-   "THB": 0.38,
-   "VND": 3.68,
-   "MYR": 3.42,
-   "SGD": 0.17,
-   "IDR": 0.55,
-   "PHP": 0.32,
-   "KHR": 3.27,
-   "LAK": 3.03,
+   "THB": 0.4,
+   "VND": 3.61,
+   "MYR": 3.35,
+   "SGD": 0.16,
+   "IDR": 0.48,
+   "PHP": 0.31,
+   "KHR": 3.06,
+   "LAK": 3.02,
    "HKD": 0.02,
-   "TWD": 0.28,
-   "KRW": 0.15,
-   "BRL": -2.51,
-   "MXN": 1.46,
-   "ARS": 0.65,
+   "TWD": 0.26,
+   "KRW": 0.14,
+   "BRL": -2.58,
+   "MXN": 1.54,
+   "ARS": 0.61,
    "CLP": 4.4,
-   "COP": 3.32,
-   "PEN": 3.78,
-   "BTC": -0.21,
-   "ETH": -0.15
+   "COP": 4.2,
+   "PEN": 3.63,
+   "BTC": -0.18,
+   "ETH": -0.53
   },
   "src": {
    "USD": "yahoo",
@@ -4370,28 +4370,28 @@
    "BTC": "yahoo",
    "ETH": "yahoo"
   },
-  "updated": "2026-11-26T17:18:06+00:00",
+  "updated": "2026-11-26T19:10:42+00:00",
   "source": "Yahoo Finance (yfinance): Forex-Paare EURxxx=X, Krypto XXX-EUR; Ergänzung: open.er-api.com"
  },
  "metals": {
   "GOLD-G": {
-   "p": 105.4413,
-   "updated": "2026-11-26T17:18:06+00:00",
+   "p": 105.3415,
+   "updated": "2026-11-26T19:10:42+00:00",
    "source": "Yahoo Finance (GC=F), USD je Unze in EUR je Gramm"
   },
   "SILVER-G": {
-   "p": 1.2247,
-   "updated": "2026-11-26T17:18:06+00:00",
+   "p": 1.2241,
+   "updated": "2026-11-26T19:10:42+00:00",
    "source": "Yahoo Finance (SI=F), USD je Unze in EUR je Gramm"
   },
   "PLATIN-G": {
-   "p": 37.6626,
-   "updated": "2026-11-26T17:18:06+00:00",
+   "p": 37.5642,
+   "updated": "2026-11-26T19:10:42+00:00",
    "source": "Yahoo Finance (PL=F), USD je Unze in EUR je Gramm"
   },
   "PALLAD-G": {
-   "p": 25.707,
-   "updated": "2026-11-26T17:18:06+00:00",
+   "p": 25.6073,
+   "updated": "2026-11-26T19:10:42+00:00",
    "source": "Yahoo Finance (PA=F), USD je Unze in EUR je Gramm"
   }
  }
