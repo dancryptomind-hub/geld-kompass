@@ -1,5 +1,6 @@
 // Geld-Kompass Pro · gemeinsame Stripe-Helfer für alle Billing-Funktionen.
 // Schlüssel kommen ausschließlich aus Supabase-Secrets (STRIPE_SECRET_KEY als eingeschränkter rk_…-Schlüssel, STRIPE_WEBHOOK_SECRET).
+import { isPrivatePlusSubscription } from "../../../whitelabel-policy.mjs";
 import Stripe from "npm:stripe@23.1.0";
 import postgres from "npm:postgres@3.4.5";
 import { createClient, type User } from "npm:@supabase/supabase-js@2.49.4";
@@ -191,6 +192,7 @@ export async function customerFor(user: User): Promise<string> {
 export async function syncSubscription(subId: string) {
   const s = stripe(), db = sql();
   const sub = await s.subscriptions.retrieve(subId);
+  if (!isPrivatePlusSubscription(sub)) return; // White-label and all foreign products are isolated.
   const customerId = typeof sub.customer === "string" ? sub.customer : sub.customer.id;
   const owner = await db`select user_id from billing.customers where stripe_customer_id = ${customerId}`;
   const userId: string | null = (owner[0]?.user_id as string) || (sub.metadata?.gk_user as string) || null;
