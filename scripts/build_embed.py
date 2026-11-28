@@ -2,6 +2,8 @@
 """Baut die Seiten zum Einbinden der Rechner: /einbinden/ (DE) und /en/embed/ (EN).
 Website-Betreiber wählen Rechner, Sprache und Währung, sehen eine Live-Vorschau und kopieren den iframe-Code."""
 import json, os
+from embed_pricing import pricing
+COPY = json.load(open(os.path.join(os.path.dirname(__file__), "embed-copy.json")))
 BASE = 'https://geld-kompass.com/'
 LOGO = '<img class="gk-logo" src="/icons/logo-badge.webp?v=3" alt="" aria-hidden="true" width="34" height="34">'
 # (DE-Pfad, DE-Name, EN-Pfad, EN-Name, Starthöhe)
@@ -65,7 +67,7 @@ CSS = """.eb-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4f
 
 CSS += """
 /* Keep tariff cards independent of the global .pro logo badge. */
-.eb-tiers{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.eb-tiers{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
 .eb-tiers>div{min-width:0;border-width:2px;padding:18px;display:grid;grid-template-rows:subgrid;grid-row:span 5;row-gap:10px}
 .eb-tiers>div.eb-tier-pro{background:linear-gradient(135deg,rgba(227,181,90,.16),rgba(227,181,90,.03));color:var(--ink)}
 .eb-tiers h3{margin:0;align-content:start;align-items:start;line-height:1.4}
@@ -81,14 +83,15 @@ CSS += """
 @media(max-width:700px){.eb-tiers,.eb-anchor{grid-template-columns:minmax(0,1fr)}.eb-tiers>div,.eb-anchor>div{grid-row:auto;grid-template-rows:none}.eb-tiers .eb-cta{min-height:48px}.eb-wl{flex-wrap:wrap}}
 """
 
+CSS += "\n[hidden]{display:none!important}.eb-pay-actions{display:grid;gap:8px}.eb-pay-actions p{font-size:.86rem;margin:0}.eb-tiers .eb-cta{min-height:48px}.eb-risk .eb-pay-actions{margin-top:12px}.eb-risk .eb-cta{max-width:440px}\n"
+
 def page(lang):
-    t = T[lang]; en = lang == 'en'
+    t = dict(T[lang], **{k:v for k,v in COPY[lang].items() if k not in ('lic','cards')}); en = lang == 'en'
     url = BASE + ('en/embed/' if en else 'einbinden/')
     opts = ''.join('<option value="%d">%s</option>' % (i, c[3] if en else c[1]) for i, c in enumerate(CALC))
     data = json.dumps([[c[0], c[1], c[2], c[3], c[4]] for c in CALC], ensure_ascii=False)
-    lic = ('<div class="eb-lic"><b>Want zero attribution &amp; your own brand?</b><br>Remove the “Powered by” badge, match your brand colours and logo from <b>€39/mo</b> (yearly, ~€1.28/day). <a href="#ebPricing">Compare licence tiers ↓</a> · <a href="/en/calculators/">All 11 calculators</a></div>' if en else
-           '<div class="eb-lic"><b>Ohne Hinweis &amp; komplett in deinem Branding?</b><br>Entferne den Hinweis-Banner und passe Farben &amp; Logo an – schlüsselfertig ab <b>39 €/Monat</b> (jährlich, ca. 1,28 €/Tag). <a href="#ebPricing">Pakete &amp; Preise ansehen ↓</a> · <a href="/rechner/">Alle 11 Rechner</a></div>')
-    faq = ''.join('<details><summary>%s</summary><p>%s</p></details>' % q for q in t['faq'])
+    lic = COPY[lang]['lic']
+    faq = ''.join('<details><summary>%s</summary><p>%s</p></details>' % tuple(q) for q in t['faq'])
     ld = json.dumps({"@context": "https://schema.org", "@type": "WebPage", "name": t['h1'], "url": url, "inLanguage": lang, "description": t['desc']}, ensure_ascii=False)
     js = """(function(){var C=%s,L='%s';var $=function(i){return document.getElementById(i);};
  function code(){var c=C[+$('ebCalc').value],l=$('ebLang').value,cur=$('ebCur').value,path=l==='en'?'/en/calculators/'+c[2]+'/':'/rechner/'+c[0]+'/',name=l==='en'?c[3]:c[1];
@@ -100,46 +103,9 @@ def page(lang):
   if(navigator.clipboard)navigator.clipboard.writeText(t.value).then(done,function(){t.select();document.execCommand('copy');done();});else{t.select();document.execCommand('copy');done();}});
  $('ebCode').addEventListener('focus',function(){this.select();});
  document.querySelectorAll('[data-ebmode]').forEach(function(b){b.addEventListener('click',function(){var wl=b.getAttribute('data-ebmode')==='wl';document.querySelectorAll('[data-ebmode]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});var box=$('ebPrevBox');if(box)box.classList.toggle('wl',wl);});});
- var bill='yr';document.querySelectorAll('[data-ebbill]').forEach(function(b){b.addEventListener('click',function(){bill=b.getAttribute('data-ebbill');document.querySelectorAll('[data-ebbill]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});document.querySelectorAll('[data-p-yr]').forEach(function(el){el.innerHTML=bill==='yr'?el.getAttribute('data-p-yr'):el.getAttribute('data-p-mo');});document.querySelectorAll('[data-s-yr]').forEach(function(el){el.textContent=bill==='yr'?el.getAttribute('data-s-yr'):el.getAttribute('data-s-mo');});document.querySelectorAll('[data-mail-yr]').forEach(function(a){a.href=bill==='yr'?a.getAttribute('data-mail-yr'):a.getAttribute('data-mail-mo');});});});
- document.querySelectorAll('[data-eb-inq]').forEach(function(b){b.addEventListener('click',function(){var txt=L==='en'?'Hello Dan,\\n\\nI would like to book the White-Label ('+(bill==='yr'?'€39/mo annual':'€49/mo monthly')+') / Team licence for my domain: [YOUR-DOMAIN.COM]\\nBrand accent colour: [#HEX]\\n\\nPlease send a live preview link.\\nBest regards':'Hallo Dan,\\n\\nich möchte gerne eine White-Label-Rechner-Lizenz ('+(bill==='yr'?'Pro 39 €/Monat jährlich':'Pro 49 €/Monat monatlich')+') für folgende Domain nutzen: [DEINE-DOMAIN.DE]\\nWunschfarbe: [#HEX]\\n\\nBitte schick mir vorab die persönliche Testvorschau.\\nViele Grüße';if(navigator.clipboard)navigator.clipboard.writeText(txt).then(function(){var old=b.textContent;b.textContent=L==='en'?'Copied inquiry text ✓':'Anfrage-Text kopiert ✓';setTimeout(function(){b.textContent=old;},2200);});});});
  code();})();""" % (data, lang, t['copied'], t['copy'])
     og_img = BASE + ('screens/desktop-en.webp' if en else 'screens/desktop-de.webp')
-    tiers = (
-        '<h2 id="ebPricing">B2B Licences &amp; Transparent Pricing</h2>'
-        '<div class="eb-anchor">'
-        '<div><b>Custom Agency Build</b><span>€3,500–€15,000+ upfront plus manual tax &amp; rate updates</span></div>'
-        '<div><b>Generic SaaS Builders</b><span>$49–$600/month for branding removal with empty maths</span></div>'
-        '<div class="best"><b>Money Compass White-Label</b><span>11 turnkey finance &amp; tax calculators from €39/mo (~€1.28/day)</span></div>'
-        '</div>'
-        '<div class="eb-bill" role="group" aria-label="Billing interval">'
-        '<button type="button" data-ebbill="yr" aria-pressed="true">Annual billing (save 20%)</button>'
-        '<button type="button" data-ebbill="mo" aria-pressed="false">Monthly billing</button>'
-        '<span class="eb-save">Founding partner rate: locked for the first 25 websites</span>'
-        '</div>'
-        '<div class="eb-tiers">'
-        '<div><h3>Free Embed</h3><div class="eb-price">€0 <small>/ forever</small></div><p class="eb-subprice">Ideal for testing and personal blogs</p><ul><li>All 11 calculators immediately (DE &amp; EN)</li><li>Automatic height &amp; 320px mobile layout</li><li>Zero tracking cookies · GDPR-clean</li><li>Small “Powered by Geld-Kompass Pro” credit</li></ul><a class="eb-cta" href="#ebCode">Copy code above ↑</a></div>'
-        '<div class="eb-tier-pro"><h3>White-Label Pro <span class="eb-badge">Most Popular</span></h3><div class="eb-price" data-p-yr="€39 <small>/ mo</small>" data-p-mo="€49 <small>/ mo</small>">€39 <small>/ mo</small></div><p class="eb-subprice" data-s-yr="€468 billed yearly · only €1.28/day (save €120)" data-s-mo="Cancel monthly anytime · €49/mo">€468 billed yearly · only €1.28/day (save €120)</p><ul><li>Zero third-party badge — 100% your brand</li><li>Custom brand colours, font &amp; logo header</li><li>Up to 3 websites / client subdomains included</li><li>Automatic ECB FX, Eurostat HICP &amp; 91-country tax updates</li></ul><a class="eb-cta" href="mailto:kontakt@geld-kompass.com?subject=White-Label%20Pro%20(Annual%20€39/mo)&body=Domain:%20%0ABrand%20colour:" data-mail-yr="mailto:kontakt@geld-kompass.com?subject=White-Label%20Pro%20(Annual%20€39/mo)&body=Domain:%20%0ABrand%20colour:" data-mail-mo="mailto:kontakt@geld-kompass.com?subject=White-Label%20Pro%20(Monthly%20€49/mo)&body=Domain:%20%0ABrand%20colour:">Request preview &amp; activate →</a></div>'
-        '<div><h3>Advisory Team &amp; Agency</h3><div class="eb-price" data-p-yr="€119 <small>/ mo</small>" data-p-mo="€149 <small>/ mo</small>">€119 <small>/ mo</small></div><p class="eb-subprice" data-s-yr="€1,428 billed yearly · unlimited sites" data-s-mo="Cancel monthly anytime · €149/mo">€1,428 billed yearly · unlimited sites</p><ul><li>Unlimited client domains &amp; adviser sub-pages</li><li>Custom CSS styling &amp; bespoke lead CTA links</li><li>1 custom calculator setup per year on request</li><li>Optional self-hosted ZIP bundle &amp; priority email support</li></ul><a class="eb-cta" href="mailto:kontakt@geld-kompass.com?subject=Team%20%26%20Agency%20Licence%20(Annual)&body=Domains:%20" data-mail-yr="mailto:kontakt@geld-kompass.com?subject=Team%20%26%20Agency%20Licence%20(Annual)&body=Domains:%20" data-mail-mo="mailto:kontakt@geld-kompass.com?subject=Team%20%26%20Agency%20Licence%20(Monthly)&body=Domains:%20">Request agency quote →</a></div>'
-        '</div>'
-        '<div class="eb-risk"><b>Zero-risk preview guarantee:</b> Receive a live White-Label preview tailored to your domain and brand colours before paying your first invoice. One new client or retainer pays back an entire year of White-Label Pro.<div class="eb-copyrow"><button type="button" class="eb-copyinq" data-eb-inq="1">Copy ready inquiry text for email/webmail</button><span>Send to <b>kontakt@geld-kompass.com</b></span></div></div>' if en else
-        '<h2 id="ebPricing">Lizenz-Pakete &amp; transparente Preise</h2>'
-        '<div class="eb-anchor">'
-        '<div><b>Agentur-Eigenentwicklung</b><span>3.500–15.000 € einmalig plus laufende Wartung für Steuern &amp; Kurse</span></div>'
-        '<div><b>Generische Baukästen (Outgrow &amp; Co.)</b><span>49–600 €/Monat nur für Logo-Entfernung ohne fertige Finanzmathematik</span></div>'
-        '<div class="best"><b>Geld-Kompass White-Label</b><span>11 fertige Profi-Rechner inkl. Daten-Updates ab 39 €/Mo. (ca. 1,28 €/Tag)</span></div>'
-        '</div>'
-        '<div class="eb-bill" role="group" aria-label="Abrechnungszeitraum">'
-        '<button type="button" data-ebbill="yr" aria-pressed="true">Jährlich zahlen (20 % sparen)</button>'
-        '<button type="button" data-ebbill="mo" aria-pressed="false">Monatlich kündbar</button>'
-        '<span class="eb-save">Gründungspartner-Vorteil: Einstiegspreis für die ersten 25 Websites gesichert</span>'
-        '</div>'
-        '<div class="eb-tiers">'
-        '<div><h3>Kostenlos (Standard)</h3><div class="eb-price">0 € <small>/ dauerhaft</small></div><p class="eb-subprice">Ideal zum Testen &amp; für Einsteiger-Blogs</p><ul><li>Alle 11 Rechner sofort nutzbar (DE &amp; EN)</li><li>Automatische Höhe &amp; 320px-Handy-Layout</li><li>Null Cookies · ohne Banner DSGVO-sauber</li><li>Dezenter Hinweis „Bereitgestellt von Geld-Kompass Pro“</li></ul><a class="eb-cta" href="#ebCode">Code oben kopieren ↑</a></div>'
-        '<div class="eb-tier-pro"><h3>White-Label Pro <span class="eb-badge">Empfohlen</span></h3><div class="eb-price" data-p-yr="39 € <small>/ Mo.</small>" data-p-mo="49 € <small>/ Mo.</small>">39 € <small>/ Mo.</small></div><p class="eb-subprice" data-s-yr="468 € jährlich · nur 1,28 €/Tag (120 € gespart)" data-s-mo="Monatlich jederzeit kündbar · 49 €/Monat">468 € jährlich · nur 1,28 €/Tag (120 € gespart)</p><ul><li>Ohne Hinweis-Banner – 100 % deine eigene Marke</li><li>Eigene Akzentfarben, Logo-Kopfzeile &amp; Schrift</li><li>Bis zu 3 Websites / Domains inklusive</li><li>Automatische EZB-Kurse, Eurostat-Inflation &amp; 91 Länder</li></ul><a class="eb-cta" href="mailto:kontakt@geld-kompass.com?subject=White-Label%20Pro%20Lizenz%20(39€/Mo%20jährlich)&body=Website/Domain:%20%0AMarkenfarbe:" data-mail-yr="mailto:kontakt@geld-kompass.com?subject=White-Label%20Pro%20Lizenz%20(39€/Mo%20jährlich)&body=Website/Domain:%20%0AMarkenfarbe:" data-mail-mo="mailto:kontakt@geld-kompass.com?subject=White-Label%20Pro%20Lizenz%20(49€/Mo%20monatlich)&body=Website/Domain:%20%0AMarkenfarbe:">Vorschau anfordern &amp; starten →</a></div>'
-        '<div><h3>Kanzlei &amp; Teams</h3><div class="eb-price" data-p-yr="119 € <small>/ Mo.</small>" data-p-mo="149 € <small>/ Mo.</small>">119 € <small>/ Mo.</small></div><p class="eb-subprice" data-s-yr="1.428 € jährlich · unbegrenzte Domains" data-s-mo="Monatlich jederzeit kündbar · 149 €/Monat">1.428 € jährlich · unbegrenzte Domains</p><ul><li>Unbegrenzte Kunden-Domains &amp; Berater-Seiten</li><li>Eigenes CSS &amp; individuelle Lead-Ziel-Buttons</li><li>1 Wunschrechner / Parameter-Anpassung inklusive</li><li>Optionales Self-Hosting-Paket &amp; Prioritäts-Support</li></ul><a class="eb-cta" href="mailto:kontakt@geld-kompass.com?subject=Kanzlei-%20%26%20Team-Lizenz%20(jährlich)&body=Anzahl%20Domains:%20" data-mail-yr="mailto:kontakt@geld-kompass.com?subject=Kanzlei-%20%26%20Team-Lizenz%20(jährlich)&body=Anzahl%20Domains:%20" data-mail-mo="mailto:kontakt@geld-kompass.com?subject=Kanzlei-%20%26%20Team-Lizenz%20(monatlich)&body=Anzahl%20Domains:%20">Team-Angebot anfragen →</a></div>'
-        '</div>'
-        '<div class="eb-risk"><b>Risiko-Umkehr · erst testen, dann zahlen:</b> Du erhältst vor der ersten Rechnung eine persönliche Live-Testvorschau in deinen Farben für deine Domain. Schon ein einziger zusätzlicher Kundenauftrag oder Lead über deine Website bezahlt die gesamte Jahreslizenz mehrfach zurück.<div class="eb-copyrow"><button type="button" class="eb-copyinq" data-eb-inq="1">Fertigen Anfrage-Text kopieren (für Webmail / GMX / Gmail)</button><span>Senden an <b>kontakt@geld-kompass.com</b></span></div></div>'
-    )
+    tiers = pricing(lang, COPY[lang]['cards'])
     return f"""<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <script>(function(){{var K='geld-kompass-lang',q=new URLSearchParams(location.search).get('lang'),w=q;if(q==='de'||q==='en'){{try{{localStorage.setItem(K,q);}}catch(e){{}}}}else{{try{{w=localStorage.getItem(K);}}catch(e){{}}}}if((w==='de'||w==='en')&&w!=='{lang}')location.replace('{'/einbinden/' if en else '/en/embed/'}'+location.search+location.hash);}})();</script>
@@ -172,6 +138,7 @@ def page(lang):
 </main>
 <footer><div class="wrap">{t['foot']}</div></footer>
 <script src="/embed.js"></script>
+<script src="/embed-payment.js" defer></script>
 <script>{js}</script>
 <!-- Cloudflare Web Analytics (ohne Cookies, keine personenbezogenen Daten) --><script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{{"token": "d5b51a031e8c4e26b08ad199a6bfd2da"}}'></script>
 </body></html>

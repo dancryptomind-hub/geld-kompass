@@ -4,6 +4,7 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 (async () => {
+  await require("./embed-payments")();
   const engine=process.env.GK_TEST_BROWSER==='webkit'?require('playwright').webkit:chromium; const base=process.env.GK_TEST_BASE||'http://localhost:8765'; const b = await engine.launch(); const bad = [];
   const cfg = fs.readFileSync(__dirname + '/../billing-config.js', 'utf8');
   const appSource = fs.readFileSync(__dirname + '/../app/index.html', 'utf8');
