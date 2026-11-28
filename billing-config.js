@@ -1,14 +1,15 @@
-/* Stripe-Bezahlweg des Geld-Kompass Pro. enabled:false = keine Kaufknöpfe sichtbar (Stripe noch nicht eingerichtet).
-   Erst auf true stellen, wenn STRIPE_SECRET_KEY und STRIPE_WEBHOOK_SECRET in Supabase gesetzt sind und ein Testkauf geklappt hat.
-   Keine geheimen Schlüssel in diese Datei: der öffentliche Stripe-Schlüssel wird für Checkout nicht gebraucht. */
+/* Bezahlwege des Geld-Kompass Pro: Stripe (aktiv) + optional Wise Business (zusätzliche Alternative, erst bei wiseEnabled:true sichtbar).
+   Keine geheimen Schlüssel in diese Datei: alle Stripe- und Wise-Schlüssel liegen ausschließlich als Supabase-Secrets vor. */
 window.GK_BILLING = Object.freeze({
   enabled: true,
   plusEnabled: true,
   reportEnabled: true,
+  wiseEnabled: false,
+  providers: Object.freeze({ stripe: true, wise: false }),
   mode: "live",
   functions: "https://cwznthfefbeglamnwyry.supabase.co/functions/v1/",
   apikey: "sb_publishable_OAzhy63__bAdBHq7H7NqUA_RqxB_qhc",
-  prices: { plus_monthly: 4.99, plus_yearly: 39, plus_5y: 149, plus_10y: 249, workbook: 9.99, report: 14.99 }
+  prices: { plus_monthly: 4.99, plus_yearly: 39, plus_5y: 149, plus_10y: 249, workbook: 9.99, report: 14.99, whitelabel_pro_yearly: 468, whitelabel_pro_monthly: 49, whitelabel_team_yearly: 1428, whitelabel_team_monthly: 149 }
 });
 /* Gemeinsamer Aufruf für App, Arbeitsbuch-Seite und Danke-Seite */
 window.GK_billingCall = function (fn, opts) {
